@@ -257,9 +257,8 @@ html.lock,html.lock body{overflow:hidden!important}
 .top3{margin-bottom:22px}.top3 h3{font:600 24px 'Fraunces',Georgia,serif;margin:0 0 4px}.top3 p{margin:0 0 12px;color:var(--mu);font-size:14px}
 .t3{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px}
 .t3 button{flex:0 0 min(78%,300px);scroll-snap-align:start;display:flex;gap:12px;align-items:center;text-align:left;background:var(--pn);border:1px solid var(--ln);border-radius:20px;padding:10px 14px 10px 10px;cursor:pointer;color:var(--tx);position:relative;overflow:hidden}
-.t3 .n{position:absolute;right:10px;bottom:-14px;font:700 74px 'Fraunces',Georgia,serif;color:color-mix(in srgb,var(--ac) 14%,transparent);line-height:1;pointer-events:none}
-.t3 .rth{width:84px;flex:none;border-radius:14px}.t3 .tx{display:flex;flex-direction:column;gap:3px;min-width:0}.t3 b{font-size:15px}.t3 .pr{font-size:15px}
-.t3 .tg2{font:800 10px Inter,system-ui,sans-serif;letter-spacing:.12em;color:var(--ac);text-transform:uppercase}
+.t3 .rth{width:84px;flex:none;border-radius:14px}.t3 .tx{display:flex;flex-direction:column;gap:5px;min-width:0}.t3 b{font-size:15px}.t3 .pr{font-size:15px}
+.t3 .tg2{align-self:flex-start;font:800 17px Inter,system-ui,sans-serif;letter-spacing:.04em;color:#fff;background:linear-gradient(125deg,#7d2a5a,#b4528a 60%,#dc92bc);padding:6px 14px;border-radius:999px;box-shadow:0 6px 14px var(--shadow),inset 0 1px 0 rgba(255,255,255,.35);margin-bottom:2px}
 .card .alt2{position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .35s;z-index:1;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .card .alt2 svg,.card .alt2 img{width:100%;height:100%;object-fit:contain}
 @media (hover:hover){.card:hover .alt2{opacity:1}}
@@ -591,7 +590,7 @@ footer b{color:var(--tx)}
   function top3(){
     var el=document.getElementById('top3');if(!el)return;
     var L=P.filter(function(p){return p.rank}).sort(function(a,b){return a.rank-b.rank});
-    el.innerHTML='<h3>Mais pedidos da semana</h3><p>Os modelos que os clientes mais reservaram.</p><div class="t3">'+L.map(function(p){return '<button type="button" data-open="'+p.ref+'"><span class="rth">'+vis(p,6)+'</span><span class="tx"><span class="tg2">Nº '+p.rank+'</span><b>'+esc(p.nome)+'</b><span class="pr">'+fmt(p.n)+'</span></span><span class="n">'+p.rank+'</span></button>'}).join('')+'</div>'}
+    el.innerHTML='<h3>Mais pedidos da semana</h3><p>Os modelos que os clientes mais reservaram.</p><div class="t3">'+L.map(function(p){return '<button type="button" data-open="'+p.ref+'"><span class="rth">'+vis(p,6)+'</span><span class="tx"><span class="tg2">Nº '+p.rank+'</span><b>'+esc(p.nome)+'</b><span class="pr">'+fmt(p.n)+'</span></span></button>'}).join('')+'</div>'}
   function drawGrid(){
     var r=lista();drawRes(r.length);
     $('count').textContent=r.length+' modelo'+(r.length===1?'':'s');
