@@ -485,7 +485,7 @@ footer b{color:var(--tx)}
     <h2>Como comprar</h2>
     <div class="steps">
       <div class="step"><i>1</i><div><b>Escolha</b><span>Adicione à reserva os modelos que gostou.</span></div></div>
-      <div class="step"><i>2</i><div><b>Reserve no WhatsApp</b><span>A lista vai para a loja. As peças ficam separadas por [PRAZO] dias.</span></div></div>
+      <div class="step"><i>2</i><div><b>Reserve no WhatsApp</b><span>A lista vai para a loja. As peças ficam separadas por 7 dias.</span></div></div>
       <div class="step"><i>3</i><div><b>Prove e retire na loja</b><span>Experimente e retire na loja. Não há pagamento online.</span></div></div>
     </div>
   </section>
@@ -494,7 +494,7 @@ footer b{color:var(--tx)}
     <h2>Dúvidas frequentes</h2>
     <div class="faq">
       <details><summary>Preciso pagar para reservar?</summary><p>Não. A reserva é gratuita e sem compromisso. Você prova as peças na loja e só leva se gostar.</p></details>
-      <details><summary>Por quanto tempo as peças ficam separadas?</summary><p>As peças ficam separadas por [PRAZO] dias. Se precisar de mais tempo, é só avisar a loja pelo WhatsApp.</p></details>
+      <details><summary>Por quanto tempo as peças ficam separadas?</summary><p>As peças ficam separadas por 7 dias. Se precisar de mais tempo, é só avisar a loja pelo WhatsApp.</p></details>
       <details><summary>Posso trocar se não gostar?</summary><p>Como você prova na loja antes de levar, a escolha já sai certa. Para outras situações, fale com a gente pelo WhatsApp.</p></details>
       <details><summary>Fazem óculos de grau com a minha receita?</summary><p>Sim. Escolha a armação, leve a sua receita na loja e a gente cuida do resto.</p></details>
       <details><summary>Como sei qual armação combina comigo?</summary><p>Use o guia "Qual combina com meu rosto?". Escolha o formato do seu rosto e a vitrine mostra só os modelos recomendados.</p></details>
@@ -700,7 +700,7 @@ footer b{color:var(--tx)}
     '<section class="dsec"><span class="dsl">Medidas</span><div class="meds"><div class="med"><b>'+p.med[0]+'<i>mm</i></b><span>Lente</span></div><div class="med"><b>'+p.med[1]+'<i>mm</i></b><span>Ponte</span></div><div class="med"><b>'+p.med[2]+'<i>mm</i></b><span>Haste</span></div></div></section>'+
     '<div class="badges"><span class="bd">'+MATI+esc(p.mat)+'</span>'+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     '<section class="dsec"><span class="dsl">Combina com rosto</span><div class="fc2">'+p.rosto.map(function(r){return '<button type="button" data-facem="'+r+'">'+faceMini(r)+'<span>'+esc(faceName(r))+'</span></button>'}).join('')+'</div></section>'+
-    '<ul class="facts"><li><i>'+FI.loja+'</i><span><b>Prove na loja</b>Sem compromisso, antes de levar.</span></li><li><i>'+FI.rel+'</i><span><b>Reservada por [PRAZO] dias</b>Separamos a peça para você.</span></li><li><i>'+FI.ret+'</i><span><b>Retire na loja</b>Quando estiver pronto.</span></li></ul>'+
+    '<ul class="facts"><li><i>'+FI.loja+'</i><span><b>Prove na loja</b>Sem compromisso, antes de levar.</span></li><li><i>'+FI.rel+'</i><span><b>Reservada por 7 dias</b>Separamos a peça para você.</span></li><li><i>'+FI.ret+'</i><span><b>Retire na loja</b>Quando estiver pronto.</span></li></ul>'+
     '<div class="tools"><button type="button" class="tl fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'">'+HEART+'<span>'+(st.fav[p.ref]?'Nos favoritos':'Favoritar')+'</span></button><button type="button" class="tl'+(st.cmp.indexOf(p.ref)>=0?' on':'')+'" data-cmp="'+p.ref+'">'+CMPI+'<span>Comparar</span></button><button type="button" class="tl" data-try="'+p.ref+'">'+CAMI+'<span>Provar no rosto</span></button></div>'+
     relHtml(p)+'</div>'+
     '<div class="buy"><button type="button" class="bb p" data-addm="'+p.ref+'"><i class="shn"></i><span>'+(esg?'Avise-me':'Adicionar à reserva')+'</span><em>'+CARTI+'</em></button><a class="bb w" target="_blank" rel="noopener" aria-label="Falar com vendedor no WhatsApp" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent('Olá! Quero falar com um vendedor sobre o '+p.nome+' ('+p.ref+').')+'"><span>Vendedor</span><em>'+WAI+'</em></a></div></div>','center')}
@@ -709,7 +709,7 @@ footer b{color:var(--tx)}
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Sua reserva"><div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">Sua reserva</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'+
       (ks.length?ks.map(function(k){var p=find(k);return '<div class="line"><div class="th">'+vis(p,7)+'</div><div style="flex:1;min-width:0"><b>'+esc(p.nome)+'</b><div class="pr" style="font-size:16px">'+fmt(p.n*st.cart[k])+'</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div class="qty"><button data-dec="'+k+'" aria-label="Menos">−</button><span>'+st.cart[k]+'</span><button data-inc="'+k+'" aria-label="Mais">+</button></div><button class="x" data-rm="'+k+'" aria-label="Remover" style="width:40px;height:40px;align-self:auto;border:0;background:transparent">×</button></div></div></div>'}).join('')+
       '<div class="note"><b style="color:var(--tx)">Seus dados</b> (para separar as peças)</div><input class="field" id="fn" placeholder="Seu nome" value="'+esc(st.nome)+'"><input class="field" id="fz" placeholder="Seu WhatsApp" value="'+esc(st.zap)+'">'+
-      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:auto"><span style="color:var(--mu)">Total</span><b style="font-size:26px">'+fmt(total())+'</b></div><button class="btn w" data-send>Reservar no WhatsApp</button><span style="text-align:center;color:var(--mu);font-size:13px">As peças ficam separadas por [PRAZO] dias. Você prova e retira na loja.</span>'
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:auto"><span style="color:var(--mu)">Total</span><b style="font-size:26px">'+fmt(total())+'</b></div><button class="btn w" data-send>Reservar no WhatsApp</button><span style="text-align:center;color:var(--mu);font-size:13px">As peças ficam separadas por 7 dias. Você prova e retira na loja.</span>'
       :'<div class="note" style="margin-top:20px">Sua reserva está vazia. Volte à vitrine e toque em Reservar.</div>')+'</aside>')}
   function mensagem(modo,ref){
     if(modo==='lojista'){var g=function(i){var e=$(i);return e?e.value.trim():''},m='Olá! Sou lojista e vim pelo catálogo da La Fouch. Quero saber sobre os preços e as quantidades de atacado.';if(g('an'))m+='\nÓtica: '+g('an');if(g('ac'))m+='\nCidade: '+g('ac');if(g('aq'))m+='\nQuantidade aproximada: '+g('aq');return m}
