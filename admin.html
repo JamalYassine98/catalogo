@@ -4,7 +4,7 @@
 :root{--bg:#fbf6f9;--pn:#fff;--tx:#2a1f27;--mu:#7a6772;--ln:#ead9e2;--ac:#8a3068;--ok:#0e8a43;--bad:#d6232a}
 @media (prefers-color-scheme:dark){:root{--bg:#171116;--pn:#231a21;--tx:#f5eaf0;--mu:#b6a2ad;--ln:#3a2c35;--ac:#e08abf;--ok:#47c77f;--bad:#ff6b6b}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 Inter,system-ui,sans-serif;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
-main{max-width:760px;margin:0 auto;display:grid;gap:16px}h1{font:600 28px Georgia,serif;margin:6px 0 0}h2{font:600 20px Georgia,serif;margin:0 0 10px}
+main{max-width:1100px;margin:0 auto;display:grid;gap:16px}h1{font:600 28px Georgia,serif;margin:6px 0 0}h2{font:600 20px Georgia,serif;margin:0 0 10px}
 .card{background:var(--pn);border:1px solid var(--ln);border-radius:20px;padding:18px}
 label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px;min-height:46px;width:100%}
 .btn{font:700 15px Inter,system-ui,sans-serif;border:0;border-radius:14px;min-height:48px;padding:0 18px;cursor:pointer;background:var(--ac);color:#fff}.btn.o{background:transparent;color:var(--ac);border:1.5px solid var(--ac)}.btn.d{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}.btn:disabled{opacity:.5}
@@ -16,6 +16,10 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 .chk{display:flex;gap:8px;flex-wrap:wrap}.chk label{flex-direction:row;align-items:center;gap:6px;font-size:14px;color:var(--tx);font-weight:500;background:var(--bg);border:1px solid var(--ln);border-radius:999px;padding:8px 12px}.chk input{width:auto;min-height:0}
 .msg{font-size:14px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ok) 14%,transparent)}.msg.e{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .ph{width:100%;height:180px;object-fit:contain;background:#fff;border-radius:14px;border:1px solid var(--ln)}
+.tabs{display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:20;background:var(--bg);padding:6px 0}.tab{font:700 14px Inter,sans-serif;border:1.5px solid var(--ln);background:var(--pn);color:var(--tx);border-radius:999px;padding:10px 16px;cursor:pointer}.tab.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.sw2{margin-left:auto;font:800 13px Inter,sans-serif;border:0;border-radius:999px;padding:11px 16px;cursor:pointer;color:#fff;background:var(--bad)}.sw2.on{background:var(--ok)}
+.ctb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.ctb .btn{min-height:42px;font-size:14px}
+@media (min-width:1000px){main{max-width:none;padding-inline:8px}#work{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(400px,.8fr);gap:16px;align-items:start}#cat{position:sticky;top:64px}#cat iframe{height:calc(100vh - 170px)!important}.tab{display:none}.tabs{padding-bottom:10px}}
 [hidden]{display:none!important}
 .tb{display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body><main>
@@ -24,10 +28,9 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 
 <section class="card" id="login"><h2>Entrar</h2><div style="display:grid;gap:12px"><label>E-mail<input id="em" type="email" autocomplete="username"></label><label>Senha<input id="pw" type="password" autocomplete="current-password"></label><button class="btn" id="go">Entrar</button></div></section>
 
+<nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="sw2" id="tg2" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
+<div id="work"><section id="cat" hidden><div class="ctb"><button class="btn" id="nw2">+ Novo produto</button><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button></div><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
 <div id="app" hidden style="display:grid;gap:16px">
- <section class="card"><h2>Ver o catálogo</h2><p style="color:var(--mu);font-size:14px;margin:0 0 12px">Veja o site do jeito que está agora, com produtos, ofertas e vídeo, mesmo com ele desligado.</p>
-  <div class="row"><button class="btn" id="pv">Ver aqui no painel</button><a class="btn o" href="index.html" target="_blank" style="display:grid;place-items:center;text-decoration:none">Abrir em outra aba</a></div>
-  <div id="pvw" hidden style="margin-top:14px"><div class="row" style="margin-bottom:10px"><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn o" id="pvx">Fechar prévia</button></div><iframe id="pvf" title="Prévia do site" style="width:100%;height:78vh;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></div></section>
  <section class="card"><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
   <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label></div></section>
  <section class="card"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
@@ -46,7 +49,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
  <div><div style="font-size:13px;color:var(--mu);font-weight:600;margin-bottom:6px">Combina com rosto</div><div class="chk" id="f_rosto"></div></div>
  <div class="row"><label>Mais pedidos (0 = fora, 1 a 3)<select id="f_rank"><option value="0">Fora</option><option value="1">Nº 1</option><option value="2">Nº 2</option><option value="3">Nº 3</option></select></label><label>Aparece no site?<select id="f_ocu"><option value="0">Sim</option><option value="1">Não (escondido)</option></select></label></div>
  <div class="row"><button class="btn" id="sv">Salvar</button><button class="btn o" id="cc">Cancelar</button></div>
- <button class="btn d" id="del" hidden>Excluir produto</button></div></section>
+ <button class="btn d" id="del" hidden>Excluir produto</button></div></section></div>
 </main>
 <script>
 (function(){
@@ -79,18 +82,25 @@ function load(){
     draw()})}
 function gs(n){return 'Gs. '+Number(n||0).toLocaleString('pt-BR')}
 function draw(){
-  var on=S.cfg.ativo!==false;$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('stt').textContent=on?'● No ar':'● Fora do ar (visitantes veem o aviso)';$('stt').className='st '+(on?'on':'off');
+  var on=S.cfg.ativo!==false;$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('stt').textContent=on?'● No ar':'● Fora do ar (visitantes veem o aviso)';$('stt').className='st '+(on?'on':'off');$('tg2').className='sw2'+(on?' on':'');$('tg2').textContent=on?'● Site no ar':'● Site fora do ar';
   $('avs').value=S.cfg.aviso||'';$('vid').value=S.cfg.video||'';
   $('dst').innerHTML=S.prods.map(function(p){return '<option value="'+p.ref+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+p.ref+' · '+p.nome+'</option>'}).join('');
   $('cnt').textContent=S.prods.length+' produtos';$('seed').hidden=S.prods.length>0;
   $('pl').innerHTML=S.prods.map(function(p){return '<div class="pi'+(p.oculto?' h':'')+'" data-r="'+p.ref+'"><img alt="" data-ph="'+p.ref+'"'+(p.fv>0?'':' hidden')+'><div><b>'+p.nome+'</b><small>'+p.ref+'</small><div class="tags">'+(p.de>p.n?'<span>OFERTA</span>':'')+(p.aviso==='Esgotado'?'<span class="x">Esgotado</span>':'')+(p.oculto?'<span class="x">Escondido</span>':'')+'</div></div><div class="r">'+(p.de>p.n?'<s style="color:var(--mu);font-weight:500;font-size:12px;display:block">'+gs(p.de)+'</s>':'')+gs(p.n)+'</div></div>'}).join('');
   S.prods.forEach(function(p){if(p.fv>0)api('GET','fotos/'+p.ref).then(function(d){var o=d&&fd(d),im=document.querySelector('[data-ph="'+p.ref+'"]');if(o&&o.d&&im){im.src=o.d;im.hidden=false}}).catch(function(){})})}
-function start(){$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;load().catch(function(){say('Não consegui carregar os dados.',1)})}
+function W(){return window.matchMedia&&matchMedia('(min-width:1000px)').matches}
+function view(v){S.view=v;$('cat').hidden=W()?false:v!=='cat';$('app').hidden=W()?false:v!=='app';$('ed').hidden=true;$('tabs').hidden=false;Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){t.classList.toggle('on',t.getAttribute('data-v')===v)})}
+function reloadCat(){var f=$('pvf');if(f.src&&f.contentWindow){try{f.contentWindow.location.reload();return}catch(_){}}f.src='index.html?p='+Date.now()}
+function start(){$('login').hidden=true;$('out').hidden=false;view('cat');$('pvf').src='index.html?p='+Date.now();load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
+addEventListener('resize',function(){if(S.tok&&$('ed').hidden)view(S.view||'cat')});
+document.getElementById('tabs').onclick=function(e){var t=e.target.closest('.tab');if(t)view(t.getAttribute('data-v'))};
+window.addEventListener('message',function(e){if(e.origin!==location.origin||!e.data||!e.data.lfEdit)return;edit(e.data.lfEdit)});
 /* config */
 function saveCfg(extra){var c=Object.assign({},S.cfg,extra||{});
   return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||''}).then(function(){S.cfg=c;draw()})}
-$('tgl').onclick=function(){var nv=!(S.cfg.ativo!==false);if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.')}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
-$('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim(),video:$('vid').value.trim(),destaque:$('dst').value}).then(function(){say('Salvo.')}).catch(function(){say('Erro ao salvar.',1)})};
+$('tg2').onclick=function(){$('tgl').click()};
+$('tgl').onclick=function(){var nv=!(S.cfg.ativo!==false);if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
+$('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim(),video:$('vid').value.trim(),destaque:$('dst').value}).then(function(){say('Salvo.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
 /* editor */
 $('f_rosto').innerHTML=ROSTOS.map(function(r){return '<label><input type="checkbox" value="'+r[0]+'">'+r[1]+'</label>'}).join('');
 function hint(){var n=+$('f_n').value||0;$('hint').textContent=n?'≈ R$ '+(Math.round(n/1400/5)*5)+' (referência: 1 real = 1.400 Gs.)':''}
@@ -103,10 +113,10 @@ function edit(ref){
   [0,1,2].forEach(function(i){$('m'+i).value=(d.med||[])[i]||''});$('f_rank').value=String(d.rank||0);$('f_ocu').value=d.oculto?'1':'0';
   Array.prototype.forEach.call($('f_rosto').querySelectorAll('input'),function(c){c.checked=(d.rosto||[]).indexOf(c.value)>=0});
   var im=document.querySelector('[data-ph="'+(p&&p.ref)+'"]');$('fp').hidden=!(im&&im.src&&!im.hidden);if(!$('fp').hidden)$('fp').src=im.src;$('ff').value='';
-  $('del').hidden=!p;hint();$('ed').hidden=false;$('app').hidden=true;scrollTo(0,0)}
+  $('del').hidden=!p;hint();$('ed').hidden=false;$('app').hidden=true;if(!W()){$('cat').hidden=true;$('tabs').hidden=true}scrollTo(0,0)}
 $('pl').onclick=function(e){var t=e.target.closest('[data-r]');if(t)edit(t.getAttribute('data-r'))};
 $('new').onclick=function(){edit('')};
-$('cc').onclick=function(){$('ed').hidden=true;$('app').hidden=false};
+$('cc').onclick=function(){view(S.view||'cat')};
 $('ff').onchange=function(){var f=this.files&&this.files[0];if(!f)return;
   createImageBitmap(f,{imageOrientation:'from-image'}).then(function(bm){var s=Math.min(1,900/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);
     var q=.85,u=c.toDataURL('image/jpeg',q);while(u.length>700000&&q>.4){q-=.1;u=c.toDataURL('image/jpeg',q)}S.fotoNova=u;$('fp').src=u;$('fp').hidden=false}).catch(function(){say('Não consegui abrir essa foto.',1)})};
@@ -120,14 +130,14 @@ $('sv').onclick=function(){
   if(S.fotoNova)o.fv=Math.floor(Date.now()/1000);
   $('sv').disabled=true;
   var p=S.fotoNova?put('fotos/'+ref,{d:S.fotoNova}):Promise.resolve();
-  p.then(function(){return put('produtos/'+ref,o)}).then(function(){return load()}).then(function(){$('ed').hidden=true;$('app').hidden=false;say('Produto salvo. O site atualiza em instantes.')}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)}).then(function(){$('sv').disabled=false})};
+  p.then(function(){return put('produtos/'+ref,o)}).then(function(){return load()}).then(function(){view(S.view||'cat');reloadCat();say('Produto salvo.')}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)}).then(function(){$('sv').disabled=false})};
 $('del').onclick=function(){if(!S.cur||!confirm('Excluir '+S.cur.nome+'?'))return;var ref=S.cur.ref;
-  api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){$('ed').hidden=true;$('app').hidden=false;say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})};
+  api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){view(S.view||'cat');reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})};
 $('seedb').onclick=function(){if(!confirm('Enviar os '+SEED.length+' produtos do site atual?'))return;$('seedb').disabled=true;
   SEED.reduce(function(a,p){return a.then(function(){return put('produtos/'+p.ref,p)})},put('config/site',{ativo:true,aviso:'',video:'',destaque:'SL2210'})).then(load).then(function(){say('Catálogo enviado.')}).catch(function(){say('Erro ao enviar.',1)}).then(function(){$('seedb').disabled=false})};
-$('pv').onclick=function(){$('pvf').src='index.html?p='+Date.now();$('pvw').hidden=false;$('pvw').scrollIntoView({behavior:'smooth'})};
-$('pvc').onclick=function(){$('pvf').src='index.html?cliente=1&p='+Date.now()};
-$('pvx').onclick=function(){$('pvf').src='about:blank';$('pvw').hidden=true};
+$('nw2').onclick=function(){edit('')};
+$('pvc').onclick=function(){$('pvf').src='index.html?cliente=1&p='+Date.now();$('pvc').hidden=true;$('pvr').hidden=false};
+$('pvr').onclick=function(){$('pvf').src='index.html?p='+Date.now();$('pvc').hidden=false;$('pvr').hidden=true};
 $('go').onclick=signIn;$('pw').onkeydown=function(e){if(e.key==='Enter')signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
 refresh().then(function(ok){if(ok)start()});
