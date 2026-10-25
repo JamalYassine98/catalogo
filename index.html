@@ -176,31 +176,21 @@ html.lock,html.lock body{overflow:hidden!important}
 @keyframes cardout{to{opacity:0;transform:scale(.9)}}
 
 /* provador */
-.tb{position:relative;width:100%;max-width:330px;min-height:74px;border-radius:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px 0 22px;text-align:left;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,background .3s}
-.tb .tt{display:flex;flex-direction:column;gap:2px;font:700 16px Inter,system-ui,sans-serif}
-.tb .tt small{font-weight:500;font-size:12.5px;opacity:.78}
-.tb .ti{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-style:normal;transition:transform .3s}
-.tb .ti svg{width:24px;height:24px}
-.tb.p{background:linear-gradient(125deg,#6f2250,#b4528a 58%,#dc92bc);color:#fff;box-shadow:0 12px 26px var(--shadow),inset 0 1px 0 rgba(255,255,255,.35)}
-.tb.p .ti{background:rgba(255,255,255,.22)}
-.tb.o{background:color-mix(in srgb,var(--ac) 7%,transparent);border:1.5px solid color-mix(in srgb,var(--ac) 65%,transparent);color:var(--tx)}
-.tb.o .ti{background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}
-.tb:active{transform:scale(.98)}@media (hover:hover){.tb:hover{transform:translateY(-3px)}.tb:hover .ti{transform:scale(1.1) rotate(-6deg)}}
-.tb:focus-within{outline:3px solid var(--ac);outline-offset:3px}
-
-.modal.try{display:block;width:min(580px,100%);padding:22px 22px 26px}
-.modal.try h2{font-size:30px;margin:0 0 4px}.modal.try .sub{color:var(--mu);font-size:14px;margin:0 0 14px}
-.tstage{position:relative;width:min(100%,calc(58vh*.75));aspect-ratio:3/4;margin:0 auto;border-radius:20px;overflow:hidden;background:var(--pn);border:1px solid var(--ln);touch-action:none;user-select:none}
-.tstage canvas{width:100%;height:100%;display:block}
-.tempty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;color:var(--mu);border:2px dashed var(--ln2);border-radius:20px}
-.tempty .btn{min-height:52px;width:100%;max-width:300px;cursor:pointer;font-size:15px}
-.tempty input,.trow input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.tgl{position:absolute;left:50%;top:44%;width:62%;aspect-ratio:1;transform:translate(-50%,-50%) rotate(0deg);cursor:grab;touch-action:none;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 6px 5px rgba(0,0,0,.28))}
-.tgl:active{cursor:grabbing}
-.tgl.nb::after{display:none}
-.tgl svg,.tgl img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
-.tgl svg ellipse{display:none}.tgl svg rect{fill:rgba(255,255,255,.14)}.tgl.sol svg rect{fill:rgba(25,22,28,.62)}
-.tgl .pf{background:transparent;animation:none}.tgl:has(.pf){mix-blend-mode:multiply;filter:none}
+.modal.try{display:block;width:min(560px,100%);padding:26px 24px 24px;text-align:center}
+.modal.try h2{font-size:30px;margin:0 0 6px;line-height:1.1}.modal.try .sub{color:var(--mu);font-size:15px;line-height:1.5;margin:0 auto 18px;max-width:420px}
+.fast{position:relative;min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.fabtns{display:grid;gap:10px;max-width:340px;margin:0 auto}
+.fabtns .btn{min-height:54px;font-size:15px;cursor:pointer;position:relative;width:100%;justify-content:center;gap:10px}
+.fabtns input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.faic{width:92px;height:118px;margin:0 auto 14px;color:var(--ac);opacity:.9}.faic svg{width:100%;height:100%}
+.fatip{font-size:13px;color:var(--mu);margin:14px 0 0}
+.faph{position:relative;width:184px;height:184px;margin:0 auto 14px;border-radius:50%;padding:5px;background:conic-gradient(from 210deg,#6f2250,#dc92bc,#b4528a,#6f2250);box-shadow:0 14px 34px -14px rgba(111,34,80,.55)}
+.faph canvas{width:100%;height:100%;border-radius:50%;display:block;background:#fff}
+.modal.try .fak{font:600 11.5px Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
+.modal.try h3{font:600 34px/1.1 Fraunces,Georgia,serif;margin:2px 0 8px;color:var(--tx)}
+.fares{animation:rise .4s ease}
+.fares .sub{margin-bottom:16px}
+.fan{display:inline-block;margin-top:14px;background:none;border:0;color:var(--mu);font:500 13.5px Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
 .tload{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:var(--mu);font-size:14px;padding:20px}
 .tload b{color:var(--tx);font:600 22px Fraunces,Georgia,serif}
 .tring{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center;color:var(--ac)}
@@ -209,17 +199,6 @@ html.lock,html.lock body{overflow:hidden!important}
 .tload span{animation:tbeat 1.4s .2s ease-in-out infinite}
 @keyframes tspin{to{transform:rotate(360deg)}}@keyframes tbeat{50%{opacity:.45;transform:scale(.94)}}
 @media (prefers-reduced-motion:reduce){.tring i,.tring svg,.tload span{animation:none}}
-
-.tgl::before{display:none}
-.tctl{display:grid;gap:10px;margin-top:14px}
-.tctl label{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:center;font-size:13px;color:var(--mu);font-weight:600}
-.tctl input[type=range]{width:100%;accent-color:var(--ac)}
-.tstrip{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scroll-snap-type:x proximity}
-.tstrip button{flex:none;width:62px;height:62px;border-radius:12px;border:2px solid var(--ln2);background:#fff;padding:3px;cursor:pointer;scroll-snap-align:start}
-.tstrip button.on{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac)}
-.tstrip svg,.tstrip img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
-.trow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
-.trow .btn{min-height:50px;font-size:14px;padding:0 14px;position:relative;cursor:pointer}
 .tpriv{display:flex;gap:8px;align-items:center;justify-content:center;font-size:12px;color:var(--mu);margin-top:12px}
 .tcta{display:flex;justify-content:center;margin-top:22px}
 .tcta .btn{gap:12px}
@@ -445,7 +424,7 @@ footer b{color:var(--tx)}
 <div class="top"><div class="wrap">
   <div class="bar">
     <a href="#topo" aria-label="La Fouch, tudo em óculos" class="logo" role="img"></a>
-    <nav class="nav" aria-label="Seções"><a href="#vitrine">Vitrine</a><a href="#rosto">Seu rosto</a><a href="#atacado">Atacado</a><a href="#como">Como comprar</a><a href="#duvidas">Dúvidas</a></nav>
+    <nav class="nav" aria-label="Seções"><a href="#vitrine">Catálogo</a><a href="#rosto">Seu rosto</a><a href="#atacado">Atacado</a><a href="#como">Como comprar</a><a href="#duvidas">Dúvidas</a></nav>
     <span class="grow"></span>
     <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar por modelo ou referência" aria-label="Buscar no catálogo"></label>
     <button class="ib" id="theme" aria-label="Trocar tema claro e escuro" title="Tema"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></button>
@@ -463,7 +442,7 @@ footer b{color:var(--tx)}
     <div>
       <h1 style="margin-top:12px">Escolha o óculos que <em>combina com você</em></h1>
       <p>Monte a sua reserva com os modelos que gostou e envie pelo WhatsApp. As peças ficam separadas para você provar e retirar na loja.</p>
-      <div class="cta"><a class="btn p" href="#vitrine"><i class="shn"></i><span class="t"><small>Coleção</small>Ver a vitrine</span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn o" href="#rosto"><span class="t"><small>Descubra em 1 minuto</small>Qual combina com meu rosto?</span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="gar"><span>Prove na loja</span><span>Sem compromisso</span><span>Retire na loja</span></div>
+      <div class="cta"><a class="btn p" href="#vitrine"><i class="shn"></i><span class="t"><small>Coleção</small>Ver o catálogo</span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn o" href="#rosto"><span class="t"><small>Descubra em 1 minuto</small>Qual combina com meu rosto?</span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="gar"><span>Prove na loja</span><span>Sem compromisso</span><span>Retire na loja</span></div>
     </div>
     <div class="stage" id="stage" data-open="SL2210" role="button" tabindex="0" aria-label="Ver Solar hexagonal preto, escolha da semana">
       <span class="shine"></span>
@@ -485,11 +464,11 @@ footer b{color:var(--tx)}
     <h2>Qual armação combina com seu rosto?</h2>
     <p>Escolha o formato do seu rosto e veja os modelos que mais combinam.</p>
     <div class="faces" id="faces"></div>
-    <div class="tcta"><button class="btn p ic" data-try="" type="button" style="min-width:min(100%,340px)"><span>Provar óculos com uma selfie</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg></button></div>
+    <div class="tcta"><button class="btn p ic" data-fa="" type="button" style="min-width:min(100%,340px)"><span>Descobrir meu rosto com uma selfie</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg></button></div>
   </section>
 
   <section class="sec" id="vitrine">
-    <h2 style="text-align:left">Vitrine</h2>
+    <h2 style="text-align:left">Catálogo</h2>
     <div id="top3" class="top3"></div>
     <div id="resultado"></div>
     <div class="shopbar">
@@ -526,7 +505,7 @@ footer b{color:var(--tx)}
       <details><summary>Por quanto tempo as peças ficam separadas?</summary><p>As peças ficam separadas por 7 dias. Se precisar de mais tempo, é só avisar a loja pelo WhatsApp.</p></details>
       <details><summary>Posso trocar se não gostar?</summary><p>Como você prova na loja antes de levar, a escolha já sai certa. Para outras situações, fale com a gente pelo WhatsApp.</p></details>
       <details><summary>Fazem óculos de grau com a minha receita?</summary><p>Sim. Escolha a armação, leve a sua receita na loja e a gente cuida do resto.</p></details>
-      <details><summary>Como sei qual armação combina comigo?</summary><p>Use o guia "Qual combina com meu rosto?". Escolha o formato do seu rosto e a vitrine mostra só os modelos recomendados.</p></details>
+      <details><summary>Como sei qual armação combina comigo?</summary><p>Use o guia "Qual combina com meu rosto?". Escolha o formato do seu rosto e o catálogo mostra só os modelos recomendados.</p></details>
     </div>
   </section>
 
@@ -558,14 +537,36 @@ footer b{color:var(--tx)}
   var lang=(pl==='pt'||pl==='es')?pl:autoLang,cur=(pc==='BRL'||pc==='PYG')?pc:autoCur;
   var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')};
   var D={
-'Vitrine':'Vitrina','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones',
+'Descobrir meu rosto com uma selfie':'Descubrir mi rostro con una selfie',
+'Descobrir meu rosto':'Descubrir mi rostro',
+'Descubra seu tipo de rosto':'Descubre tu tipo de rostro',
+'Tire uma selfie ou escolha uma foto. Vamos descobrir o formato do seu rosto e separar os óculos que mais combinam com ele.':'Toma una selfie o elige una foto. Vamos a descubrir la forma de tu rostro y a separar los lentes que mejor combinan con él.',
+'Tirar uma selfie':'Tomar una selfie',
+'Escolher da galeria':'Elegir de la galería',
+'Dica: de frente, com boa luz e sem óculos.':'Consejo: de frente, con buena luz y sin lentes.',
+'Sua foto fica só no seu aparelho. Nada é enviado.':'Tu foto queda solo en tu dispositivo. No se envía nada.',
+'Analisando seu rosto…':'Analizando tu rostro…',
+'Carregando a análise':'Cargando el análisis',
+'Procurando seu rosto':'Buscando tu rostro',
+'Medindo as proporções':'Midiendo las proporciones',
+'Preparando':'Preparando',
+'Não consegui analisar':'No pude analizar',
+'Confira sua internet e tente de novo, de preferência com a foto de frente e bem iluminada.':'Revisa tu internet e inténtalo de nuevo, de preferencia con la foto de frente y bien iluminada.',
+'Não achei um rosto':'No encontré un rostro',
+'Tente de novo com o rosto de frente, bem iluminado, sem óculos e sem boné.':'Inténtalo de nuevo con el rostro de frente, bien iluminado, sin lentes y sin gorra.',
+'Tentar outra foto':'Probar con otra foto',
+'Prefiro escolher o formato sozinho':'Prefiero elegir la forma yo mismo',
+'Seu rosto é':'Tu rostro es',
+'Ver os modelos para o meu rosto':'Ver los modelos para mi rostro',
+'Não parece com você? Escolher o formato sozinho':'¿No se parece a ti? Elegir la forma yo mismo',
+'Catálogo':'Catálogo','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones',
 'Buscar por modelo ou referência':'Buscar por modelo o referencia','Buscar no catálogo':'Buscar en el catálogo',
 'Trocar tema claro e escuro':'Cambiar tema claro y oscuro','Mudar para o tema claro':'Cambiar al tema claro','Mudar para o tema escuro':'Cambiar al tema oscuro',
 'Tamanho do texto':'Tamaño del texto','Abrir a reserva':'Abrir la reserva','La Fouch, tudo em óculos':'La Fouch, todo en lentes',
 'Texto normal':'Texto normal','Texto grande':'Texto grande','Texto muito grande':'Texto muy grande',
 'Escolha o óculos que':'Elige los lentes que','combina com você':'combinan contigo',
 'Monte a sua reserva com os modelos que gostou e envie pelo WhatsApp. As peças ficam separadas para você provar e retirar na loja.':'Arma tu reserva con los modelos que te gustaron y envíala por WhatsApp. Las piezas quedan separadas para que las pruebes y las retires en la tienda.',
-'Coleção':'Colección','Ver a vitrine':'Ver la vitrina','Descubra em 1 minuto':'Descubre en 1 minuto','Qual combina com meu rosto?':'¿Cuál combina con mi rostro?',
+'Coleção':'Colección','Ver o catálogo':'Ver el catálogo','Descubra em 1 minuto':'Descubre en 1 minuto','Qual combina com meu rosto?':'¿Cuál combina con mi rostro?',
 'Prove na loja':'Pruébalo en la tienda','Sem compromisso':'Sin compromiso','Retire na loja':'Retira en la tienda',
 'ESCOLHA DA SEMANA':'ELECCIÓN DE LA SEMANA',
 'Por que comprar aqui':'Por qué comprar aquí','Atendimento direto':'Atención directa','Fale com a loja pelo WhatsApp e tire dúvidas na hora.':'Habla con la tienda por WhatsApp y resuelve tus dudas al instante.',
@@ -604,7 +605,7 @@ footer b{color:var(--tx)}
 'Como você prova na loja antes de levar, a escolha já sai certa. Para outras situações, fale com a gente pelo WhatsApp.':'Como pruebas en la tienda antes de llevarlo, la elección ya sale acertada. Para otras situaciones, habla con nosotros por WhatsApp.',
 'Fazem óculos de grau com a minha receita?':'¿Hacen lentes con mi receta?','Sim. Escolha a armação, leve a sua receita na loja e a gente cuida do resto.':'Sí. Elige el armazón, lleva tu receta a la tienda y nosotros nos encargamos del resto.',
 'Como sei qual armação combina comigo?':'¿Cómo sé qué armazón combina conmigo?',
-'Use o guia "Qual combina com meu rosto?". Escolha o formato do seu rosto e a vitrine mostra só os modelos recomendados.':'Usa la guía "¿Cuál combina con mi rostro?". Elige la forma de tu rostro y la vitrina muestra solo los modelos recomendados.',
+'Use o guia "Qual combina com meu rosto?". Escolha o formato do seu rosto e o catálogo mostra só os modelos recomendados.':'Usa la guía "¿Cuál combina con mi rostro?". Elige la forma de tu rostro y el catálogo muestra solo los modelos recomendados.',
 'Galeria Jebai Center, 3º piso, nº 2242':'Galería Jebai Center, 3.er piso, n.º 2242','Segunda a sábado, das 7h30 às 15h':'Lunes a sábado, de 7:30 a 15 h','Ver no mapa':'Ver en el mapa','Contato':'Contacto',
 'Protótipo de design com modelos e preços de exemplo. Nenhum pedido é enviado daqui.':'Prototipo de diseño con modelos y precios de ejemplo. Desde aquí no se envía ningún pedido.',
 'Falar no WhatsApp':'Hablar por WhatsApp','Comparar modelos':'Comparar modelos','Limpar comparação':'Limpiar comparación','Limpar':'Limpiar',
@@ -618,7 +619,7 @@ footer b{color:var(--tx)}
 'Acetato leve':'Acetato liviano','Preto':'Negro','Dourado':'Dorado','Prata':'Plata','Marrom':'Marrón','Tartaruga':'Carey',
 'Sua reserva':'Tu reserva','Seus dados':'Tus datos','(para separar as peças)':'(para separar las piezas)','Seu nome':'Tu nombre','Seu WhatsApp':'Tu WhatsApp',
 'Reservar no WhatsApp':'Reservar por WhatsApp','As peças ficam separadas por 7 dias. Você prova e retira na loja.':'Las piezas quedan separadas por 7 días. Pruebas y retiras en la tienda.',
-'Sua reserva está vazia. Volte à vitrine e toque em Reservar.':'Tu reserva está vacía. Vuelve a la vitrina y toca en Reservar.',
+'Sua reserva está vazia. Volte ao catálogo e toque em Reservar.':'Tu reserva está vacía. Vuelve al catálogo y toca en Reservar.',
 'Mensagem para a loja':'Mensaje para la tienda','Assim chega no WhatsApp da loja':'Así llega al WhatsApp de la tienda',
 'Você vê logo que é um lojista e responde com as condições de atacado.':'Ves enseguida que es un comerciante y respondes con las condiciones mayoristas.',
 'Você anota o contato e chama o cliente quando repuser.':'Anotas el contacto y llamas al cliente cuando repongas.',
@@ -891,7 +892,7 @@ footer b{color:var(--tx)}
     '<div class="badges"><span class="bd">'+MATI+esc(p.mat)+'</span>'+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     '<section class="dsec"><span class="dsl">Combina com rosto</span><div class="fc2">'+p.rosto.map(function(r){return '<button type="button" data-facem="'+r+'">'+faceMini(r)+'<span>'+esc(faceName(r))+'</span></button>'}).join('')+'</div></section>'+
     '<ul class="facts"><li><i>'+FI.loja+'</i><span><b>Prove na loja</b>Sem compromisso, antes de levar.</span></li><li><i>'+FI.rel+'</i><span><b>Reservada por 7 dias</b>Separamos a peça para você.</span></li><li><i>'+FI.ret+'</i><span><b>Retire na loja</b>Quando estiver pronto.</span></li></ul>'+
-    '<div class="tools"><button type="button" class="tl fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'">'+HEART+'<span>'+(st.fav[p.ref]?'Nos favoritos':'Favoritar')+'</span></button><button type="button" class="tl'+(st.cmp.indexOf(p.ref)>=0?' on':'')+'" data-cmp="'+p.ref+'">'+CMPI+'<span>Comparar</span></button><button type="button" class="tl" data-try="'+p.ref+'">'+CAMI+'<span>Provar no rosto</span></button></div>'+
+    '<div class="tools"><button type="button" class="tl fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'">'+HEART+'<span>'+(st.fav[p.ref]?'Nos favoritos':'Favoritar')+'</span></button><button type="button" class="tl'+(st.cmp.indexOf(p.ref)>=0?' on':'')+'" data-cmp="'+p.ref+'">'+CMPI+'<span>Comparar</span></button></div>'+
     relHtml(p)+'</div>'+
     '<div class="buy"><button type="button" class="bb p" data-addm="'+p.ref+'"><i class="shn"></i><span>'+(esg?'Avise-me':'Adicionar à reserva')+'</span><em>'+CARTI+'</em></button><a class="bb w" target="_blank" rel="noopener" aria-label="Falar com vendedor no WhatsApp" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.tr('Olá! Quero falar com um vendedor sobre o '+p.nome+' ('+p.ref+').'))+'"><span>Falar com vendedor</span><em>'+WAI+'</em></a></div></div>','center')}
   function bag(){
@@ -900,7 +901,7 @@ footer b{color:var(--tx)}
       (ks.length?ks.map(function(k){var p=find(k);return '<div class="line"><div class="th">'+vis(p,7)+'</div><div style="flex:1;min-width:0"><b>'+esc(p.nome)+'</b><div class="pr" style="font-size:16px">'+fmtL(p,st.cart[k])+'</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div class="qty"><button data-dec="'+k+'" aria-label="Menos">−</button><span>'+st.cart[k]+'</span><button data-inc="'+k+'" aria-label="Mais">+</button></div><button class="x" data-rm="'+k+'" aria-label="Remover" style="width:40px;height:40px;align-self:auto;border:0;background:transparent">×</button></div></div></div>'}).join('')+
       '<div class="note"><b style="color:var(--tx)">Seus dados</b> (para separar as peças)</div><input class="field" id="fn" placeholder="Seu nome" value="'+esc(st.nome)+'"><input class="field" id="fz" placeholder="Seu WhatsApp" value="'+esc(st.zap)+'">'+
       '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:auto"><span style="color:var(--mu)">Total</span><b style="font-size:26px">'+LFI.fmtD(totalD())+'</b></div><button class="btn w" data-send>Reservar no WhatsApp</button><span style="text-align:center;color:var(--mu);font-size:13px">As peças ficam separadas por 7 dias. Você prova e retira na loja.</span>'
-      :'<div class="note" style="margin-top:20px">Sua reserva está vazia. Volte à vitrine e toque em Reservar.</div>')+'</aside>')}
+      :'<div class="note" style="margin-top:20px">Sua reserva está vazia. Volte ao catálogo e toque em Reservar.</div>')+'</aside>')}
   function mensagem(modo,ref){return LFI.tr(mensagem0(modo,ref))}
   function mensagem0(modo,ref){
     if(modo==='lojista'){var g=function(i){var e=$(i);return e?e.value.trim():''},m='Olá! Sou lojista e vim pelo catálogo da La Fouch. Quero saber sobre os preços e as quantidades de atacado.';if(g('an'))m+='\nÓtica: '+g('an');if(g('ac'))m+='\nCidade: '+g('ac');if(g('aq'))m+='\nQuantidade aproximada: '+g('aq');return m}
@@ -914,17 +915,16 @@ footer b{color:var(--tx)}
 
   /* eventos */
   document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-tipo],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-copy],[data-sw],[data-fav],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-try],[data-facem],[data-trym],[data-tryadd],[data-trynew],[data-copymsg],[data-newsim],[data-close]');
+    var t=e.target.closest('[data-tipo],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-copy],[data-sw],[data-fav],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-facem],[data-fa],[data-fause],[data-fanew],[data-fawrong],[data-copymsg],[data-newsim],[data-close]');
     if(!t){return}
     var d=t.dataset;
     if(d.close!==undefined){if(t.classList.contains('scrim')&&e.target!==t)return;closeLayer();return}
     if(d.tipo){st.tipo=d.tipo;drawChips();drawGrid()}
     else if(d.face){st.rosto=st.rosto===d.face?'':d.face;drawFaces();drawGrid();goTo('vitrine')}
     else if(d.facem){closeLayer();st.rosto=d.facem;drawFaces();drawGrid();goTo('vitrine')}
-    else if(t.hasAttribute('data-try')){tryon(d.try||TRY.ref)}
-    else if(d.trym){TRY.ref=d.trym;var g=$('tgl'),pq=find(d.trym);if(g){g.className='tgl'+(pq.tipo==='solar'?' sol':'');g.innerHTML=vis(pq,6)}document.querySelectorAll('#tstrip button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-trym')===d.trym)});var wa=$('twa');if(wa)wa.href=twaHref(pq);var ad=$('tadd');if(ad)ad.setAttribute('data-tryadd',d.trym)}
-    else if(d.tryadd){add(d.tryadd,null)}
-    else if(t.hasAttribute('data-trynew')){TRY.cv=null;tryon()}
+    else if(t.hasAttribute('data-fa')||t.hasAttribute('data-fanew')){faOpen()}
+    else if(d.fause){closeLayer();st.rosto=d.fause;drawFaces();drawGrid();goTo('vitrine')}
+    else if(t.hasAttribute('data-fawrong')){closeLayer();goTo('rosto')}
     else if(d.fav){toggleFav(d.fav)}
     else if(d.cmp){toggleCmp(d.cmp,t)}
     else if(t.hasAttribute('data-cmpopen')){if(st.cmp.length>1)compare()}
@@ -971,48 +971,91 @@ footer b{color:var(--tx)}
   document.addEventListener('pointerout',function(e){var t=e.target.closest&&e.target.closest('.stage');if(t&&!t.contains(e.relatedTarget))t.style.transform=''});
   var tp=document.querySelector('.top');addEventListener('scroll',function(){tp.classList.toggle('sc',scrollY>10)},{passive:true});
 
-  /* provador por selfie */
-  var TRY={cv:null,x:50,y:44,w:62,r:0,ref:'SL2305',auto:false};
-  function tryHtml(){
-    var p=find(TRY.ref);if(!p){p=P[0];TRY.ref=p.ref}var has=!!TRY.cv;
-    return '<div class="modal try" role="dialog" aria-modal="true" aria-label="Provador"><button class="x" data-close aria-label="Fechar" style="float:right">×</button><h2>Provador</h2><p class="sub">Veja como o óculos fica no seu rosto.</p>'+
-    '<div class="tstage" id="ts">'+(has?'<div id="tcv"></div><div class="tgl'+(p.tipo==='solar'?' sol':'')+'" id="tgl" style="left:'+TRY.x+'%;top:'+TRY.y+'%;width:'+TRY.w+'%;transform:translate(-50%,-50%) rotate('+TRY.r+'deg)">'+vis(p,6)+'</div>'
-      :'<div class="tempty"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ac)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 6" aria-hidden="true"><path d="M20 10h-6a4 4 0 0 0-4 4v6M44 10h6a4 4 0 0 1 4 4v6M20 54h-6a4 4 0 0 1-4-4v-6M44 54h6a4 4 0 0 0 4-4v-6" stroke-dasharray="none"/><ellipse cx="32" cy="31" rx="11" ry="14"/></svg><b style="color:var(--tx);font:600 22px Fraunces,Georgia,serif">Como fica em você?</b><span style="font-size:14px">De frente, com o rosto bem iluminado e sem óculos.</span><label class="tb p"><span class="tt">Tirar selfie<small>Abre a câmera frontal</small></span><i class="ti">'+CAMI+'</i><input type="file" accept="image/*" capture="user" id="tfile"></label><label class="tb o"><span class="tt">Escolher da galeria<small>Use uma foto que você já tem</small></span><i class="ti"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.6" cy="9.6" r="1.7"/><path d="M21 16l-4.6-4.6a1.5 1.5 0 0 0-2.1 0L6 19.5"/></svg></i><input type="file" accept="image/*" id="tfile2"></label></div>')+'</div>'+
-    (has?'<div class="tctl"><div class="tstrip" id="tstrip">'+P.map(function(q){return '<button type="button" data-trym="'+q.ref+'" class="'+(q.ref===TRY.ref?'on':'')+'" aria-label="'+esc(q.nome)+'">'+vis(q,7)+'</button>'}).join('')+'</div>'+
-      '<label>Tamanho<input type="range" id="tsz" min="25" max="110" value="'+TRY.w+'"></label><label>Girar<input type="range" id="trt" min="-30" max="30" value="'+TRY.r+'"></label>'+
-      '<span style="font-size:13px;color:var(--mu);text-align:center">Arraste o óculos até ficar sobre os seus olhos.</span>'+
-      '<div class="trow"><button type="button" class="btn o" data-trynew>Trocar foto</button><button type="button" class="btn p" data-tryadd="'+TRY.ref+'" id="tadd">Reservar</button></div>'+
-      '<a class="btn w ic" id="twa" target="_blank" rel="noopener" href="'+twaHref(p)+'"><span>Falar com vendedor</span>'+WAI+'</a></div>':'')+
-    '<div class="tpriv"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Sua foto fica só no seu aparelho. Nada é enviado.</div></div>'}
-  function twaHref(p){return 'https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.tr('Olá! Provei o '+p.nome+' ('+p.ref+') no provador do catálogo e quero saber mais.'))}
-  function tryon(ref){if(ref)TRY.ref=ref;layer(tryHtml(),'center');mountCv()}
-  function mountCv(){var h=$('tcv');if(h&&TRY.cv){h.appendChild(TRY.cv)}}
-  function tryBusy(){var ts=$('ts');if(!ts)return;ts.innerHTML='<div class="tload" role="status" aria-live="polite"><div class="tring"><i></i><svg viewBox="0 0 120 50" width="54" height="23" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="30" cy="25" r="18"/><circle cx="90" cy="25" r="18"/><path d="M48 22Q60 15 72 22M12 20L3 15M108 20L117 15"/></svg></div><b>Preparando sua foto…</b><span>Procurando seus olhos</span></div>'}
-  function loadSelfie(file){
+
+  /* análise do formato do rosto por foto (roda no aparelho, nada é enviado) */
+  var FA={lib:null};
+  var FAB='lfx/';
+  function faLoad(){
+    if(FA.lib)return FA.lib;
+    FA.lib=fetch(FAB+'face-api.js').then(function(r){if(!r.ok)throw new Error('lib');return r.text()}).then(function(js){
+      if(!window.faceapi){var sc=document.createElement('script');sc.text=js;document.head.appendChild(sc)}
+      var fa=window.faceapi,tf=fa.tf;
+      return Promise.resolve().then(function(){return tf.setBackend('webgl')}).catch(function(){return false}).then(function(ok){
+        if(!ok||tf.getBackend()!=='webgl')return tf.setBackend('cpu')}).then(function(){return tf.ready()}).then(function(){
+        return Promise.all([fa.nets.tinyFaceDetector.loadFromUri(FAB+'model'),fa.nets.faceLandmark68TinyNet.loadFromUri(FAB+'model')])}).then(function(){return fa})
+    }).catch(function(e){FA.lib=null;throw e});
+    return FA.lib}
+  function faEmpty(){
+    var c='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg>';
+    var g='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 9"/></svg>';
+    return '<div class="modal try fa" role="dialog" aria-modal="true" aria-label="Descobrir meu rosto"><div style="text-align:right;margin:-8px -6px 0 0"><button type="button" class="x" data-close aria-label="Fechar">×</button></div>'+
+    '<div class="faic">'+faceMini('oval')+'</div><h2>Descubra seu tipo de rosto</h2>'+
+    '<p class="sub">Tire uma selfie ou escolha uma foto. Vamos descobrir o formato do seu rosto e separar os óculos que mais combinam com ele.</p>'+
+    '<div class="fabtns"><label class="btn p ic">'+c+'<span>Tirar uma selfie</span><input type="file" accept="image/*" capture="user" id="fafile"></label>'+
+    '<label class="btn o ic">'+g+'<span>Escolher da galeria</span><input type="file" accept="image/*" id="fafile2"></label></div>'+
+    '<p class="fatip">Dica: de frente, com boa luz e sem óculos.</p>'+
+    '<div class="tpriv"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Sua foto fica só no seu aparelho. Nada é enviado.</span></div></div>'}
+  function faOpen(){layer(faEmpty(),'center')}
+  function faBusy(msg){
+    var m=document.querySelector('.modal.fa');if(!m)return;
+    m.innerHTML='<div class="fast"><div class="tload" role="status" aria-live="polite"><div class="tring"><i></i><svg viewBox="0 0 120 50" width="54" height="23" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="30" cy="25" r="18"/><circle cx="90" cy="25" r="18"/><path d="M48 22Q60 15 72 22M12 20L3 15M108 20L117 15"/></svg></div><b>Analisando seu rosto…</b><span id="fams">'+(msg||'Preparando')+'</span></div></div>'}
+  function faMsg(t){var e=$('fams');if(e)e.textContent=LFI.tr(t)}
+  function faErr(t,sub){
+    var m=document.querySelector('.modal.fa');if(!m)return;
+    m.innerHTML='<div style="text-align:right;margin:-8px -6px 0 0"><button type="button" class="x" data-close aria-label="Fechar">×</button></div><div class="faic">'+faceMini('alongado')+'</div><h2>'+t+'</h2><p class="sub">'+sub+'</p><div class="fabtns"><button type="button" class="btn p" data-fanew>Tentar outra foto</button></div><button type="button" class="fan" data-fawrong>Prefiro escolher o formato sozinho</button>'}
+  /* mede as proporções do rosto a partir dos 68 pontos */
+  function faMeasure(pt){
+    var a=Math.atan2(pt[45].y-pt[36].y,pt[45].x-pt[36].x),cs=Math.cos(-a),sn=Math.sin(-a),q=pt.map(function(p){return {x:p.x*cs-p.y*sn,y:p.x*sn+p.y*cs}});
+    function d(i,j){return Math.hypot(q[i].x-q[j].x,q[i].y-q[j].y)}
+    var W=d(0,16),brow=(q[19].y+q[24].y)/2,L=(q[8].y-brow)*1.5;
+    var v1={x:q[6].x-q[8].x,y:q[6].y-q[8].y},v2={x:q[10].x-q[8].x,y:q[10].y-q[8].y};
+    var ang=Math.acos((v1.x*v2.x+v1.y*v2.y)/(Math.hypot(v1.x,v1.y)*Math.hypot(v2.x,v2.y)))*180/Math.PI;
+    return {r:L/W,jaw:d(4,12)/W,fore:d(17,26)/W,mid:d(2,14)/W,ang:ang}}
+  function faShape(m){
+    var sc={oval:0,redondo:0,quadrado:0,alongado:0,coracao:0,diamante:0};
+    sc.alongado=(m.r-1.40)*6;
+    sc.redondo=(1.32-m.r)*5+(m.jaw<.84?.15:0)+(m.ang>128?.25:-.1);
+    sc.quadrado=(m.jaw-.80)*7+(1.40-m.r)*2+(m.ang>128?.25:0);
+    sc.coracao=(m.fore-m.jaw-.02)*8+(m.ang<122?.35:0);
+    sc.diamante=(.84-m.fore)*5+(.80-m.jaw)*3;
+    sc.oval=.55-Math.abs(m.r-1.38)*2.2-Math.abs(m.jaw-.76)*2-Math.abs(m.fore-m.jaw-.03)*1.5;
+    var k=Object.keys(sc).sort(function(x,y){return sc[y]-sc[x]});
+    return {id:k[0],second:k[1],sc:sc}}
+  function faDetect(fa,cv){
+    var o=function(sz,th){return new fa.TinyFaceDetectorOptions({inputSize:sz,scoreThreshold:th})};
+    return fa.detectSingleFace(cv,o(416,.5)).withFaceLandmarks(true).then(function(r){
+      return r||fa.detectSingleFace(cv,o(512,.3)).withFaceLandmarks(true)})}
+  function faResult(cv,r,res){
+    var m=document.querySelector('.modal.fa');if(!m)return;
+    var f=FACES.filter(function(x){return x.id===res.id})[0],n=P.filter(function(p){return p.rosto.indexOf(res.id)>=0}).length;
+    m.innerHTML='<div class="fares"><div style="text-align:right;margin:-8px -6px 0 0"><button type="button" class="x" data-close aria-label="Fechar">×</button></div>'+
+    '<div class="faph"><canvas id="facv" width="360" height="360"></canvas></div><div class="fak">Seu rosto é</div><h3>'+esc(f.nome)+'</h3>'+
+    '<p class="sub">'+esc(f.dica)+(n?' Separamos '+n+' modelos para você.':'')+'</p>'+
+    '<div class="fabtns"><button type="button" class="btn p" data-fause="'+res.id+'">Ver os modelos para o meu rosto</button><button type="button" class="btn o" data-fanew>Tentar outra foto</button></div>'+
+    '<button type="button" class="fan" data-fawrong>Não parece com você? Escolher o formato sozinho</button></div>';
+    var c=$('facv').getContext('2d'),b=r.detection.box,sz=Math.max(b.width,b.height)*1.9,cx=b.x+b.width/2,cy=b.y+b.height/2;
+    c.fillStyle='#fff';c.fillRect(0,0,360,360);c.drawImage(cv,cx-sz/2,cy-sz/2,sz,sz,0,0,360,360);
+    var k=360/sz,pts=r.landmarks.positions.map(function(p){return {x:(p.x-(cx-sz/2))*k,y:(p.y-(cy-sz/2))*k}});
+    c.lineJoin=c.lineCap='round';c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=7;
+    function line(a,z){c.beginPath();for(var i=a;i<=z;i++){i==a?c.moveTo(pts[i].x,pts[i].y):c.lineTo(pts[i].x,pts[i].y)}c.stroke()}
+    line(0,16);c.strokeStyle='#b4528a';c.lineWidth=3.5;line(0,16)}
+  function faRun(file){
     if(!file)return;
-    tryBusy();var t0=Date.now();
-    var done=function(src,w,h){
-      var W=720,H=960,cv=document.createElement('canvas');cv.width=W;cv.height=H;var c=cv.getContext('2d');
-      var sc=Math.max(W/w,H/h),dw=w*sc,dh=h*sc;c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh);
-      TRY.cv=cv;TRY.x=50;TRY.y=44;TRY.w=62;TRY.r=0;
-      var fin=function(){setTimeout(tryon,Math.max(0,1000-(Date.now()-t0)))};
-      if('FaceDetector' in window){try{new FaceDetector({fastMode:true,maxDetectedFaces:1}).detect(cv).then(function(fs){
-        var f=fs&&fs[0],eyes=f&&(f.landmarks||[]).filter(function(l){return l.type==='eye'&&l.locations&&l.locations.length});
-        if(eyes&&eyes.length>=2){var a=eyes[0].locations[0],b=eyes[1].locations[0];if(a.x>b.x){var t=a;a=b;b=t}
-          var d=Math.hypot(b.x-a.x,b.y-a.y);TRY.x=((a.x+b.x)/2)/W*100;TRY.y=((a.y+b.y)/2)/H*100;TRY.w=Math.max(25,Math.min(110,(2.3*d/.82)/W*100));TRY.r=Math.round(Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI)}
-        fin()},fin);return}catch(_){}}
-      fin()};
-    if(window.createImageBitmap){createImageBitmap(file,{imageOrientation:'from-image'}).then(function(bm){done(bm,bm.width,bm.height)},fallback)}else fallback();
-    function fallback(){var u=URL.createObjectURL(file),im=new Image();im.onload=function(){done(im,im.naturalWidth,im.naturalHeight);URL.revokeObjectURL(u)};im.onerror=function(){toast('Não consegui abrir essa foto');tryon()};im.src=u}}
-  function trySet(){var g=$('tgl');if(!g)return;g.style.left=TRY.x+'%';g.style.top=TRY.y+'%';g.style.width=TRY.w+'%';g.style.transform='translate(-50%,-50%) rotate('+TRY.r+'deg)'}
-  document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='tfile'||t.id==='tfile2'))loadSelfie(t.files&&t.files[0])});
-  document.addEventListener('input',function(e){var t=e.target;if(t.id==='tsz'){TRY.w=+t.value;trySet()}else if(t.id==='trt'){TRY.r=+t.value;trySet()}});
-  var Td=null;
-  document.addEventListener('pointerdown',function(e){var g=e.target.closest&&e.target.closest('#tgl');if(!g)return;e.preventDefault();var r=$('ts').getBoundingClientRect();Td={id:e.pointerId,sx:e.clientX,sy:e.clientY,x:TRY.x,y:TRY.y,w:r.width,h:r.height,g:g};g.classList.add('nb');try{g.setPointerCapture(e.pointerId)}catch(_){}});
-  document.addEventListener('pointermove',function(e){if(!Td||e.pointerId!==Td.id)return;TRY.x=Math.max(0,Math.min(100,Td.x+(e.clientX-Td.sx)/Td.w*100));TRY.y=Math.max(0,Math.min(100,Td.y+(e.clientY-Td.sy)/Td.h*100));trySet()});
-  function tEnd(e){if(Td&&e.pointerId===Td.id){Td=null}}
-  document.addEventListener('pointerup',tEnd);document.addEventListener('pointercancel',tEnd);
-  document.addEventListener('wheel',function(e){var g=e.target.closest&&e.target.closest('#ts');if(!g||!$('tgl'))return;e.preventDefault();TRY.w=Math.max(25,Math.min(110,TRY.w-e.deltaY*.05));var s=$('tsz');if(s)s.value=TRY.w;trySet()},{passive:false});
+    faBusy('Carregando a análise');var t0=Date.now();
+    var fail=function(e){faErr('Não consegui analisar','Confira sua internet e tente de novo, de preferência com a foto de frente e bem iluminada.')};
+    var prep=window.createImageBitmap?createImageBitmap(file,{imageOrientation:'from-image'}):new Promise(function(ok,no){var u=URL.createObjectURL(file),im=new Image();im.onload=function(){URL.revokeObjectURL(u);ok(im)};im.onerror=no;im.src=u});
+    Promise.all([prep,faLoad()]).then(function(v){
+      var src=v[0],fa=v[1],w=src.width||src.naturalWidth,h=src.height||src.naturalHeight,s=Math.min(1,900/Math.max(w,h));
+      var cv=document.createElement('canvas');cv.width=Math.round(w*s);cv.height=Math.round(h*s);cv.getContext('2d').drawImage(src,0,0,cv.width,cv.height);
+      faMsg('Procurando seu rosto');
+      return faDetect(fa,cv).then(function(r){
+        faMsg('Medindo as proporções');
+        var wait=Math.max(0,1500-(Date.now()-t0));
+        return new Promise(function(ok){setTimeout(ok,wait)}).then(function(){
+          if(!r){faErr('Não achei um rosto','Tente de novo com o rosto de frente, bem iluminado, sem óculos e sem boné.');return}
+          faResult(cv,r,faShape(faMeasure(r.landmarks.positions)))})})
+    }).catch(fail)}
+  document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='fafile'||t.id==='fafile2')){var f=t.files&&t.files[0];t.value='';faRun(f)}});
 
   /* texto maior (acessibilidade) */
   var ZL=[1,1.12,1.25],ZN=['Texto normal','Texto grande','Texto muito grande'],zi=0;
