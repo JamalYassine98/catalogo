@@ -200,7 +200,16 @@ html.lock,html.lock body{overflow:hidden!important}
 .tgl.nb::after{display:none}
 .tgl svg,.tgl img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
 .tgl svg ellipse{display:none}.tgl svg rect{fill:rgba(255,255,255,.14)}.tgl.sol svg rect{fill:rgba(25,22,28,.62)}
-.tgl .pf{background:transparent;mix-blend-mode:multiply;animation:none}
+.tgl .pf{background:transparent;animation:none}.tgl:has(.pf){mix-blend-mode:multiply;filter:none}
+.tload{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:var(--mu);font-size:14px;padding:20px}
+.tload b{color:var(--tx);font:600 22px Fraunces,Georgia,serif}
+.tring{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center;color:var(--ac)}
+.tring i{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 25%,var(--ac) 100%);-webkit-mask:radial-gradient(circle,transparent 0 38px,#000 39px 45px,transparent 46px);mask:radial-gradient(circle,transparent 0 38px,#000 39px 45px,transparent 46px);animation:tspin 1s linear infinite}
+.tring svg{animation:tbeat 1.4s ease-in-out infinite}
+.tload span{animation:tbeat 1.4s .2s ease-in-out infinite}
+@keyframes tspin{to{transform:rotate(360deg)}}@keyframes tbeat{50%{opacity:.45;transform:scale(.94)}}
+@media (prefers-reduced-motion:reduce){.tring i,.tring svg,.tload span{animation:none}}
+
 .tgl::before{display:none}
 .tctl{display:grid;gap:10px;margin-top:14px}
 .tctl label{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:center;font-size:13px;color:var(--mu);font-weight:600}
@@ -315,6 +324,7 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .sec>h2{font-size:clamp(30px,3.6vw,44px);text-align:center}
 .sec>p{color:var(--mu);text-align:center;margin:10px auto 0;max-width:560px}
 .faces{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-top:22px}
+@media (min-width:900px){.faces{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .face{background:var(--pn);border:1px solid var(--ln);border-radius:22px;padding:18px 14px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;transition:border-color .2s,transform .2s}
 .face:hover,.face[aria-pressed="true"]{border-color:var(--ac)}
 @media (hover:hover){.face:hover{transform:translateY(-2px)}}
@@ -354,7 +364,7 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .whole{background:var(--hero);border:1px solid var(--ln);border-radius:26px;padding:36px;display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .whole h2{text-align:left;font-size:clamp(26px,3vw,38px);max-width:620px}
 .whole p{color:var(--mu);margin:8px 0 0;max-width:560px}
-@media (min-width:561px){.whole>.btn{margin-left:auto}}
+@media (min-width:561px){.whole>.btn{margin-left:auto;margin-right:auto;flex-direction:row-reverse;gap:12px;padding-inline:26px}}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:22px}
 .step{display:flex;gap:14px}
 .step i{flex:0 0 44px;height:44px;border-radius:999px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-style:normal}
@@ -604,7 +614,7 @@ footer b{color:var(--tx)}
 'Toque para ampliar':'Toca para ampliar','Ponte':'Puente','Haste':'Varilla','Cor':'Color','Cores':'Colores','Fechar':'Cerrar','Menos':'Menos','Mais':'Más','Remover':'Quitar',
 'Aceita lentes de grau':'Admite lentes con receta','Sem compromisso, antes de levar.':'Sin compromiso, antes de llevarlo.','Reservada por 7 dias':'Reservado por 7 días',
 'Separamos a peça para você.':'Separamos la pieza para ti.','Quando estiver pronto.':'Cuando esté listo.','Combina também':'También combina',
-'Provar no rosto':'Probar en el rostro','Adicionar à reserva':'Agregar a la reserva','Avise-me':'Avísame','Falar com vendedor no WhatsApp':'Hablar con un vendedor por WhatsApp','Falar com vendedor':'Hablar con un vendedor',
+'Provar no rosto':'Probar en el rostro','Adicionar à reserva':'Agregar a la reserva','Avise-me':'Avísame','Falar com vendedor no WhatsApp':'Hablar con un vendedor por WhatsApp','Falar com vendedor':'Hablar con un vendedor','Preparando sua foto…':'Preparando tu foto…','Procurando seus olhos':'Buscando tus ojos',
 'Acetato leve':'Acetato liviano','Preto':'Negro','Dourado':'Dorado','Prata':'Plata','Marrom':'Marrón','Tartaruga':'Carey',
 'Sua reserva':'Tu reserva','Seus dados':'Tus datos','(para separar as peças)':'(para separar las piezas)','Seu nome':'Tu nombre','Seu WhatsApp':'Tu WhatsApp',
 'Reservar no WhatsApp':'Reservar por WhatsApp','As peças ficam separadas por 7 dias. Você prova e retira na loja.':'Las piezas quedan separadas por 7 días. Pruebas y retiras en la tienda.',
@@ -962,9 +972,9 @@ footer b{color:var(--tx)}
   var tp=document.querySelector('.top');addEventListener('scroll',function(){tp.classList.toggle('sc',scrollY>10)},{passive:true});
 
   /* provador por selfie */
-  var TRY={cv:null,x:50,y:44,w:62,r:0,ref:'SL2220',auto:false};
+  var TRY={cv:null,x:50,y:44,w:62,r:0,ref:'SL2305',auto:false};
   function tryHtml(){
-    var p=find(TRY.ref),has=!!TRY.cv;
+    var p=find(TRY.ref);if(!p){p=P[0];TRY.ref=p.ref}var has=!!TRY.cv;
     return '<div class="modal try" role="dialog" aria-modal="true" aria-label="Provador"><button class="x" data-close aria-label="Fechar" style="float:right">×</button><h2>Provador</h2><p class="sub">Veja como o óculos fica no seu rosto.</p>'+
     '<div class="tstage" id="ts">'+(has?'<div id="tcv"></div><div class="tgl'+(p.tipo==='solar'?' sol':'')+'" id="tgl" style="left:'+TRY.x+'%;top:'+TRY.y+'%;width:'+TRY.w+'%;transform:translate(-50%,-50%) rotate('+TRY.r+'deg)">'+vis(p,6)+'</div>'
       :'<div class="tempty"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ac)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 6" aria-hidden="true"><path d="M20 10h-6a4 4 0 0 0-4 4v6M44 10h6a4 4 0 0 1 4 4v6M20 54h-6a4 4 0 0 1-4-4v-6M44 54h6a4 4 0 0 0 4-4v-6" stroke-dasharray="none"/><ellipse cx="32" cy="31" rx="11" ry="14"/></svg><b style="color:var(--tx);font:600 22px Fraunces,Georgia,serif">Como fica em você?</b><span style="font-size:14px">De frente, com o rosto bem iluminado e sem óculos.</span><label class="tb p"><span class="tt">Tirar selfie<small>Abre a câmera frontal</small></span><i class="ti">'+CAMI+'</i><input type="file" accept="image/*" capture="user" id="tfile"></label><label class="tb o"><span class="tt">Escolher da galeria<small>Use uma foto que você já tem</small></span><i class="ti"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.6" cy="9.6" r="1.7"/><path d="M21 16l-4.6-4.6a1.5 1.5 0 0 0-2.1 0L6 19.5"/></svg></i><input type="file" accept="image/*" id="tfile2"></label></div>')+'</div>'+
@@ -977,13 +987,15 @@ footer b{color:var(--tx)}
   function twaHref(p){return 'https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.tr('Olá! Provei o '+p.nome+' ('+p.ref+') no provador do catálogo e quero saber mais.'))}
   function tryon(ref){if(ref)TRY.ref=ref;layer(tryHtml(),'center');mountCv()}
   function mountCv(){var h=$('tcv');if(h&&TRY.cv){h.appendChild(TRY.cv)}}
+  function tryBusy(){var ts=$('ts');if(!ts)return;ts.innerHTML='<div class="tload" role="status" aria-live="polite"><div class="tring"><i></i><svg viewBox="0 0 120 50" width="54" height="23" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="30" cy="25" r="18"/><circle cx="90" cy="25" r="18"/><path d="M48 22Q60 15 72 22M12 20L3 15M108 20L117 15"/></svg></div><b>Preparando sua foto…</b><span>Procurando seus olhos</span></div>'}
   function loadSelfie(file){
     if(!file)return;
+    tryBusy();var t0=Date.now();
     var done=function(src,w,h){
       var W=720,H=960,cv=document.createElement('canvas');cv.width=W;cv.height=H;var c=cv.getContext('2d');
       var sc=Math.max(W/w,H/h),dw=w*sc,dh=h*sc;c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh);
       TRY.cv=cv;TRY.x=50;TRY.y=44;TRY.w=62;TRY.r=0;
-      var fin=function(){tryon()};
+      var fin=function(){setTimeout(tryon,Math.max(0,1000-(Date.now()-t0)))};
       if('FaceDetector' in window){try{new FaceDetector({fastMode:true,maxDetectedFaces:1}).detect(cv).then(function(fs){
         var f=fs&&fs[0],eyes=f&&(f.landmarks||[]).filter(function(l){return l.type==='eye'&&l.locations&&l.locations.length});
         if(eyes&&eyes.length>=2){var a=eyes[0].locations[0],b=eyes[1].locations[0];if(a.x>b.x){var t=a;a=b;b=t}
@@ -991,7 +1003,7 @@ footer b{color:var(--tx)}
         fin()},fin);return}catch(_){}}
       fin()};
     if(window.createImageBitmap){createImageBitmap(file,{imageOrientation:'from-image'}).then(function(bm){done(bm,bm.width,bm.height)},fallback)}else fallback();
-    function fallback(){var u=URL.createObjectURL(file),im=new Image();im.onload=function(){done(im,im.naturalWidth,im.naturalHeight);URL.revokeObjectURL(u)};im.onerror=function(){toast('Não consegui abrir essa foto')};im.src=u}}
+    function fallback(){var u=URL.createObjectURL(file),im=new Image();im.onload=function(){done(im,im.naturalWidth,im.naturalHeight);URL.revokeObjectURL(u)};im.onerror=function(){toast('Não consegui abrir essa foto');tryon()};im.src=u}}
   function trySet(){var g=$('tgl');if(!g)return;g.style.left=TRY.x+'%';g.style.top=TRY.y+'%';g.style.width=TRY.w+'%';g.style.transform='translate(-50%,-50%) rotate('+TRY.r+'deg)'}
   document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='tfile'||t.id==='tfile2'))loadSelfie(t.files&&t.files[0])});
   document.addEventListener('input',function(e){var t=e.target;if(t.id==='tsz'){TRY.w=+t.value;trySet()}else if(t.id==='trt'){TRY.r=+t.value;trySet()}});
