@@ -286,6 +286,7 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .lgb b{font-size:13px;font-weight:800;letter-spacing:.04em}
 .lgrp{display:flex;flex-direction:column;gap:8px;margin:14px 0}.lgrp>b{font-size:14px;color:var(--mu)}.lgrp>div{display:flex;flex-wrap:wrap;gap:8px}
 .pr s{font-weight:500;font-size:.62em;color:var(--mu);margin-right:6px}.ofx{position:absolute;right:10px;bottom:10px;z-index:3;background:#d6232a;color:#fff;font:800 12px Inter,system-ui,sans-serif;padding:5px 9px;border-radius:999px;letter-spacing:.04em;box-shadow:0 6px 14px rgba(214,35,42,.35)}
+#admb{position:fixed;left:12px;bottom:12px;z-index:250;max-width:min(380px,calc(100% - 96px));background:#111;color:#fff;border-radius:16px;padding:10px 14px;font:500 12.5px/1.35 Inter,system-ui,sans-serif;display:grid;gap:2px;box-shadow:0 10px 30px rgba(0,0,0,.35)}#admb b{color:#ffd23f;font-size:12px;letter-spacing:.06em;text-transform:uppercase}#admb a{color:#ffd23f;font-weight:700;text-decoration:underline;justify-self:start}
 #manut{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:var(--bg);color:var(--tx)}#manut h2{font:600 clamp(28px,5vw,40px)/1.15 Fraunces,Georgia,serif;margin:6px 0 0}#manut p{color:var(--mu);max-width:420px;margin:0;line-height:1.55}#manut .mlogo{width:min(220px,60vw);aspect-ratio:2160/1356;background:var(--logo) center/contain no-repeat}#manut .btn{margin-top:8px;min-height:52px;padding-inline:26px;gap:10px}
 .stage>video.pv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:block;background:#fff}.stage.hasv .seal{filter:brightness(0) invert(1);opacity:.92}.stage.hasv>img.pf,.stage.hasv>.shine{display:none}.stage.hasv::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(0deg,rgba(255,255,255,.92),transparent);z-index:2;pointer-events:none}
 .stage>img.pf{position:relative;z-index:1;width:86%;height:auto;max-height:90%;object-fit:contain}
@@ -540,6 +541,7 @@ footer b{color:var(--tx)}
   var lang=(pl==='pt'||pl==='es')?pl:autoLang,cur=(pc==='BRL'||pc==='PYG')?pc:autoCur;
   var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')};
   var D={
+'Modo administrador':'Modo administrador','O site está desligado para os clientes. Só você vê o catálogo.':'El sitio está apagado para los clientes. Solo tú ves el catálogo.','Abrir painel':'Abrir panel',
 'Estamos atualizando o catálogo':'Estamos actualizando el catálogo',
 'Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp.':'¡Volvemos pronto! Mientras tanto, habla con nosotros por WhatsApp.',
 'Falar com a loja':'Hablar con la tienda',
@@ -1130,12 +1132,21 @@ footer b{color:var(--tx)}
   function fbd(d){var o={},f=d.fields||{};for(var k in f)o[k]=fbv(f[k]);return o}
   function fbg(path){return fetch('https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/'+path+(path.indexOf('?')<0?'?':'&')+'key='+FB.k).then(function(r){if(!r.ok)throw new Error('fb');return r.json()})}
   var CFG={ativo:true};try{var _c=JSON.parse(localStorage.getItem('lf_cfg')||'null');if(_c)CFG=_c}catch(_){}
+  var ADM=null;
+  function isAdm(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}
+    if(!rt||/[?&]cliente/.test(location.search))return Promise.resolve(false);
+    return fetch('https://securetoken.googleapis.com/v1/token?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)}).then(function(r){return r.json()}).then(function(j){return !!j.id_token}).catch(function(){return false})}
   function manut(){
-    var m=document.getElementById('manut');
-    if(CFG.ativo!==false){if(m){m.remove();document.documentElement.style.overflow=''}return}
-    if(!m){m=document.createElement('div');m.id='manut';m.setAttribute('role','alertdialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
-    m.innerHTML='<div class="mlogo" aria-hidden="true"></div><h2>Estamos atualizando o catálogo</h2><p>'+esc(CFG.aviso||'Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp.')+'</p><a class="btn w ic" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'"><span>Falar com a loja</span>'+WAI+'</a>';
-    document.documentElement.style.overflow='hidden'}
+    var m=document.getElementById('manut'),ab=document.getElementById('admb');
+    if(CFG.ativo!==false){if(m)m.remove();if(ab)ab.remove();document.documentElement.style.overflow='';return}
+    (ADM||(ADM=isAdm())).then(function(adm){
+      if(CFG.ativo!==false)return;m=document.getElementById('manut');ab=document.getElementById('admb');
+      if(adm){if(m)m.remove();document.documentElement.style.overflow='';
+        if(!ab){ab=document.createElement('div');ab.id='admb';document.body.appendChild(ab)}
+        ab.innerHTML='<b>Modo administrador</b><span>O site está desligado para os clientes. Só você vê o catálogo.</span><a href="admin.html">Abrir painel</a>';return}
+      if(!m){m=document.createElement('div');m.id='manut';m.setAttribute('role','alertdialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
+      m.innerHTML='<div class="mlogo" aria-hidden="true"></div><h2>Estamos atualizando o catálogo</h2><p>'+esc(CFG.aviso||'Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp.')+'</p><a class="btn w ic" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'"><span>Falar com a loja</span>'+WAI+'</a>';
+      document.documentElement.style.overflow='hidden'})}
   function setHero(ref){
     var p=ref&&find(ref),st2=$('stage');if(!p||!st2)return;
     st2.setAttribute('data-open',p.ref);st2.setAttribute('aria-label','Ver '+p.nome+', escolha da semana');
