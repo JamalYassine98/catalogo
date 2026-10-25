@@ -502,8 +502,8 @@ footer b{color:var(--tx)}
   </section>
 
   <footer>
-    <div><div class="motto">Tudo em Óculos</div><div style="margin-top:12px"><b>La Fouch</b><br>[ENDEREÇO] · [CIDADE]<br>[HORÁRIO DE ATENDIMENTO]</div></div>
-    <div><b>Contato</b><br>WhatsApp [SEU NÚMERO]<br>Instagram [@LOJA]</div>
+    <div><div class="motto">Tudo em Óculos</div><div style="margin-top:12px"><b>La Fouch</b><br>Galeria Jebai Center, 3º piso, nº 2242<br>Ciudad del Este<br>Segunda a sábado, das 7h30 às 15h<br><a href="https://www.google.com/maps/search/?api=1&query=Galeria+Jebai+Center+Ciudad+del+Este" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">Ver no mapa</a></div></div>
+    <div><b>Contato</b><br>WhatsApp <a href="https://wa.me/595983642241" target="_blank" rel="noopener" style="color:inherit;font-weight:700">+595 983 642 241</a></div>
     <div>Protótipo de design com modelos e preços de exemplo. Nenhum pedido é enviado daqui.</div>
   </footer>
 </div>
@@ -831,7 +831,7 @@ footer b{color:var(--tx)}
   (function(){var it=$('intro');if(!it)return;var seen=false;try{seen=sessionStorage.getItem('lf_intro')==='1';sessionStorage.setItem('lf_intro','1')}catch(_){}
     if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){it.remove();return}
     setTimeout(function(){it.remove()},2600)})();
-  var NUM_LOJA=''; /* [SEU NÚMERO] só dígitos com DDI, ex.: 595981123456 */
+  var NUM_LOJA='595983642241';
   var waB=document.querySelector('a.wa');if(waB)waB.href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent('Olá! Vim pelo catálogo da La Fouch e quero falar com a loja.');
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="https://wa.me/"]');if(a&&!NUM_LOJA){e.preventDefault();toast('O WhatsApp da loja ainda não foi configurado')}},true);
   function setLoj(){$('lojista').href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(mensagem('lojista'))}
