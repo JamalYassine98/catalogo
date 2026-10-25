@@ -25,6 +25,9 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 <section class="card" id="login"><h2>Entrar</h2><div style="display:grid;gap:12px"><label>E-mail<input id="em" type="email" autocomplete="username"></label><label>Senha<input id="pw" type="password" autocomplete="current-password"></label><button class="btn" id="go">Entrar</button></div></section>
 
 <div id="app" hidden style="display:grid;gap:16px">
+ <section class="card"><h2>Ver o catálogo</h2><p style="color:var(--mu);font-size:14px;margin:0 0 12px">Veja o site do jeito que está agora, com produtos, ofertas e vídeo, mesmo com ele desligado.</p>
+  <div class="row"><button class="btn" id="pv">Ver aqui no painel</button><a class="btn o" href="index.html" target="_blank" style="display:grid;place-items:center;text-decoration:none">Abrir em outra aba</a></div>
+  <div id="pvw" hidden style="margin-top:14px"><div class="row" style="margin-bottom:10px"><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn o" id="pvx">Fechar prévia</button></div><iframe id="pvf" title="Prévia do site" style="width:100%;height:78vh;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></div></section>
  <section class="card"><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
   <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label></div></section>
  <section class="card"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
@@ -122,6 +125,9 @@ $('del').onclick=function(){if(!S.cur||!confirm('Excluir '+S.cur.nome+'?'))retur
   api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){$('ed').hidden=true;$('app').hidden=false;say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})};
 $('seedb').onclick=function(){if(!confirm('Enviar os '+SEED.length+' produtos do site atual?'))return;$('seedb').disabled=true;
   SEED.reduce(function(a,p){return a.then(function(){return put('produtos/'+p.ref,p)})},put('config/site',{ativo:true,aviso:'',video:'',destaque:'SL2210'})).then(load).then(function(){say('Catálogo enviado.')}).catch(function(){say('Erro ao enviar.',1)}).then(function(){$('seedb').disabled=false})};
+$('pv').onclick=function(){$('pvf').src='index.html?p='+Date.now();$('pvw').hidden=false;$('pvw').scrollIntoView({behavior:'smooth'})};
+$('pvc').onclick=function(){$('pvf').src='index.html?cliente=1&p='+Date.now()};
+$('pvx').onclick=function(){$('pvf').src='about:blank';$('pvw').hidden=true};
 $('go').onclick=signIn;$('pw').onkeydown=function(e){if(e.key==='Enter')signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
 refresh().then(function(ok){if(ok)start()});
