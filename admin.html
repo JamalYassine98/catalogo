@@ -21,6 +21,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 .ctb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.ctb .btn{min-height:42px;font-size:14px}
 @media (min-width:1000px){html,body{height:100%;overflow:hidden}body{padding-bottom:12px}main{max-width:none;height:100%;display:flex;flex-direction:column;gap:10px;padding-inline:4px}#work{flex:1;min-height:0;display:grid;grid-template-columns:minmax(400px,.8fr) minmax(0,1.2fr);grid-template-rows:minmax(0,1fr);gap:16px}#app,#ed{order:1}#cat{order:2;height:100%;display:flex;flex-direction:column}.tabs{display:none!important}#cat iframe{flex:1;height:auto!important;min-height:0!important;width:100%}#app,#ed{height:100%;overflow:auto;align-content:start}.tab{display:none}.tabs{padding:0;position:static}}
 .btn.sm{min-height:40px;font-size:13px;padding:0 14px}
+.card.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:color-mix(in srgb,var(--ac) 9%,var(--pn))}.card.hd h1{margin:0;font-size:24px}.card.hd .btn{flex:none}
 [hidden]{display:none!important}
 .tb{display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body><main>
@@ -32,7 +33,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 <nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="sw2" id="tg2" style="margin-left:auto" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
 <div id="work"><section id="cat" hidden><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
 <div id="app" hidden style="display:grid;gap:16px">
- <div class="tb"><h1>Painel La Fouch</h1><button class="btn o" id="out">Sair</button></div>
+ <section class="card hd"><h1>Painel La Fouch</h1><button class="btn o sm" id="out">Sair</button></section>
  <section class="card"><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
   <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button></div></section>
  <section class="card"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
