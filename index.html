@@ -528,6 +528,7 @@ footer b{color:var(--tx)}
 <div id="layer"></div>
 
 <script>
+document.addEventListener('click',function(e){var l=e.target.closest&&e.target.closest('a.logo');if(!l)return;e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});try{history.replaceState(null,'',location.pathname+location.search)}catch(x){}});
 /* idioma e moeda: automático pelo celular (pt-BR → português e reais; es-PY → espanhol e guaranis); botão PT/ES no topo para escolher */
 (function(){
   var RATE=1400; /* guaranis por 1 real (referência aproximada, ajuste aqui) */
