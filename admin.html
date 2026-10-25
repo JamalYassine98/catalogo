@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>Painel La Fouch</title>
+<style>
+:root{--bg:#fbf6f9;--pn:#fff;--tx:#2a1f27;--mu:#7a6772;--ln:#ead9e2;--ac:#8a3068;--ok:#0e8a43;--bad:#d6232a}
+@media (prefers-color-scheme:dark){:root{--bg:#171116;--pn:#231a21;--tx:#f5eaf0;--mu:#b6a2ad;--ln:#3a2c35;--ac:#e08abf;--ok:#47c77f;--bad:#ff6b6b}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 Inter,system-ui,sans-serif;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+main{max-width:760px;margin:0 auto;display:grid;gap:16px}h1{font:600 28px Georgia,serif;margin:6px 0 0}h2{font:600 20px Georgia,serif;margin:0 0 10px}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:20px;padding:18px}
+label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px;min-height:46px;width:100%}
+.btn{font:700 15px Inter,system-ui,sans-serif;border:0;border-radius:14px;min-height:48px;padding:0 18px;cursor:pointer;background:var(--ac);color:#fff}.btn.o{background:transparent;color:var(--ac);border:1.5px solid var(--ac)}.btn.d{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}.btn:disabled{opacity:.5}
+.row{display:grid;gap:12px;grid-template-columns:1fr 1fr}@media(max-width:520px){.row{grid-template-columns:1fr}}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:14px}.tg{position:relative;width:78px;height:42px;border-radius:999px;background:var(--bad);border:0;cursor:pointer;flex:none;transition:.2s}.tg::after{content:"";position:absolute;top:4px;left:4px;width:34px;height:34px;border-radius:50%;background:#fff;transition:.2s}.tg.on{background:var(--ok)}.tg.on::after{left:40px}
+.st{font:800 18px Inter,sans-serif}.st.on{color:var(--ok)}.st.off{color:var(--bad)}
+.pl{display:grid;gap:10px}.pi{display:flex;gap:12px;align-items:center;background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:10px;cursor:pointer}.pi img{width:84px;height:56px;object-fit:contain;background:#fff;border-radius:10px;flex:none}.pi b{display:block;font-size:15px}.pi small{color:var(--mu)}.pi .r{margin-left:auto;text-align:right;font-weight:800;color:var(--ok);white-space:nowrap}.pi.h{opacity:.5}
+.tags{display:flex;gap:6px;flex-wrap:wrap}.tags span{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac)}.tags .x{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.chk{display:flex;gap:8px;flex-wrap:wrap}.chk label{flex-direction:row;align-items:center;gap:6px;font-size:14px;color:var(--tx);font-weight:500;background:var(--bg);border:1px solid var(--ln);border-radius:999px;padding:8px 12px}.chk input{width:auto;min-height:0}
+.msg{font-size:14px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ok) 14%,transparent)}.msg.e{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.ph{width:100%;height:180px;object-fit:contain;background:#fff;border-radius:14px;border:1px solid var(--ln)}
+[hidden]{display:none!important}
+.tb{display:flex;justify-content:space-between;align-items:center;gap:10px}
+</style></head><body><main>
+<div class="tb"><h1>Painel La Fouch</h1><button class="btn o" id="out" hidden>Sair</button></div>
+<div id="msg" class="msg" hidden></div>
+
+<section class="card" id="login"><h2>Entrar</h2><div style="display:grid;gap:12px"><label>E-mail<input id="em" type="email" autocomplete="username"></label><label>Senha<input id="pw" type="password" autocomplete="current-password"></label><button class="btn" id="go">Entrar</button></div></section>
+
+<div id="app" hidden style="display:grid;gap:16px">
+ <section class="card"><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
+  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label></div></section>
+ <section class="card"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
+ <section class="card"><div class="tb"><h2 style="margin:0">Catálogo</h2><button class="btn" id="new">+ Novo produto</button></div><p style="color:var(--mu);font-size:14px;margin:8px 0 12px" id="cnt"></p><div class="pl" id="pl"></div><div id="seed" hidden style="margin-top:12px"><button class="btn o" id="seedb">Enviar o catálogo atual do site</button></div></section>
+</div>
+
+<section class="card" id="ed" hidden><h2 id="edt">Produto</h2><div style="display:grid;gap:12px">
+ <img class="ph" id="fp" alt="" hidden><label>Foto (fundo branco, não corte o óculos)<input type="file" id="ff" accept="image/*"></label>
+ <div class="row"><label>Código (ref)<input id="f_ref" placeholder="SL2310"></label><label>Tipo<select id="f_tipo"><option value="solar">Solar</option><option value="armacao">Armação</option><option value="grau">Óculos de grau</option></select></label></div>
+ <label>Nome<input id="f_nome"></label>
+ <div class="row"><label>Preço em guaranis (Gs.)<input id="f_n" inputmode="numeric"></label><label>Preço antigo (oferta, opcional)<input id="f_de" inputmode="numeric" placeholder="vazio = sem oferta"></label></div>
+ <small id="hint" style="color:var(--mu)"></small>
+ <div class="row"><label>Aviso<select id="f_av"><option value="">Nenhum</option><option>Chegou esta semana</option><option>Última unidade</option><option>Últimas 2 unidades</option><option>Últimas 3 unidades</option><option>Esgotado</option></select></label><label>Etiqueta (ex.: NOVO, METAL, SOLAR)<input id="f_tag"></label></div>
+ <div class="row"><label>Material<input id="f_mat"></label><label>Cor principal<input id="f_cor" type="color" style="padding:4px"></label></div>
+ <div class="row" style="grid-template-columns:repeat(3,1fr)"><label>Lente (mm)<input id="m0" inputmode="numeric"></label><label>Ponte (mm)<input id="m1" inputmode="numeric"></label><label>Haste (mm)<input id="m2" inputmode="numeric"></label></div>
+ <div><div style="font-size:13px;color:var(--mu);font-weight:600;margin-bottom:6px">Combina com rosto</div><div class="chk" id="f_rosto"></div></div>
+ <div class="row"><label>Mais pedidos (0 = fora, 1 a 3)<select id="f_rank"><option value="0">Fora</option><option value="1">Nº 1</option><option value="2">Nº 2</option><option value="3">Nº 3</option></select></label><label>Aparece no site?<select id="f_ocu"><option value="0">Sim</option><option value="1">Não (escondido)</option></select></label></div>
+ <div class="row"><button class="btn" id="sv">Salvar</button><button class="btn o" id="cc">Cancelar</button></div>
+ <button class="btn d" id="del" hidden>Excluir produto</button></div></section>
+</main>
+<script>
+(function(){
+var FB={p:'lafouch-2f6bd',k:'AIzaSyAW-54tS1A_VL2EC9OJWFsw1EtboptpEvc'};
+var DB='https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/';
+var SEED=[{"ref":"SL2210","nome":"Solar hexagonal preto","tipo":"solar","n":130000,"cor":"#2a2d33","raio":26,"aviso":"Chegou esta semana","tag":"NOVO","rosto":["oval","quadrado","alongado"],"mat":"Acetato","med":[54,17,145],"cores":["#2a2d33"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":1},{"ref":"AC1050","nome":"Armação acetato roxa","tipo":"armacao","n":118000,"cor":"#4a2a55","raio":14,"aviso":"Chegou esta semana","tag":"ACETATO","rosto":["redondo","oval","diamante"],"mat":"Acetato","med":[50,21,145],"cores":["#4a2a55"],"rank":3,"de":0,"oculto":false,"fv":0,"ord":2},{"ref":"AC1055","nome":"Armação redonda rosa","tipo":"armacao","n":105000,"cor":"#e3a1ab","raio":40,"aviso":"","tag":"ACETATO","rosto":["quadrado","alongado","diamante"],"mat":"Acetato","med":[47,22,140],"cores":["#e3a1ab"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":3},{"ref":"GR3340","nome":"Óculos de grau quadrado preto","tipo":"grau","n":98000,"cor":"#1d1d1f","raio":8,"aviso":"","tag":"GRAU","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[50,22,145],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":4},{"ref":"SL2250","nome":"Solar quadrado dourado","tipo":"solar","n":148000,"cor":"#b08a4a","raio":10,"aviso":"","tag":"METAL","rosto":["oval","coracao","alongado"],"mat":"Metal","med":[54,18,145],"cores":["#b08a4a"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":5},{"ref":"SL2255","nome":"Solar esportivo polarizado","tipo":"solar","n":135000,"cor":"#2a2d33","raio":6,"aviso":"Últimas 2 unidades","tag":"SOLAR","rosto":["oval","quadrado","alongado"],"mat":"Policarbonato","med":[58,17,140],"cores":["#2a2d33"],"rank":1,"de":0,"oculto":false,"fv":0,"ord":6},{"ref":"SL2260","nome":"Solar redondo preto","tipo":"solar","n":128000,"cor":"#1d1d1f","raio":40,"aviso":"","tag":"SOLAR","rosto":["quadrado","alongado","diamante"],"mat":"Acetato","med":[49,22,145],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":7},{"ref":"SL2265","nome":"Solar gatinho branco","tipo":"solar","n":132000,"cor":"#d9d9d9","raio":24,"aviso":"Chegou esta semana","tag":"NOVO","rosto":["oval","quadrado","diamante"],"mat":"Acetato","med":[53,20,145],"cores":["#d9d9d9"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":8},{"ref":"SL2270","nome":"Solar hexagonal verde","tipo":"solar","n":142000,"cor":"#b08a4a","raio":20,"aviso":"","tag":"METAL","rosto":["redondo","oval","coracao"],"mat":"Metal","med":[50,20,145],"cores":["#b08a4a"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":9},{"ref":"SL2275","nome":"Solar quadrado tartaruga","tipo":"solar","n":150000,"cor":"#6b4a2b","raio":12,"aviso":"","tag":"SOLAR","rosto":["oval","alongado","coracao"],"mat":"Acetato","med":[55,19,145],"cores":["#6b4a2b"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":10},{"ref":"BR44140","nome":"Armação metal gatinho preta","tipo":"armacao","n":112000,"cor":"#1d1d1f","raio":22,"aviso":"Última unidade","tag":"METAL","rosto":["quadrado","redondo","diamante"],"mat":"Metal","med":[54,17,140],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":11},{"ref":"GR3350","nome":"Óculos de grau transparente","tipo":"grau","n":115000,"cor":"#cfd6dc","raio":8,"aviso":"","tag":"GRAU","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[50,21,145],"cores":["#cfd6dc"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":12},{"ref":"SL2280","nome":"Solar espelhado azul","tipo":"solar","n":138000,"cor":"#2f6fd0","raio":6,"aviso":"","tag":"SOLAR","rosto":["oval","quadrado","alongado"],"mat":"Acetato","med":[57,17,145],"cores":["#2f6fd0"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":13},{"ref":"SL2285","nome":"Solar redondo fino preto","tipo":"solar","n":126000,"cor":"#1d1d1f","raio":40,"aviso":"","tag":"SOLAR","rosto":["quadrado","alongado","diamante"],"mat":"Metal e acetato","med":[47,22,140],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":14},{"ref":"SL2290","nome":"Solar clássico tartaruga","tipo":"solar","n":130000,"cor":"#6b4a2b","raio":14,"aviso":"","tag":"SOLAR","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[52,20,145],"cores":["#6b4a2b"],"rank":2,"de":0,"oculto":false,"fv":0,"ord":15},{"ref":"SL2295","nome":"Solar aviador rosa","tipo":"solar","n":145000,"cor":"#b0b5bb","raio":30,"aviso":"Esgotado","tag":"SOLAR","rosto":["coracao","quadrado","oval"],"mat":"Metal","med":[58,14,140],"cores":["#b0b5bb"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":16},{"ref":"BR44145","nome":"Armação metal redonda dourada","tipo":"armacao","n":119000,"cor":"#b08a4a","raio":40,"aviso":"Última unidade","tag":"METAL","rosto":["quadrado","diamante","alongado"],"mat":"Metal","med":[46,22,140],"cores":["#b08a4a"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":17},{"ref":"GR3345","nome":"Óculos de grau retangular tartaruga","tipo":"grau","n":96000,"cor":"#7a3b2e","raio":6,"aviso":"","tag":"GRAU","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[52,18,145],"cores":["#7a3b2e"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":18},{"ref":"SL2300","nome":"Solar gatinho tartaruga","tipo":"solar","n":136000,"cor":"#6b4a2b","raio":22,"aviso":"","tag":"SOLAR","rosto":["quadrado","diamante","oval"],"mat":"Acetato","med":[53,19,145],"cores":["#6b4a2b"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":19},{"ref":"SL2305","nome":"Solar aviador preto e dourado","tipo":"solar","n":168000,"cor":"#2a2d33","raio":30,"aviso":"Últimas 2 unidades","tag":"LUXO","rosto":["oval","quadrado","alongado"],"mat":"Metal e acetato","med":[51,21,145],"cores":["#2a2d33"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":20}];
+var ROSTOS=[['oval','Oval'],['redondo','Redondo'],['quadrado','Quadrado'],['alongado','Alongado'],['coracao','Coração'],['diamante','Diamante']];
+var $=function(i){return document.getElementById(i)},S={tok:null,prods:[],cfg:{ativo:true},cur:null,fotoNova:null};
+function say(t,e){var m=$('msg');m.textContent=t;m.className='msg'+(e?' e':'');m.hidden=false;clearTimeout(say.t);say.t=setTimeout(function(){m.hidden=true},e?7000:3500)}
+/* conversão Firestore */
+function tf(v){if(v===null||v===undefined)return{nullValue:null};if(typeof v==='string')return{stringValue:v};if(typeof v==='boolean')return{booleanValue:v};if(typeof v==='number')return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};if(Array.isArray(v))return{arrayValue:{values:v.map(tf)}};var f={};Object.keys(v).forEach(function(k){f[k]=tf(v[k])});return{mapValue:{fields:f}}}
+function fr(v){if('stringValue' in v)return v.stringValue;if('integerValue' in v)return +v.integerValue;if('doubleValue' in v)return v.doubleValue;if('booleanValue' in v)return v.booleanValue;if('arrayValue' in v)return (v.arrayValue.values||[]).map(fr);if('mapValue' in v)return fd(v.mapValue);return null}
+function fd(d){var o={},f=d.fields||{};Object.keys(f).forEach(function(k){o[k]=fr(f[k])});return o}
+function body(o){var f={};Object.keys(o).forEach(function(k){f[k]=tf(o[k])});return JSON.stringify({fields:f})}
+function api(method,path,b){return fetch(DB+path+(path.indexOf('?')<0?'?':'&')+'key='+FB.k,{method:method,headers:Object.assign({'Content-Type':'application/json'},S.tok?{Authorization:'Bearer '+S.tok}:{}),body:b}).then(function(r){if(r.status===401||r.status===403)throw new Error('perm');if(!r.ok&&r.status!==404)throw new Error('http '+r.status);return r.status===404?null:r.json()})}
+function put(path,o){return api('PATCH',path,body(o))}
+/* login */
+function saveRt(t){try{localStorage.setItem('lf_rt',t)}catch(_){}}
+function auth(url,payload){return fetch(url+'?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:payload}).then(function(r){return r.json()})}
+function signIn(){
+  fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:$('em').value.trim(),password:$('pw').value,returnSecureToken:true})}).then(function(r){return r.json()}).then(function(j){
+    if(!j.idToken){say('E-mail ou senha incorretos.',1);return}S.tok=j.idToken;saveRt(j.refreshToken);start()}).catch(function(){say('Sem conexão.',1)})}
+function refresh(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}if(!rt)return Promise.resolve(false);
+  return auth('https://securetoken.googleapis.com/v1/token','grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)).then(function(j){if(!j.id_token)return false;S.tok=j.id_token;saveRt(j.refresh_token||rt);return true}).catch(function(){return false})}
+/* dados */
+function load(){
+  return Promise.all([api('GET','config/site'),api('GET','produtos?pageSize=300')]).then(function(r){
+    S.cfg=Object.assign({ativo:true},r[0]?fd(r[0]):{});
+    S.prods=((r[1]&&r[1].documents)||[]).map(function(d){var o=fd(d);o.ref=o.ref||d.name.split('/').pop();return o}).sort(function(a,b){return (a.ord||0)-(b.ord||0)});
+    draw()})}
+function gs(n){return 'Gs. '+Number(n||0).toLocaleString('pt-BR')}
+function draw(){
+  var on=S.cfg.ativo!==false;$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('stt').textContent=on?'● No ar':'● Fora do ar (visitantes veem o aviso)';$('stt').className='st '+(on?'on':'off');
+  $('avs').value=S.cfg.aviso||'';$('vid').value=S.cfg.video||'';
+  $('dst').innerHTML=S.prods.map(function(p){return '<option value="'+p.ref+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+p.ref+' · '+p.nome+'</option>'}).join('');
+  $('cnt').textContent=S.prods.length+' produtos';$('seed').hidden=S.prods.length>0;
+  $('pl').innerHTML=S.prods.map(function(p){return '<div class="pi'+(p.oculto?' h':'')+'" data-r="'+p.ref+'"><img alt="" data-ph="'+p.ref+'"'+(p.fv>0?'':' hidden')+'><div><b>'+p.nome+'</b><small>'+p.ref+'</small><div class="tags">'+(p.de>p.n?'<span>OFERTA</span>':'')+(p.aviso==='Esgotado'?'<span class="x">Esgotado</span>':'')+(p.oculto?'<span class="x">Escondido</span>':'')+'</div></div><div class="r">'+(p.de>p.n?'<s style="color:var(--mu);font-weight:500;font-size:12px;display:block">'+gs(p.de)+'</s>':'')+gs(p.n)+'</div></div>'}).join('');
+  S.prods.forEach(function(p){if(p.fv>0)api('GET','fotos/'+p.ref).then(function(d){var o=d&&fd(d),im=document.querySelector('[data-ph="'+p.ref+'"]');if(o&&o.d&&im){im.src=o.d;im.hidden=false}}).catch(function(){})})}
+function start(){$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;load().catch(function(){say('Não consegui carregar os dados.',1)})}
+/* config */
+function saveCfg(extra){var c=Object.assign({},S.cfg,extra||{});
+  return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||''}).then(function(){S.cfg=c;draw()})}
+$('tgl').onclick=function(){var nv=!(S.cfg.ativo!==false);if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.')}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
+$('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim(),video:$('vid').value.trim(),destaque:$('dst').value}).then(function(){say('Salvo.')}).catch(function(){say('Erro ao salvar.',1)})};
+/* editor */
+$('f_rosto').innerHTML=ROSTOS.map(function(r){return '<label><input type="checkbox" value="'+r[0]+'">'+r[1]+'</label>'}).join('');
+function hint(){var n=+$('f_n').value||0;$('hint').textContent=n?'≈ R$ '+(Math.round(n/1400/5)*5)+' (referência: 1 real = 1.400 Gs.)':''}
+$('f_n').oninput=hint;
+function edit(ref){
+  var p=S.prods.filter(function(x){return x.ref===ref})[0]||null;S.cur=p;S.fotoNova=null;
+  var d=p||{ref:'',nome:'',tipo:'solar',n:'',de:0,aviso:'',tag:'',mat:'Acetato',cor:'#2a2d33',med:[52,19,145],rosto:['oval'],rank:0,oculto:false};
+  $('edt').textContent=p?'Editar '+p.ref:'Novo produto';$('f_ref').value=d.ref;$('f_ref').disabled=!!p;$('f_tipo').value=d.tipo||'solar';$('f_nome').value=d.nome;$('f_n').value=d.n;$('f_de').value=d.de||'';
+  $('f_av').value=d.aviso||'';$('f_tag').value=d.tag||'';$('f_mat').value=d.mat||'';$('f_cor').value=d.cor||'#2a2d33';
+  [0,1,2].forEach(function(i){$('m'+i).value=(d.med||[])[i]||''});$('f_rank').value=String(d.rank||0);$('f_ocu').value=d.oculto?'1':'0';
+  Array.prototype.forEach.call($('f_rosto').querySelectorAll('input'),function(c){c.checked=(d.rosto||[]).indexOf(c.value)>=0});
+  var im=document.querySelector('[data-ph="'+(p&&p.ref)+'"]');$('fp').hidden=!(im&&im.src&&!im.hidden);if(!$('fp').hidden)$('fp').src=im.src;$('ff').value='';
+  $('del').hidden=!p;hint();$('ed').hidden=false;$('app').hidden=true;scrollTo(0,0)}
+$('pl').onclick=function(e){var t=e.target.closest('[data-r]');if(t)edit(t.getAttribute('data-r'))};
+$('new').onclick=function(){edit('')};
+$('cc').onclick=function(){$('ed').hidden=true;$('app').hidden=false};
+$('ff').onchange=function(){var f=this.files&&this.files[0];if(!f)return;
+  createImageBitmap(f,{imageOrientation:'from-image'}).then(function(bm){var s=Math.min(1,900/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);
+    var q=.85,u=c.toDataURL('image/jpeg',q);while(u.length>700000&&q>.4){q-=.1;u=c.toDataURL('image/jpeg',q)}S.fotoNova=u;$('fp').src=u;$('fp').hidden=false}).catch(function(){say('Não consegui abrir essa foto.',1)})};
+$('sv').onclick=function(){
+  var ref=$('f_ref').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');if(!ref){say('Informe o código do produto.',1);return}
+  if(!S.cur&&S.prods.some(function(p){return p.ref===ref})){say('Esse código já existe.',1);return}
+  var nome=$('f_nome').value.trim(),n=parseInt($('f_n').value,10);if(!nome||!n){say('Preencha nome e preço.',1);return}
+  var rosto=Array.prototype.filter.call($('f_rosto').querySelectorAll('input'),function(c){return c.checked}).map(function(c){return c.value});if(!rosto.length)rosto=['oval'];
+  var old=S.cur||{},o={ref:ref,nome:nome,tipo:$('f_tipo').value,n:n,de:parseInt($('f_de').value,10)||0,aviso:$('f_av').value,tag:$('f_tag').value.trim()||$('f_tipo').value.toUpperCase(),mat:$('f_mat').value.trim()||'Acetato',cor:$('f_cor').value,cores:[$('f_cor').value],raio:old.raio||14,
+    med:[+$('m0').value||52,+$('m1').value||19,+$('m2').value||145],rosto:rosto,rank:+$('f_rank').value,oculto:$('f_ocu').value==='1',fv:old.fv||0,ord:old.ord||(S.prods.reduce(function(m,p){return Math.max(m,p.ord||0)},0)+1),uv:$('f_tipo').value==='solar'};
+  if(S.fotoNova)o.fv=Math.floor(Date.now()/1000);
+  $('sv').disabled=true;
+  var p=S.fotoNova?put('fotos/'+ref,{d:S.fotoNova}):Promise.resolve();
+  p.then(function(){return put('produtos/'+ref,o)}).then(function(){return load()}).then(function(){$('ed').hidden=true;$('app').hidden=false;say('Produto salvo. O site atualiza em instantes.')}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)}).then(function(){$('sv').disabled=false})};
+$('del').onclick=function(){if(!S.cur||!confirm('Excluir '+S.cur.nome+'?'))return;var ref=S.cur.ref;
+  api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){$('ed').hidden=true;$('app').hidden=false;say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})};
+$('seedb').onclick=function(){if(!confirm('Enviar os '+SEED.length+' produtos do site atual?'))return;$('seedb').disabled=true;
+  SEED.reduce(function(a,p){return a.then(function(){return put('produtos/'+p.ref,p)})},put('config/site',{ativo:true,aviso:'',video:'',destaque:'SL2210'})).then(load).then(function(){say('Catálogo enviado.')}).catch(function(){say('Erro ao enviar.',1)}).then(function(){$('seedb').disabled=false})};
+$('go').onclick=signIn;$('pw').onkeydown=function(e){if(e.key==='Enter')signIn()};
+$('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
+refresh().then(function(ok){if(ok)start()});
+})();
+</script></body></html>
