@@ -437,15 +437,22 @@ footer b{color:var(--tx)}
 .fachips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 18px;max-width:380px}
 .fachips span{display:inline-flex;align-items:center;gap:6px;font:600 12.5px Inter,system-ui,sans-serif;padding:7px 12px;border-radius:999px;border:1px solid var(--ln2);background:var(--pn);color:var(--tx)}
 .fachips svg{width:14px;height:14px;color:var(--ac)}
-.camw{position:relative;width:min(300px,100%);aspect-ratio:3/4;margin:0 auto 12px;border-radius:22px;overflow:hidden;background:#150d12}
-.camw video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1) scale(var(--cz,1.6))}
-.camz{position:absolute;right:10px;bottom:10px;min-width:54px;height:36px;padding:0 12px;border:0;border-radius:999px;background:rgba(20,10,16,.62);color:#fff;font:700 13px Inter,system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(6px)}
-.camw .camo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.camw .camo .rim{fill:none;stroke:#fff;stroke-width:3;stroke-dasharray:7 7;transition:stroke .25s}
-.camw.ok .camo .rim{stroke:#4ccf8a;stroke-dasharray:none;stroke-width:4}
-.camc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 96px Fraunces,Georgia,serif;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.5);pointer-events:none}
-.camm{min-height:44px;margin:0 auto 14px;max-width:320px;font:600 16px/1.3 Inter,system-ui,sans-serif;color:var(--tx)}
-.camw.ok+.camm{color:#2e9d68}
+.modal.try.camfull{position:fixed;inset:0;width:100%;max-width:none;height:100%;max-height:none;margin:0;padding:0;border-radius:0;background:#000;overflow:hidden;display:block}
+.camfs{position:absolute;inset:0;overflow:hidden;background:#150d12}
+.camfs video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1) scale(var(--cz,1))}
+.camov{position:absolute;left:50%;transform:translate(-50%,-50%);border:4px dashed #fff;border-radius:50%;box-shadow:0 0 0 200vmax rgba(10,5,8,.55);pointer-events:none;transition:border-color .25s}
+.camfs.ok .camov{border-style:solid;border-color:#4ccf8a}
+.camtop{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;background:linear-gradient(#000a,transparent);color:#fff}
+.camtop b{font:600 20px Fraunces,Georgia,serif}.camtop .x{position:static;margin:0;color:#2a1f27;background:rgba(255,255,255,.94)}
+.camc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 120px Fraunces,Georgia,serif;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.6);pointer-events:none}
+.cambot{position:absolute;left:0;right:0;bottom:0;padding:40px 16px calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,#000c);text-align:center}
+.camm{margin:0 auto 14px;max-width:340px;font:600 17px/1.3 Inter,system-ui,sans-serif;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.camfs.ok .camm{color:#7be8ae}
+.camrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
+.shut{width:72px;height:72px;border-radius:50%;border:4px solid #fff;background:rgba(255,255,255,.28);box-shadow:inset 0 0 0 5px #fff;cursor:pointer;padding:0}
+.shut:active{transform:scale(.94)}
+.camv{color:#fff;justify-self:start;margin:0}
+.camz{justify-self:end;min-width:56px;height:40px;padding:0 14px;border:0;border-radius:999px;background:rgba(255,255,255,.2);color:#fff;font:700 14px Inter,system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(6px)}
 .facn{font-size:12.5px;color:var(--mu);margin:0 0 8px}
 #stage[data-open]{cursor:pointer}#stage[data-open]:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
 </style>
@@ -960,7 +967,7 @@ footer b{color:var(--tx)}
     else if(d.facem){closeLayer();st.rosto=d.facem;drawFaces();drawGrid();goTo('vitrine')}
     else if(t.hasAttribute('data-facam')){faCam()}
     else if(t.hasAttribute('data-facap')){faSnap()}
-    else if(t.hasAttribute('data-camz')){var zs=[1,1.6,2.2,3];CZ=zs[(zs.indexOf(CZ)+1)%zs.length];var cw=$('camw');if(cw)cw.style.setProperty('--cz',CZ);t.textContent=CZ+'×'}
+    else if(t.hasAttribute('data-camz')){var zs=[1,1.5,2,3];CZ=zs[(zs.indexOf(CZ)+1)%zs.length];var cw=$('camw');if(cw)cw.style.setProperty('--cz',CZ);t.textContent=CZ+'×'}
     else if(t.hasAttribute('data-fa')||t.hasAttribute('data-fanew')){camStop();faOpen()}
     else if(d.edit){try{if(window.parent&&window.parent!==window)window.parent.postMessage({lfEdit:d.edit},location.origin);else location.href='admin.html?edit='+encodeURIComponent(d.edit)}catch(_){}}
     else if(d.fause){closeLayer();st.rosto=d.fause;drawFaces();drawGrid();goTo('vitrine')}
@@ -1101,23 +1108,26 @@ footer b{color:var(--tx)}
     }).catch(fail)}
 
   /* câmera guiada: oval, avisos ao vivo e foto automática quando o rosto está bem posicionado */
-  var CZ=1.6;
-  function camCrop(v,W,H){var vw=v.videoWidth,vh=v.videoHeight,sw,sh;if(vw/vh>.75){sh=vh;sw=vh*.75}else{sw=vw;sh=vw/.75}sw/=CZ;sh/=CZ;
-    var c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(v,(vw-sw)/2,(vh-sh)/2,sw,sh,0,0,W,H);return c}
-  function camStop(){if(CAM.st){CAM.st.getTracks().forEach(function(t){t.stop()});CAM.st=null}if(CAM.tm){clearTimeout(CAM.tm);CAM.tm=0}}
+  var CZ=1;
+  function camBox(){var w=$('camw');return w?[w.clientWidth||300,w.clientHeight||400]:[300,400]}
+  function camCrop(v,W,Hn){var b=camBox(),A=b[0]/b[1],vw=v.videoWidth,vh=v.videoHeight,sw,sh;if(vw/vh>A){sh=vh;sw=vh*A}else{sw=vw;sh=vw/A}sw/=CZ;sh/=CZ;
+    var H=Math.round(W/A),c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(v,(vw-sw)/2,(vh-sh)/2,sw,sh,0,0,W,H);return c}
+  function camFull(on){try{if(window.parent&&window.parent!==window)window.parent.postMessage({lfFull:!!on},location.origin)}catch(_){}}
+  function camStop(){var mf=document.querySelector('.modal.camfull');if(mf)mf.classList.remove('camfull');window.removeEventListener('resize',camLayout);if(CAM.st){CAM.st.getTracks().forEach(function(t){t.stop()});CAM.st=null}if(CAM.tm){clearTimeout(CAM.tm);CAM.tm=0}if(CAM.full){CAM.full=false;camFull(false)}}
   function camSay(t){var e=$('camm');if(e)e.textContent=LFI.tr(t)}
+  function camLayout(){var w=$('camw'),o=$('camov');if(!w||!o)return;var b=camBox(),ow=Math.min(b[0]*.76,b[1]*.46);o.style.width=ow+'px';o.style.height=ow*1.32+'px';o.style.top=(b[1]*.42)+'px';CAM.ovf=ow/b[0]}
   function faCam(){
-    var m=document.querySelector('.modal.fa');if(!m)return;CZ=1.6;
-    m.innerHTML='<div style="text-align:right;margin:-8px -6px 0 0"><button type="button" class="x" data-close aria-label="Fechar">×</button></div><h2 style="font-size:26px;margin-bottom:12px">Posicione seu rosto</h2>'+
-    '<div class="camw" id="camw"><video id="favid" playsinline muted autoplay></video><svg class="camo" viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden="true"><path fill-rule="evenodd" fill="rgba(20,10,16,.55)" d="M0 0H300V400H0Z M150 52C98 52 70 108 70 172 70 246 106 318 150 318 194 318 230 246 230 172 230 108 202 52 150 52Z"/><path class="rim" d="M150 52C98 52 70 108 70 172 70 246 106 318 150 318 194 318 230 246 230 172 230 108 202 52 150 52Z"/></svg><div class="camc" id="camc"></div><button type="button" class="camz" id="camz" data-camz aria-label="Aproximar a imagem">1.6×</button></div>'+
-    '<p class="camm" id="camm" role="status" aria-live="polite">Iniciando a câmera…</p>'+
-    '<div class="fabtns"><button type="button" class="btn p" data-facap>Tirar a foto agora</button><button type="button" class="fan" data-fanew>Voltar</button></div>';
-    var T=window.LFI?LFI.tr:function(x){return x};
+    var m=document.querySelector('.modal.fa');if(!m)return;CZ=1;
+    m.classList.add('camfull');CAM.full=true;camFull(true);
+    m.innerHTML='<div class="camfs" id="camw"><video id="favid" playsinline muted autoplay></video><div class="camov" id="camov"></div>'+
+    '<div class="camtop"><b>Posicione seu rosto</b><button type="button" class="x" data-close aria-label="Fechar">×</button></div><div class="camc" id="camc"></div>'+
+    '<div class="cambot"><p class="camm" id="camm" role="status" aria-live="polite">Iniciando a câmera…</p><div class="camrow"><button type="button" class="fan camv" data-fanew>Voltar</button><button type="button" class="shut" data-facap aria-label="Tirar a foto agora"></button><button type="button" class="camz" id="camz" data-camz aria-label="Aproximar a imagem">1×</button></div></div></div>';
+    camLayout();window.addEventListener('resize',camLayout);
     navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'user',width:{ideal:1280},height:{ideal:1280}}}).then(function(stream){
       if(!$('favid')){stream.getTracks().forEach(function(t){t.stop()});return}
       CAM.st=stream;var v=$('favid');v.srcObject=stream;var pl=v.play();if(pl&&pl.catch)pl.catch(function(){});
       camSay('Preparando a análise…');
-      faLoad().then(function(fa){camLoop(fa)},function(){camSay('Posicione o rosto no oval e toque em tirar a foto.')});
+      faLoad().then(function(fa){camLoop(fa)},function(){camSay('Posicione o rosto no oval e toque no botão para tirar a foto.')});
     },function(){camStop();CAM.off=true;faOpen()})}
   function camLoop(fa){
     var good=0,cd=0,tok=0,opt=new fa.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.35});
@@ -1125,13 +1135,14 @@ footer b{color:var(--tx)}
     function tick(){
       var v=$('favid');if(!v||!CAM.st){camStop();return}
       if(!v.videoWidth||v.readyState<2){CAM.tm=setTimeout(tick,250);return}
-      fa.detectSingleFace(camCrop(v,360,480),opt).then(function(r){
+      var cv=camCrop(v,360);
+      fa.detectSingleFace(cv,opt).then(function(r){
         if(!$('favid')){camStop();return}
-        var msg='',good1=false;
+        var msg='',good1=false,ovf=CAM.ovf||.6;
         if(!r){msg='Não encontro seu rosto. Olhe para a câmera.'}
-        else{var b=r.box,w=b.width/360,fx=1-(b.x+b.width/2)/360,fy=(b.y+b.height/2)/480;
-          if(w<.42)msg='Chegue mais perto';else if(w>.76)msg='Afaste um pouco o celular';
-          else if(Math.abs(fx-.5)>.12||Math.abs(fy-.48)>.15)msg='Centralize o rosto no oval';else good1=true}
+        else{var b=r.box,w=b.width/cv.width,fx=1-(b.x+b.width/2)/cv.width,fy=(b.y+b.height/2)/cv.height,cb=camBox();
+          if(w<ovf*.75)msg='Chegue mais perto';else if(w>ovf*1.45)msg='Afaste um pouco o celular';
+          else if(Math.abs(fx-.5)>.14||Math.abs(fy-.45)>.14)msg='Centralize o rosto no oval';else good1=true}
         if(good1){good++;ok(true);if(cd===0)camSay('Perfeito! Fique parado…');
           if(good>=3&&cd===0){cd=3;tok++;count(tok)}}
         else if(cd===0){good=0;ok(false);camSay(msg)}
@@ -1145,7 +1156,7 @@ footer b{color:var(--tx)}
     tick()}
   function faSnap(){
     var v=$('favid');if(!v||!v.videoWidth)return;
-    var c=camCrop(v,720,960);
+    var c=camCrop(v,720);
     camStop();c.toBlob(function(b){faRun(b)},'image/jpeg',.92)}
   document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='fafile'||t.id==='fafile2')){var f=t.files&&t.files[0];t.value='';faRun(f)}});
 
