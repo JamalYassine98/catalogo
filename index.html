@@ -569,6 +569,7 @@ footer b{color:var(--tx)}
     <div class="motto">Tudo em Óculos</div>
     <div><b>La Fouch</b><br>Galeria Jebai Center, 3º piso, nº 2242<br>Ciudad del Este<br>Segunda a sábado, das 7h30 às 15h<br><a href="https://www.google.com/maps/search/?api=1&query=Galeria+Jebai+Center+Ciudad+del+Este" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">Ver no mapa</a></div>
     <div><b>Contato</b><br>WhatsApp <a href="https://wa.me/595983642241" target="_blank" rel="noopener" style="color:inherit;font-weight:700">+595 983 642 241</a></div>
+    <div id="cambio" hidden></div>
     <div>Protótipo de design com modelos e preços de exemplo. Nenhum pedido é enviado daqui.</div>
   </footer>
 </div>
@@ -581,7 +582,8 @@ footer b{color:var(--tx)}
 <script>
 /* idioma e moeda: automático pelo celular (pt-BR → português e reais; es-PY → espanhol e guaranis); botão PT/ES no topo para escolher */
 (function(){
-  var RATE=1400; /* guaranis por 1 real (referência aproximada, ajuste aqui) */
+  var RATE=1400; /* guaranis por 1 real: o app da loja publica a cotação do dia; 1400 só vale se ela ainda não chegou */
+  try{var _cc=JSON.parse(localStorage.getItem('lf_cfg')||'null');if(_cc&&_cc.cotacao&&_cc.cotacao.brl>0)RATE=_cc.cotacao.brl}catch(_){}
   function g(k){try{return localStorage.getItem(k)}catch(_){return null}}
   var nl=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||'pt-BR'];
   var first=String(nl[0]||'pt-BR'),l2=first.slice(0,2).toLowerCase(),reg=(first.split(/[-_]/)[1]||'').toUpperCase();
@@ -626,7 +628,7 @@ footer b{color:var(--tx)}
 'Texto normal':'Texto normal','Texto grande':'Texto grande','Texto muito grande':'Texto muy grande',
 'Escolha o óculos que':'Elige los lentes que','combina com você':'combinan contigo',
 'Monte a sua reserva com os modelos que gostou e envie pelo WhatsApp. As peças ficam separadas para você provar e retirar na loja.':'Arma tu reserva con los modelos que te gustaron y envíala por WhatsApp. Las piezas quedan separadas para que las pruebes y las retires en la tienda.',
-'Coleção':'Colección','Você economiza':'Ahorras','OFERTA':'OFERTA','Descubra seu formato em 3 passos':'Descubre tu forma en 3 pasos','Leva menos de 1 minuto':'Toma menos de 1 minuto','Abra a câmera e olhe de frente':'Abre la cámara y mira de frente','Analisamos o formato do seu rosto':'Analizamos la forma de tu rostro','Mostramos os modelos que combinam':'Te mostramos los modelos que combinan','Começar agora':'Empezar ahora','Qual é o seu tipo de rosto?':'¿Cuál es tu tipo de rostro?','Sacola':'Bolsa','Abrir a câmera':'Abrir la cámara','Posicione seu rosto':'Coloca tu rostro','Tirar a foto agora':'Tomar la foto ahora','Voltar':'Volver','Iniciando a câmera…':'Iniciando la cámara…','Preparando a análise…':'Preparando el análisis…','Não encontro seu rosto. Olhe para a câmera.':'No encuentro tu rostro. Mira a la cámara.','Chegue mais perto':'Acércate un poco','Afaste um pouco o celular':'Aleja un poco el celular','Centralize o rosto no oval':'Centra el rostro en el óvalo','Perfeito! Fique parado…':'¡Perfecto! Quédate quieto…','De frente':'De frente','Boa luz':'Buena luz','Sem óculos':'Sin lentes','Cabelo para trás':'Cabello hacia atrás','Não consegui abrir a câmera. Permita o acesso ou escolha uma foto.':'No pude abrir la cámara. Permite el acceso o elige una foto.','Tirar uma foto':'Tomar una foto','Ou, se preferir, tire a foto agora':'O, si prefieres, toma la foto ahora','Ver o catálogo':'Ver el catálogo','Descubra em 1 minuto':'Descubre en 1 minuto','Qual combina com meu rosto?':'¿Cuál combina con mi rostro?',
+'Coleção':'Colección','Câmbio da loja':'Cambio de la tienda','atualizado em':'actualizado el','Você economiza':'Ahorras','OFERTA':'OFERTA','Descubra seu formato em 3 passos':'Descubre tu forma en 3 pasos','Leva menos de 1 minuto':'Toma menos de 1 minuto','Abra a câmera e olhe de frente':'Abre la cámara y mira de frente','Analisamos o formato do seu rosto':'Analizamos la forma de tu rostro','Mostramos os modelos que combinam':'Te mostramos los modelos que combinan','Começar agora':'Empezar ahora','Qual é o seu tipo de rosto?':'¿Cuál es tu tipo de rostro?','Sacola':'Bolsa','Abrir a câmera':'Abrir la cámara','Posicione seu rosto':'Coloca tu rostro','Tirar a foto agora':'Tomar la foto ahora','Voltar':'Volver','Iniciando a câmera…':'Iniciando la cámara…','Preparando a análise…':'Preparando el análisis…','Não encontro seu rosto. Olhe para a câmera.':'No encuentro tu rostro. Mira a la cámara.','Chegue mais perto':'Acércate un poco','Afaste um pouco o celular':'Aleja un poco el celular','Centralize o rosto no oval':'Centra el rostro en el óvalo','Perfeito! Fique parado…':'¡Perfecto! Quédate quieto…','De frente':'De frente','Boa luz':'Buena luz','Sem óculos':'Sin lentes','Cabelo para trás':'Cabello hacia atrás','Não consegui abrir a câmera. Permita o acesso ou escolha uma foto.':'No pude abrir la cámara. Permite el acceso o elige una foto.','Tirar uma foto':'Tomar una foto','Ou, se preferir, tire a foto agora':'O, si prefieres, toma la foto ahora','Ver o catálogo':'Ver el catálogo','Descubra em 1 minuto':'Descubre en 1 minuto','Qual combina com meu rosto?':'¿Cuál combina con mi rostro?',
 'Prove na loja':'Pruébalo en la tienda','Sem compromisso':'Sin compromiso','Retire na loja':'Retira en la tienda',
 'ESCOLHA DA SEMANA':'ELECCIÓN DE LA SEMANA',
 'Por que comprar aqui':'Por qué comprar aquí','Atendimento direto':'Atención directa','Fale com a loja pelo WhatsApp e tire dúvidas na hora.':'Habla con la tienda por WhatsApp y resuelve tus dudas al instante.',
@@ -1280,6 +1282,9 @@ footer b{color:var(--tx)}
   function isAdm(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}
     if(!rt||/[?&]cliente/.test(location.search))return Promise.resolve(false);
     return fetch('https://securetoken.googleapis.com/v1/token?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)}).then(function(r){return r.json()}).then(function(j){return !!j.id_token}).catch(function(){return false})}
+  function applyCot(){var c=CFG.cotacao,el=document.getElementById('cambio');if(!c||!(c.brl>0))return;var ch=c.brl!==RATE;RATE=c.brl;
+    if(el){var d=c.ts?new Date(c.ts):null,dd=d?('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2):'';el.innerHTML='<b>'+LFI.tr('Câmbio da loja')+'</b><br>US$ 1 = Gs. '+th(c.usd)+' · R$ 1 = Gs. '+th(c.brl)+(dd?'<br><small>'+LFI.tr('atualizado em')+' '+dd+'</small>':'');el.hidden=false}
+    if(ch&&typeof redraw==='function')redraw()}
   function manut(){
     var m=document.getElementById('manut'),ab=document.getElementById('admb');
     if(CFG.ativo!==false){if(m)m.remove();if(ab)ab.remove();document.documentElement.style.overflow='';return}
@@ -1329,7 +1334,7 @@ footer b{color:var(--tx)}
     if(fo)redraw()}
   function redraw(){drawChips();drawFaces();top3();drawGrid();drawBag();setHero(CFG.destaque)}
   function syncRun(){
-    fbg('config/site').then(function(d){CFG=Object.assign({ativo:true},fbd(d));try{localStorage.setItem('lf_cfg',JSON.stringify(CFG))}catch(_){}manut();applyVideo(CFG.video||'')},function(){}).then(function(){
+    fbg('config/site').then(function(d){CFG=Object.assign({ativo:true},fbd(d));try{localStorage.setItem('lf_cfg',JSON.stringify(CFG))}catch(_){}manut();applyCot();applyVideo(CFG.video||'')},function(){}).then(function(){
       return fbg('produtos?pageSize=300')}).then(function(j){if(j&&j.documents)syncProds(j.documents)}).catch(function(){})}
   (ADM||(ADM=isAdm())).then(function(a){if(a&&!LF_ADM){LF_ADM=true;document.documentElement.classList.add('adm');redraw()}});
   manut();try{var qv=new URLSearchParams(location.search).get('video');if(qv)setTimeout(function(){applyVideo(qv)},300)}catch(_){}

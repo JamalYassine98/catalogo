@@ -68,7 +68,7 @@ function fr(v){if('stringValue' in v)return v.stringValue;if('integerValue' in v
 function fd(d){var o={},f=d.fields||{};Object.keys(f).forEach(function(k){o[k]=fr(f[k])});return o}
 function body(o){var f={};Object.keys(o).forEach(function(k){f[k]=tf(o[k])});return JSON.stringify({fields:f})}
 function api(method,path,b){return fetch(DB+path+(path.indexOf('?')<0?'?':'&')+'key='+FB.k,{method:method,headers:Object.assign({'Content-Type':'application/json'},S.tok?{Authorization:'Bearer '+S.tok}:{}),body:b}).then(function(r){if(r.status===401||r.status===403)throw new Error('perm');if(!r.ok&&r.status!==404)throw new Error('http '+r.status);return r.status===404?null:r.json()})}
-function put(path,o){return api('PATCH',path,body(o))}
+function put(path,o,mask){return api('PATCH',path+(mask?'?'+mask.map(function(m){return 'updateMask.fieldPaths='+m}).join('&'):''),body(o))}
 /* login */
 function saveRt(t){try{localStorage.setItem('lf_rt',t)}catch(_){}}
 function auth(url,payload){return fetch(url+'?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:payload}).then(function(r){return r.json()})}
@@ -100,7 +100,7 @@ document.getElementById('tabs').onclick=function(e){var t=e.target.closest('.tab
 window.addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;border-radius:0;background:#fff':'width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff';return}if(!e.data.lfEdit)return;edit(e.data.lfEdit)});
 /* config */
 function saveCfg(extra){var c=Object.assign({},S.cfg,extra||{});
-  return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||''}).then(function(){S.cfg=c;draw()})}
+  return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||''},['ativo','aviso','video','destaque']).then(function(){S.cfg=c;draw()})}
 $('tg2').onclick=function(){$('tgl').click()};
 $('tgl').onclick=function(){var nv=!(S.cfg.ativo!==false);if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
 $('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim(),video:$('vid').value.trim(),destaque:$('dst').value}).then(function(){say('Salvo.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
