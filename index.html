@@ -278,6 +278,7 @@ html.lock,html.lock body{overflow:hidden!important}
 .dsl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--mu);margin-bottom:10px;display:block}
 html,body{overflow-x:clip}main{overflow-x:clip}
 .bar{gap:10px}.bar .ib{flex:none}
+.uvc{position:absolute;left:10px;top:44px;z-index:3;font:800 9.5px Inter,system-ui,sans-serif;letter-spacing:.1em;padding:5px 9px;border-radius:999px;background:#fff;color:#7d2a5a;border:1.5px solid #b4528a;box-shadow:0 2px 8px rgba(0,0,0,.14)}
 /* transição entre seções */
 html[data-nav]::view-transition-old(root){animation:navOut .28s ease both}
 html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8,.2,1) both}
@@ -296,7 +297,10 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding-block:8px 36px}
 .trust div{background:var(--pn);border:1px solid var(--ln);border-radius:18px;padding:18px 20px}
 .trust b{display:block;margin-bottom:2px}
-.trust span{color:var(--mu);font-size:14px}
+.trust div{position:relative;display:flex;gap:14px;align-items:flex-start}
+.trust i{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--ac) 13%,transparent);color:var(--ac)}
+.trust .tt{display:flex;flex-direction:column;gap:2px;min-width:0}.trust .tt b{font-size:16px}.trust .tt p{margin:0;color:var(--mu);font-size:14px;line-height:1.4}
+.trust{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.trust div{flex:1 1 300px;max-width:380px}
 
 /* rosto */
 .sec{padding-block:36px}
@@ -448,8 +452,11 @@ footer b{color:var(--tx)}
     </div>
   </section>
   <section class="trust" aria-label="Por que comprar aqui">
-    <div><b>Atendimento direto</b><span>Fale com a loja pelo WhatsApp e tire dúvidas na hora.</span></div>
-    <div><b>Prove na loja</b><span>Experimente antes de levar, sem compromisso.</span></div>
+    <div><i><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg></i><span class="tt"><b>Atendimento direto</b><p>Fale com a loja pelo WhatsApp e tire dúvidas na hora.</p></span></div>
+    <div><i><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9M4 9v10h16V9M4 9h16M9 19v-5h6v5"/></svg></i><span class="tt"><b>Prove na loja</b><p>Experimente antes de levar, sem compromisso.</p></span></div>
+    <div><i><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></i><span class="tt"><b>Proteção UV400 nos solares</b><p>Lentes que bloqueiam os raios UV. Cuidam dos seus olhos todos os dias.</p></span></div>
+    <div><i><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5C6 5 9 5 12 6.5 15 5 18 5 21 6.5V19c-3-1.5-6-1.5-9 0-3-1.5-6-1.5-9 0z"/><path d="M12 6.5V19"/></svg></i><span class="tt"><b>Óculos de grau para leitura</b><p>Armações e lentes para ler com conforto, de perto e de longe.</p></span></div>
+    <div><i><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg></i><span class="tt"><b>Econômicos e luxuosos</b><p>Modelos para todos os bolsos, dos mais simples aos mais sofisticados.</p></span></div>
   </section>
 
   <section class="sec" id="rosto">
@@ -597,7 +604,7 @@ footer b{color:var(--tx)}
     $('grid').innerHTML=r.length?r.map(function(p,i){
       var esg=p.aviso==='Esgotado',n=st.cart[p.ref]||0;
       var sk=esg?'<span class="stk e">Esgotado</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':'');
-      return '<article class="card'+(esg?' esg':'')+'" style="--i:'+i+'"><button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="ref">'+p.ref+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+fmt(p.n)+'</span><span class="av">'+esc(p.aviso)+'</span></div></button><button class="add'+(esg?' alt':'')+'" data-add="'+p.ref+'">'+(esg?'Avise-me quando chegar':(n?'Na reserva ('+n+') · +1':'Reservar'))+'</button></article>'}).join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
+      return '<article class="card'+(esg?' esg':'')+'" style="--i:'+i+'"><button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="ref">'+p.ref+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+fmt(p.n)+'</span><span class="av">'+esc(p.aviso)+'</span></div></button><button class="add'+(esg?' alt':'')+'" data-add="'+p.ref+'">'+(esg?'Avise-me quando chegar':(n?'Na reserva ('+n+') · +1':'Reservar'))+'</button></article>'}).join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
   }
   function drawChips(){
     var nf=Object.keys(st.fav).length;if(!nf&&st.tipo==='fav')st.tipo='todos';$('tipos').innerHTML=TIPOS.concat(nf?[['fav','♥ Favoritos ('+nf+')']]:[]).map(function(t){return '<button class="chip" data-tipo="'+t[0]+'" aria-pressed="'+(st.tipo===t[0])+'">'+t[1]+'</button>'}).join('')}
