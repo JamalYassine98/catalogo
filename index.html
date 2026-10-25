@@ -359,9 +359,10 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .step{display:flex;gap:14px}
 .step i{flex:0 0 44px;height:44px;border-radius:999px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-style:normal}
 .step span{color:var(--mu);font-size:15px;display:block}
-footer{border-top:1px solid var(--ln);margin-top:40px;padding-block:28px 110px;color:var(--mu);font-size:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+footer{border-top:1px solid var(--ln);margin-top:40px;padding-block:28px 110px;color:var(--mu);font-size:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 24px}
+@media (max-width:760px){footer{grid-template-columns:1fr}}
 footer b{color:var(--tx)}
-.motto{font-family:var(--display);font-size:26px;color:var(--tx)}
+.motto{font-family:var(--display);font-size:26px;color:var(--tx);grid-column:1/-1;margin-bottom:6px}
 .motto::after{content:"";display:block;width:90px;height:3px;background:var(--ac);margin-top:8px;transform-origin:left;animation:draw 1.2s ease both}
 
 /* flutuante */
@@ -520,7 +521,8 @@ footer b{color:var(--tx)}
   </section>
 
   <footer>
-    <div><div class="motto">Tudo em Óculos</div><div style="margin-top:12px"><b>La Fouch</b><br>Galeria Jebai Center, 3º piso, nº 2242<br>Ciudad del Este<br>Segunda a sábado, das 7h30 às 15h<br><a href="https://www.google.com/maps/search/?api=1&query=Galeria+Jebai+Center+Ciudad+del+Este" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">Ver no mapa</a></div></div>
+    <div class="motto">Tudo em Óculos</div>
+    <div><b>La Fouch</b><br>Galeria Jebai Center, 3º piso, nº 2242<br>Ciudad del Este<br>Segunda a sábado, das 7h30 às 15h<br><a href="https://www.google.com/maps/search/?api=1&query=Galeria+Jebai+Center+Ciudad+del+Este" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">Ver no mapa</a></div>
     <div><b>Contato</b><br>WhatsApp <a href="https://wa.me/595983642241" target="_blank" rel="noopener" style="color:inherit;font-weight:700">+595 983 642 241</a></div>
     <div>Protótipo de design com modelos e preços de exemplo. Nenhum pedido é enviado daqui.</div>
   </footer>
