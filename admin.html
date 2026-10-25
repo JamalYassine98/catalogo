@@ -16,10 +16,11 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 .chk{display:flex;gap:8px;flex-wrap:wrap}.chk label{flex-direction:row;align-items:center;gap:6px;font-size:14px;color:var(--tx);font-weight:500;background:var(--bg);border:1px solid var(--ln);border-radius:999px;padding:8px 12px}.chk input{width:auto;min-height:0}
 .msg{font-size:14px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ok) 14%,transparent)}.msg.e{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .ph{width:100%;height:180px;object-fit:contain;background:#fff;border-radius:14px;border:1px solid var(--ln)}
-.tabs{display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:20;background:var(--bg);padding:6px 0}.tab{font:700 14px Inter,sans-serif;border:1.5px solid var(--ln);background:var(--pn);color:var(--tx);border-radius:999px;padding:10px 16px;cursor:pointer}.tab.on{background:var(--ac);border-color:var(--ac);color:#fff}
-.sw2{margin-left:auto;font:800 13px Inter,sans-serif;border:0;border-radius:999px;padding:11px 16px;cursor:pointer;color:#fff;background:var(--bad)}.sw2.on{background:var(--ok)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;position:sticky;top:0;z-index:20;background:var(--bg);padding:6px 0}.tab{font:700 14px Inter,sans-serif;border:1.5px solid var(--ln);background:var(--pn);color:var(--tx);border-radius:999px;padding:10px 16px;cursor:pointer}.tab.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.sw2{font:800 13px Inter,sans-serif;border:0;border-radius:999px;padding:11px 16px;cursor:pointer;color:#fff;background:var(--bad)}.sw2.on{background:var(--ok)}
 .ctb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.ctb .btn{min-height:42px;font-size:14px}
-@media (min-width:1000px){main{max-width:none;padding-inline:8px}#work{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(400px,.8fr);gap:16px;align-items:start}#cat{position:sticky;top:64px}#cat iframe{height:calc(100vh - 170px)!important}.tab{display:none}.tabs{padding-bottom:10px}}
+@media (min-width:1000px){html,body{height:100%;overflow:hidden}body{padding-bottom:12px}main{max-width:none;height:100%;display:flex;flex-direction:column;gap:10px;padding-inline:4px}#work{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(400px,.8fr);grid-template-rows:minmax(0,1fr);gap:16px}#cat{height:100%;display:flex;flex-direction:column}#cat iframe{flex:1;height:auto!important;min-height:0!important;width:100%}#app,#ed{height:100%;overflow:auto;align-content:start}.tab{display:none}.tabs{padding:0;position:static}}
+.btn.sm{min-height:40px;font-size:13px;padding:0 14px}
 [hidden]{display:none!important}
 .tb{display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body><main>
@@ -28,8 +29,8 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 
 <section class="card" id="login"><h2>Entrar</h2><div style="display:grid;gap:12px"><label>E-mail<input id="em" type="email" autocomplete="username"></label><label>Senha<input id="pw" type="password" autocomplete="current-password"></label><button class="btn" id="go">Entrar</button></div></section>
 
-<nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="sw2" id="tg2" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
-<div id="work"><section id="cat" hidden><div class="ctb"><button class="btn" id="nw2">+ Novo produto</button><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button></div><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
+<nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="btn o sm" id="pvc" style="margin-left:auto">Ver como o cliente vê</button><button class="btn o sm" id="pvr" hidden style="margin-left:auto">Voltar ao modo administrador</button><button class="sw2" id="tg2" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
+<div id="work"><section id="cat" hidden><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
 <div id="app" hidden style="display:grid;gap:16px">
  <section class="card"><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
   <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label></div></section>
@@ -135,7 +136,6 @@ $('del').onclick=function(){if(!S.cur||!confirm('Excluir '+S.cur.nome+'?'))retur
   api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){view(S.view||'cat');reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})};
 $('seedb').onclick=function(){if(!confirm('Enviar os '+SEED.length+' produtos do site atual?'))return;$('seedb').disabled=true;
   SEED.reduce(function(a,p){return a.then(function(){return put('produtos/'+p.ref,p)})},put('config/site',{ativo:true,aviso:'',video:'',destaque:'SL2210'})).then(load).then(function(){say('Catálogo enviado.')}).catch(function(){say('Erro ao enviar.',1)}).then(function(){$('seedb').disabled=false})};
-$('nw2').onclick=function(){edit('')};
 $('pvc').onclick=function(){$('pvf').src='index.html?cliente=1&p='+Date.now();$('pvc').hidden=true;$('pvr').hidden=false};
 $('pvr').onclick=function(){$('pvf').src='index.html?p='+Date.now();$('pvc').hidden=false;$('pvr').hidden=true};
 $('go').onclick=signIn;$('pw').onkeydown=function(e){if(e.key==='Enter')signIn()};
