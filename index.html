@@ -833,6 +833,8 @@ footer b{color:var(--tx)}
     if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){it.remove();return}
     setTimeout(function(){it.remove()},2600)})();
   var NUM_LOJA=''; /* [SEU NÚMERO] só dígitos com DDI, ex.: 595981123456 */
+  var waB=document.querySelector('a.wa');if(waB)waB.href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent('Olá! Vim pelo catálogo da La Fouch e quero falar com a loja.');
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="https://wa.me/"]');if(a&&!NUM_LOJA){e.preventDefault();toast('O WhatsApp da loja ainda não foi configurado')}},true);
   function setLoj(){$('lojista').href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(mensagem('lojista'))}
   setLoj();['an','ac','aq'].forEach(function(i){$(i).addEventListener('input',setLoj)});
   drawChips();drawCmp();
