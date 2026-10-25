@@ -24,14 +24,15 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 [hidden]{display:none!important}
 .tb{display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body><main>
-<div class="tb"><h1>Painel La Fouch</h1><button class="btn o" id="out" hidden>Sair</button></div>
+
 <div id="msg" class="msg" hidden></div>
 
-<section class="card" id="login"><h2>Entrar</h2><div style="display:grid;gap:12px"><label>E-mail<input id="em" type="email" autocomplete="username"></label><label>Senha<input id="pw" type="password" autocomplete="current-password"></label><button class="btn" id="go">Entrar</button></div></section>
+<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><div style="display:grid;gap:12px"><label>E-mail<input id="em" type="email" autocomplete="username"></label><label>Senha<input id="pw" type="password" autocomplete="current-password"></label><button class="btn" id="go">Entrar</button></div></section>
 
 <nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="sw2" id="tg2" style="margin-left:auto" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
 <div id="work"><section id="cat" hidden><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
 <div id="app" hidden style="display:grid;gap:16px">
+ <div class="tb"><h1>Painel La Fouch</h1><button class="btn o" id="out">Sair</button></div>
  <section class="card"><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
   <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button></div></section>
  <section class="card"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
