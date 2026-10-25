@@ -28,7 +28,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 
 <div id="msg" class="msg" hidden></div>
 
-<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><div style="display:grid;gap:12px"><label>E-mail<input id="em" type="email" autocomplete="username"></label><label>Senha<input id="pw" type="password" autocomplete="current-password"></label><button class="btn" id="go">Entrar</button></div></section>
+<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
 
 <nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="sw2" id="tg2" style="margin-left:auto" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
 <div id="work"><section id="cat" hidden><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
@@ -140,7 +140,7 @@ $('seedb').onclick=function(){if(!confirm('Enviar os '+SEED.length+' produtos do
   SEED.reduce(function(a,p){return a.then(function(){return put('produtos/'+p.ref,p)})},put('config/site',{ativo:true,aviso:'',video:'',destaque:'SL2210'})).then(load).then(function(){say('Catálogo enviado.')}).catch(function(){say('Erro ao enviar.',1)}).then(function(){$('seedb').disabled=false})};
 $('pvc').onclick=function(){if(!W())view('cat');$('pvf').src='index.html?cliente=1&p='+Date.now();$('pvc').hidden=true;$('pvr').hidden=false};
 $('pvr').onclick=function(){if(!W())view('cat');$('pvf').src='index.html?p='+Date.now();$('pvc').hidden=false;$('pvr').hidden=true};
-$('go').onclick=signIn;$('pw').onkeydown=function(e){if(e.key==='Enter')signIn()};
+$('lf').onsubmit=function(e){e.preventDefault();signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
 refresh().then(function(ok){if(ok)start()});
 })();
