@@ -423,6 +423,29 @@ footer b{color:var(--tx)}
 .pf{width:100%;height:100%;object-fit:contain;display:block;background:#fff;transition:transform .35s ease;user-select:none}.big .pf,.fly .pf,.th .pf{width:100%;height:100%;object-fit:contain}@media (hover:hover){.card:hover .ph .pf{transform:scale(1.06)}}
 .ph:has(.pf) .shine,.big:has(.pf) .shine{display:none!important}
 .xw{grid-column:1/-1;position:sticky;top:0;height:0;z-index:6}.xw .x{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.94);color:#2a1f27;border-color:rgba(0,0,0,.12);box-shadow:0 2px 10px rgba(0,0,0,.18);font-size:22px;line-height:1}
+
+/* rótulos dos botões do topo + faixa do rosto (celular) + câmera guiada */
+.bar .ib{margin-bottom:15px}
+.ib::after{content:attr(data-l);position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);font:600 10.5px/1 Inter,system-ui,sans-serif;color:var(--mu);white-space:nowrap;pointer-events:none}
+@media (hover:hover){.ib:hover{transform:scale(1.06)!important}}
+@media (max-width:520px){.bar{gap:6px}.bar .ib{width:42px;height:42px}.logo{min-width:56px;flex:0 1 100px}.badge{top:-6px;right:-6px}}
+.fabn{display:none}
+@media (max-width:860px){.fabn{display:flex;align-items:center;gap:13px;width:100%;margin:14px 0 0;padding:13px 16px;border:0;border-radius:18px;background:linear-gradient(125deg,#6f2250,#b4528a 58%,#dc92bc);color:#fff;text-align:left;cursor:pointer;box-shadow:0 12px 26px var(--shadow),inset 0 1px 0 rgba(255,255,255,.35);font-family:inherit}
+.fabn>svg{flex:none}.fabn span{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.fabn small{font:700 10.5px Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.fabn b{font:600 18px/1.15 Fraunces,Georgia,serif}.fabn .ar{width:34px;height:34px;padding:8px;border-radius:50%;background:rgba(255,255,255,.22);flex:none}}
+.fachips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 18px;max-width:380px}
+.fachips span{display:inline-flex;align-items:center;gap:6px;font:600 12.5px Inter,system-ui,sans-serif;padding:7px 12px;border-radius:999px;border:1px solid var(--ln2);background:var(--pn);color:var(--tx)}
+.fachips svg{width:14px;height:14px;color:var(--ac)}
+.camw{position:relative;width:min(300px,100%);aspect-ratio:3/4;margin:0 auto 12px;border-radius:22px;overflow:hidden;background:#150d12}
+.camw video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.camw .camo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.camw .camo .rim{fill:none;stroke:#fff;stroke-width:3;stroke-dasharray:7 7;transition:stroke .25s}
+.camw.ok .camo .rim{stroke:#4ccf8a;stroke-dasharray:none;stroke-width:4}
+.camc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 96px Fraunces,Georgia,serif;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.5);pointer-events:none}
+.camm{min-height:44px;margin:0 auto 14px;max-width:320px;font:600 16px/1.3 Inter,system-ui,sans-serif;color:var(--tx)}
+.camw.ok+.camm{color:#2e9d68}
+.facn{font-size:12.5px;color:var(--mu);margin:0 0 8px}
 #stage[data-open]{cursor:pointer}#stage[data-open]:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
 </style>
 
@@ -432,10 +455,10 @@ footer b{color:var(--tx)}
     <nav class="nav" aria-label="Seções"><a href="#vitrine">Catálogo</a><a href="#rosto">Seu rosto</a><a href="#atacado">Atacado</a><a href="#como">Como comprar</a><a href="#duvidas">Dúvidas</a></nav>
     <span class="grow"></span>
     <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar por modelo ou referência" aria-label="Buscar no catálogo"></label>
-    <button class="ib" id="theme" aria-label="Trocar tema claro e escuro" title="Tema"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></button>
-    <button class="ib lgb" id="lgb" aria-label="Idioma e moeda" title="Idioma e moeda"><b></b></button>
-    <button class="ib aa" id="aa" aria-label="Tamanho do texto" title="Tamanho do texto"><small>a</small><b>A</b></button>
-    <button class="ib" id="bagbtn" aria-label="Abrir a reserva"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="badge">0</span></button>
+    <button class="ib" id="theme" data-l="Tema" aria-label="Trocar tema claro e escuro" title="Tema"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></button>
+    <button class="ib lgb" id="lgb" data-l="Idioma" aria-label="Idioma e moeda" title="Idioma e moeda"><b></b></button>
+    <button class="ib aa" id="aa" data-l="Texto" aria-label="Tamanho do texto" title="Tamanho do texto"><small>a</small><b>A</b></button>
+    <button class="ib" id="bagbtn" data-l="Sacola" aria-label="Abrir a reserva"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="badge">0</span></button>
   </div>
   <div class="mobsearch"><label class="search" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q2" type="search" placeholder="Buscar por modelo ou referência" aria-label="Buscar no catálogo"></label></div>
 </div></div>
@@ -443,6 +466,7 @@ footer b{color:var(--tx)}
 <div id="intro" aria-hidden="true"><div class="ilogo"><i class="la"></i><i class="lb"></i><i class="lc"></i></div></div>
 <main id="topo">
 <div class="wrap">
+  <button type="button" class="fabn" data-fa><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg><span><small>Descubra em 1 minuto</small><b>Qual é o seu tipo de rosto?</b></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   <section class="hero">
     <div>
       <h1 style="margin-top:12px">Escolha o óculos que <em>combina com você</em></h1>
@@ -575,7 +599,7 @@ footer b{color:var(--tx)}
 'Texto normal':'Texto normal','Texto grande':'Texto grande','Texto muito grande':'Texto muy grande',
 'Escolha o óculos que':'Elige los lentes que','combina com você':'combinan contigo',
 'Monte a sua reserva com os modelos que gostou e envie pelo WhatsApp. As peças ficam separadas para você provar e retirar na loja.':'Arma tu reserva con los modelos que te gustaron y envíala por WhatsApp. Las piezas quedan separadas para que las pruebes y las retires en la tienda.',
-'Coleção':'Colección','Ver o catálogo':'Ver el catálogo','Descubra em 1 minuto':'Descubre en 1 minuto','Qual combina com meu rosto?':'¿Cuál combina con mi rostro?',
+'Coleção':'Colección','Qual é o seu tipo de rosto?':'¿Cuál es tu tipo de rostro?','Sacola':'Bolsa','Abrir a câmera':'Abrir la cámara','Posicione seu rosto':'Coloca tu rostro','Tirar a foto agora':'Tomar la foto ahora','Voltar':'Volver','Iniciando a câmera…':'Iniciando la cámara…','Preparando a análise…':'Preparando el análisis…','Não encontro seu rosto. Olhe para a câmera.':'No encuentro tu rostro. Mira a la cámara.','Chegue mais perto':'Acércate un poco','Afaste um pouco o celular':'Aleja un poco el celular','Centralize o rosto no oval':'Centra el rostro en el óvalo','Perfeito! Fique parado…':'¡Perfecto! Quédate quieto…','De frente':'De frente','Boa luz':'Buena luz','Sem óculos':'Sin lentes','Cabelo para trás':'Cabello hacia atrás','Não consegui abrir a câmera. Permita o acesso ou escolha uma foto.':'No pude abrir la cámara. Permite el acceso o elige una foto.','Tirar uma foto':'Tomar una foto','Ou, se preferir, tire a foto agora':'O, si prefieres, toma la foto ahora','Ver o catálogo':'Ver el catálogo','Descubra em 1 minuto':'Descubre en 1 minuto','Qual combina com meu rosto?':'¿Cuál combina con mi rostro?',
 'Prove na loja':'Pruébalo en la tienda','Sem compromisso':'Sin compromiso','Retire na loja':'Retira en la tienda',
 'ESCOLHA DA SEMANA':'ELECCIÓN DE LA SEMANA',
 'Por que comprar aqui':'Por qué comprar aquí','Atendimento direto':'Atención directa','Fale com a loja pelo WhatsApp e tire dúvidas na hora.':'Habla con la tienda por WhatsApp y resuelve tus dudas al instante.',
@@ -886,7 +910,7 @@ footer b{color:var(--tx)}
   function layer(html,cls){
     var l=$('layer');l.innerHTML='<div class="scrim '+(cls||'')+'" data-close>'+html+'</div>';
     document.documentElement.classList.add('lock');var f=l.querySelector('button,input');if(f)f.focus()}
-  function closeLayer(){$('layer').innerHTML='';document.documentElement.classList.remove('lock');$('bagbtn').focus&&0}
+  function closeLayer(){if(typeof camStop==="function")camStop();$('layer').innerHTML='';document.documentElement.classList.remove('lock');$('bagbtn').focus&&0}
   function relHtml(p){
     var L=P.filter(function(q){return q.ref!==p.ref&&q.rosto.some(function(r){return p.rosto.indexOf(r)>=0})&&q.aviso!=='Esgotado'});
     L.sort(function(a,b){var c=function(q){return q.rosto.filter(function(r){return p.rosto.indexOf(r)>=0}).length+(q.tipo===p.tipo?.5:0)};return c(b)-c(a)});
@@ -926,14 +950,16 @@ footer b{color:var(--tx)}
 
   /* eventos */
   document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-tipo],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-copy],[data-sw],[data-fav],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-facem],[data-fa],[data-edit],[data-fause],[data-fanew],[data-fawrong],[data-copymsg],[data-newsim],[data-close]');
+    var t=e.target.closest('[data-tipo],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-copy],[data-sw],[data-fav],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-facem],[data-fa],[data-facam],[data-facap],[data-edit],[data-fause],[data-fanew],[data-fawrong],[data-copymsg],[data-newsim],[data-close]');
     if(!t){return}
     var d=t.dataset;
     if(d.close!==undefined){if(t.classList.contains('scrim')&&e.target!==t)return;closeLayer();return}
     if(d.tipo){st.tipo=d.tipo;drawChips();drawGrid()}
     else if(d.face){st.rosto=st.rosto===d.face?'':d.face;drawFaces();drawGrid();goTo('vitrine')}
     else if(d.facem){closeLayer();st.rosto=d.facem;drawFaces();drawGrid();goTo('vitrine')}
-    else if(t.hasAttribute('data-fa')||t.hasAttribute('data-fanew')){faOpen()}
+    else if(t.hasAttribute('data-facam')){faCam()}
+    else if(t.hasAttribute('data-facap')){faSnap()}
+    else if(t.hasAttribute('data-fa')||t.hasAttribute('data-fanew')){camStop();faOpen()}
     else if(d.edit){try{if(window.parent&&window.parent!==window)window.parent.postMessage({lfEdit:d.edit},location.origin);else location.href='admin.html?edit='+encodeURIComponent(d.edit)}catch(_){}}
     else if(d.fause){closeLayer();st.rosto=d.fause;drawFaces();drawGrid();goTo('vitrine')}
     else if(t.hasAttribute('data-fawrong')){closeLayer();goTo('rosto')}
@@ -998,15 +1024,18 @@ footer b{color:var(--tx)}
         return Promise.all([fa.nets.tinyFaceDetector.loadFromUri(FAB+'model'),fa.nets.faceLandmark68TinyNet.loadFromUri(FAB+'model')])}).then(function(){window.fetch=of;return fa},function(e){window.fetch=of;throw e})
     }).catch(function(e){FA.lib=null;if(FA.of)window.fetch=FA.of;throw e});
     return FA.lib}
+  var CAM={st:null,tm:0,off:false};
+  function LIVE(){return !CAM.off&&!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)}
   function faEmpty(){
     var c='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg>';
     var g='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 9"/></svg>';
     return '<div class="modal try fa" role="dialog" aria-modal="true" aria-label="Descobrir meu rosto"><div style="text-align:right;margin:-8px -6px 0 0"><button type="button" class="x" data-close aria-label="Fechar">×</button></div>'+
     '<div class="faic">'+faceMini('oval')+'</div><h2>Descubra seu tipo de rosto</h2>'+
     '<p class="sub">Tire uma selfie ou escolha uma foto. Vamos descobrir o formato do seu rosto e separar os óculos que mais combinam com ele.</p>'+
-    '<div class="fabtns"><label class="btn p ic">'+c+'<span>Tirar uma selfie</span><input type="file" accept="image/*" capture="user" id="fafile"></label>'+
+    '<div class="fachips"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>De frente</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Boa luz</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Sem óculos</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Cabelo para trás</span></div>'+
+    (CAM.off?'<p class="facn">Não consegui abrir a câmera. Permita o acesso ou escolha uma foto.</p>':'')+
+    '<div class="fabtns">'+(LIVE()?'<button type="button" class="btn p ic" data-facam>'+c+'<span>Abrir a câmera</span></button>':'<label class="btn p ic">'+c+'<span>Tirar uma foto</span><input type="file" accept="image/*" capture="user" id="fafile"></label>')+
     '<label class="btn o ic">'+g+'<span>Escolher da galeria</span><input type="file" accept="image/*" id="fafile2"></label></div>'+
-    '<p class="fatip">Dica: de frente, com boa luz e sem óculos.</p>'+
     '<div class="tpriv"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Sua foto fica só no seu aparelho. Nada é enviado.</span></div></div>'}
   function faOpen(){layer(faEmpty(),'center')}
   function faBusy(msg){
@@ -1068,6 +1097,51 @@ footer b{color:var(--tx)}
           if(!r){faErr('Não achei um rosto','Tente de novo com o rosto de frente, bem iluminado, sem óculos e sem boné.');return}
           faResult(cv,r,faShape(faMeasure(r.landmarks.positions)))})})
     }).catch(fail)}
+
+  /* câmera guiada: oval, avisos ao vivo e foto automática quando o rosto está bem posicionado */
+  function camStop(){if(CAM.st){CAM.st.getTracks().forEach(function(t){t.stop()});CAM.st=null}if(CAM.tm){clearTimeout(CAM.tm);CAM.tm=0}}
+  function camSay(t){var e=$('camm');if(e)e.textContent=LFI.tr(t)}
+  function faCam(){
+    var m=document.querySelector('.modal.fa');if(!m)return;
+    m.innerHTML='<div style="text-align:right;margin:-8px -6px 0 0"><button type="button" class="x" data-close aria-label="Fechar">×</button></div><h2 style="font-size:26px;margin-bottom:12px">Posicione seu rosto</h2>'+
+    '<div class="camw" id="camw"><video id="favid" playsinline muted autoplay></video><svg class="camo" viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden="true"><path fill-rule="evenodd" fill="rgba(20,10,16,.55)" d="M0 0H300V400H0Z M150 52C98 52 70 108 70 172 70 246 106 318 150 318 194 318 230 246 230 172 230 108 202 52 150 52Z"/><path class="rim" d="M150 52C98 52 70 108 70 172 70 246 106 318 150 318 194 318 230 246 230 172 230 108 202 52 150 52Z"/></svg><div class="camc" id="camc"></div></div>'+
+    '<p class="camm" id="camm" role="status" aria-live="polite">Iniciando a câmera…</p>'+
+    '<div class="fabtns"><button type="button" class="btn p" data-facap>Tirar a foto agora</button><button type="button" class="fan" data-fanew>Voltar</button></div>';
+    var T=window.LFI?LFI.tr:function(x){return x};
+    navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'user',width:{ideal:960},height:{ideal:1280}}}).then(function(stream){
+      if(!$('favid')){stream.getTracks().forEach(function(t){t.stop()});return}
+      CAM.st=stream;var v=$('favid');v.srcObject=stream;var pl=v.play();if(pl&&pl.catch)pl.catch(function(){});
+      camSay('Preparando a análise…');
+      faLoad().then(function(fa){camLoop(fa)},function(){camSay('Posicione o rosto no oval e toque em tirar a foto.')});
+    },function(){camStop();CAM.off=true;faOpen()})}
+  function camLoop(fa){
+    var good=0,cd=0,tok=0,opt=new fa.TinyFaceDetectorOptions({inputSize:224,scoreThreshold:.5});
+    function ok(b){$('camw')&&$('camw').classList.toggle('ok',!!b)}
+    function tick(){
+      var v=$('favid');if(!v||!CAM.st){camStop();return}
+      if(!v.videoWidth||v.readyState<2){CAM.tm=setTimeout(tick,250);return}
+      fa.detectSingleFace(v,opt).then(function(r){
+        if(!$('favid')){camStop();return}
+        var vw=v.videoWidth,vh=v.videoHeight,cw=300,ch=400,sc=Math.max(cw/vw,ch/vh),ox=(vw*sc-cw)/2,oy=(vh*sc-ch)/2,msg='',good1=false;
+        if(!r){msg='Não encontro seu rosto. Olhe para a câmera.'}
+        else{var b=r.box,w=b.width*sc/cw,fx=1-((b.x+b.width/2)*sc-ox)/cw,fy=((b.y+b.height/2)*sc-oy)/ch;
+          if(w<.42)msg='Chegue mais perto';else if(w>.76)msg='Afaste um pouco o celular';
+          else if(Math.abs(fx-.5)>.12||Math.abs(fy-.48)>.15)msg='Centralize o rosto no oval';else good1=true}
+        if(good1){good++;ok(true);if(cd===0)camSay('Perfeito! Fique parado…');
+          if(good>=3&&cd===0){cd=3;tok++;count(tok)}}
+        else if(cd===0){good=0;ok(false);camSay(msg)}
+        else{cd=0;tok++;good=0;ok(false);var c=$('camc');if(c)c.textContent='';camSay(msg)}
+        CAM.tm=setTimeout(tick,300)
+      }).catch(function(){CAM.tm=setTimeout(tick,500)})}
+    function count(k){
+      var c=$('camc');if(!c||cd<=0||k!==tok)return;
+      c.textContent=cd;
+      setTimeout(function(){if(k!==tok||cd<=0||!$('favid'))return;cd--;if(cd===0){c.textContent='';faSnap()}else count(k)},900)}
+    tick()}
+  function faSnap(){
+    var v=$('favid');if(!v||!v.videoWidth)return;
+    var c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);
+    camStop();c.toBlob(function(b){faRun(b)},'image/jpeg',.92)}
   document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='fafile'||t.id==='fafile2')){var f=t.files&&t.files[0];t.value='';faRun(f)}});
 
   /* texto maior (acessibilidade) */
@@ -1195,6 +1269,7 @@ footer b{color:var(--tx)}
   if(!/[?&]nosync/.test(location.search))setTimeout(syncRun,50);
 
   /* idioma e moeda */
+  ['theme','lgb','aa','bagbtn'].forEach(function(i){var e=$(i);if(e&&e.dataset.l)e.dataset.l=LFI.tr(e.dataset.l)});
   (function(){var b=$('lgb');if(!b)return;b.firstChild.textContent=LFI.lang==='es'?'ES':'PT';
     function cur(k,d){try{return localStorage.getItem(k)||'auto'}catch(_){return 'auto'}}
     b.addEventListener('click',function(){var L=cur('lf_lang'),C=cur('lf_cur');
