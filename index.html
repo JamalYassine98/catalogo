@@ -354,6 +354,7 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .whole{background:var(--hero);border:1px solid var(--ln);border-radius:26px;padding:36px;display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .whole h2{text-align:left;font-size:clamp(26px,3vw,38px);max-width:620px}
 .whole p{color:var(--mu);margin:8px 0 0;max-width:560px}
+@media (min-width:561px){.whole>.btn{margin-left:auto}}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:22px}
 .step{display:flex;gap:14px}
 .step i{flex:0 0 44px;height:44px;border-radius:999px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-style:normal}
