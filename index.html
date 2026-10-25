@@ -773,9 +773,9 @@ footer b{color:var(--tx)}
   document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#"]');if(!a)return;var id=a.getAttribute('href').slice(1);if(!id||!document.getElementById(id))return;e.preventDefault();goTo(id)});
 
   /* animações de entrada, brilho que segue o dedo, cabeçalho */
-  var io=window.IntersectionObserver&&new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
-  function reveal(){if(!io)return;document.querySelectorAll('.sec,.trust div,.chips,.lojista,#como li,.cardw').forEach(function(el,i){if(el.classList.contains('rv'))return;el.classList.add('rv');el.style.setProperty('--d',i%4);io.observe(el)})}
-  reveal();
+  var io=window.IntersectionObserver&&new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  function reveal(){if(!io)return;document.querySelectorAll('.sec:not(#vitrine),.trust div,.lojista,#como li,.cardw').forEach(function(el,i){if(el.classList.contains('rv'))return;el.classList.add('rv');el.style.setProperty('--d',i%4);io.observe(el)})}
+  reveal();setTimeout(function(){document.querySelectorAll('.rv:not(.in)').forEach(function(e){e.classList.add('in')})},4000);addEventListener('scroll',function(){document.querySelectorAll('.rv:not(.in)').forEach(function(e){var r=e.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)e.classList.add('in')})},{passive:true});
   document.addEventListener('pointermove',function(e){var t=e.target.closest&&e.target.closest('.card,.face,.stage');if(!t)return;var r=t.getBoundingClientRect();t.style.setProperty('--mx',(e.clientX-r.left)+'px');t.style.setProperty('--my',(e.clientY-r.top)+'px');
     if(t.classList.contains('stage')&&e.pointerType==='mouse'){var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;t.style.transform='perspective(900px) rotateY('+(x*8)+'deg) rotateX('+(-y*8)+'deg)'}});
   document.addEventListener('pointerout',function(e){var t=e.target.closest&&e.target.closest('.stage');if(t&&!t.contains(e.relatedTarget))t.style.transform=''});
