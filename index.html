@@ -1155,9 +1155,15 @@ footer b{color:var(--tx)}
       setTimeout(function(){if(k!==tok||cd<=0||!$('favid'))return;cd--;if(cd===0){c.textContent='';faSnap()}else count(k)},900)}
     tick()}
   function faSnap(){
-    var v=$('favid');if(!v||!v.videoWidth)return;
-    var c=camCrop(v,720);
-    camStop();c.toBlob(function(b){faRun(b)},'image/jpeg',.92)}
+    var v=$('favid');if(!v||!v.videoWidth||CAM.snap)return;CAM.snap=true;
+    camSay('Tirando a foto…');
+    var done=function(b){CAM.snap=false;camStop();faRun(b)};
+    /* quadro inteiro, sem recorte nem zoom (nao deforma o rosto) */
+    var frame=function(){var c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);c.toBlob(done,'image/jpeg',.95)};
+    /* foto de verdade da camera (mesma qualidade e correcao de lente da camera do celular) */
+    try{var tr=CAM.st&&CAM.st.getVideoTracks()[0];
+      if(tr&&window.ImageCapture){new ImageCapture(tr).takePhoto().then(function(b){b&&b.size?done(b):frame()},frame);return}}catch(_){}
+    frame()}
   document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='fafile'||t.id==='fafile2')){var f=t.files&&t.files[0];t.value='';faRun(f)}});
 
   /* texto maior (acessibilidade) */
