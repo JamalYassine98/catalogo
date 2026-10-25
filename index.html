@@ -285,6 +285,7 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .stage .tg,.stage .tag,.stage .seal{z-index:3}
 .lgb b{font-size:13px;font-weight:800;letter-spacing:.04em}
 .lgrp{display:flex;flex-direction:column;gap:8px;margin:14px 0}.lgrp>b{font-size:14px;color:var(--mu)}.lgrp>div{display:flex;flex-wrap:wrap;gap:8px}
+.stage>video.pv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:block;background:#fff}.stage.hasv .seal{filter:brightness(0) invert(1);opacity:.92}.stage.hasv>img.pf,.stage.hasv>.shine{display:none}.stage.hasv::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(0deg,rgba(255,255,255,.92),transparent);z-index:2;pointer-events:none}
 .stage>img.pf{position:relative;z-index:1;width:86%;height:auto;max-height:90%;object-fit:contain}
 .stage .shine,.ph .shine{position:absolute;top:0;bottom:0;left:0;width:18%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);animation:shine 4.5s ease-in-out infinite;pointer-events:none}
 .stage .tag{position:absolute;left:18px;bottom:16px;color:#2a1f27;font-weight:800;font-size:13px;letter-spacing:.1em}
@@ -1115,6 +1116,15 @@ footer b{color:var(--tx)}
 
   $('stage').addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();$('stage').click()}});
   var sp=find('SL2210');if(sp.foto){var im=document.createElement('img');im.className='pf';im.alt='Solar hexagonal preto, escolha da semana';im.draggable=false;im.src=sp.foto;$('stageSvg').replaceWith(im)}else $('stageSvg').innerHTML=glasses(sp.cor,sp.raio,4).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+  /* vídeo promocional no destaque da semana: PROMO_VIDEO (ou ?video=arquivo.mp4); o app vai preencher depois */
+  var PROMO_VIDEO='';
+  (function(){var u=PROMO_VIDEO;try{var q=new URLSearchParams(location.search).get('video');if(q)u=q}catch(_){}
+    if(!u)return;var st=$('stage'),v=document.createElement('video');
+    v.className='pv';v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('aria-hidden','true');v.disablePictureInPicture=true;
+    var im=st.querySelector('img.pf');if(im&&im.src)v.poster=im.src;
+    v.addEventListener('canplay',function(){if(!v.isConnected){st.insertBefore(v,st.firstChild);st.classList.add('hasv');var p=v.play();if(p&&p.catch)p.catch(function(){})}},{once:true});
+    v.addEventListener('error',function(){if(v.parentNode)v.remove();st.classList.remove('hasv')});
+    v.src=u;v.load()})();
 
   /* idioma e moeda */
   (function(){var b=$('lgb');if(!b)return;b.firstChild.textContent=LFI.lang==='es'?'ES':'PT';
