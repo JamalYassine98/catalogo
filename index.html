@@ -584,6 +584,7 @@ footer b{color:var(--tx)}
 (function(){
   var RATE=1400; /* guaranis por 1 real: o app da loja publica a cotação do dia; 1400 só vale se ela ainda não chegou */
   try{var _cc=JSON.parse(localStorage.getItem('lf_cfg')||'null');if(_cc&&_cc.cotacao&&_cc.cotacao.brl>0)RATE=_cc.cotacao.brl}catch(_){}
+  window.LF_RATE=function(r){if(r>0)RATE=r;return RATE};
   function g(k){try{return localStorage.getItem(k)}catch(_){return null}}
   var nl=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||'pt-BR'];
   var first=String(nl[0]||'pt-BR'),l2=first.slice(0,2).toLowerCase(),reg=(first.split(/[-_]/)[1]||'').toUpperCase();
@@ -1282,7 +1283,7 @@ footer b{color:var(--tx)}
   function isAdm(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}
     if(!rt||/[?&]cliente/.test(location.search))return Promise.resolve(false);
     return fetch('https://securetoken.googleapis.com/v1/token?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)}).then(function(r){return r.json()}).then(function(j){return !!j.id_token}).catch(function(){return false})}
-  function applyCot(){var c=CFG.cotacao,el=document.getElementById('cambio');if(!c||!(c.brl>0))return;var ch=c.brl!==RATE;RATE=c.brl;
+  function applyCot(){var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')},c=CFG.cotacao,el=document.getElementById('cambio');if(!c||!(c.brl>0))return;var ch=window.LF_RATE()!==c.brl;window.LF_RATE(c.brl);
     if(el){var d=c.ts?new Date(c.ts):null,dd=d?('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2):'';el.innerHTML='<b>'+LFI.tr('Câmbio da loja')+'</b><br>US$ 1 = Gs. '+th(c.usd)+' · R$ 1 = Gs. '+th(c.brl)+(dd?'<br><small>'+LFI.tr('atualizado em')+' '+dd+'</small>':'');el.hidden=false}
     if(ch&&typeof redraw==='function')redraw()}
   function manut(){
