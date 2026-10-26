@@ -480,6 +480,8 @@ footer b{color:var(--tx)}
 #stage[data-open]{cursor:pointer}#stage[data-open]:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
 
 #cambio{display:none!important}
+#cbl{display:none}
+@media (max-width:860px){#cbl:not([hidden]){display:block;margin:2px 20px 6px;font:500 12px Inter,system-ui,sans-serif;color:var(--mu);letter-spacing:.02em;white-space:pre}}
 @media (max-width:860px){#vscr footer{display:grid!important;grid-template-columns:1fr;gap:18px;padding:26px 20px calc(30px + env(safe-area-inset-bottom,0px));margin:8px 0 0;border-top:1px solid var(--line,rgba(128,128,128,.25))}#vscr footer>div:last-child:not(.motto):not(#cambio){display:none}}
 /* depois da abertura, nada reanima: evita piscar quando os produtos chegam do servidor */
 html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .hero h1,html.nr .cta .btn{animation:none!important}
@@ -1162,7 +1164,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
   function closePanels(){document.querySelectorAll('.sec.pop').forEach(function(e){e.classList.remove('pop')});document.documentElement.classList.remove('ppop');try{history.replaceState(null,'',location.pathname+location.search)}catch(_){}}
   function openPanel(id){
     closePanels();var el=document.getElementById(id);if(!el)return;
-    if(id==='vitrine'){var ms=document.querySelector('.mobsearch');var vs=$('vscr');if(!vs){vs=document.createElement('div');vs.id='vscr';el.insertBefore(vs,$('grid'));vs.appendChild($('grid'))}if(ms&&ms.parentNode!==vs)vs.insertBefore(ms,vs.firstChild);var ft=document.querySelector('footer');if(ft&&ft.parentNode!==vs)vs.appendChild(ft);var ft=$('fty'),fs=$('fso');if(ft&&$('tipos').parentNode!==ft)ft.appendChild($('tipos'));if(fs&&$('sort').parentNode!==fs)fs.appendChild($('sort'));if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
+    if(id==='vitrine'){var ms=document.querySelector('.mobsearch');var vs=$('vscr');if(!vs){vs=document.createElement('div');vs.id='vscr';el.insertBefore(vs,$('grid'));vs.appendChild($('grid'))}if(ms&&ms.parentNode!==vs)vs.insertBefore(ms,vs.firstChild);var ft=document.querySelector('footer');if(ft&&ft.parentNode!==vs)vs.appendChild(ft);if(!$('cbl')){var cb=document.createElement('div');cb.id='cbl';cb.hidden=true;ms.parentNode.insertBefore(cb,ms.nextSibling);cotLine()}var ft=$('fty'),fs=$('fso');if(ft&&$('tipos').parentNode!==ft)ft.appendChild($('tipos'));if(fs&&$('sort').parentNode!==fs)fs.appendChild($('sort'));if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
     var ht=document.querySelector('.top');if(ht)document.documentElement.style.setProperty('--ht',ht.offsetHeight+'px');
     el.classList.add('in');el.classList.add('pop');el.scrollTop=0;document.documentElement.classList.add('ppop');
     try{history.replaceState(null,'','#'+id)}catch(_){}}
@@ -1453,9 +1455,10 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
   function isAdm(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}
     if(!rt||/[?&]cliente/.test(location.search))return Promise.resolve(false);
     return fetch('https://securetoken.googleapis.com/v1/token?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)}).then(function(r){return r.json()}).then(function(j){return !!j.id_token}).catch(function(){return false})}
+  function cotLine(){var el=document.getElementById('cbl'),c=CFG.cotacao;if(!el||!c||!(c.brl>0))return;var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')};el.textContent='US$ 1 = Gs. '+th(c.usd)+'  ·  R$ 1 = Gs. '+th(c.brl);el.hidden=false}
   function applyCot(){var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')},c=CFG.cotacao,el=document.getElementById('cambio');if(!c||!(c.brl>0))return;var ch=window.LF_RATE()!==c.brl;window.LF_RATE(c.brl);
     if(el){var d=c.ts?new Date(c.ts):null,dd=d?('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2):'';el.innerHTML='<b>'+LFI.tr('Câmbio da loja')+'</b><br>US$ 1 = Gs. '+th(c.usd)+' · R$ 1 = Gs. '+th(c.brl)+(dd?'<br><small>'+LFI.tr('atualizado em')+' '+dd+'</small>':'');el.hidden=false}
-    if(ch&&typeof redraw==='function')redraw()}
+    cotLine();if(ch&&typeof redraw==='function')redraw()}
   function manut(){
     var m=document.getElementById('manut'),ab=document.getElementById('admb');
     if(CFG.ativo!==false){if(m)m.remove();if(ab)ab.remove();document.documentElement.style.overflow='';return}
