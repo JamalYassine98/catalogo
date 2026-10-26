@@ -515,7 +515,7 @@ footer b{color:var(--tx)}
  .dpn nav a{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--ln);text-decoration:none;color:var(--tx);font:600 21px Fraunces,Georgia,serif}
  .dpn nav a span{color:var(--ac);font:400 20px Inter,system-ui,sans-serif}
  .dpf{padding:14px 20px 4px;display:flex;flex-direction:column;gap:14px}
- .prow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}.prow>span{width:64px;flex:none;font:700 11px Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--mu)}
+ .prow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}.prow>span{width:100%;flex:none;font:700 11px Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--mu)}
  .seg{display:flex;max-width:100%;gap:2px;padding:3px;border:1px solid var(--ln);border-radius:999px;background:var(--pn)}
  .seg button{border:0;background:transparent;color:var(--mu);font:700 13px Inter,system-ui,sans-serif;padding:9px 11px;border-radius:999px;min-height:38px;white-space:nowrap}
  .seg button.on{background:#a24a80;color:#fff}
@@ -544,11 +544,11 @@ footer b{color:var(--tx)}
   <div class="dhd"><button class="ib" type="button" data-dclose aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><b>Menu</b></div>
   <nav aria-label="Seções"><a href="#vitrine">Catálogo<span>→</span></a><a href="#rosto">Qual combina comigo?<span>→</span></a><a href="#atacado">Atacado<span>→</span></a><a href="#como">Como comprar<span>→</span></a><a href="#duvidas">Dúvidas<span>→</span></a></nav>
   <div class="dpf">
-    <div class="prow"><span>Idioma</span><div class="seg"><button type="button" data-lg="es">Español</button><button type="button" data-lg="pt">Português</button></div></div>
+    <div class="prow"><span>Idioma</span><div class="seg"><button type="button" data-lg="auto">Auto</button><button type="button" data-lg="es">Español</button><button type="button" data-lg="pt">Português</button></div></div>
     <div class="prow"><span>Tema</span><div class="seg"><button type="button" data-th="auto">Auto</button><button type="button" data-th="light">Claro</button><button type="button" data-th="dark">Escuro</button></div></div>
     <div class="prow"><span>Texto</span><div class="seg"><button type="button" data-zs="0" style="font-size:13px">A</button><button type="button" data-zs="1" style="font-size:16px">A</button><button type="button" data-zs="2" style="font-size:19px">A</button></div></div>
   </div>
-  <div class="dct"><a class="dw" id="dwa" target="_blank" rel="noopener" href="https://wa.me/">Falar com a loja</a><p>Galeria Jebai Center, 3º piso, nº 2242<br>Ciudad del Este</p></div>
+  <div class="dct"><p>Galeria Jebai Center, 3º piso, nº 2242<br>Ciudad del Este</p></div>
 </aside></div>
 
 <div id="intro" aria-hidden="true"><div class="ilogo"><i class="la"></i><i class="lb"></i><i class="lc"></i></div></div>
@@ -1124,12 +1124,12 @@ footer b{color:var(--tx)}
     if(id==='vitrine'){var ms=document.querySelector('.mobsearch');if(ms&&ms.parentNode!==el)el.insertBefore(ms,el.firstChild);if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
     el.classList.add('in');el.classList.add('pop');el.scrollTop=0;document.documentElement.classList.add('ppop');
     try{history.replaceState(null,'','#'+id)}catch(_){}}
-  function prefSync(){var r=document.documentElement,t=r.dataset.theme||'auto';
-    document.querySelectorAll('#drw [data-lg]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lg')===LFI.lang)});
+  function prefSync(){var r=document.documentElement,t=r.dataset.theme||'auto',lg='auto';try{var q=localStorage.getItem('lf_lang');if(q==='pt'||q==='es')lg=q}catch(_){}
+    document.querySelectorAll('#drw [data-lg]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lg')===lg)});
     document.querySelectorAll('#drw [data-th]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-th')===t)});
     document.querySelectorAll('#drw [data-zs]').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-zs')===zi)})}
   function drwSet(on){if(on)prefSync();var d=$('drw');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
-  $('mnb').addEventListener('click',function(){var w=document.querySelector('a.wa'),a=$('dwa');if(w&&a)a.href=w.href;drwSet(true)});
+  $('mnb').addEventListener('click',function(){drwSet(true)});
   document.addEventListener('click',function(e){
     var t=e.target.closest&&e.target.closest('[data-dclose],[data-pback],[data-th],[data-zs],[data-pg],#drw nav a');if(!t)return;
     if(t.hasAttribute('data-dclose'))drwSet(false);
