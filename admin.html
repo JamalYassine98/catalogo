@@ -52,6 +52,8 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 
 <div id="msg" class="msg" hidden></div>
 
+<section class="card" id="lock" hidden><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Desbloquear</h2><p style="color:var(--mu);margin:0 0 14px">Use a biometria do celular para entrar.</p><div style="display:grid;gap:12px"><button class="btn" id="bgo" type="button">Desbloquear com biometria</button><button class="btn o" id="bpw" type="button">Entrar com senha</button></div></section>
+
 <section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
 
 <nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="sw2" id="tg2" style="margin-left:auto" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
@@ -62,7 +64,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 <div id="app" hidden style="display:grid;gap:16px">
  
  <section class="card" id="c_cfg"><div class="hd"><h1>Painel La Fouch</h1><button class="btn o sm" id="out">Sair</button></div><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
-  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn msair" id="svc2" type="button" style="display:none">Salvar aviso</button><button class="btn o msair" id="out2" type="button" style="display:none">Sair da conta</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button></div></section>
+  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn msair" id="svc2" type="button" style="display:none">Salvar aviso</button><button class="btn o msair" id="out2" type="button" style="display:none">Sair da conta</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button><button class="btn o" id="bio" type="button" hidden></button><button class="btn o" id="pwb" type="button">Alterar senha</button><form id="pwf" style="display:none;gap:12px" autocomplete="off"><label>Senha atual<input id="pw0" type="password" autocomplete="current-password"></label><label>Nova senha (mínimo 6 caracteres)<input id="pw1" type="password" autocomplete="new-password"></label><label>Repetir nova senha<input id="pw2" type="password" autocomplete="new-password"></label><button class="btn" id="pws" type="submit">Salvar nova senha</button></form></div></section>
  <section class="card" id="c_dst"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
  <section class="card" id="c_lst"><div class="tb"><h2 style="margin:0">Catálogo</h2><button class="btn" id="new">+ Novo produto</button></div><p style="color:var(--mu);font-size:14px;margin:8px 0 12px" id="cnt"></p><div class="pl" id="pl"></div><div id="seed" hidden style="margin-top:12px"><button class="btn o" id="seedb">Enviar o catálogo atual do site</button></div></section>
 </div>
@@ -177,6 +179,34 @@ $('pvc').onclick=function(){if(!W())view('cat');$('pvf').src='index.html?cliente
 $('pvr').onclick=function(){if(!W())view('cat');$('pvf').src='index.html?p='+Date.now();$('pvc').hidden=false;$('pvr').hidden=true};
 $('lf').onsubmit=function(e){e.preventDefault();signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
-refresh().then(function(ok){if(ok)start()});
+/* biometria (WebAuthn: trava o painel neste aparelho) e troca de senha */
+function b64(b){var u=new Uint8Array(b),s='';for(var i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s)}
+function unb64(t){var s=atob(t),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+function rnd(n){var u=new Uint8Array(n);crypto.getRandomValues(u);return u}
+function bioId(){try{return localStorage.getItem('lf_bio')||''}catch(_){return ''}}
+function bioOK(){return !!(window.PublicKeyCredential&&navigator.credentials&&navigator.credentials.create)}
+function myMail(){try{return JSON.parse(atob(S.tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).email||''}catch(_){return ''}}
+function bioDraw(){var b=$('bio');if(!bioOK()){b.hidden=true;return}b.hidden=false;b.textContent=bioId()?'Desativar biometria':'Ativar biometria'}
+function bioAsk(){return navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(bioId())}],userVerification:'required',timeout:60000}})}
+function bioUnlock(){bioAsk().then(function(){return refresh()}).then(function(ok){if(ok){$('lock').hidden=true;start()}else{$('lock').hidden=true;$('login').hidden=false;say('Sessão expirada. Entre com a senha.',1)}}).catch(function(){say('Biometria não confirmada.',1)})}
+$('bgo').onclick=bioUnlock;
+$('bpw').onclick=function(){$('lock').hidden=true;$('login').hidden=false};
+$('bio').onclick=function(){
+  if(bioId()){bioAsk().then(function(){try{localStorage.removeItem('lf_bio')}catch(_){}bioDraw();say('Biometria desativada.')}).catch(function(){say('Biometria não confirmada.',1)});return}
+  navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'La Fouch'},user:{id:rnd(16),name:myMail()||'loja',displayName:'La Fouch'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}}).then(function(c){try{localStorage.setItem('lf_bio',b64(c.rawId))}catch(_){}bioDraw();say('Biometria ativada. Da próxima vez o painel pede sua digital ou rosto.')}).catch(function(){say('Não foi possível ativar. Confira se o celular tem biometria configurada.',1)})};
+$('pwb').onclick=function(){var f=$('pwf');var open=f.style.display==='none';f.style.display=open?'grid':'none';if(open)$('pw0').focus()};
+$('pwf').onsubmit=function(e){e.preventDefault();var o=$('pw0').value,n=$('pw1').value,r=$('pw2').value,em=myMail();
+  if(!em){say('Entre de novo para trocar a senha.',1);return}
+  if(n.length<6){say('A nova senha precisa de pelo menos 6 caracteres.',1);return}
+  if(n!==r){say('As duas senhas novas não são iguais.',1);return}
+  if(n===o){say('A nova senha é igual à atual.',1);return}
+  $('pws').disabled=true;
+  fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,password:o,returnSecureToken:true})}).then(function(x){return x.json()}).then(function(j){
+    if(!j.idToken)throw new Error('old');
+    return fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:j.idToken,password:n,returnSecureToken:true})}).then(function(x){return x.json()})}).then(function(j){
+    if(!j.idToken)throw new Error('upd');S.tok=j.idToken;if(j.refreshToken)saveRt(j.refreshToken);$('pwf').reset();$('pwf').style.display='none';say('Senha alterada.')}).catch(function(er){say(er.message==='old'?'Senha atual incorreta.':'Não consegui trocar a senha. Tente de novo.',1)}).then(function(){$('pws').disabled=false})};
+var _st=start;start=function(){_st();bioDraw()};
+if(bioId()&&bioOK()&&(function(){try{return !!localStorage.getItem('lf_rt')}catch(_){return false}})()){$('login').hidden=true;$('lock').hidden=false;bioUnlock()}
+else refresh().then(function(ok){if(ok)start()});
 })();
 </script></body></html>
