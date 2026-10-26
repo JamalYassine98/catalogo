@@ -13,6 +13,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 .st{font:800 18px Inter,sans-serif}.st.on{color:var(--ok)}.st.off{color:var(--bad)}
 .pl{display:grid;gap:10px}.pi{display:flex;gap:12px;align-items:center;background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:10px;cursor:pointer}.pi img{width:84px;height:56px;object-fit:contain;background:#fff;border-radius:10px;flex:none}.pi b{display:block;font-size:15px}.pi small{color:var(--mu)}.pi .r{margin-left:auto;text-align:right;font-weight:800;color:var(--ok);white-space:nowrap}.pi.h{opacity:.5}
 .tags{display:flex;gap:6px;flex-wrap:wrap}.tags span{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac)}.tags .x{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.rem{display:flex;flex-direction:row;align-items:center;gap:12px;font-size:14px;color:var(--tx);font-weight:500;cursor:pointer}.rem input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--ac);flex:none}.rem small{display:block;color:var(--mu);font-size:12px;font-weight:400;margin-top:2px;line-height:1.4}
 .chk{display:flex;gap:8px;flex-wrap:wrap}.chk label{flex-direction:row;align-items:center;gap:6px;font-size:14px;color:var(--tx);font-weight:500;background:var(--bg);border:1px solid var(--ln);border-radius:999px;padding:8px 12px}.chk input{width:auto;min-height:0}
 .msg{font-size:14px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ok) 14%,transparent)}.msg.e{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .ph{width:100%;height:180px;object-fit:contain;background:#fff;border-radius:14px;border:1px solid var(--ln)}
@@ -54,7 +55,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 
 <section class="card" id="lock" hidden><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Desbloquear</h2><p style="color:var(--mu);margin:0 0 14px">Use a biometria do celular para entrar.</p><div style="display:grid;gap:12px"><button class="btn" id="bgo" type="button">Desbloquear com biometria</button><button class="btn o" id="bpw" type="button">Entrar com senha</button></div></section>
 
-<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
+<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><label class="rem"><input type="checkbox" id="rem"><span>Lembrar e-mail e senha<small>O celular guarda e preenche sozinho. Nas próximas vezes pede só a sua biometria.</small></span></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
 
 <nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="mp fsb" id="tfs" type="button" aria-label="Tela cheia" hidden style="width:40px;padding:0;display:inline-flex;align-items:center;justify-content:center;margin-left:auto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button><button class="sw2" id="tg2" style="margin-left:10px" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
 <div id="mtop" hidden><button class="mp" id="mst" type="button" aria-label="Ligar ou desligar o site"></button><span style="flex:1"></span><button class="mp" id="mcl" type="button">👁 Cliente</button><button class="mp fsb" id="mfs" type="button" aria-label="Tela cheia" hidden style="width:40px;padding:0;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button></div>
@@ -101,9 +102,9 @@ function put(path,o,mask){return api('PATCH',path+(mask?'?'+mask.map(function(m)
 /* login */
 function saveRt(t){try{localStorage.setItem('lf_rt',t)}catch(_){}}
 function auth(url,payload){return fetch(url+'?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:payload}).then(function(r){return r.json()})}
-function signIn(){
-  fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:$('em').value.trim(),password:$('pw').value,returnSecureToken:true})}).then(function(r){return r.json()}).then(function(j){
-    if(!j.idToken){say('E-mail ou senha incorretos.',1);return}S.tok=j.idToken;saveRt(j.refreshToken);start()}).catch(function(){say('Sem conexão.',1)})}
+function signIn(){var em=$('em').value.trim(),pw=$('pw').value;
+  fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,password:pw,returnSecureToken:true})}).then(function(r){return r.json()}).then(function(j){
+    if(!j.idToken){say('E-mail ou senha incorretos.',1);return}S.tok=j.idToken;saveRt(j.refreshToken);start();remember(em,pw)}).catch(function(){say('Sem conexão.',1)})}
 function refresh(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}if(!rt)return Promise.resolve(false);
   return auth('https://securetoken.googleapis.com/v1/token','grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)).then(function(j){if(!j.id_token)return false;S.tok=j.id_token;saveRt(j.refresh_token||rt);return true}).catch(function(){return false})}
 /* dados */
@@ -189,16 +190,33 @@ function b64(b){var u=new Uint8Array(b),s='';for(var i=0;i<u.length;i++)s+=Strin
 function unb64(t){var s=atob(t),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
 function rnd(n){var u=new Uint8Array(n);crypto.getRandomValues(u);return u}
 function bioId(){try{return localStorage.getItem('lf_bio')||''}catch(_){return ''}}
-function bioOK(){return !!(window.PublicKeyCredential&&navigator.credentials&&navigator.credentials.create)}
+var IN_APP=false;try{IN_APP=!!window.parent&&window.parent!==window}catch(_){}
+var _pend={};
+window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||!e.data.lfBioR)return;var p=_pend[e.data.id];if(p){delete _pend[e.data.id];clearTimeout(p.t);p.f(e.data.lfBioR)}});
+/* dentro do app, a biometria é a do próprio app (o app responde); no navegador, WebAuthn */
+function appCall(cmd,ms){return new Promise(function(res){var id=String(Math.random());_pend[id]={f:res,t:setTimeout(function(){delete _pend[id];res('no')},ms)};try{window.parent.postMessage({lfBio:cmd,id:id},'*')}catch(_){var q=_pend[id];delete _pend[id];if(q)clearTimeout(q.t);res('no')}})}
+var BIO_SUP=!IN_APP&&!!(window.PublicKeyCredential&&navigator.credentials&&navigator.credentials.create);
+if(IN_APP)appCall('check',1500).then(function(r){BIO_SUP=r==='yes';bioDraw()});
+function bioOK(){return BIO_SUP}
+function bioEnable(){
+  if(IN_APP)return appCall('ask',70000).then(function(r){if(r!=='ok')throw new Error('bio');try{localStorage.setItem('lf_bio','app')}catch(_){}});
+  return navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'La Fouch'},user:{id:rnd(16),name:myMail()||$('em').value.trim()||'loja',displayName:'La Fouch'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}}).then(function(c){try{localStorage.setItem('lf_bio',b64(c.rawId))}catch(_){}})}
+/* lembrar e-mail e senha: o gerenciador de senhas do celular guarda; o painel exige biometria para abrir */
+function remember(em,pw){var on=!!($('rem')&&$('rem').checked);
+  try{if(on){localStorage.setItem('lf_rem','1');localStorage.setItem('lf_em',em)}else{localStorage.removeItem('lf_rem');localStorage.removeItem('lf_em')}}catch(_){}
+  if(!on)return;
+  try{if(window.PasswordCredential&&navigator.credentials&&navigator.credentials.store)navigator.credentials.store(new PasswordCredential({id:em,password:pw,name:'La Fouch'})).catch(function(){})}catch(_){}
+  if(!bioId())bioEnable().then(function(){bioDraw();say('Lembrado. Da próxima vez o painel pede a sua biometria.')}).catch(function(){say('E-mail e senha lembrados. A biometria não foi ativada neste aparelho.',1)})}
+try{if(localStorage.getItem('lf_rem')==='1'){$('rem').checked=true;$('em').value=localStorage.getItem('lf_em')||''}}catch(_){}
 function myMail(){try{return JSON.parse(atob(S.tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).email||''}catch(_){return ''}}
 function bioDraw(){var b=$('bio');if(!bioOK()){b.hidden=true;return}b.hidden=false;b.textContent=bioId()?'Desativar biometria':'Ativar biometria'}
-function bioAsk(){return navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(bioId())}],userVerification:'required',timeout:60000}})}
+function bioAsk(){if(bioId()==='app')return appCall('ask',70000).then(function(r){if(r!=='ok')throw new Error('bio')});return navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(bioId())}],userVerification:'required',timeout:60000}})}
 function bioUnlock(){bioAsk().then(function(){return refresh()}).then(function(ok){if(ok){$('lock').hidden=true;start()}else{$('lock').hidden=true;$('login').hidden=false;say('Sessão expirada. Entre com a senha.',1)}}).catch(function(){say('Biometria não confirmada.',1)})}
 $('bgo').onclick=bioUnlock;
 $('bpw').onclick=function(){$('lock').hidden=true;$('login').hidden=false};
 $('bio').onclick=function(){
   if(bioId()){bioAsk().then(function(){try{localStorage.removeItem('lf_bio')}catch(_){}bioDraw();say('Biometria desativada.')}).catch(function(){say('Biometria não confirmada.',1)});return}
-  navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'La Fouch'},user:{id:rnd(16),name:myMail()||'loja',displayName:'La Fouch'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}}).then(function(c){try{localStorage.setItem('lf_bio',b64(c.rawId))}catch(_){}bioDraw();say('Biometria ativada. Da próxima vez o painel pede sua digital ou rosto.')}).catch(function(){say('Não foi possível ativar. Confira se o celular tem biometria configurada.',1)})};
+  bioEnable().then(function(){bioDraw();say('Biometria ativada. Da próxima vez o painel pede sua digital ou rosto.')}).catch(function(){say('Não foi possível ativar. Confira se o celular tem biometria configurada.',1)})};
 $('pwb').onclick=function(){var f=$('pwf');var open=f.style.display==='none';f.style.display=open?'grid':'none';if(open)$('pw0').focus()};
 $('pwf').onsubmit=function(e){e.preventDefault();var o=$('pw0').value,n=$('pw1').value,r=$('pw2').value,em=myMail();
   if(!em){say('Entre de novo para trocar a senha.',1);return}
@@ -211,7 +229,7 @@ $('pwf').onsubmit=function(e){e.preventDefault();var o=$('pw0').value,n=$('pw1')
     return fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:j.idToken,password:n,returnSecureToken:true})}).then(function(x){return x.json()})}).then(function(j){
     if(!j.idToken)throw new Error('upd');S.tok=j.idToken;if(j.refreshToken)saveRt(j.refreshToken);$('pwf').reset();$('pwf').style.display='none';say('Senha alterada.')}).catch(function(er){say(er.message==='old'?'Senha atual incorreta.':'Não consegui trocar a senha. Tente de novo.',1)}).then(function(){$('pws').disabled=false})};
 var _st=start;start=function(){_st();bioDraw()};
-if(bioId()&&bioOK()&&(function(){try{return !!localStorage.getItem('lf_rt')}catch(_){return false}})()){$('login').hidden=true;$('lock').hidden=false;bioUnlock()}
+if(bioId()&&(function(){try{return !!localStorage.getItem('lf_rt')}catch(_){return false}})()){$('login').hidden=true;$('lock').hidden=false;bioUnlock()}
 else refresh().then(function(ok){if(ok)start()});
 })();
 </script></body></html>
