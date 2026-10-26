@@ -572,6 +572,7 @@ footer b{color:var(--tx)}
 </aside></div>
 
 <div id="intro" aria-hidden="true"><div class="ilogo"><i class="la"></i><i class="lb"></i><i class="lc"></i></div></div>
+<script>try{if(localStorage.getItem("lf_intro2")==="1")document.getElementById("intro").remove()}catch(_){}</script>
 <main id="topo">
 <div class="wrap">
 
@@ -1342,11 +1343,11 @@ footer b{color:var(--tx)}
   function zset(i,say){zi=i;document.body.style.zoom=ZL[i]==1?'':ZL[i];document.body.style.setProperty('--z',ZL[i]);try{localStorage.setItem('lf_zoom',i)}catch(_){}if(say)toast(ZN[i])}
   zset(zi,false);
   $('aa').addEventListener('click',function(){zset((zi+1)%3,true)});
-  /* abertura com o logo da loja. aparece só na primeira visita da sessão e nunca dentro do painel admin (INTRO_SEMPRE=true força sempre, para testes) */
+  /* abertura com o logo da loja. aparece só na primeira visita deste aparelho e nunca dentro do painel admin (INTRO_SEMPRE=true força sempre, para testes) */
   var INTRO_SEMPRE=false;
   (function(){var it=$('intro');if(!it)return;var seen=false;
     if(window.top!==window){it.remove();return}
-    if(!INTRO_SEMPRE){try{seen=sessionStorage.getItem('lf_intro')==='1';sessionStorage.setItem('lf_intro','1')}catch(_){}}
+    if(!INTRO_SEMPRE){try{seen=localStorage.getItem('lf_intro2')==='1';localStorage.setItem('lf_intro2','1')}catch(_){}}
     var sk=false;try{sk=sessionStorage.getItem('lf_skip')==='1';sessionStorage.removeItem('lf_skip')}catch(_){}
     if(seen||sk){it.remove();return}
     document.documentElement.classList.add('lock');
