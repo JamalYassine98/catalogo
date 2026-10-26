@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:type" content="website"><meta property="og:site_name" content="La Fouch"><meta property="og:title" content="La Fouch · Tudo em Óculos"><meta property="og:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:url" content="https://lafouch.com/"><meta property="og:image" content="https://lafouch.com/og.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="La Fouch · Escolha o óculos que combina com você"><meta property="og:locale" content="pt_BR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="La Fouch · Tudo em Óculos"><meta name="twitter:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta name="twitter:image" content="https://lafouch.com/og.jpg"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
-<script>(function(){var B='1792986323';try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
+<script>(function(){var B='1792986474';try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1235,29 +1235,43 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
     if(w.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){w.animate([{opacity:0},{opacity:1}],{duration:220});w.firstChild.animate([{translate:'0 24px',scale:.96,opacity:0},{translate:'0 0',scale:1,opacity:1}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'})}
     mapInit($('mapc'))}
   function mapInit(box){
-    var z=17,W=box.clientWidth,H=box.clientHeight;
+    var W=box.clientWidth,H=box.clientHeight,zf=17,zi=17,sc=1,raf=0,T={},P={},vel=[0,0],lt=0,inr=0,anim=0;
     var wp=function(la,ln,zz){var n=256*Math.pow(2,zz),sn=Math.sin(la*Math.PI/180);return [(ln+180)/360*n,(0.5-Math.log((1+sn)/(1-sn))/(4*Math.PI))*n]};
-    var c=wp(LOJA.lat,LOJA.lng,z),tl=document.createElement('div'),pin=document.createElement('div'),T={};
-    box.style.position='relative';box.style.overflow='hidden';box.style.touchAction='none';box.style.cursor='grab';
-    tl.style.cssText='position:absolute;inset:0';pin.className='lfpin';pin.style.cssText='position:absolute;left:0;top:0;z-index:3;pointer-events:none';
+    var c=wp(LOJA.lat,LOJA.lng,zi),tl=document.createElement('div'),pin=document.createElement('div');
+    box.style.position='relative';box.style.overflow='hidden';box.style.touchAction='none';box.style.cursor='grab';box.style.userSelect='none';
+    tl.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform';
+    pin.className='lfpin';pin.style.cssText='position:absolute;left:0;top:0;z-index:3;pointer-events:none;will-change:transform';
     pin.innerHTML='<div class="pb"><div class="pl"><i></i></div><div class="pt"></div><div class="pd"></div></div>';
     var at=document.createElement('div');at.textContent='© OpenStreetMap';at.style.cssText='position:absolute;left:6px;bottom:4px;z-index:4;font:500 10px Inter,sans-serif;color:#333;background:rgba(255,255,255,.75);padding:1px 5px;border-radius:5px';
     var zb=document.createElement('div');zb.style.cssText='position:absolute;right:10px;bottom:12px;z-index:5;display:flex;flex-direction:column;gap:6px';
-    ['+','−'].forEach(function(t,k){var b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-label',k?'Diminuir zoom':'Aumentar zoom');b.style.cssText='width:38px;height:38px;border-radius:12px;border:0;background:#fff;color:#222;font:600 20px/1 Inter,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer';b.addEventListener('click',function(e){e.stopPropagation();zoom(k?-1:1)});zb.appendChild(b)});
+    ['+','−'].forEach(function(t,k){var b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-label',k?'Diminuir zoom':'Aumentar zoom');b.style.cssText='width:38px;height:38px;border-radius:12px;border:0;background:#fff;color:#222;font:600 20px/1 Inter,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer';b.addEventListener('pointerdown',function(e){e.stopPropagation()});b.addEventListener('click',function(e){e.stopPropagation();zTo(Math.round(zf)+(k?-1:1),W/2,H/2)});zb.appendChild(b)});
     box.appendChild(tl);box.appendChild(pin);box.appendChild(at);box.appendChild(zb);
-    function render(){
-      var ox=c[0]-W/2,oy=c[1]-H/2,n=Math.pow(2,z),x0=Math.floor(ox/256),x1=Math.floor((ox+W)/256),y0=Math.floor(oy/256),y1=Math.floor((oy+H)/256),keep={};
-      for(var x=x0;x<=x1;x++)for(var y=y0;y<=y1;y++){if(y<0||y>=n)continue;var xx=((x%n)+n)%n,k=z+'/'+x+'/'+y;keep[k]=1;var im=T[k];
-        if(!im){im=document.createElement('img');im.alt='';im.draggable=false;im.width=256;im.height=256;im.style.cssText='position:absolute;left:0;top:0;width:256px;height:256px;max-width:none;opacity:0;transition:opacity .35s';im.onload=function(){this.style.opacity=1};im.src='https://tile.openstreetmap.org/'+z+'/'+xx+'/'+y+'.png';tl.appendChild(im);T[k]=im}
-        im.style.transform='translate('+Math.round(x*256-ox)+'px,'+Math.round(y*256-oy)+'px)'}
-      Object.keys(T).forEach(function(k){if(!keep[k]){T[k].remove();delete T[k]}});
-      var m=wp(LOJA.lat,LOJA.lng,z);pin.style.transform='translate('+Math.round(m[0]-ox)+'px,'+Math.round(m[1]-oy)+'px) translate(-50%,calc(-100% + 9px))'}
-    function zoom(d){var nz=Math.max(14,Math.min(18,z+d));if(nz===z)return;var f=Math.pow(2,nz-z);c=[c[0]*f,c[1]*f];z=nz;Object.keys(T).forEach(function(k){T[k].remove();delete T[k]});render()}
-    var dr=null;
-    box.addEventListener('pointerdown',function(e){if(e.target.closest('button'))return;dr={x:e.clientX,y:e.clientY,c:c.slice()};box.setPointerCapture(e.pointerId);box.style.cursor='grabbing'});
-    box.addEventListener('pointermove',function(e){if(!dr)return;c=[dr.c[0]-(e.clientX-dr.x),dr.c[1]-(e.clientY-dr.y)];render()});
-    var up=function(){dr=null;box.style.cursor='grab'};box.addEventListener('pointerup',up);box.addEventListener('pointercancel',up);
-    render()}
+    function sched(){if(!raf)raf=requestAnimationFrame(draw)}
+    function draw(){raf=0;
+      var ni=Math.max(13,Math.min(19,Math.round(zf)));
+      if(ni!==zi){var f=Math.pow(2,ni-zi);c=[c[0]*f,c[1]*f];zi=ni;Object.keys(T).forEach(function(k){T[k].remove();delete T[k]})}
+      sc=Math.pow(2,zf-zi);
+      tl.style.transform='translate3d('+(W/2-c[0]*sc)+'px,'+(H/2-c[1]*sc)+'px,0) scale('+sc+')';
+      var n=Math.pow(2,zi),hw=W/(2*sc),hh=H/(2*sc),x0=Math.floor((c[0]-hw)/256),x1=Math.floor((c[0]+hw)/256),y0=Math.floor((c[1]-hh)/256),y1=Math.floor((c[1]+hh)/256),keep={};
+      for(var x=x0;x<=x1;x++)for(var y=y0;y<=y1;y++){if(y<0||y>=n)continue;var k=zi+'/'+x+'/'+y;keep[k]=1;if(T[k])continue;
+        var im=document.createElement('img'),xx=((x%n)+n)%n;im.alt='';im.draggable=false;im.style.cssText='position:absolute;left:'+(x*256)+'px;top:'+(y*256)+'px;width:256px;height:256px;max-width:none;opacity:0;transition:opacity .3s';
+        im.onload=function(){this.style.opacity=1};im.src='https://tile.openstreetmap.org/'+zi+'/'+xx+'/'+y+'.png';tl.appendChild(im);T[k]=im}
+      Object.keys(T).forEach(function(k){if(!keep[k]){var q=k.split('/');if(+q[0]!==zi||q[1]<x0-1||q[1]>x1+1||q[2]<y0-1||q[2]>y1+1){T[k].remove();delete T[k]}}});
+      var m=wp(LOJA.lat,LOJA.lng,zi);
+      pin.style.transform='translate3d('+(W/2+(m[0]-c[0])*sc)+'px,'+(H/2+(m[1]-c[1])*sc)+'px,0) translate(-50%,calc(-100% + 9px))'}
+    function zAt(nz,mx,my){nz=Math.max(13,Math.min(21,nz));var s2=Math.pow(2,nz-zi),dx=mx-W/2,dy=my-H/2;c=[c[0]+dx/sc-dx/s2,c[1]+dy/sc-dy/s2];zf=nz;sc=s2;sched()}
+    function zTo(nz,mx,my){nz=Math.max(13,Math.min(21,nz));cancelAnimationFrame(anim);var a=zf,t0=performance.now();(function st(t){var k=Math.min(1,(t-t0)/300),e=1-Math.pow(1-k,3);zAt(a+(nz-a)*e,mx,my);if(k<1)anim=requestAnimationFrame(st)})(t0)}
+    var rc=function(e){var r=box.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+    var info=function(){var a=Object.keys(P).map(function(k){return P[k]});if(a.length<2)return null;var dx=a[0][0]-a[1][0],dy=a[0][1]-a[1][1];return {d:Math.hypot(dx,dy)||1,m:[(a[0][0]+a[1][0])/2,(a[0][1]+a[1][1])/2]}};
+    box.addEventListener('pointerdown',function(e){if(e.target.closest('button'))return;cancelAnimationFrame(inr);cancelAnimationFrame(anim);P[e.pointerId]=rc(e);vel=[0,0];lt=e.timeStamp;try{box.setPointerCapture(e.pointerId)}catch(_){}box.style.cursor='grabbing'});
+    box.addEventListener('pointermove',function(e){if(!P[e.pointerId])return;var was=info(),o=P[e.pointerId],n=rc(e);P[e.pointerId]=n;var now=info();
+      if(was&&now){zAt(zf+Math.log2(now.d/was.d),now.m[0],now.m[1]);c=[c[0]-(now.m[0]-was.m[0])/sc,c[1]-(now.m[1]-was.m[1])/sc];sched()}
+      else if(!now){var dx=n[0]-o[0],dy=n[1]-o[1],dt=Math.max(1,e.timeStamp-lt);lt=e.timeStamp;vel=[vel[0]*.6+dx/dt*.4,vel[1]*.6+dy/dt*.4];c=[c[0]-dx/sc,c[1]-dy/sc];sched()}});
+    var up=function(e){var had=Object.keys(P).length;delete P[e.pointerId];if(Object.keys(P).length===0){box.style.cursor='grab';if(had===1&&Math.hypot(vel[0],vel[1])>.05){var l=performance.now();(function f(t){var dt=Math.min(40,t-l);l=t;c=[c[0]-vel[0]*dt/sc,c[1]-vel[1]*dt/sc];vel=[vel[0]*Math.pow(.94,dt/16),vel[1]*Math.pow(.94,dt/16)];sched();if(Math.hypot(vel[0],vel[1])>.02)inr=requestAnimationFrame(f)})(l)}}else{vel=[0,0]}};
+    box.addEventListener('pointerup',up);box.addEventListener('pointercancel',up);
+    box.addEventListener('wheel',function(e){e.preventDefault();var p=rc(e);zAt(zf-e.deltaY*.0025,p[0],p[1])},{passive:false});
+    box.addEventListener('dblclick',function(e){var p=rc(e);zTo(Math.round(zf)+1,p[0],p[1])});
+    draw()}
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a.mp');if(!a)return;e.preventDefault();if(typeof drwSet==='function')drwSet(false);openMap()});
   function homeAnim(){
     var pn=document.querySelector('.sec.pop'),rm=matchMedia('(prefers-reduced-motion: reduce)').matches,E='cubic-bezier(.2,.8,.2,1)';
