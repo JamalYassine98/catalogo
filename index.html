@@ -513,9 +513,11 @@ footer b{color:var(--tx)}
  .dhd .ib{margin:0}
  .dpn nav a{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--ln);text-decoration:none;color:var(--tx);font:600 21px Fraunces,Georgia,serif}
  .dpn nav a span{color:var(--ac);font:400 20px Inter,system-ui,sans-serif}
- .dpf{padding:16px 20px 4px}.dpf small{display:block;font:700 11px Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--mu);margin-bottom:10px}
- .dpf div{display:flex;gap:8px;flex-wrap:wrap}
- .dpf button{flex:1 1 90px;height:44px;border-radius:999px;border:1px solid var(--ln);background:var(--pn);color:var(--tx);font:700 14px Inter,system-ui,sans-serif}
+ .dpf{padding:14px 20px 4px;display:flex;flex-direction:column;gap:14px}
+ .prow{display:flex;align-items:center;gap:12px}.prow>span{width:64px;flex:none;font:700 11px Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--mu)}
+ .seg{display:flex;gap:2px;padding:3px;border:1px solid var(--ln);border-radius:999px;background:var(--pn)}
+ .seg button{border:0;background:transparent;color:var(--mu);font:700 13px Inter,system-ui,sans-serif;padding:9px 13px;border-radius:999px;min-height:38px}
+ .seg button.on{background:#a24a80;color:#fff}
  .dct{margin-top:auto;padding:14px 20px 0}
  .dct a.dw{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:16px;background:var(--wa);color:#fff;text-decoration:none;font:700 16px Inter,system-ui,sans-serif}
  .dct p{margin:12px 0 0;text-align:center;color:var(--mu);font:500 13px/1.45 Inter,system-ui,sans-serif}
@@ -540,7 +542,11 @@ footer b{color:var(--tx)}
 <div id="drw" aria-hidden="true"><div class="dsc" data-dclose></div><aside class="dpn" role="dialog" aria-label="Menu">
   <div class="dhd"><button class="ib" type="button" data-dclose aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><b>Menu</b></div>
   <nav aria-label="Seções"><a href="#vitrine">Catálogo<span>→</span></a><a href="#rosto">Qual combina comigo?<span>→</span></a><a href="#atacado">Atacado<span>→</span></a><a href="#como">Como comprar<span>→</span></a><a href="#duvidas">Dúvidas<span>→</span></a></nav>
-  <div class="dpf"><small>Preferências</small><div><button type="button" data-pref="lgb">Idioma</button><button type="button" data-pref="theme">Tema</button><button type="button" data-pref="aa">Texto</button></div></div>
+  <div class="dpf">
+    <div class="prow"><span>Idioma</span><div class="seg"><button type="button" data-lg="es">Español</button><button type="button" data-lg="pt">Português</button></div></div>
+    <div class="prow"><span>Tema</span><div class="seg"><button type="button" data-th="auto">Auto</button><button type="button" data-th="light">Claro</button><button type="button" data-th="dark">Escuro</button></div></div>
+    <div class="prow"><span>Texto</span><div class="seg"><button type="button" data-zs="0" style="font-size:13px">A</button><button type="button" data-zs="1" style="font-size:16px">A</button><button type="button" data-zs="2" style="font-size:19px">A</button></div></div>
+  </div>
   <div class="dct"><a class="dw" id="dwa" target="_blank" rel="noopener" href="https://wa.me/">Falar com a loja</a><p>Galeria Jebai Center, 3º piso, nº 2242<br>Ciudad del Este</p></div>
 </aside></div>
 
@@ -677,7 +683,7 @@ footer b{color:var(--tx)}
 'Seu rosto é':'Tu rostro es',
 'Ver os modelos para o meu rosto':'Ver los modelos para mi rostro',
 'Não parece com você? Escolher o formato sozinho':'¿No se parece a ti? Elegir la forma yo mismo',
-'Catálogo':'Catálogo','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones','Menu':'Menú','Preferências':'Preferencias','Tema':'Tema','Texto':'Texto','Qual combina comigo?':'¿Cuál combina conmigo?',
+'Catálogo':'Catálogo','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones','Menu':'Menú','Claro':'Claro','Escuro':'Oscuro','Auto':'Auto','Português':'Português','Español':'Español','Preferências':'Preferencias','Tema':'Tema','Texto':'Texto','Qual combina comigo?':'¿Cuál combina conmigo?',
 'Buscar por modelo ou referência':'Buscar por modelo o referencia','Buscar no catálogo':'Buscar en el catálogo',
 'Trocar tema claro e escuro':'Cambiar tema claro y oscuro','Mudar para o tema claro':'Cambiar al tema claro','Mudar para o tema escuro':'Cambiar al tema oscuro',
 'Tamanho do texto':'Tamaño del texto','Abrir a reserva':'Abrir la reserva','La Fouch, tudo em óculos':'La Fouch, todo en lentes',
@@ -1117,13 +1123,18 @@ footer b{color:var(--tx)}
     if(id==='vitrine'){var ms=document.querySelector('.mobsearch');if(ms&&ms.parentNode!==el)el.insertBefore(ms,el.firstChild);if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
     el.classList.add('in');el.classList.add('pop');el.scrollTop=0;document.documentElement.classList.add('lock','ppop');
     try{history.replaceState(null,'','#'+id)}catch(_){}}
-  function drwSet(on){var d=$('drw');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
+  function prefSync(){var r=document.documentElement,t=r.dataset.theme||'auto';
+    document.querySelectorAll('#drw [data-lg]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lg')===LFI.lang)});
+    document.querySelectorAll('#drw [data-th]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-th')===t)});
+    document.querySelectorAll('#drw [data-zs]').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-zs')===zi)})}
+  function drwSet(on){if(on)prefSync();var d=$('drw');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
   $('mnb').addEventListener('click',function(){var w=document.querySelector('a.wa'),a=$('dwa');if(w&&a)a.href=w.href;drwSet(true)});
   document.addEventListener('click',function(e){
-    var t=e.target.closest&&e.target.closest('[data-dclose],[data-pback],[data-pref],[data-pg],#drw nav a');if(!t)return;
+    var t=e.target.closest&&e.target.closest('[data-dclose],[data-pback],[data-th],[data-zs],[data-pg],#drw nav a');if(!t)return;
     if(t.hasAttribute('data-dclose'))drwSet(false);
     else if(t.hasAttribute('data-pback')){closePanels();try{history.replaceState(null,'',location.pathname+location.search)}catch(_){}}
-    else if(t.hasAttribute('data-pref')){drwSet(false);var o=$(t.getAttribute('data-pref'));if(o)o.click()}
+    else if(t.hasAttribute('data-th')){var v=t.getAttribute('data-th'),rr=document.documentElement;if(v==='auto')delete rr.dataset.theme;else rr.dataset.theme=v;themeIcon(false);prefSync()}
+    else if(t.hasAttribute('data-zs')){zset(+t.getAttribute('data-zs'),false);prefSync()}
     else if(t.hasAttribute('data-pg')){st.pg=(st.pg||0)+parseInt(t.getAttribute('data-pg'),10);drawGrid()}
     else drwSet(false)});
   (function(){var x0=null,y0=0,g=$('grid');if(!g)return;
