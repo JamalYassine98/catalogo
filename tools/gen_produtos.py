@@ -50,6 +50,21 @@ def main():
         docs = get('produtos?pageSize=300').get('documents', []); fotos = None
     os.makedirs(SAIDA, exist_ok=True)
     vivos = set()
+    # produtos que já vêm dentro do próprio site (enquanto não foram publicados na vitrine)
+    import re
+    ja = {(campos(d).get('ref') or d['name'].split('/')[-1]) for d in docs}
+    src = open(os.path.join(RAIZ, 'index.html'), encoding='utf-8').read()
+    for ch in src.split("{ref:'")[1:]:
+        ch = ch.split("{ref:'")[0]
+        m = re.match(r"([A-Za-z0-9_-]+)'", ch)
+        n = re.search(r"nome:'([^']+)'", ch); f = re.search(r"foto:'(data:image/[^']+)'", ch); av = re.search(r"aviso:'([^']*)'", ch)
+        if not (m and n and f) or m.group(1) in ja: continue
+        ref = m.group(1)
+        jpg = os.path.join(SAIDA, ref + '.jpg'); pg = os.path.join(SAIDA, ref + '.html')
+        vivos.add(ref)
+        if not os.path.exists(jpg): foto(f.group(1), jpg)
+        novo = pagina(ref, n.group(1), bool(av) and av.group(1) == 'Esgotado')
+        if not os.path.exists(pg) or open(pg, encoding='utf-8').read() != novo: open(pg, 'w', encoding='utf-8').write(novo)
     for d in docs:
         f = campos(d); ref = f.get('ref') or d['name'].split('/')[-1]
         if f.get('oculto') or not ref.replace('-', '').replace('_', '').isalnum(): continue
