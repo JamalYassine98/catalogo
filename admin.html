@@ -24,6 +24,30 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--ln)}.hd h1{margin:0;font-size:24px}.hd .btn{flex:none}
 [hidden]{display:none!important}
 .tb{display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+/* ===== celular: site em tela cheia, barra no topo, dock embaixo, folhas por cima ===== */
+@media (max-width:999px){
+ body.mob{padding:0}body.mob main{max-width:none;display:block}
+ body.mob #tabs{display:none!important}
+ body.mob #mtop{position:fixed;top:0;left:0;right:0;z-index:30;height:56px;padding:8px max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));display:flex;gap:8px;align-items:center;background:var(--bg);border-bottom:1px solid var(--ln)}
+ body.mob #mtop[hidden],body.mob #mdock[hidden],body.mob #mbk[hidden]{display:none!important}
+ .mp{height:40px;border-radius:999px;padding:0 14px;font:700 13px Inter,system-ui,sans-serif;border:1px solid var(--ln);background:var(--pn);color:var(--tx);cursor:pointer}.mp.on{background:var(--ok);border-color:var(--ok);color:#fff}.mp.off{background:var(--bad);border-color:var(--bad);color:#fff}
+ body.mob #work{display:block}
+ body.mob #cat{position:fixed;top:56px;left:0;right:0;bottom:0;z-index:10}
+ body.mob #cat iframe{width:100%!important;height:100%!important;min-height:0!important;border:0!important;border-radius:0!important}
+ body.mob #mdock{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:31;height:62px;border-radius:22px;background:color-mix(in srgb,var(--pn) 94%,transparent);border:1px solid var(--ln);display:flex;justify-content:space-around;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.35);backdrop-filter:blur(8px)}
+ .dkb{display:flex;flex-direction:column;align-items:center;gap:2px;font:700 11px Inter,system-ui,sans-serif;color:var(--tx);background:none;border:0;padding:6px 12px;border-radius:16px;cursor:pointer;min-width:60px}.dkb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.dkb.p{background:var(--ac);color:#fff}
+ body.mob #mbk{position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.45)}
+ body.mob #app,body.mob #ed{position:fixed;left:0;right:0;bottom:0;z-index:40;max-height:88vh;overflow:auto;background:var(--pn);border-radius:26px 26px 0 0;border:1px solid var(--ln);border-bottom:0;padding:22px max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));box-shadow:0 -14px 40px rgba(0,0,0,.4);display:block!important;margin:0}
+ body.mob #app[hidden],body.mob #ed[hidden]{display:none!important}
+ body.mob #app::before,body.mob #ed::before{content:"";display:block;width:44px;height:5px;border-radius:9px;background:var(--ln);margin:-12px auto 12px}
+ body.mob #app>section{border:0;padding:0;background:none;border-radius:0}
+ body.mob #app>section[hidden]{display:none!important}
+ body.mob #app .hd{display:none}
+ body.mob #c_cfg #pvc,body.mob #c_cfg #pvr{display:none!important}
+ body.mob #out2,body.mob #svc2{display:block!important}
+ body.mob #ed.card{border-radius:26px 26px 0 0}
+}
 </style></head><body><main>
 
 <div id="msg" class="msg" hidden></div>
@@ -31,13 +55,16 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 <section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
 
 <nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="sw2" id="tg2" style="margin-left:auto" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
+<div id="mtop" hidden><button class="mp" id="mst" type="button" aria-label="Ligar ou desligar o site"></button><span style="flex:1"></span><button class="mp" id="mcl" type="button">👁 Cliente</button></div>
+<div id="mbk" hidden></div>
+<nav id="mdock" hidden aria-label="Ações"><button type="button" class="dkb p" data-s="new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Novo</button><button type="button" class="dkb" data-s="dst"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Destaque</button><button type="button" class="dkb" data-s="lst"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Produtos</button><button type="button" class="dkb" data-s="cfg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2L10 21h4l.6-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>Ajustes</button></nav>
 <div id="work"><section id="cat" hidden><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
 <div id="app" hidden style="display:grid;gap:16px">
  
- <section class="card"><div class="hd"><h1>Painel La Fouch</h1><button class="btn o sm" id="out">Sair</button></div><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
-  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button></div></section>
- <section class="card"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
- <section class="card"><div class="tb"><h2 style="margin:0">Catálogo</h2><button class="btn" id="new">+ Novo produto</button></div><p style="color:var(--mu);font-size:14px;margin:8px 0 12px" id="cnt"></p><div class="pl" id="pl"></div><div id="seed" hidden style="margin-top:12px"><button class="btn o" id="seedb">Enviar o catálogo atual do site</button></div></section>
+ <section class="card" id="c_cfg"><div class="hd"><h1>Painel La Fouch</h1><button class="btn o sm" id="out">Sair</button></div><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
+  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn msair" id="svc2" type="button" style="display:none">Salvar aviso</button><button class="btn o msair" id="out2" type="button" style="display:none">Sair da conta</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button></div></section>
+ <section class="card" id="c_dst"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
+ <section class="card" id="c_lst"><div class="tb"><h2 style="margin:0">Catálogo</h2><button class="btn" id="new">+ Novo produto</button></div><p style="color:var(--mu);font-size:14px;margin:8px 0 12px" id="cnt"></p><div class="pl" id="pl"></div><div id="seed" hidden style="margin-top:12px"><button class="btn o" id="seedb">Enviar o catálogo atual do site</button></div></section>
 </div>
 
 <section class="card" id="ed" hidden><h2 id="edt">Produto</h2><div style="display:grid;gap:12px">
@@ -85,17 +112,25 @@ function load(){
     draw()})}
 function gs(n){return 'Gs. '+Number(n||0).toLocaleString('pt-BR')}
 function draw(){
-  var on=S.cfg.ativo!==false;$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('stt').textContent=on?'● No ar':'● Fora do ar (visitantes veem o aviso)';$('stt').className='st '+(on?'on':'off');$('tg2').className='sw2'+(on?' on':'');$('tg2').textContent=on?'● Site no ar':'● Site fora do ar';
+  var on=S.cfg.ativo!==false;$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('stt').textContent=on?'● No ar':'● Fora do ar (visitantes veem o aviso)';$('stt').className='st '+(on?'on':'off');$('tg2').className='sw2'+(on?' on':'');$('tg2').textContent=on?'● Site no ar':'● Site fora do ar';$('mst').className='mp '+(on?'on':'off');$('mst').textContent=on?'● No ar':'● Fora do ar';
   $('avs').value=S.cfg.aviso||'';$('vid').value=S.cfg.video||'';
   $('dst').innerHTML=S.prods.map(function(p){return '<option value="'+p.ref+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+p.ref+' · '+p.nome+'</option>'}).join('');
   $('cnt').textContent=S.prods.length+' produtos';$('seed').hidden=S.prods.length>0;
   $('pl').innerHTML=S.prods.map(function(p){return '<div class="pi'+(p.oculto?' h':'')+'" data-r="'+p.ref+'"><img alt="" data-ph="'+p.ref+'"'+(p.fv>0?'':' hidden')+'><div><b>'+p.nome+'</b><small>'+p.ref+'</small><div class="tags">'+(p.de>p.n?'<span>OFERTA</span>':'')+(p.aviso==='Esgotado'?'<span class="x">Esgotado</span>':'')+(p.oculto?'<span class="x">Escondido</span>':'')+'</div></div><div class="r">'+(p.de>p.n?'<s style="color:var(--mu);font-weight:500;font-size:12px;display:block">'+gs(p.de)+'</s>':'')+gs(p.n)+'</div></div>'}).join('');
   S.prods.forEach(function(p){if(p.fv>0)api('GET','fotos/'+p.ref).then(function(d){var o=d&&fd(d),im=document.querySelector('[data-ph="'+p.ref+'"]');if(o&&o.d&&im){im.src=o.d;im.hidden=false}}).catch(function(){})})}
 function W(){return window.matchMedia&&matchMedia('(min-width:1000px)').matches}
-function view(v){S.view=v;$('cat').hidden=W()?false:v!=='cat';$('app').hidden=W()?false:v!=='app';$('ed').hidden=true;$('tabs').hidden=false;Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){t.classList.toggle('on',t.getAttribute('data-v')===v)})}
+function mobSet(){var m=!W();document.body.classList.toggle('mob',m);['mtop'].forEach(function(i){$(i).hidden=!m||!S.tok});var ed=!$('ed').hidden,sh=!!S.sheet&&!ed;$('mdock').hidden=!m||!S.tok||ed;$('mbk').hidden=!m||!(sh||ed);if(m){$('app').hidden=!sh;['c_cfg','c_dst','c_lst'].forEach(function(i){$(i).hidden=i!=='c_'+S.sheet})}}
+function sheet(n){S.sheet=n||'';if(n)$('ed').hidden=true;view(S.view||'cat')}
+function view(v){S.view=v;if(!W()){$('cat').hidden=false;$('ed').hidden=true;$('tabs').hidden=true;mobSet();return}$('cat').hidden=W()?false:v!=='cat';$('app').hidden=W()?false:v!=='app';$('ed').hidden=true;$('tabs').hidden=false;Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){t.classList.toggle('on',t.getAttribute('data-v')===v)})}
 function reloadCat(){var f=$('pvf');if(f.src&&f.contentWindow){try{f.contentWindow.location.reload();return}catch(_){}}f.src='index.html?p='+Date.now()}
-function start(){$('login').hidden=true;$('out').hidden=false;view('cat');$('pvf').src='index.html?p='+Date.now();load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
-addEventListener('resize',function(){if(S.tok&&$('ed').hidden)view(S.view||'cat')});
+function start(){$('login').hidden=true;$('out').hidden=false;view('cat');mobSet();$('pvf').src='index.html?p='+Date.now();load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
+addEventListener('resize',function(){if(S.tok&&$('ed').hidden)view(S.view||'cat');else mobSet()});
+$('mdock').onclick=function(e){var b=e.target.closest('.dkb');if(!b)return;var k=b.getAttribute('data-s');if(k==='new')edit('');else sheet(k)};
+$('mbk').onclick=function(){if(!$('ed').hidden){$('cc').click()}else sheet('')};
+$('mst').onclick=function(){$('tgl').click()};
+$('mcl').onclick=function(){var cli=$('pvc').hidden;if(cli){$('pvr').click()}else{$('pvc').click()}$('mcl').textContent=cli?'👁 Cliente':'↩ Admin'};
+$('out2').onclick=function(){$('out').click()};
+$('svc2').onclick=function(){$('svc').click()};
 document.getElementById('tabs').onclick=function(e){var t=e.target.closest('.tab');if(t)view(t.getAttribute('data-v'))};
 window.addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;border-radius:0;background:#fff':'width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff';return}if(!e.data.lfEdit)return;edit(e.data.lfEdit)});
 /* config */
@@ -116,7 +151,7 @@ function edit(ref){
   [0,1,2].forEach(function(i){$('m'+i).value=(d.med||[])[i]||''});$('f_rank').value=String(d.rank||0);$('f_ocu').value=d.oculto?'1':'0';
   Array.prototype.forEach.call($('f_rosto').querySelectorAll('input'),function(c){c.checked=(d.rosto||[]).indexOf(c.value)>=0});
   var im=document.querySelector('[data-ph="'+(p&&p.ref)+'"]');$('fp').hidden=!(im&&im.src&&!im.hidden);if(!$('fp').hidden)$('fp').src=im.src;$('ff').value='';
-  $('del').hidden=!p;hint();$('ed').hidden=false;$('app').hidden=true;if(!W()){$('cat').hidden=true;$('tabs').hidden=true}scrollTo(0,0)}
+  $('del').hidden=!p;hint();$('ed').hidden=false;$('app').hidden=true;if(!W()){S.sheet='';$('cat').hidden=false;$('tabs').hidden=true;mobSet();$('ed').scrollTop=0}else scrollTo(0,0)}
 $('pl').onclick=function(e){var t=e.target.closest('[data-r]');if(t)edit(t.getAttribute('data-r'))};
 $('new').onclick=function(){edit('')};
 $('cc').onclick=function(){view(S.view||'cat')};
