@@ -496,7 +496,7 @@ footer b{color:var(--tx)}
  .mobsearch .search svg{order:2;margin-left:auto;flex:none}
  .mobsearch .search input{order:1;flex:1;min-width:0}
  .top .mobsearch{display:none}
- #vitrine.pop #vscr{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
+ #vitrine.pop #vscr{flex:1;min-height:0;overflow:auto;margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px))) calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));-webkit-overflow-scrolling:touch}
  #vitrine.pop #vscr .mobsearch{padding:0 0 10px}
  .mobsearch .fbtn{margin:0;flex:none;display:inline-flex;position:relative}
  .fbtn .fdot{display:none;position:absolute;top:6px;right:6px;width:10px;height:10px;border-radius:50%;background:var(--ac)}
