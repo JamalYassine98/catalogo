@@ -475,6 +475,8 @@ footer b{color:var(--tx)}
 .facn{font-size:12.5px;color:var(--mu);margin:0 0 8px}
 #stage[data-open]{cursor:pointer}#stage[data-open]:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
 
+/* depois da abertura, nada reanima: evita piscar quando os produtos chegam do servidor */
+html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .hero h1,html.nr .cta .btn{animation:none!important}
 /* ===== celular: entrada com 2 botões, menu lateral e catálogo em páginas ===== */
 .mnb,#drw,.pbar,#pager,#fsh,.fbtn{display:none}
 @media (max-width:860px){
@@ -947,10 +949,11 @@ footer b{color:var(--tx)}
   function drawGrid(){
     var r=lista();drawRes(r.length);
     $('count').textContent=r.length+' modelo'+(r.length===1?'':'s');
-    var RA=r;r=pageOf(r);$('grid').innerHTML=r.length?r.map(function(p,i){
+    var RA=r;r=pageOf(r);var GH=r.length?r.map(function(p,i){
       var esg=p.aviso==='Esgotado',n=st.cart[p.ref]||0;
       var sk=esg?'<span class="stk e">Esgotado</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':'');
       return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr"><span class="ref">'+p.ref+'</span>'+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button><button class="add'+(esg?' alt':'')+'" data-add="'+p.ref+'">'+(esg?'Avise-me quando chegar':(n?'Na reserva ('+n+') · +1':'Comprar'))+'</button></article>'}).join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
+    var G=$('grid');if(G._h!==GH){G._h=GH;G.innerHTML=GH}
   }
   function drawChips(){
     var nf=Object.keys(st.fav).length;if(!nf&&st.tipo==='fav')st.tipo='todos';$('tipos').innerHTML=TIPOS.concat(nf?[['fav','♥ Favoritos ('+nf+')']]:[]).map(function(t){return '<button class="chip" data-tipo="'+t[0]+'" aria-pressed="'+(st.tipo===t[0])+'">'+t[1]+'</button>'}).join('')}
@@ -1491,6 +1494,7 @@ footer b{color:var(--tx)}
   (ADM||(ADM=isAdm())).then(function(a){if(a&&!LF_ADM&&window.parent!==window){LF_ADM=true;document.documentElement.classList.add('adm');redraw()}});
   manut();try{var qv=new URLSearchParams(location.search).get('video');if(qv)setTimeout(function(){applyVideo(qv)},300)}catch(_){}
   if(!/[?&]nosync/.test(location.search))setTimeout(syncRun,50);
+  setTimeout(function(){document.documentElement.classList.add('nr')},3500);
 
   /* idioma e moeda */
   ['theme','lgb','aa','bagbtn'].forEach(function(i){var e=$(i);if(e&&e.dataset.l)e.dataset.l=LFI.tr(e.dataset.l)});
