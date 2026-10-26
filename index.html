@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:type" content="website"><meta property="og:site_name" content="La Fouch"><meta property="og:title" content="La Fouch · Tudo em Óculos"><meta property="og:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:url" content="https://lafouch.com/"><meta property="og:image" content="https://lafouch.com/og.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="La Fouch · Escolha o óculos que combina com você"><meta property="og:locale" content="pt_BR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="La Fouch · Tudo em Óculos"><meta name="twitter:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta name="twitter:image" content="https://lafouch.com/og.jpg"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
-<script>(function(){var B='1793020060';try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('(max-width:860px)').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
+<script>(function(){var B='1793020689';try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('(max-width:860px)').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1406,18 +1406,40 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
     sc.diamante=(.84-m.fore)*5+(.80-m.jaw)*3;
     sc.oval=.55-Math.abs(m.r-1.38)*2.2-Math.abs(m.jaw-.76)*2-Math.abs(m.fore-m.jaw-.03)*1.5;
     var k=Object.keys(sc).sort(function(x,y){return sc[y]-sc[x]});
-    return {id:k[0],second:k[1],sc:sc}}
-  function faDetect(fa,cv){
+    var gap=sc[k[0]]-sc[k[1]];
+    return {id:k[0],second:k[1],sc:sc,close:gap<.12}}
+  /* giro da cabeça: compara a distância do nariz a cada lado do rosto (1 = de frente) */
+  function faYaw(pt){var l=Math.abs(pt[30].x-pt[0].x),r=Math.abs(pt[16].x-pt[30].x);return Math.min(l,r)/Math.max(l,r)}
+  /* detecção: 4 leituras do mesmo rosto (original, espelhada, aproximada e aproximada espelhada); a mediana de cada ponto tira o ruído */
+  var FMIR=[16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,26,25,24,23,22,21,20,19,18,17,27,28,29,30,35,34,33,32,31,45,44,43,42,47,46,39,38,37,36,41,40,54,53,52,51,50,49,48,59,58,57,56,55,64,63,62,61,60,67,66,65];
+  function faOne(fa,cv){
     var o=function(sz,th){return new fa.TinyFaceDetectorOptions({inputSize:sz,scoreThreshold:th})};
     return fa.detectSingleFace(cv,o(416,.5)).withFaceLandmarks(true).then(function(r){
       return r||fa.detectSingleFace(cv,o(512,.3)).withFaceLandmarks(true)})}
+  function faFlip(cv){var c=document.createElement('canvas');c.width=cv.width;c.height=cv.height;var x=c.getContext('2d');x.translate(c.width,0);x.scale(-1,1);x.drawImage(cv,0,0);return c}
+  function faPts(r){return r.landmarks.positions.map(function(p){return {x:p.x,y:p.y}})}
+  function faUnflip(pts,W){var o=[];for(var i=0;i<68;i++){var p=pts[FMIR[i]];o[i]={x:W-p.x,y:p.y}}return o}
+  function faMed(l){l=l.slice().sort(function(a,b){return a-b});var n=l.length;return n%2?l[(n-1)/2]:(l[n/2-1]+l[n/2])/2}
+  function faDetect(fa,cv){
+    return faOne(fa,cv).then(function(r){
+      if(!r)return null;
+      var b=r.detection.box,sz=Math.max(b.width,b.height)*1.7,cx=b.x+b.width/2,cy=b.y+b.height/2,N=640,k=N/sz;
+      var cr=document.createElement('canvas');cr.width=cr.height=N;var cc=cr.getContext('2d');cc.fillStyle='#808080';cc.fillRect(0,0,N,N);cc.drawImage(cv,cx-sz/2,cy-sz/2,sz,sz,0,0,N,N);
+      var fl=faFlip(cv),fc=faFlip(cr),sets=[faPts(r)];
+      return Promise.all([faOne(fa,fl).catch(function(){return null}),faOne(fa,cr).catch(function(){return null}),faOne(fa,fc).catch(function(){return null})]).then(function(v){
+        if(v[0])sets.push(faUnflip(faPts(v[0]),cv.width));
+        var back=function(pts){return pts.map(function(p){return {x:p.x/k+cx-sz/2,y:p.y/k+cy-sz/2}})};
+        if(v[1])sets.push(back(faPts(v[1])));
+        if(v[2])sets.push(back(faUnflip(faPts(v[2]),N)));
+        var pts=[];for(var i=0;i<68;i++)pts.push({x:faMed(sets.map(function(s){return s[i].x})),y:faMed(sets.map(function(s){return s[i].y}))});
+        r.landmarks={positions:pts};r.nread=sets.length;return r})})}
   function faSub(id){var n=P.filter(function(p){return p.rosto.indexOf(id)>=0&&genOk(p,faGen)}).length,f=FACES.filter(function(x){return x.id===id})[0];return esc(f.dica)+(n?' Separamos '+n+' modelos para você.':'')}
   function faResult(cv,r,res){
     var m=document.querySelector('.modal.fa');if(!m)return;
     var f=FACES.filter(function(x){return x.id===res.id})[0];faGen=st.gen==='m'||st.gen==='f'?st.gen:'';
     m.innerHTML='<div class="fares"><div style="text-align:right;margin:-8px -6px 0 0"><button type="button" class="x" data-close aria-label="Fechar">×</button></div>'+
     '<div class="faph"><canvas id="facv" width="360" height="360"></canvas></div><div class="fak">Seu rosto é</div><h3>'+esc(f.nome)+'</h3>'+
-    '<p class="sub" data-fadica="'+esc(f.dica)+'">'+faSub(res.id)+'</p>'+
+    '<p class="sub" data-fadica="'+esc(f.dica)+'">'+faSub(res.id)+'</p>'+(res.close?'<p class="sub" style="margin-top:-4px">Seu rosto também tem traços de <button type="button" class="fan" style="display:inline;padding:0;text-decoration:underline" data-fause="'+res.second+'">'+esc(FACES.filter(function(x){return x.id===res.second})[0].nome.toLowerCase())+'</button>.</p>':'')+
     '<div class="fak" style="margin-top:2px">Para quem são os óculos?</div><div class="fagen">'+[['f','Feminino'],['m','Masculino'],['','Todos']].map(function(g){return '<button type="button" class="chip" data-fagen="'+g[0]+'" aria-pressed="'+(faGen===g[0])+'">'+g[1]+'</button>'}).join('')+'</div>'+
     '<div class="fabtns"><button type="button" class="btn p" data-fause="'+res.id+'">Ver os modelos para o meu rosto</button><button type="button" class="btn o" data-fanew>Tentar outra foto</button></div>'+
     '<button type="button" class="fan" data-fawrong>Não parece com você? Escolher o formato sozinho</button></div>';
@@ -1441,7 +1463,10 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
         var wait=Math.max(0,1500-(Date.now()-t0));
         return new Promise(function(ok){setTimeout(ok,wait)}).then(function(){
           if(!r){faErr('Não achei um rosto','Tente de novo com o rosto de frente, bem iluminado, sem óculos e sem boné.');return}
-          faResult(cv,r,faShape(faMeasure(r.landmarks.positions)))})})
+          var yw=faYaw(r.landmarks.positions);
+          if(yw<.62){faErr('Rosto de lado','Olhe direto para a câmera, com a cabeça reta, para medir certinho as proporções.');return}
+          var res=faShape(faMeasure(r.landmarks.positions));res.yaw=yw;
+          faResult(cv,r,res)})})
     }).catch(fail)}
 
   /* câmera guiada: oval, avisos ao vivo e foto automática quando o rosto está bem posicionado */
