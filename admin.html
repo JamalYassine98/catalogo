@@ -104,7 +104,7 @@ function saveRt(t){try{localStorage.setItem('lf_rt',t)}catch(_){}}
 function auth(url,payload){return fetch(url+'?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:payload}).then(function(r){return r.json()})}
 function signIn(){var em=$('em').value.trim(),pw=$('pw').value;
   fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,password:pw,returnSecureToken:true})}).then(function(r){return r.json()}).then(function(j){
-    if(!j.idToken){say('E-mail ou senha incorretos.',1);return}S.tok=j.idToken;saveRt(j.refreshToken);start();remember(em,pw)}).catch(function(){say('Sem conexão.',1)})}
+    if(!j.idToken){say('E-mail ou senha incorretos.',1);return}S.tok=j.idToken;saveRt(j.refreshToken);gate(em,pw)}).catch(function(){say('Sem conexão.',1)})}
 function refresh(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}if(!rt)return Promise.resolve(false);
   return auth('https://securetoken.googleapis.com/v1/token','grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)).then(function(j){if(!j.id_token)return false;S.tok=j.id_token;saveRt(j.refresh_token||rt);return true}).catch(function(){return false})}
 /* dados */
@@ -205,8 +205,14 @@ function bioEnable(){
 function remember(em,pw){var on=!!($('rem')&&$('rem').checked);
   try{if(on){localStorage.setItem('lf_rem','1');localStorage.setItem('lf_em',em)}else{localStorage.removeItem('lf_rem');localStorage.removeItem('lf_em')}}catch(_){}
   if(!on)return;
-  try{if(window.PasswordCredential&&navigator.credentials&&navigator.credentials.store)navigator.credentials.store(new PasswordCredential({id:em,password:pw,name:'La Fouch'})).catch(function(){})}catch(_){}
-  if(!bioId())bioEnable().then(function(){bioDraw();say('Lembrado. Da próxima vez o painel pede a sua biometria.')}).catch(function(){say('E-mail e senha lembrados. A biometria não foi ativada neste aparelho.',1)})}
+  try{if(window.PasswordCredential&&navigator.credentials&&navigator.credentials.store)navigator.credentials.store(new PasswordCredential({id:em,password:pw,name:'La Fouch'})).catch(function(){})}catch(_){}}
+/* depois da senha, a biometria é obrigatória (se marcou "lembrar" ou se o aparelho já usa biometria): sem ela, o painel não abre */
+function gate(em,pw){var need=!!($('rem')&&$('rem').checked)||!!bioId();
+  var done=function(){remember(em,pw);start()};
+  if(!need){done();return}
+  if(!bioId()&&!bioOK()){say('Este aparelho não tem biometria disponível. Entrei só com a senha.',1);done();return}
+  say('Confirme sua biometria para entrar.');
+  (bioId()?bioAsk():bioEnable()).then(function(){bioDraw();done()}).catch(function(){S.tok='';try{localStorage.removeItem('lf_rt')}catch(_){}say('Biometria não confirmada. O painel não foi aberto.',1)})}
 try{if(localStorage.getItem('lf_rem')==='1'){$('rem').checked=true;$('em').value=localStorage.getItem('lf_em')||''}}catch(_){}
 function myMail(){try{return JSON.parse(atob(S.tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).email||''}catch(_){return ''}}
 function bioDraw(){var b=$('bio');if(!bioOK()){b.hidden=true;return}b.hidden=false;b.textContent=bioId()?'Desativar biometria':'Ativar biometria'}
