@@ -55,7 +55,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 
 <section class="card" id="lock" hidden><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Desbloquear</h2><p style="color:var(--mu);margin:0 0 14px">Use a biometria do celular para entrar.</p><div style="display:grid;gap:12px"><button class="btn" id="bgo" type="button">Desbloquear com biometria</button><button class="btn o" id="bpw" type="button">Entrar com senha</button></div></section>
 
-<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><label class="rem"><input type="checkbox" id="rem"><span>Lembrar e-mail e senha<small>O celular guarda e preenche sozinho. Nas próximas vezes pede só a sua biometria.</small></span></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
+<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><label class="rem"><input type="checkbox" id="rem"><span>Lembrar e-mail e senha<small id="remh" hidden>Ative a biometria nos Ajustes do app para poder lembrar.</small></span></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
 
 <nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="mp fsb" id="tfs" type="button" aria-label="Tela cheia" hidden style="width:40px;padding:0;display:inline-flex;align-items:center;justify-content:center;margin-left:auto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button><button class="sw2" id="tg2" style="margin-left:10px" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
 <div id="mtop" hidden><button class="mp" id="mst" type="button" aria-label="Ligar ou desligar o site"></button><span style="flex:1"></span><button class="mp" id="mcl" type="button">👁 Cliente</button><button class="mp fsb" id="mfs" type="button" aria-label="Tela cheia" hidden style="width:40px;padding:0;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button></div>
@@ -65,7 +65,7 @@ label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,
 <div id="app" hidden style="display:grid;gap:16px">
  
  <section class="card" id="c_cfg"><div class="hd"><h1>Painel La Fouch</h1><button class="btn o sm" id="out">Sair</button></div><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
-  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn msair" id="svc2" type="button" style="display:none">Salvar aviso</button><button class="btn o msair" id="out2" type="button" style="display:none">Sair da conta</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button><button class="btn o" id="bio" type="button" hidden></button><button class="btn o" id="pwb" type="button">Alterar senha</button><form id="pwf" style="display:none;gap:12px" autocomplete="off"><label>Senha atual<input id="pw0" type="password" autocomplete="current-password"></label><label>Nova senha (mínimo 6 caracteres)<input id="pw1" type="password" autocomplete="new-password"></label><label>Repetir nova senha<input id="pw2" type="password" autocomplete="new-password"></label><button class="btn" id="pws" type="submit">Salvar nova senha</button></form></div></section>
+  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn msair" id="svc2" type="button" style="display:none">Salvar aviso</button><button class="btn o msair" id="out2" type="button" style="display:none">Sair da conta</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button><button class="btn o" id="pwb" type="button">Alterar senha</button><form id="pwf" style="display:none;gap:12px" autocomplete="off"><label>Senha atual<input id="pw0" type="password" autocomplete="current-password"></label><label>Nova senha (mínimo 6 caracteres)<input id="pw1" type="password" autocomplete="new-password"></label><label>Repetir nova senha<input id="pw2" type="password" autocomplete="new-password"></label><button class="btn" id="pws" type="submit">Salvar nova senha</button></form></div></section>
  <section class="card" id="c_dst"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
  <section class="card" id="c_lst"><div class="tb"><h2 style="margin:0">Catálogo</h2><button class="btn" id="new">+ Novo produto</button></div><p style="color:var(--mu);font-size:14px;margin:8px 0 12px" id="cnt"></p><div class="pl" id="pl"></div><div id="seed" hidden style="margin-top:12px"><button class="btn o" id="seedb">Enviar o catálogo atual do site</button></div></section>
 </div>
@@ -193,36 +193,34 @@ function bioId(){try{return localStorage.getItem('lf_bio')||''}catch(_){return '
 var IN_APP=false;try{IN_APP=!!window.parent&&window.parent!==window}catch(_){}
 var _pend={};
 window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||!e.data.lfBioR)return;var p=_pend[e.data.id];if(p){delete _pend[e.data.id];clearTimeout(p.t);p.f(e.data.lfBioR)}});
-/* dentro do app, a biometria é a do próprio app (o app responde); no navegador, WebAuthn */
+/* dentro do app a biometria (e o PIN) é a do próprio app, ligada em Ajustes › Segurança; no navegador, WebAuthn */
 function appCall(cmd,ms){return new Promise(function(res){var id=String(Math.random());_pend[id]={f:res,t:setTimeout(function(){delete _pend[id];res('no')},ms)};try{window.parent.postMessage({lfBio:cmd,id:id},'*')}catch(_){var q=_pend[id];delete _pend[id];if(q)clearTimeout(q.t);res('no')}})}
+var APP_BIO=false;
 var BIO_SUP=!IN_APP&&!!(window.PublicKeyCredential&&navigator.credentials&&navigator.credentials.create);
-if(IN_APP)appCall('check',1500).then(function(r){BIO_SUP=r==='yes';bioDraw()});
-function bioOK(){return BIO_SUP}
+function bioOK(){return IN_APP?APP_BIO:BIO_SUP}
+function bioNeed(){return IN_APP?APP_BIO:!!bioId()}
 function bioEnable(){
-  if(IN_APP)return appCall('ask',70000).then(function(r){if(r!=='ok')throw new Error('bio');try{localStorage.setItem('lf_bio','app')}catch(_){}});
   return navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'La Fouch'},user:{id:rnd(16),name:myMail()||$('em').value.trim()||'loja',displayName:'La Fouch'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}}).then(function(c){try{localStorage.setItem('lf_bio',b64(c.rawId))}catch(_){}})}
-/* lembrar e-mail e senha: o gerenciador de senhas do celular guarda; o painel exige biometria para abrir */
-function remember(em,pw){var on=!!($('rem')&&$('rem').checked);
-  try{if(on){localStorage.setItem('lf_rem','1');localStorage.setItem('lf_em',em)}else{localStorage.removeItem('lf_rem');localStorage.removeItem('lf_em')}}catch(_){}
+/* lembrar e-mail e senha: o gerenciador de senhas do celular guarda; só vale com a biometria ligada */
+function remUi(){var r=$('rem');if(!r)return;var off=IN_APP&&!APP_BIO;r.disabled=off;if(off)r.checked=false;if($('remh'))$('remh').hidden=!off}
+function remember(em,pw){var on=!!($('rem')&&$('rem').checked&&!$('rem').disabled);
+  try{if(on){localStorage.setItem('lf_rem','1');localStorage.setItem('lf_em',em)}else{localStorage.removeItem('lf_rem');localStorage.removeItem('lf_em');if(!IN_APP)localStorage.removeItem('lf_bio')}}catch(_){}
   if(!on)return;
   try{if(window.PasswordCredential&&navigator.credentials&&navigator.credentials.store)navigator.credentials.store(new PasswordCredential({id:em,password:pw,name:'La Fouch'})).catch(function(){})}catch(_){}}
-/* depois da senha, a biometria é obrigatória (se marcou "lembrar" ou se o aparelho já usa biometria): sem ela, o painel não abre */
-function gate(em,pw){var need=!!($('rem')&&$('rem').checked)||!!bioId();
+/* depois da senha, a biometria (ou o PIN do app) é obrigatória quando está ligada: sem ela o painel não abre */
+function gate(em,pw){var on=!!($('rem')&&$('rem').checked&&!$('rem').disabled);
   var done=function(){remember(em,pw);start()};
+  var need=IN_APP?APP_BIO:on;
   if(!need){done();return}
-  if(!bioId()&&!bioOK()){say('Este aparelho não tem biometria disponível. Entrei só com a senha.',1);done();return}
-  say('Confirme sua biometria para entrar.');
-  (bioId()?bioAsk():bioEnable()).then(function(){bioDraw();done()}).catch(function(){S.tok='';try{localStorage.removeItem('lf_rt')}catch(_){}say('Biometria não confirmada. O painel não foi aberto.',1)})}
+  if(!IN_APP&&!bioId()&&!bioOK()){say('Este aparelho não tem biometria disponível. Entrei só com a senha.',1);done();return}
+  say('Confirme para entrar.');
+  (IN_APP||bioId()?bioAsk():bioEnable()).then(done).catch(function(){S.tok='';try{localStorage.removeItem('lf_rt')}catch(_){}say('Não foi confirmado. O painel não foi aberto.',1)})}
 try{if(localStorage.getItem('lf_rem')==='1'){$('rem').checked=true;$('em').value=localStorage.getItem('lf_em')||''}}catch(_){}
 function myMail(){try{return JSON.parse(atob(S.tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).email||''}catch(_){return ''}}
-function bioDraw(){var b=$('bio');if(!bioOK()){b.hidden=true;return}b.hidden=false;b.textContent=bioId()?'Desativar biometria':'Ativar biometria'}
-function bioAsk(){if(bioId()==='app')return appCall('ask',70000).then(function(r){if(r!=='ok')throw new Error('bio')});return navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(bioId())}],userVerification:'required',timeout:60000}})}
-function bioUnlock(){bioAsk().then(function(){return refresh()}).then(function(ok){if(ok){$('lock').hidden=true;start()}else{$('lock').hidden=true;$('login').hidden=false;say('Sessão expirada. Entre com a senha.',1)}}).catch(function(){say('Biometria não confirmada.',1)})}
+function bioAsk(){if(IN_APP)return appCall('ask',120000).then(function(r){if(r!=='ok')throw new Error('bio')});return navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(bioId())}],userVerification:'required',timeout:60000}})}
+function bioUnlock(){bioAsk().then(function(){return refresh()}).then(function(ok){if(ok){$('lock').hidden=true;start()}else{$('lock').hidden=true;$('login').hidden=false;say('Sessão expirada. Entre com a senha.',1)}}).catch(function(){say('Não foi confirmado. Tente de novo ou entre com a senha.',1)})}
 $('bgo').onclick=bioUnlock;
 $('bpw').onclick=function(){$('lock').hidden=true;$('login').hidden=false};
-$('bio').onclick=function(){
-  if(bioId()){bioAsk().then(function(){try{localStorage.removeItem('lf_bio')}catch(_){}bioDraw();say('Biometria desativada.')}).catch(function(){say('Biometria não confirmada.',1)});return}
-  bioEnable().then(function(){bioDraw();say('Biometria ativada. Da próxima vez o painel pede sua digital ou rosto.')}).catch(function(){say('Não foi possível ativar. Confira se o celular tem biometria configurada.',1)})};
 $('pwb').onclick=function(){var f=$('pwf');var open=f.style.display==='none';f.style.display=open?'grid':'none';if(open)$('pw0').focus()};
 $('pwf').onsubmit=function(e){e.preventDefault();var o=$('pw0').value,n=$('pw1').value,r=$('pw2').value,em=myMail();
   if(!em){say('Entre de novo para trocar a senha.',1);return}
@@ -234,8 +232,8 @@ $('pwf').onsubmit=function(e){e.preventDefault();var o=$('pw0').value,n=$('pw1')
     if(!j.idToken)throw new Error('old');
     return fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:j.idToken,password:n,returnSecureToken:true})}).then(function(x){return x.json()})}).then(function(j){
     if(!j.idToken)throw new Error('upd');S.tok=j.idToken;if(j.refreshToken)saveRt(j.refreshToken);$('pwf').reset();$('pwf').style.display='none';say('Senha alterada.')}).catch(function(er){say(er.message==='old'?'Senha atual incorreta.':'Não consegui trocar a senha. Tente de novo.',1)}).then(function(){$('pws').disabled=false})};
-var _st=start;start=function(){_st();bioDraw()};
-if(bioId()&&(function(){try{return !!localStorage.getItem('lf_rt')}catch(_){return false}})()){$('login').hidden=true;$('lock').hidden=false;bioUnlock()}
-else refresh().then(function(ok){if(ok)start()});
+function boot(){if(bioNeed()&&(function(){try{return !!localStorage.getItem('lf_rt')}catch(_){return false}})()){$('login').hidden=true;$('lock').hidden=false;bioUnlock()}
+else refresh().then(function(ok){if(ok)start()})}
+if(IN_APP)appCall('check',2000).then(function(r){APP_BIO=r==='yes';remUi();boot()});else boot();
 })();
 </script></body></html>
