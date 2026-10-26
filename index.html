@@ -475,7 +475,7 @@ footer b{color:var(--tx)}
 #stage[data-open]{cursor:pointer}#stage[data-open]:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
 
 /* ===== celular: entrada com 2 botões, menu lateral e catálogo em páginas ===== */
-.mnb,#drw,.pbar,#pager{display:none}
+.mnb,#drw,.pbar,#pager,#fsh,.fbtn{display:none}
 @media (max-width:860px){
  .mnb{display:inline-flex}
  .bar .mnb{order:0}.bar #bagbtn{order:1}.bar .grow{order:2}.bar .logo{order:3;flex:0 1 120px}
@@ -490,8 +490,24 @@ footer b{color:var(--tx)}
  .sec.pop .pbar b{font:600 22px Fraunces,Georgia,serif}
  .pbar .ib{margin:0}
  #vitrine.pop{display:flex!important;flex-direction:column;overflow:hidden;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
- #vitrine.pop>h2,#vitrine.pop #top3,#vitrine.pop .shopbar .grow,#vitrine.pop .shopbar .count,#vitrine.pop .shopbar .sort{display:none}
- #vitrine.pop .mobsearch{display:block;padding:0 0 8px}
+ #vitrine.pop>h2,#vitrine.pop #top3,#vitrine.pop .shopbar .grow,#vitrine.pop .shopbar .count,#vitrine.pop .shopbar .sort{display:none} #vitrine.pop .mobsearch{display:flex;gap:8px;align-items:center}
+ .mobsearch .search{flex:1;min-width:0;width:auto!important}
+ .mobsearch .search svg{order:2;margin-left:auto;flex:none}
+ .mobsearch .search input{order:1;flex:1;min-width:0}
+ .mobsearch .fbtn{margin:0;flex:none;display:inline-flex;position:relative}
+ .fbtn .fdot{display:none;position:absolute;top:6px;right:6px;width:10px;height:10px;border-radius:50%;background:var(--ac)}
+ .fbtn.on .fdot{display:block}
+ #vitrine.pop .shopbar{display:none}
+ #fsh{display:block;position:fixed;inset:0;z-index:39;visibility:hidden;pointer-events:none}
+ #fsh.on{visibility:visible;pointer-events:auto}
+ #fsh .fsc{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .25s}#fsh.on .fsc{opacity:1}
+ #fsh .fpn{position:absolute;left:0;right:0;bottom:0;max-height:85%;overflow:auto;background:var(--bg);border-radius:22px 22px 0 0;border-top:1px solid var(--ln);padding:16px max(20px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px));transform:translateY(102%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+ #fsh.on .fpn{transform:none}
+ .fhd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}.fhd b{font:600 24px Fraunces,Georgia,serif}.fhd .ib{margin:0}
+ #fsh small{display:block;margin:14px 0 8px;font:700 11px Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--mu)}
+ #fsh .chips{flex-wrap:wrap;overflow:visible}
+ #fsh .sort{width:100%;height:46px}
+ #fsh .fok{width:100%;margin-top:18px;justify-content:center}
  #vitrine.pop .shopbar{display:block;margin-top:0}
  #vitrine.pop .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
  #vitrine.pop .chips::-webkit-scrollbar{display:none}
@@ -537,9 +553,10 @@ footer b{color:var(--tx)}
     <button class="ib aa" id="aa" data-l="Texto" aria-label="Tamanho do texto" title="Tamanho do texto"><small>a</small><b>A</b></button>
     <button class="ib" id="bagbtn" data-l="Sacola" aria-label="Abrir a reserva"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="badge">0</span></button>
   </div>
-  <div class="mobsearch"><label class="search" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q2" type="search" placeholder="Buscar por modelo ou referência" aria-label="Buscar no catálogo"></label></div>
+  <div class="mobsearch"><label class="search" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q2" type="search" placeholder="Buscar por modelo ou referência" aria-label="Buscar no catálogo"></label><button type="button" class="ib fbtn" id="fbtn" aria-label="Filtrar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg><i class="fdot"></i></button></div>
 </div></div>
 
+<div id="fsh" aria-hidden="true"><div class="fsc" data-fclose></div><div class="fpn" role="dialog" aria-label="Filtrar"><div class="fhd"><b>Filtrar</b><button type="button" class="ib" data-fclose aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><small>Tipo</small><div id="fty"></div><small>Ordenar</small><div id="fso"></div><button type="button" class="btn p fok" data-fclose>Ver resultados</button></div></div>
 <div id="drw" aria-hidden="true"><div class="dsc" data-dclose></div><aside class="dpn" role="dialog" aria-label="Menu">
   <div class="dhd"><button class="ib" type="button" data-dclose aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><b>Menu</b></div>
   <nav aria-label="Seções"><a href="#vitrine">Catálogo<span>→</span></a><a href="#rosto">Qual combina comigo?<span>→</span></a><a href="#atacado">Atacado<span>→</span></a><a href="#como">Como comprar<span>→</span></a><a href="#duvidas">Dúvidas<span>→</span></a></nav>
@@ -684,7 +701,7 @@ footer b{color:var(--tx)}
 'Seu rosto é':'Tu rostro es',
 'Ver os modelos para o meu rosto':'Ver los modelos para mi rostro',
 'Não parece com você? Escolher o formato sozinho':'¿No se parece a ti? Elegir la forma yo mismo',
-'Catálogo':'Catálogo','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones','Menu':'Menú','Claro':'Claro','Escuro':'Oscuro','Auto':'Auto','Português':'Português','Español':'Español','Preferências':'Preferencias','Tema':'Tema','Texto':'Texto','Qual combina comigo?':'¿Cuál combina conmigo?',
+'Catálogo':'Catálogo','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones','Menu':'Menú','Filtrar':'Filtrar','Tipo':'Tipo','Ver resultados':'Ver resultados','Claro':'Claro','Escuro':'Oscuro','Auto':'Auto','Português':'Português','Español':'Español','Preferências':'Preferencias','Tema':'Tema','Texto':'Texto','Qual combina comigo?':'¿Cuál combina conmigo?',
 'Buscar por modelo ou referência':'Buscar por modelo o referencia','Buscar no catálogo':'Buscar en el catálogo',
 'Trocar tema claro e escuro':'Cambiar tema claro y oscuro','Mudar para o tema claro':'Cambiar al tema claro','Mudar para o tema escuro':'Cambiar al tema oscuro',
 'Tamanho do texto':'Tamaño del texto','Abrir a reserva':'Abrir la reserva','La Fouch, tudo em óculos':'La Fouch, todo en lentes',
@@ -920,7 +937,7 @@ footer b{color:var(--tx)}
     var n=Math.max(1,Math.ceil(r.length/PGN));st.pg=Math.min(Math.max(0,st.pg||0),n-1);
     var dots='';for(var i=0;i<n;i++)dots+='<i'+(i===st.pg?' class="on"':'')+'></i>';
     pg.innerHTML=n>1?'<button type="button" data-pg="-1" aria-label="Anterior"'+(st.pg===0?' disabled':'')+'>‹</button><span class="dts" aria-label="Página '+(st.pg+1)+' de '+n+'">'+dots+'</span><button type="button" data-pg="1" aria-label="Próxima"'+(st.pg>=n-1?' disabled':'')+'>›</button>':'';
-    var g=$('grid');if(g)g.scrollTop=0;
+    var g=$('grid');if(g)g.scrollTop=0;var fb=$('fbtn');if(fb)fb.classList.toggle('on',st.tipo!=='todos'||st.sort!=='nov');
     return r.slice(st.pg*PGN,st.pg*PGN+PGN)}
   function drawGrid(){
     var r=lista();drawRes(r.length);
@@ -1120,19 +1137,22 @@ footer b{color:var(--tx)}
   function closePanels(){document.querySelectorAll('.sec.pop').forEach(function(e){e.classList.remove('pop')});document.documentElement.classList.remove('ppop')}
   function openPanel(id){
     closePanels();var el=document.getElementById(id);if(!el)return;
+    if(id==='vitrine'){var ms=document.querySelector('.mobsearch');if(ms&&ms.parentNode!==el)el.insertBefore(ms,el.firstChild);var ft=$('fty'),fs=$('fso');if(ft&&$('tipos').parentNode!==ft)ft.appendChild($('tipos'));if(fs&&$('sort').parentNode!==fs)fs.appendChild($('sort'));if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
     var ht=document.querySelector('.top');if(ht)document.documentElement.style.setProperty('--ht',ht.offsetHeight+'px');
-    if(id==='vitrine'){var ms=document.querySelector('.mobsearch');if(ms&&ms.parentNode!==el)el.insertBefore(ms,el.firstChild);if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
     el.classList.add('in');el.classList.add('pop');el.scrollTop=0;document.documentElement.classList.add('ppop');
     try{history.replaceState(null,'','#'+id)}catch(_){}}
   function prefSync(){var r=document.documentElement,t=r.dataset.theme||'auto',lg='auto';try{var q=localStorage.getItem('lf_lang');if(q==='pt'||q==='es')lg=q}catch(_){}
     document.querySelectorAll('#drw [data-lg]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lg')===lg)});
     document.querySelectorAll('#drw [data-th]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-th')===t)});
     document.querySelectorAll('#drw [data-zs]').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-zs')===zi)})}
+  function fshSet(on){var d=$('fsh');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
+  $('fbtn').addEventListener('click',function(){fshSet(true)});
   function drwSet(on){if(on)prefSync();var d=$('drw');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
   $('mnb').addEventListener('click',function(){drwSet(true)});
   document.addEventListener('click',function(e){
-    var t=e.target.closest&&e.target.closest('[data-dclose],[data-pback],[data-th],[data-zs],[data-pg],#drw nav a');if(!t)return;
-    if(t.hasAttribute('data-dclose'))drwSet(false);
+    var t=e.target.closest&&e.target.closest('[data-dclose],[data-fclose],[data-pback],[data-th],[data-zs],[data-pg],#drw nav a');if(!t)return;
+    if(t.hasAttribute('data-fclose'))fshSet(false);
+    else if(t.hasAttribute('data-dclose'))drwSet(false);
     else if(t.hasAttribute('data-pback')){closePanels();try{history.replaceState(null,'',location.pathname+location.search)}catch(_){}}
     else if(t.hasAttribute('data-th')){var v=t.getAttribute('data-th'),rr=document.documentElement;if(v==='auto')delete rr.dataset.theme;else rr.dataset.theme=v;themeIcon(false);prefSync()}
     else if(t.hasAttribute('data-zs')){zset(+t.getAttribute('data-zs'),false);prefSync()}
