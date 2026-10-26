@@ -35,7 +35,7 @@ h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;text-wrap:balance;l
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--ln)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 .bar{display:flex;align-items:center;gap:14px;min-height:76px;padding-block:8px}
-.logo{height:56px;width:128px;min-width:78px;background:var(--logo) left center/contain no-repeat;flex:0 1 128px;animation:reveal 1.1s ease both}
+.logo{height:56px;width:128px;min-width:78px;background:var(--logo) left center/contain no-repeat;flex:0 1 128px;animation:none!important}
 .nav{display:flex;gap:22px;margin-left:12px}
 .nav a{text-decoration:none;color:var(--mu);font-weight:600;font-size:15px;padding:8px 0;border-bottom:2px solid transparent}
 @media (hover:hover){.nav a:hover{color:var(--tx);border-bottom-color:var(--ac)}}
@@ -939,21 +939,31 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
   var MOBQ=matchMedia('(max-width:860px)'),PGN=9999;
   function pageOf(r){
     var pg=$('pager');if(!pg)return r;
-    var sig=st.q+'|'+st.tipo+'|'+st.rosto+'|'+st.sort;if(st.sig!==sig){st.sig=sig;st.pg=0}
+    var sig=st.q+'|'+st.tipo+'|'+st.rosto+'|'+st.sort,mudou=st.sig!==sig;if(mudou){st.sig=sig;st.pg=0}
     if(!MOBQ.matches){pg.innerHTML='';return r}
     var n=Math.max(1,Math.ceil(r.length/PGN));st.pg=Math.min(Math.max(0,st.pg||0),n-1);
     var dots='';for(var i=0;i<n;i++)dots+='<i'+(i===st.pg?' class="on"':'')+'></i>';
     pg.innerHTML=n>1?'<button type="button" data-pg="-1" aria-label="Anterior"'+(st.pg===0?' disabled':'')+'>‹</button><span class="dts" aria-label="Página '+(st.pg+1)+' de '+n+'">'+dots+'</span><button type="button" data-pg="1" aria-label="Próxima"'+(st.pg>=n-1?' disabled':'')+'>›</button>':'';
-    var g=$('vscr')||$('grid');if(g)g.scrollTop=0;var fb=$('fbtn');if(fb)fb.classList.toggle('on',st.tipo!=='todos'||st.sort!=='nov');
+    var g=$('vscr')||$('grid');if(g&&mudou)g.scrollTop=0;var fb=$('fbtn');if(fb)fb.classList.toggle('on',st.tipo!=='todos'||st.sort!=='nov');
     return r.slice(st.pg*PGN,st.pg*PGN+PGN)}
   function drawGrid(){
     var r=lista();drawRes(r.length);
     $('count').textContent=r.length+' modelo'+(r.length===1?'':'s');
-    var RA=r;r=pageOf(r);var GH=r.length?r.map(function(p,i){
+    var RA=r;r=pageOf(r);var HA=r.length?r.map(function(p,i){
       var esg=p.aviso==='Esgotado',n=st.cart[p.ref]||0;
       var sk=esg?'<span class="stk e">Esgotado</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':'');
-      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr"><span class="ref">'+p.ref+'</span>'+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button><button class="add'+(esg?' alt':'')+'" data-add="'+p.ref+'">'+(esg?'Avise-me quando chegar':(n?'Na reserva ('+n+') · +1':'Comprar'))+'</button></article>'}).join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
-    var G=$('grid');if(G._h!==GH){G._h=GH;G.innerHTML=GH}
+      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr"><span class="ref">'+p.ref+'</span>'+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button><button class="add'+(esg?' alt':'')+'" data-add="'+p.ref+'">'+(esg?'Avise-me quando chegar':(n?'Na reserva ('+n+') · +1':'Comprar'))+'</button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
+    var G=$('grid');
+    if(G._h!==GH){G._h=GH;
+      if(!HA){G.innerHTML=GH}
+      else{ /* só troca os cards que mudaram: os outros (e suas fotos) ficam como estão, sem piscar */
+        if(G.firstElementChild&&!G.firstElementChild._k)G.innerHTML='';
+        var old={};Array.prototype.forEach.call(G.children,function(c){old[c._k]=c});var keep={},nodes=[];
+        HA.forEach(function(h,i){var k=r[i].ref,ex=old[k],nd;
+          if(ex&&ex._h===h)nd=ex;else{var t=document.createElement('template');t.innerHTML=h.trim();nd=t.content.firstElementChild;nd._h=h;nd._k=k}
+          keep[k]=1;nodes.push(nd)});
+        Array.prototype.slice.call(G.children).forEach(function(c){if(!keep[c._k]||nodes.indexOf(c)<0)G.removeChild(c)});
+        nodes.forEach(function(nd,i){if(G.children[i]!==nd)G.insertBefore(nd,G.children[i]||null)})}}
   }
   function drawChips(){
     var nf=Object.keys(st.fav).length;if(!nf&&st.tipo==='fav')st.tipo='todos';$('tipos').innerHTML=TIPOS.concat(nf?[['fav','♥ Favoritos ('+nf+')']]:[]).map(function(t){return '<button class="chip" data-tipo="'+t[0]+'" aria-pressed="'+(st.tipo===t[0])+'">'+t[1]+'</button>'}).join('')}
