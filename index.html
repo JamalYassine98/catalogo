@@ -1293,7 +1293,7 @@ footer b{color:var(--tx)}
       if(CFG.ativo!==false)return;m=document.getElementById('manut');ab=document.getElementById('admb');
       if(adm){if(m)m.remove();document.documentElement.style.overflow='';
         if(!ab){ab=document.createElement('div');ab.id='admb';document.body.appendChild(ab)}
-        ab.innerHTML='<b>Modo administrador</b><span>O site está desligado para os clientes. Só você vê o catálogo.</span><a href="admin.html">Abrir painel</a>';return}
+        ab.innerHTML='<b>Modo administrador</b><span>O site está desligado para os clientes. Só você vê o catálogo.</span>'+(window.parent!==window?'':'<a href="admin.html">Abrir painel</a>');return}
       if(!m){m=document.createElement('div');m.id='manut';m.setAttribute('role','alertdialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
       m.innerHTML='<div class="mlogo" aria-hidden="true"></div><h2>Estamos atualizando o catálogo</h2><p>'+esc(CFG.aviso||'Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp.')+'</p><a class="btn w ic" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'"><span>Falar com a loja</span>'+WAI+'</a>';
       document.documentElement.style.overflow='hidden'})}
