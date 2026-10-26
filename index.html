@@ -517,7 +517,7 @@ footer b{color:var(--tx)}
  #vitrine.pop .chips .chip{flex:none}
  #vitrine.pop #grid{margin-top:0;align-content:start;grid-auto-rows:max-content}
  #vitrine.pop .card{height:auto}
- #vitrine.pop #pager{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 0 2px}
+ #vitrine.pop #pager{display:none;align-items:center;justify-content:center;gap:14px;padding:10px 0 2px}
  #pager button{width:46px;height:46px;border-radius:50%;border:1px solid var(--ln);background:var(--pn);color:var(--tx);font:700 20px Inter,system-ui,sans-serif}
  #pager button:disabled{opacity:.35}
  #pager .dts{display:flex;gap:8px;align-items:center}
@@ -932,7 +932,7 @@ footer b{color:var(--tx)}
   function isOf(p){return !!(p.de&&p.de>p.n)}
   function ofp(p){return isOf(p)?'<span class="ofp">OFERTA</span>':''}
   function eco(p){return isOf(p)?'<span class="eco">Você economiza '+fmt(p.de-p.n)+'</span>':''}
-  var MOBQ=matchMedia('(max-width:860px)'),PGN=4;
+  var MOBQ=matchMedia('(max-width:860px)'),PGN=9999;
   function pageOf(r){
     var pg=$('pager');if(!pg)return r;
     var sig=st.q+'|'+st.tipo+'|'+st.rosto+'|'+st.sort;if(st.sig!==sig){st.sig=sig;st.pg=0}
@@ -1163,7 +1163,7 @@ footer b{color:var(--tx)}
     else drwSet(false)});
   (function(){var x0=null,y0=0,g=$('grid');if(!g)return;
     g.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
-    g.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){st.pg=(st.pg||0)+(dx<0?1:-1);drawGrid()}},{passive:true})})();
+    g.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){}},{passive:true})})();
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){drwSet(false);if(MOBQ.matches&&!document.querySelector('.scrim'))closePanels()}});
   function goTo(id){
     if(MOBQ.matches){if(id==='topo'){closePanels();drwSet(false);return}if(PAN[id]){openPanel(id);return}}
