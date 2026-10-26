@@ -440,7 +440,11 @@ footer b{color:var(--tx)}
 .fac1 .go{display:flex;align-items:center;justify-content:space-between;min-height:62px;padding:0 10px 0 22px;border:0;border-radius:20px;background:linear-gradient(125deg,#6f2250,#b4528a 58%,#dc92bc);color:#fff;font:700 16px Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 12px 26px var(--shadow),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .25s}
 .fac1 .go i{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center}.fac1 .go:active{transform:scale(.98)}
 .card.of{background:linear-gradient(160deg,#5b1a41,#8b3363 55%,#c0629a);border-color:transparent;color:#fff;box-shadow:0 18px 38px -16px rgba(111,34,80,.6)}
-.card.of .ph{margin-top:44px}
+.card.of .ph{margin-top:58px}
+.card.of .fav{top:10px;right:12px}
+.card.of .ofp{left:12px;top:10px;height:38px;display:flex;align-items:center;padding:0 16px;box-sizing:border-box}
+.card.still,.card.still *{animation:none!important}
+.card.of .pr s{display:block;font-size:.62em}
 .ofp{position:absolute;left:14px;top:12px;z-index:5;background:#ffd23f;color:#5b1a41;font:800 12px Inter,system-ui,sans-serif;letter-spacing:.14em;padding:7px 14px;border-radius:999px}
 .card.of .ref,.card.of .nm,.card.of .av{color:#fff}.card.of .ref{opacity:.8}.card.of .av{opacity:.9}
 .card.of .pr{color:#ffd23f;font-weight:800}.card.of .pr s{color:rgba(255,255,255,.62);font-weight:500}
@@ -962,7 +966,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
         if(G.firstElementChild&&!G.firstElementChild._k)G.innerHTML='';
         var old={};Array.prototype.forEach.call(G.children,function(c){old[c._k]=c});var keep={},nodes=[];
         HA.forEach(function(h,i){var k=r[i].ref,ex=old[k],nd;
-          if(ex&&ex._h===h)nd=ex;else{var t=document.createElement('template');t.innerHTML=h.trim();nd=t.content.firstElementChild;nd._h=h;nd._k=k}
+          var hk=h.replace(/ style="--i:\d+"/,'');if(ex&&ex._h===hk)nd=ex;else{var t=document.createElement('template');t.innerHTML=h.trim();nd=t.content.firstElementChild;nd._h=hk;nd._k=k;if(ex)nd.classList.add('still')}
           keep[k]=1;nodes.push(nd)});
         Array.prototype.slice.call(G.children).forEach(function(c){if(!keep[c._k]||nodes.indexOf(c)<0)G.removeChild(c)});
         nodes.forEach(function(nd,i){if(G.children[i]!==nd)G.insertBefore(nd,G.children[i]||null)})}}
