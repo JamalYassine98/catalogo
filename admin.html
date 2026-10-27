@@ -280,10 +280,12 @@ function edit(ref){
   else h+='<div class="card" style="background:var(--s2)"><div class="ct" style="margin-bottom:6px">Produto antigo do painel</div><div class="sm">Este produto não vem do app, então o preço e o estoque não são atualizados. Libere o modelo no Inventário ("Liberar para o site") e exclua este.</div></div>';
   h+='<div class="row"><div class="g"><b>Aparece no site</b><div class="mu sm">Esgotado sai sozinho depois de alguns dias</div></div><button class="tg'+(p.oculto?'':' on')+'" id="f_ocu" role="switch" aria-checked="'+(!p.oculto)+'" type="button" aria-label="Aparece no site"></button></div>'
    +'<div class="row"><div class="g"><b>Fixar no topo</b><div class="mu sm">Fica antes de todos os outros, na ordem automática</div></div><button class="tg'+(p.fixo?' on':'')+'" id="f_fix" role="switch" aria-checked="'+(!!p.fixo)+'" type="button" aria-label="Fixar no topo"></button></div>'
+   +(window.parent!==window?'<button class="btn o w" id="inv" type="button">Abrir no Inventário</button>':'')
    +'<button class="btn w" id="sv" type="button">Salvar</button><button class="btn o w" id="cc" type="button">Cancelar</button>'+(p.lib?'':'<button class="btn d w" id="del" type="button">Excluir produto</button>');
   sheet(h);
   $('f_ocu').onclick=function(){var on=this.classList.toggle('on');this.setAttribute('aria-checked',on);ripple(this)};
   $('f_fix').onclick=function(){var on=this.classList.toggle('on');this.setAttribute('aria-checked',on);ripple(this)};
+  if($('inv'))$('inv').onclick=function(){try{window.parent.postMessage({lfAbrir:p.ref},'*')}catch(_){}};
   $('cc').onclick=function(){closeSheet()};$('sv').onclick=save;if(!p.lib)$('del').onclick=del}
 
 addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;background:#fff':'';return}if(e.data.lfEdit)edit(e.data.lfEdit)});
