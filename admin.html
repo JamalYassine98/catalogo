@@ -67,7 +67,7 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
   <section class="card"><div class="ct">Preços e estoque</div><div class="mu sm">Vêm sempre do app (Inventário). Para mudar um preço ou fazer uma oferta, use o app; o site acompanha em até 1 minuto.</div></section>
  </main>
  <main class="page" id="v_prod" hidden>
-  <div class="row"><div class="g"><h1 class="serif">Produtos</h1><div class="mu sm" id="psub"></div></div><button class="btn sm" id="new" type="button">+ Novo</button></div>
+  <div class="row"><div class="g"><h1 class="serif">Produtos</h1><div class="mu sm" id="psub"></div></div></div>
   <div class="srch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar por nome ou código" autocomplete="off"></div>
   <div class="seg" id="flt"><button class="on" data-f="all" type="button">Todos</button><button data-f="on" type="button">No ar</button><button data-f="hid" type="button">Ocultos</button><button data-f="nof" type="button">Sem foto</button><button data-f="esg" type="button">Esgotado</button></div>
   <section class="card" style="padding:4px 16px"><div id="pl"></div></section>
@@ -87,7 +87,6 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
 (function(){
 var FB={p:'lafouch-2f6bd',k:'AIzaSyAW-54tS1A_VL2EC9OJWFsw1EtboptpEvc'};
 var DB='https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/';
-var ROSTOS=[['oval','Oval'],['redondo','Redondo'],['quadrado','Quadrado'],['alongado','Alongado'],['coracao','Coração'],['diamante','Diamante']];
 var $=function(i){return document.getElementById(i)},S={tok:null,prods:[],cfg:{ativo:true},cur:null,fotoNova:null};
 function say(t,e){var m=$('msg');m.textContent=t;m.className='msg'+(e?' e':'');m.hidden=false;clearTimeout(say.t);say.t=setTimeout(function(){m.hidden=true},e?7000:3500)}
 /* conversão Firestore */
@@ -107,7 +106,6 @@ function refresh(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}
   return auth('https://securetoken.googleapis.com/v1/token','grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)).then(function(j){if(!j.id_token)return false;S.tok=j.id_token;saveRt(j.refresh_token||rt);return true}).catch(function(){return false})}
 /* dados */
 S.fotos={};S.f='all';S.q='';S.v='vit';
-var AVISOS=['','Chegou esta semana','Última unidade','Últimas 2 unidades','Últimas 3 unidades','Esgotado'];
 function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function gs(n){return 'Gs. '+Number(n||0).toLocaleString('pt-BR')}
 function W(){return window.matchMedia&&matchMedia('(min-width:1000px)').matches}
@@ -131,7 +129,6 @@ function drawVit(){
   var nof=S.prods.filter(function(p){return !(p.fv>0)}),pen=S.prods.filter(function(p){return p.pend}),es=visiveis().filter(esg),a='';
   function li(c,cl,t,sub,go){return '<div class="row" style="padding:7px 0"'+(go?' data-go="'+go+'" role="button" tabindex="0"':'')+'><span class="chip '+cl+'">'+c+'</span><div class="g">'+t+(sub?'<div class="mu sm">'+sub+'</div>':'')+'</div>'+(go?'<span class="mu">›</span>':'')+'</div>'}
   if(nof.length)a+=li(nof.length,'cw','Sem foto',esc(nof.slice(0,4).map(function(p){return p.ref}).join(', '))+(nof.length>4?'…':''),'nof');
-  if(pen.length)a+=li(pen.length,'cw','Aguardando o app','o código precisa existir no Inventário; o preço chega em até 1 minuto',pen.length?'':'');
   if(es.length)a+=li(es.length,'cw','Esgotado no ar','saem sozinhos depois de alguns dias','esg');
   var di=dInfo();if(di.bad)a=li('!','cw','Sem destaque no site',esc(di.w),'')+a;
   if(!a)a=li('✓','co','Tudo certo','fotos completas e nada esgotado no ar');
@@ -186,7 +183,7 @@ function drawProd(){
   var l=filtrados();$('psub').textContent=S.prods.length+' no total';
   $('pl').innerHTML=l.length?l.map(function(p){
     var e=est(p),tags='';
-    if(p.pend)tags+='<span class="chip cw">aguardando o app</span> ';if(!(p.fv>0))tags+='<span class="chip cw">sem foto</span> ';if(p.oculto)tags+='<span class="chip ca">oculto</span> ';if(esg(p))tags+='<span class="chip cx">esgotado</span> ';
+    if(p.fixo)tags+='<span class="chip co">fixo no topo</span> ';if(!p.lib)tags+='<span class="chip cw">antigo</span> ';if(!(p.fv>0))tags+='<span class="chip cw">sem foto</span> ';if(p.oculto)tags+='<span class="chip ca">oculto</span> ';if(esg(p))tags+='<span class="chip cx">esgotado</span> ';
     var price=p.pend?'<span class="mu sm">preço: aguardando</span>':'<span class="lock">'+LOCK+'<b style="color:var(--tx);font-weight:600">'+(p.de>p.n?'<s style="opacity:.55;font-weight:400">'+gs(p.de)+'</s> ':'')+gs(p.n)+'</b>'+(p.de>p.n?' <span class="chip co" style="padding:1px 7px">oferta</span>':'')+'</span>';
     return '<div class="pr'+(p.oculto?' h':'')+'" data-r="'+esc(p.ref)+'"><div class="th" data-ph="'+esc(p.ref)+'">'+(S.fotos[p.ref]?'<img alt="" src="'+S.fotos[p.ref]+'">':(p.fv>0?'':'📷'))+'</div><div class="g"><b>'+esc(p.nome)+'</b><div class="mu sm">'+esc(p.ref)+(e!==null?' · '+e+' un.':'')+'</div><div style="margin-top:3px">'+price+'</div>'+(tags?'<div style="margin-top:4px">'+tags+'</div>':'')+'</div><button class="tg'+(p.oculto?'':' on')+'" data-t="'+esc(p.ref)+'" role="switch" aria-checked="'+(!p.oculto)+'" aria-label="Aparece no site: '+esc(p.nome)+'" type="button"></button></div>'}).join(''):'<div class="mu" style="padding:18px 0;text-align:center">Nenhum produto aqui.</div>'}
 var fq=[],fb=0;
@@ -215,45 +212,28 @@ $('dstb').onclick=function(e){if(e.target.closest('#dmb'))dSheet()};
 /* editor */
 function sheet(h){var s=$('sh');s.innerHTML='<div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>'+h+'</div>';s.hidden=false;s.onclick=function(e){if(e.target===s)closeSheet()}}
 function closeSheet(){$('sh').hidden=true;$('sh').innerHTML='';S.cur=null;S.fotoNova=null}
-function chips(id,list,cur){return '<div class="seg" id="'+id+'">'+list.map(function(x){return '<button type="button" data-v="'+esc(x[0])+'" class="'+(x[0]===cur?'on':'')+'">'+esc(x[1])+'</button>'}).join('')+'</div>'}
-function pickChip(id,v){var r=$(id);Array.prototype.forEach.call(r.children,function(b){b.classList.toggle('on',b.getAttribute('data-v')===v)})}
-function getChip(id){var b=$(id).querySelector('.on');return b?b.getAttribute('data-v'):''}
 function edit(ref){
-  var p=S.prods.filter(function(x){return x.ref===ref})[0]||null;S.cur=p;S.fotoNova=null;S.delArm=false;
-  var d=p||{ref:'',nome:'',tipo:'solar',aviso:'',tag:'',mat:'Acetato',cor:'#2a2d33',med:[52,19,145],rosto:['oval'],oculto:false};
-  var foto=p&&S.fotos[p.ref]||'';
-  var h='<div class="pv" id="pv">'+(foto?'<img id="fp" alt="" src="'+foto+'">':'<div class="none" id="fn">Sem foto ainda</div>')+'<span class="chip tag">Pré-visualização</span><label class="up">📷 '+(foto?'Trocar foto':'Adicionar foto')+'<input type="file" id="ff" accept="image/*"></label></div>'
-   +'<div class="serif" style="font-size:23px;line-height:1.15">'+(p?esc(p.nome):'Novo produto')+'</div>';
-  if(!p)h+='<label>Código do produto (igual ao do Inventário)<input id="f_ref" placeholder="SL2310" autocapitalize="characters"></label><div class="mu sm" style="margin-top:-4px">Depois de salvar, o app preenche o preço e o estoque em até 1 minuto. Até lá o produto fica escondido do cliente.</div>';
-  else h+='<div class="card" style="background:var(--s2)"><div class="ct" style="margin-bottom:6px">Vem do estoque <span class="lock" style="margin-left:4px">'+LOCK+'</span></div>'+(p.pend?'<div class="mu sm">Aguardando o app. O código '+esc(p.ref)+' precisa existir no Inventário.</div>':'<div class="kv"><span class="mu">Preço</span><b>'+(p.de>p.n?'<s style="opacity:.55;font-weight:400">'+gs(p.de)+'</s> ':'')+gs(p.n)+'</b></div>'+(est(p)!==null?'<div class="kv"><span class="mu">Estoque</span><b>'+est(p)+' un.</b></div>':'')+'<div class="sm" style="margin-top:8px;color:var(--ac)">Para mudar o preço ou fazer uma oferta, use o app (Inventário).</div>')+'</div>';
-  h+='<label>Nome no site<input id="f_nome" value="'+esc(d.nome)+'"></label><div><div class="ct" style="margin-bottom:8px">Aviso no cartão</div>'+chips('f_av',AVISOS.map(function(a){return [a,a||'Nenhum']}),d.aviso||'')+'</div>'
-   +'<div class="row"><div class="g"><b>Aparece no site</b><div class="mu sm">Esgotado sai sozinho depois de alguns dias</div></div><button class="tg'+(d.oculto?'':' on')+'" id="f_ocu" role="switch" aria-checked="'+(!d.oculto)+'" type="button" aria-label="Aparece no site"></button></div>'
-   +'<details><summary>Mais detalhes</summary><div style="display:grid;gap:12px;margin-top:8px"><div><div class="ct" style="margin-bottom:8px">Tipo</div>'+chips('f_tipo',[['solar','Solar'],['armacao','Armação'],['grau','Óculos de grau']],d.tipo||'solar')+'</div><div class="g3"><label>Etiqueta<input id="f_tag" value="'+esc(d.tag||'')+'" placeholder="NOVO"></label><label>Material<input id="f_mat" value="'+esc(d.mat||'')+'"></label><label>Cor<input id="f_cor" type="color" value="'+esc(d.cor||'#2a2d33')+'" style="padding:4px"></label></div><div class="g3"><label>Lente (mm)<input id="m0" inputmode="numeric" value="'+((d.med||[])[0]||'')+'"></label><label>Ponte (mm)<input id="m1" inputmode="numeric" value="'+((d.med||[])[1]||'')+'"></label><label>Haste (mm)<input id="m2" inputmode="numeric" value="'+((d.med||[])[2]||'')+'"></label></div><div><div class="ct" style="margin-bottom:8px">Combina com rosto</div><div class="chk" id="f_rosto">'+ROSTOS.map(function(r){return '<label><input type="checkbox" value="'+r[0]+'"'+((d.rosto||[]).indexOf(r[0])>=0?' checked':'')+'>'+r[1]+'</label>'}).join('')+'</div></div></div></details>'
-   +'<button class="btn w" id="sv" type="button">Salvar</button><button class="btn o w" id="cc" type="button">Cancelar</button>'+(p?'<button class="btn d w" id="del" type="button">Excluir produto</button>':'');
+  var p=S.prods.filter(function(x){return x.ref===ref})[0]||null;if(!p)return;S.cur=p;S.delArm=false;
+  var foto=S.fotos[p.ref]||'';
+  var cores=(p.cn||[]).map(function(c,i){var q=p.qs&&p.qs[i];return esc(c)+(q===0?' (esgotada)':'')}).join(', ');
+  var h='<div class="pv" id="pv">'+(foto?'<img id="fp" alt="" src="'+foto+'">':'<div class="none" id="fn">Sem foto</div>')+'</div>'
+   +'<div class="serif" style="font-size:23px;line-height:1.15">'+esc(p.nome)+'</div>';
+  if(p.lib)h+='<div class="card" style="background:var(--s2)"><div class="ct" style="margin-bottom:6px">Vem do app (Inventário) <span class="lock" style="margin-left:4px">'+LOCK+'</span></div><div class="kv"><span class="mu">Preço</span><b>'+(p.de>p.n?'<s style="opacity:.55;font-weight:400">'+gs(p.de)+'</s> ':'')+gs(p.n)+'</b></div>'+(est(p)!==null?'<div class="kv"><span class="mu">Estoque</span><b>'+est(p)+' un.</b></div>':'')+(p.aviso?'<div class="kv"><span class="mu">Aviso no cartão</span><b>'+esc(p.aviso)+'</b></div>':'')+(cores?'<div class="kv"><span class="mu">Cores</span><b>'+cores+'</b></div>':'')+'<div class="sm" style="margin-top:8px;color:var(--ac)">Cadastro, fotos, preço, oferta e avisos são feitos no app. Aqui você só escolhe o que aparece e o que fica no topo.</div></div>';
+  else h+='<div class="card" style="background:var(--s2)"><div class="ct" style="margin-bottom:6px">Produto antigo do painel</div><div class="sm">Este produto não vem do app, então o preço e o estoque não são atualizados. Libere o modelo no Inventário ("Liberar para o site") e exclua este.</div></div>';
+  h+='<div class="row"><div class="g"><b>Aparece no site</b><div class="mu sm">Esgotado sai sozinho depois de alguns dias</div></div><button class="tg'+(p.oculto?'':' on')+'" id="f_ocu" role="switch" aria-checked="'+(!p.oculto)+'" type="button" aria-label="Aparece no site"></button></div>'
+   +'<div class="row"><div class="g"><b>Fixar no topo</b><div class="mu sm">Fica antes de todos os outros, na ordem automática</div></div><button class="tg'+(p.fixo?' on':'')+'" id="f_fix" role="switch" aria-checked="'+(!!p.fixo)+'" type="button" aria-label="Fixar no topo"></button></div>'
+   +'<button class="btn w" id="sv" type="button">Salvar</button><button class="btn o w" id="cc" type="button">Cancelar</button>'+(p.lib?'':'<button class="btn d w" id="del" type="button">Excluir produto</button>');
   sheet(h);
-  $('f_av').onclick=function(e){var b=e.target.closest('button');if(b)pickChip('f_av',b.getAttribute('data-v'))};
-  $('f_tipo').onclick=function(e){var b=e.target.closest('button');if(b)pickChip('f_tipo',b.getAttribute('data-v'))};
   $('f_ocu').onclick=function(){var on=this.classList.toggle('on');this.setAttribute('aria-checked',on)};
-  $('f_nome').oninput=function(){var t=document.querySelector('.sheet .serif');if(t)t.textContent=this.value||(p?p.nome:'Novo produto')};
-  $('cc').onclick=closeSheet;$('sv').onclick=save;if(p)$('del').onclick=del;
-  $('ff').onchange=function(){var f=this.files&&this.files[0];if(!f)return;
-    createImageBitmap(f,{imageOrientation:'from-image'}).then(function(bm){var s=Math.min(1,900/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);
-      var q=.85,u=c.toDataURL('image/jpeg',q);while(u.length>700000&&q>.4){q-=.1;u=c.toDataURL('image/jpeg',q)}S.fotoNova=u;var pv=$('pv'),im=$('fp');if(!im){im=document.createElement('img');im.id='fp';im.alt='';pv.insertBefore(im,pv.firstChild);var n=$('fn');if(n)n.remove()}im.src=u}).catch(function(){say('Não consegui abrir essa foto.',1)})}}
-$('new').onclick=function(){edit('')};
+  $('f_fix').onclick=function(){var on=this.classList.toggle('on');this.setAttribute('aria-checked',on)};
+  $('cc').onclick=closeSheet;$('sv').onclick=save;if(!p.lib)$('del').onclick=del}
+
 addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;background:#fff':'';return}if(e.data.lfEdit)edit(e.data.lfEdit)});
 function save(){
-  var nome=$('f_nome').value.trim();if(!nome){say('Informe o nome do produto.',1);return}
-  var rosto=Array.prototype.filter.call($('f_rosto').querySelectorAll('input'),function(c){return c.checked}).map(function(c){return c.value});if(!rosto.length)rosto=['oval'];
-  var tipo=getChip('f_tipo')||'solar',old=S.cur,ref=old?old.ref:$('f_ref').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');
-  if(!ref){say('Informe o código do produto.',1);return}
-  if(!old&&S.prods.some(function(p){return p.ref===ref})){say('Esse código já existe.',1);return}
-  var cor=$('f_cor').value,o={nome:nome,tipo:tipo,aviso:getChip('f_av'),tag:$('f_tag').value.trim()||tipo.toUpperCase(),mat:$('f_mat').value.trim()||'Acetato',cor:cor,cores:[cor],med:[+$('m0').value||52,+$('m1').value||19,+$('m2').value||145],rosto:rosto,oculto:!$('f_ocu').classList.contains('on'),uv:tipo==='solar'};
-  if(S.fotoNova)o.fv=Math.floor(Date.now()/1000);
-  var pr;
-  if(old)pr=put('produtos/'+ref,o,Object.keys(o));
-  else{o.ref=ref;o.n=0;o.de=0;o.rank=0;o.raio=14;o.pend=true;o.fv=o.fv||0;o.ord=S.prods.reduce(function(m,p){return Math.max(m,p.ord||0)},0)+1;pr=put('produtos/'+ref,o)}
+  var old=S.cur;if(!old)return;
+  var o={oculto:!$('f_ocu').classList.contains('on'),fixo:$('f_fix').classList.contains('on')};
   $('sv').disabled=true;
-  (S.fotoNova?put('fotos/'+ref,{d:S.fotoNova}):Promise.resolve()).then(function(){if(S.fotoNova)S.fotos[ref]=S.fotoNova;return pr}).then(function(){return load()}).then(function(){closeSheet();reloadCat();say(old?'Produto salvo.':'Produto criado. O app completa o preço em até 1 minuto.')}).catch(function(e){var b=$('sv');if(b)b.disabled=false;say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}
+  put('produtos/'+old.ref,o,['oculto','fixo']).then(function(){return load()}).then(function(){closeSheet();reloadCat();say('Salvo.')}).catch(function(e){var b=$('sv');if(b)b.disabled=false;say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}
 function del(){var b=$('del');if(!S.delArm){S.delArm=true;b.textContent='Toque de novo para excluir';return}var ref=S.cur.ref;
   api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){delete S.fotos[ref];closeSheet();reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})}
 $('lf').onsubmit=function(e){e.preventDefault();signIn()};
