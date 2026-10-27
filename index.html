@@ -1688,7 +1688,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
   function heroTag(st,p){
     var tag=st.querySelector('.tag');if(!tag)return;
     tag.innerHTML=p?'<span class="td">'+esc(p.ref+' · '+p.nome.toUpperCase())+'</span><span class="tm">'+esc(p.nome)+'</span><b class="tp">'+fmt(p.n)+'</b>':''}
-  function heroVis(p){return p&&!p.oculto&&!p.pend&&!(p.est===0)}
+  function heroVis(p){return p&&!p.oculto&&!(p.est===0)}
   function heroAuto(){
     var l=String(CFG.dauto||'').split(',').filter(Boolean);
     for(var i=0;i<l.length;i++){var p=find(l[i]);if(heroVis(p)&&p.foto)return p}
@@ -1740,7 +1740,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
   function syncProds(docs){
     var base={};P.forEach(function(p){base[p.ref]=p});
     var L=docs.map(function(d){var r=fbd(d);r.ref=r.ref||d.name.split('/').pop();var b=base[r.ref]||{};
-      var p=Object.assign({},b,r);if(b.fv!==r.fv)p.fc=[];if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);return p}).filter(function(p){return !p.oculto&&!p.pend});
+      var p=Object.assign({},b,r);if(b.fv!==r.fv)p.fc=[];if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);return p}).filter(function(p){return !p.oculto});
     if(!L.length)return;
     L.sort(function(a,b){return (a.ord||0)-(b.ord||0)});
     L.forEach(function(p){

@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#120d15"><title>Painel La Fouch</title>
 <style>
-:root{--bg:#fbf6f9;--s1:#fff;--s2:#f4eaf0;--ln:#e6d5df;--tx:#2a1f27;--mu:#7a6772;--ac:#a2447c;--ac2:#7d2f5f;--ok:#0e8a43;--wn:#a86a00;--bad:#d6232a;--gl:linear-gradient(135deg,#bd5a95,#8b3a72)}
-@media (prefers-color-scheme:dark){:root{--bg:#120d15;--s1:#1a131e;--s2:#231a28;--ln:#33283a;--tx:#f5eff7;--mu:#a493ad;--ac:#d476b2;--ac2:#9b3f7c;--ok:#5be3a0;--wn:#f3c26b;--bad:#ff8a8a;--gl:linear-gradient(135deg,#c9619f,#8e3b78)}}
+:root{--bg:#fbf6f9;--s1:#fff;--s2:#f4eaf0;--ln:#e6d5df;--tx:#2a1f27;--mu:#7a6772;--ac:#a2447c;--ok:#0e8a43;--wn:#a86a00;--bad:#d6232a;--gl:linear-gradient(135deg,#bd5a95,#8b3a72)}
+@media (prefers-color-scheme:dark){:root{--bg:#120d15;--s1:#1a131e;--s2:#231a28;--ln:#33283a;--tx:#f5eff7;--mu:#a493ad;--ac:#d476b2;--ok:#5be3a0;--wn:#f3c26b;--bad:#ff8a8a;--gl:linear-gradient(135deg,#c9619f,#8e3b78)}}
 *{box-sizing:border-box;margin:0}[hidden]{display:none!important}
 html,body{height:100%;overflow:hidden}#wrap,#main{height:100%}body{background:var(--bg);color:var(--tx);font:15px/1.45 Inter,system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
@@ -87,7 +87,7 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
 (function(){
 var FB={p:'lafouch-2f6bd',k:'AIzaSyAW-54tS1A_VL2EC9OJWFsw1EtboptpEvc'};
 var DB='https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/';
-var $=function(i){return document.getElementById(i)},S={tok:null,prods:[],cfg:{ativo:true},cur:null,fotoNova:null};
+var $=function(i){return document.getElementById(i)},S={tok:null,prods:[],cfg:{ativo:true},cur:null};
 function say(t,e){var m=$('msg');m.textContent=t;m.className='msg'+(e?' e':'');m.hidden=false;clearTimeout(say.t);say.t=setTimeout(function(){m.hidden=true},e?7000:3500)}
 /* conversão Firestore */
 function tf(v){if(v===null||v===undefined)return{nullValue:null};if(typeof v==='string')return{stringValue:v};if(typeof v==='boolean')return{booleanValue:v};if(typeof v==='number')return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};if(Array.isArray(v))return{arrayValue:{values:v.map(tf)}};var f={};Object.keys(v).forEach(function(k){f[k]=tf(v[k])});return{mapValue:{fields:f}}}
@@ -121,12 +121,12 @@ var LOCK='<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="
 function draw(){drawTop();drawVit();drawProd();drawCfg();loadFotos()}
 function drawTop(){var on=isOn();$('st').className='pill'+(on?'':' off');$('stt').textContent=on?'No ar':'Fora do ar'}
 function drawCfg(){var on=isOn();$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('onl').textContent=on?'O site está no ar':'O site está fora do ar';$('onl2').textContent=on?'Os clientes veem o catálogo agora.':'Os visitantes veem a mensagem de aviso.';if(document.activeElement!==$('avs'))$('avs').value=S.cfg.aviso||''}
-function visiveis(){return S.prods.filter(function(p){return !p.oculto&&!p.pend})}
+function visiveis(){return S.prods.filter(function(p){return !p.oculto})}
 function drawVit(){
   var v=visiveis().length,h=S.prods.filter(function(p){return p.oculto}).length;
   $('vsub').textContent=v+' produto'+(v===1?'':'s')+' no ar'+(h?' · '+h+' oculto'+(h===1?'':'s'):'')+' · preços vêm do estoque';
   drawDst();
-  var nof=S.prods.filter(function(p){return !(p.fv>0)}),pen=S.prods.filter(function(p){return p.pend}),es=visiveis().filter(esg),a='';
+  var nof=S.prods.filter(function(p){return !(p.fv>0)}),es=visiveis().filter(esg),a='';
   function li(c,cl,t,sub,go){return '<div class="row" style="padding:7px 0"'+(go?' data-go="'+go+'" role="button" tabindex="0"':'')+'><span class="chip '+cl+'">'+c+'</span><div class="g">'+t+(sub?'<div class="mu sm">'+sub+'</div>':'')+'</div>'+(go?'<span class="mu">›</span>':'')+'</div>'}
   if(nof.length)a+=li(nof.length,'cw','Sem foto',esc(nof.slice(0,4).map(function(p){return p.ref}).join(', '))+(nof.length>4?'…':''),'nof');
   if(es.length)a+=li(es.length,'cw','Esgotado no ar','saem sozinhos depois de alguns dias','esg');
@@ -135,7 +135,7 @@ function drawVit(){
   $('att').innerHTML=a}
 var DM=[['nada','Nada'],['auto','Automático'],['produto','Um produto'],['video','Vídeo'],['slide','Slide de fotos']];
 function dmodo(){var c=S.cfg;return c.dmodo||(c.video?'video':c.destaque?'produto':'nada')}
-function dElig(p){return !p.oculto&&!p.pend&&!esg(p)}
+function dElig(p){return !p.oculto&&!esg(p)}
 function dAuto(){var l=String(S.cfg.dauto||'').split(',').filter(Boolean),i,p;
   for(i=0;i<l.length;i++){p=S.prods.filter(function(x){return x.ref===l[i]})[0];if(p&&dElig(p)&&p.fv>0)return p}
   return null}
@@ -178,13 +178,13 @@ function filtrados(){
   var q=S.q.trim().toLowerCase();
   return S.prods.filter(function(p){
     if(q&&(p.nome+' '+p.ref).toLowerCase().indexOf(q)<0)return false;
-    if(S.f==='on')return !p.oculto&&!p.pend;if(S.f==='hid')return !!p.oculto;if(S.f==='nof')return !(p.fv>0);if(S.f==='esg')return esg(p);return true})}
+    if(S.f==='on')return !p.oculto;if(S.f==='hid')return !!p.oculto;if(S.f==='nof')return !(p.fv>0);if(S.f==='esg')return esg(p);return true})}
 function drawProd(){
   var l=filtrados();$('psub').textContent=S.prods.length+' no total';
   $('pl').innerHTML=l.length?l.map(function(p){
     var e=est(p),tags='';
     if(p.fixo)tags+='<span class="chip co">fixo no topo</span> ';if(!p.lib)tags+='<span class="chip cw">antigo</span> ';if(!(p.fv>0))tags+='<span class="chip cw">sem foto</span> ';if(p.oculto)tags+='<span class="chip ca">oculto</span> ';if(esg(p))tags+='<span class="chip cx">esgotado</span> ';
-    var price=p.pend?'<span class="mu sm">preço: aguardando</span>':'<span class="lock">'+LOCK+'<b style="color:var(--tx);font-weight:600">'+(p.de>p.n?'<s style="opacity:.55;font-weight:400">'+gs(p.de)+'</s> ':'')+gs(p.n)+'</b>'+(p.de>p.n?' <span class="chip co" style="padding:1px 7px">oferta</span>':'')+'</span>';
+    var price='<span class="lock">'+LOCK+'<b style="color:var(--tx);font-weight:600">'+(p.de>p.n?'<s style="opacity:.55;font-weight:400">'+gs(p.de)+'</s> ':'')+gs(p.n)+'</b>'+(p.de>p.n?' <span class="chip co" style="padding:1px 7px">oferta</span>':'')+'</span>';
     return '<div class="pr'+(p.oculto?' h':'')+'" data-r="'+esc(p.ref)+'"><div class="th" data-ph="'+esc(p.ref)+'">'+(S.fotos[p.ref]?'<img alt="" src="'+S.fotos[p.ref]+'">':(p.fv>0?'':'📷'))+'</div><div class="g"><b>'+esc(p.nome)+'</b><div class="mu sm">'+esc(p.ref)+(e!==null?' · '+e+' un.':'')+'</div><div style="margin-top:3px">'+price+'</div>'+(tags?'<div style="margin-top:4px">'+tags+'</div>':'')+'</div><button class="tg'+(p.oculto?'':' on')+'" data-t="'+esc(p.ref)+'" role="switch" aria-checked="'+(!p.oculto)+'" aria-label="Aparece no site: '+esc(p.nome)+'" type="button"></button></div>'}).join(''):'<div class="mu" style="padding:18px 0;text-align:center">Nenhum produto aqui.</div>'}
 var fq=[],fb=0;
 function loadFotos(){S.prods.forEach(function(p){if(p.fv>0&&!S.fotos[p.ref]&&fq.indexOf(p.ref)<0)fq.push(p.ref)});pump()}
@@ -211,7 +211,7 @@ $('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim()}).then(function
 $('dstb').onclick=function(e){if(e.target.closest('#dmb'))dSheet()};
 /* editor */
 function sheet(h){var s=$('sh');s.innerHTML='<div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>'+h+'</div>';s.hidden=false;s.onclick=function(e){if(e.target===s)closeSheet()}}
-function closeSheet(){$('sh').hidden=true;$('sh').innerHTML='';S.cur=null;S.fotoNova=null}
+function closeSheet(){$('sh').hidden=true;$('sh').innerHTML='';S.cur=null}
 function edit(ref){
   var p=S.prods.filter(function(x){return x.ref===ref})[0]||null;if(!p)return;S.cur=p;S.delArm=false;
   var foto=S.fotos[p.ref]||'';
