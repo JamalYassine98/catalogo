@@ -35,6 +35,8 @@ label{display:grid;gap:6px;font-size:12px;letter-spacing:.08em;text-transform:up
 .th{width:64px;height:64px;flex:0 0 64px;border-radius:14px;background:#fff;border:1px solid var(--ln);overflow:hidden;display:grid;place-items:center;color:#999;font-size:22px}.th img{width:100%;height:100%;object-fit:cover;transform:scale(1.5)}
 .pr.h .g{opacity:.55}
 /* folhas */
+.opt{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--ln);border-radius:16px;background:var(--s2);cursor:pointer}.opt.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,var(--s2))}.opt .rd{flex:none;width:20px;height:20px;border-radius:99px;border:2px solid var(--ln);margin-top:1px}.opt.on .rd{border-color:var(--ac);background:radial-gradient(var(--ac) 0 45%,transparent 50%)}.opt .g{min-width:0}.opt .ox{cursor:default}
+.gp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.pk{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#fff;border:2px solid var(--ln);padding:0;display:grid;place-items:center}.pk img{width:100%;height:100%;object-fit:cover;transform:scale(1.2)}.pk i{position:absolute;right:6px;top:6px;min-width:22px;height:22px;border-radius:99px;background:var(--ac);color:#fff;font:700 12px/22px system-ui;text-align:center;font-style:normal;display:none}.pk.on{border-color:var(--ac)}.pk.on i{display:block}
 #sh{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
 .sheet{width:100%;max-width:560px;max-height:94vh;overflow:auto;background:var(--s1);border:1px solid var(--ln);border-bottom:0;border-radius:28px 28px 0 0;padding:10px max(18px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));display:grid;gap:12px;align-content:start}
 .grab{width:42px;height:4px;border-radius:9px;background:var(--ln);margin:2px auto 6px}
@@ -60,7 +62,7 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
  <header class="top"><div class="logo">La <i>Fouch</i></div><button class="pill" id="st" type="button" aria-label="Estado do site"><span class="dot"></span><span id="stt">No ar</span></button><button class="pill cli" id="cl" type="button">👁 Cliente</button><button class="pill fsb" id="tfs" type="button" aria-label="Tela cheia" hidden style="width:38px;padding:0;justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button></header>
  <main class="page" id="v_vit">
   <div><h1 class="serif">Sua vitrine</h1><div class="mu sm" id="vsub"></div></div>
-  <section class="card" id="c_dst"><div class="ct">Destaque da semana</div><div id="dstb"></div></section>
+  <section class="card" id="c_dst"><div class="ct">Destaque do site</div><div id="dstb"></div></section>
   <section class="card" id="c_att"><div class="ct">Precisa de atenção</div><div id="att"></div></section>
   <section class="card"><div class="ct">Preços e estoque</div><div class="mu sm">Vêm sempre do app (Inventário). Para mudar um preço ou fazer uma oferta, use o app; o site acompanha em até 1 minuto.</div></section>
  </main>
@@ -131,11 +133,50 @@ function drawVit(){
   if(nof.length)a+=li(nof.length,'cw','Sem foto',esc(nof.slice(0,4).map(function(p){return p.ref}).join(', '))+(nof.length>4?'…':''),'nof');
   if(pen.length)a+=li(pen.length,'cw','Aguardando o app','o código precisa existir no Inventário; o preço chega em até 1 minuto',pen.length?'':'');
   if(es.length)a+=li(es.length,'cw','Esgotado no ar','saem sozinhos depois de alguns dias','esg');
+  var di=dInfo();if(di.bad)a=li('!','cw','Sem destaque no site',esc(di.w),'')+a;
   if(!a)a=li('✓','co','Tudo certo','fotos completas e nada esgotado no ar');
   $('att').innerHTML=a}
-function drawDst(){
-  var ok=visiveis().filter(function(p){return p.fv>0&&!esg(p)});
-  $('dstb').innerHTML='<div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst">'+ok.map(function(p){return '<option value="'+esc(p.ref)+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+esc(p.ref)+' · '+esc(p.nome)+'</option>'}).join('')+'</select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" value="'+esc(S.cfg.video||'')+'" placeholder="https://…/promo.mp4"></label><button class="btn" id="svd" type="button">Salvar destaque</button></div>'}
+var DM=[['nada','Nada'],['auto','Automático'],['produto','Um produto'],['video','Vídeo'],['slide','Slide de fotos']];
+function dmodo(){var c=S.cfg;return c.dmodo||(c.video?'video':c.destaque?'produto':'nada')}
+function dElig(p){return !p.oculto&&!p.pend&&!esg(p)}
+function dAuto(){var l=String(S.cfg.dauto||'').split(',').filter(Boolean),i,p;
+  for(i=0;i<l.length;i++){p=S.prods.filter(function(x){return x.ref===l[i]})[0];if(p&&dElig(p)&&p.fv>0)return p}
+  return null}
+function dSlide(c){return String(c.slide||'').split(',').filter(Boolean).map(function(r){return S.prods.filter(function(x){return x.ref===r})[0]}).filter(function(p){return p&&dElig(p)&&p.fv>0})}
+function dInfo(){var m=dmodo(),c=S.cfg,p,t='',w='';
+  if(m==='nada'){t='Sem destaque';w='O site mostra só o título e os botões, sem o cartão de destaque.'}
+  else if(m==='auto'){p=dAuto();if(p){t=p.ref+' · '+p.nome;w=(c.dmot&&c.dmot[p.ref])||'';}else{t='Aguardando o app';w='O app ainda não indicou um produto com foto e estoque. Abra o app para atualizar. Enquanto isso o site fica sem destaque.';return {m:m,t:t,w:w,bad:true}}}
+  else if(m==='produto'){p=S.prods.filter(function(x){return x.ref===c.destaque})[0];if(p&&dElig(p)){t=p.ref+' · '+p.nome}else{return {m:m,t:c.destaque?c.destaque+' indisponível':'Nenhum escolhido',w:'O produto escolhido está oculto, esgotado ou não existe. O site fica sem destaque.',bad:true}}}
+  else if(m==='video'){if(c.video){t='Vídeo promocional';w=c.video}else{return {m:m,t:'Sem endereço do vídeo',w:'Cole o endereço do arquivo .mp4. Enquanto isso o site fica sem destaque.',bad:true}}}
+  else if(m==='slide'){var l=dSlide(c);if(l.length){t=l.length+' foto'+(l.length===1?'':'s')+' em sequência';w=l.length===1?'Com uma foto só não há passagem automática. Escolha mais.':'Passa sozinho a cada 4 segundos.'}else{return {m:m,t:'Sem fotos',w:'Escolha os modelos do slide. Enquanto isso o site fica sem destaque.',bad:true}}}
+  return {m:m,t:t,w:w,bad:m==='nada'}}
+function drawDst(){var i=dInfo(),nm=DM.filter(function(x){return x[0]===i.m})[0][1];
+  $('dstb').innerHTML='<div class="row" style="gap:12px"><div class="g"><span class="chip '+(i.bad?'cw':'co')+'">'+esc(nm)+'</span><div style="margin-top:6px;font-weight:600">'+esc(i.t)+'</div>'+(i.w?'<div class="mu sm" style="margin-top:2px;word-break:break-word">'+esc(i.w)+'</div>':'')+'</div><button class="btn o" id="dmb" type="button" style="min-height:42px;padding:0 16px">Mudar</button></div>'}
+function dSheet(){
+  var c=S.cfg,m=dmodo(),ok=visiveis().filter(function(p){return p.fv>0&&!esg(p)}),sl=dSlide(c).map(function(p){return p.ref});S.dsl=sl.slice();S.dm=m;
+  var info={nada:'O site mostra só o título e os botões.',auto:'O app escolhe o produto que mais precisa girar: mais peças paradas no estoque, com foto.',produto:'Você escolhe um modelo.',video:'Um vídeo seu (.mp4), sem som.',slide:'Fotos dos modelos passando sozinhas, com bolinhas.'};
+  var h='<div class="serif" style="font-size:23px">Destaque do site</div><div class="mu sm" style="margin-top:-6px">É o cartão grande no topo da página do cliente.</div>';
+  DM.forEach(function(x){h+='<div class="opt'+(x[0]===m?' on':'')+'" data-m="'+x[0]+'" role="radio" aria-checked="'+(x[0]===m)+'" tabindex="0"><span class="rd"></span><div class="g"><b>'+x[1]+'</b><div class="mu sm">'+info[x[0]]+'</div><div class="ox" data-x="'+x[0]+'"'+(x[0]===m?'':' hidden')+'>'+dExtra(x[0],ok)+'</div></div></div>'});
+  h+='<button class="btn w" id="dsv" type="button">Salvar destaque</button><button class="btn o w" id="dcc" type="button">Cancelar</button>';
+  sheet(h);
+  $('dcc').onclick=closeSheet;$('dsv').onclick=dSave;
+  $('sh').querySelector('.sheet').onclick=function(e){
+    var t=e.target.closest('[data-pk]');if(t){var r=t.getAttribute('data-pk'),k=S.dsl.indexOf(r);if(k<0)S.dsl.push(r);else S.dsl.splice(k,1);dPaint();return}
+    var o=e.target.closest('.opt');if(!o||e.target.closest('input,select'))return;S.dm=o.getAttribute('data-m');
+    Array.prototype.forEach.call(document.querySelectorAll('.opt'),function(x){var on=x===o;x.classList.toggle('on',on);x.setAttribute('aria-checked',on);x.querySelector('.ox').hidden=!on})};
+  dPaint()}
+function dExtra(k,ok){
+  if(k==='produto')return '<select id="dpr" style="margin-top:8px">'+ok.map(function(p){return '<option value="'+esc(p.ref)+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+esc(p.ref)+' · '+esc(p.nome)+'</option>'}).join('')+'</select>';
+  if(k==='video')return '<input id="dvd" value="'+esc(S.cfg.video||'')+'" placeholder="https://…/promo.mp4" style="margin-top:8px">';
+  if(k==='slide')return '<div class="mu sm" style="margin:8px 0 6px">Toque nas fotos na ordem em que devem passar.</div><div class="gp" id="dgp">'+ok.map(function(p){return '<button type="button" class="pk" data-pk="'+esc(p.ref)+'" aria-label="'+esc(p.nome)+'">'+(S.fotos[p.ref]?'<img alt="" src="'+S.fotos[p.ref]+'">':'<span class="mu sm">'+esc(p.ref)+'</span>')+'<i></i></button>'}).join('')+'</div>';
+  if(k==='auto'){var p=dAuto();return p?'<div class="sm" style="margin-top:8px;color:var(--ac)">Agora: '+esc(p.ref+' · '+p.nome)+((S.cfg.dmot&&S.cfg.dmot[p.ref])?' — '+esc(S.cfg.dmot[p.ref]):'')+'</div>':'<div class="sm" style="margin-top:8px;color:var(--wn)">Ainda sem escolha do app.</div>'}
+  return ''}
+function dPaint(){Array.prototype.forEach.call(document.querySelectorAll('.pk'),function(b){var k=S.dsl.indexOf(b.getAttribute('data-pk'));b.classList.toggle('on',k>=0);b.querySelector('i').textContent=k>=0?k+1:''})}
+function dSave(){var m=S.dm,x={dmodo:m};
+  if(m==='produto'){var e=$('dpr');if(!e||!e.value){say('Escolha um produto.',1);return}x.destaque=e.value}
+  if(m==='video'){var v=$('dvd').value.trim();if(!/^https?:\/\/\S+$/.test(v)){say('Cole o endereço completo do vídeo (https://…).',1);return}x.video=v}
+  if(m==='slide'){if(!S.dsl.length){say('Escolha ao menos uma foto.',1);return}x.slide=S.dsl.join(',')}
+  saveCfg(x).then(function(){closeSheet();say('Destaque salvo.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}
 function filtrados(){
   var q=S.q.trim().toLowerCase();
   return S.prods.filter(function(p){
@@ -167,10 +208,10 @@ $('cl').onclick=openCli;$('clx').onclick=function(){$('cli').hidden=true;$('pvf'
 $('pvc').onclick=function(){if(W()){S.cliD=!S.cliD;$('pvc').textContent=S.cliD?'↩ Voltar ao modo administrador':'👁 Ver como o cliente vê';reloadCat()}else openCli()};
 /* configuração do site */
 function saveCfg(extra){var c=Object.assign({},S.cfg,extra||{});
-  return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||''},['ativo','aviso','video','destaque']).then(function(){S.cfg=c;draw()})}
+  return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||'',dmodo:c.dmodo||dmodo(),slide:c.slide||''},['ativo','aviso','video','destaque','dmodo','slide']).then(function(){S.cfg=c;draw()})}
 $('tgl').onclick=function(){var nv=!isOn();if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
 $('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim()}).then(function(){say('Mensagem salva.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
-$('dstb').onclick=function(e){if(!e.target.closest('#svd'))return;saveCfg({video:$('vid').value.trim(),destaque:$('dst').value}).then(function(){say('Destaque salvo.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
+$('dstb').onclick=function(e){if(e.target.closest('#dmb'))dSheet()};
 /* editor */
 function sheet(h){var s=$('sh');s.innerHTML='<div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>'+h+'</div>';s.hidden=false;s.onclick=function(e){if(e.target===s)closeSheet()}}
 function closeSheet(){$('sh').hidden=true;$('sh').innerHTML='';S.cur=null;S.fotoNova=null}
