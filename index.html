@@ -603,7 +603,10 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
 
 #pkok{position:fixed;inset:0;z-index:9999;background:var(--bg);color:var(--tx);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px max(24px,env(safe-area-inset-left,0px));text-align:center;animation:pkfi .4s both;overflow:auto}
 @keyframes pkfi{from{opacity:0}to{opacity:1}}@keyframes pkup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@keyframes pkck{to{stroke-dashoffset:0}}@keyframes pkgl{0%{opacity:0;transform:scale(.6)}40%{opacity:.9}100%{opacity:0;transform:scale(1.8)}}@keyframes pksp{to{transform:rotate(360deg)}}
+@keyframes pkck{to{stroke-dashoffset:0}}@keyframes pktm{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.fzr{display:flex;gap:8px}.fzr select.field{flex:0 0 112px;width:auto}.fzr input.field{flex:1;min-width:0}.fze{color:#ff9a9a;font-size:13px;margin-top:-4px}.field.bad{border-color:#ff9a9a}
+#pkok .pkcod{margin-top:18px;border:1px dashed var(--bd,#3a2f38);border-radius:14px;padding:12px 18px;font:700 22px ui-monospace,Menlo,monospace;letter-spacing:3px;animation:pkup .4s both}
+#pkok .pktm{display:block;height:4px;border-radius:2px;background:#e6a3c9;transform-origin:left;margin-top:12px;animation:pktm 1800s linear forwards}@keyframes pkgl{0%{opacity:0;transform:scale(.6)}40%{opacity:.9}100%{opacity:0;transform:scale(1.8)}}@keyframes pksp{to{transform:rotate(360deg)}}
 #pkok .pkl{width:190px;height:84px;background:var(--logo) center/contain no-repeat;margin:0 0 26px;animation:pkup .5s both}
 #pkok .pkc{position:relative;width:120px;height:120px;display:grid;place-items:center;margin-bottom:20px}
 #pkok .pkc u{position:absolute;inset:14px;border-radius:50%;background:radial-gradient(circle,#3ddc8c66,transparent 65%);animation:pkgl 1s .35s ease-out both}
@@ -1169,10 +1172,10 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
     '<div class="buy"><button type="button" class="bb p" data-addm="'+p.ref+'"><i class="shn"></i><span>'+(esg?'Avise-me':'Adicionar à reserva')+'</span><em>'+CARTI+'</em></button>'+(esg?'':'<a class="bb w" target="_blank" rel="noopener" aria-label="Falar com vendedor no WhatsApp" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.tr('Olá! Quero falar com um vendedor sobre o '+p.nome+' ('+p.ref+').')+'\nhttps://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html')+'"><span>Falar com vendedor</span><em>'+WAI+'</em></a>')+'</div></div>','center');relInit()}
   function bag(re){
     var ks=Object.keys(st.cart);
-    if(re){var a1=$('fn'),b1=$('fz'),sc=document.querySelector('#layer .panel');if(a1)st.nome=a1.value;if(b1)st.zap=b1.value;var top=sc?sc.scrollTop:0}
+    if(re){var a1=$('fn'),b1=$('fz'),sc=document.querySelector('#layer .panel');if(a1)st.nome=a1.value;if(b1)st.zap=b1.value;var p1=$('fp');if(p1)st.pais=p1.value;var top=sc?sc.scrollTop:0}
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Sua reserva"><div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">Sua reserva</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'+
       (ks.length?ks.map(function(k){var p=find(k);return '<div class="line"><div class="th">'+vis(p,7)+'</div><div style="flex:1;min-width:0"><b>'+esc(p.nome)+'</b><div class="pr" style="font-size:16px">'+fmtL(p,st.cart[k])+'</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div class="qty"><button data-dec="'+k+'" aria-label="Menos">−</button><span>'+st.cart[k]+'</span><button data-inc="'+k+'" aria-label="Mais">+</button></div><button class="x" data-rm="'+k+'" aria-label="Remover" style="width:40px;height:40px;align-self:auto;border:0;background:transparent">×</button></div></div></div>'}).join('')+
-      '<div class="note"><b style="color:var(--tx)">Seus dados</b> (para separar as peças)</div><input class="field" id="fn" placeholder="Seu nome" value="'+esc(st.nome)+'"><input class="field" id="fz" placeholder="Seu WhatsApp" value="'+esc(st.zap)+'">'+
+      '<div class="note"><b style="color:var(--tx)">Seus dados</b> (para separar as peças)</div><input class="field" id="fn" placeholder="Seu nome" value="'+esc(st.nome)+'"><div class="fzr"><select class="field" id="fp" aria-label="País do WhatsApp"><option value="py"'+(paisSel()==='py'?' selected':'')+'>🇵🇾 +595</option><option value="br"'+(paisSel()==='br'?' selected':'')+'>🇧🇷 +55</option><option value="ar"'+(paisSel()==='ar'?' selected':'')+'>🇦🇷 +54</option></select><input class="field" id="fz" inputmode="tel" autocomplete="tel-national" placeholder="'+FONE_EX[paisSel()]+'" value="'+esc(st.zap)+'"></div><div class="fze" id="fze" role="alert" hidden></div>'+
       '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:auto"><span style="color:var(--mu)">Total</span><b style="font-size:26px">'+LFI.fmtD(totalD())+'</b></div><button class="btn w" data-send>Fazer pedido</button><span style="text-align:center;color:var(--mu);font-size:13px">As peças ficam separadas por 7 dias. Você prova e retira na loja.</span>'
       :'<div class="note" style="margin-top:20px">Sua reserva está vazia. Volte ao catálogo e toque em Comprar.</div>')+'</aside>',re?'still':'');if(re){var pn=document.querySelector('#layer .panel');if(pn)pn.scrollTop=top}}
   function mensagem(modo,ref){return LFI.tr(mensagem0(modo,ref))}
@@ -1190,19 +1193,45 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
     var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000);
     return fetch('https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/pedidos?documentId='+encodeURIComponent(id)+'&key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f}),signal:ct?ct.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw new Error('http '+r.status);return true},function(e){clearTimeout(tm);throw e})}
   function pkTela(h){var o=$('pkok');if(!o){o=document.createElement('div');o.id='pkok';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');document.body.appendChild(o);document.documentElement.classList.add('lock')}o.innerHTML=h;return o}
+  /* WhatsApp: só aceita celular no formato de Brasil, Paraguai ou Argentina */
+  var FONE_EX={py:'0981 123 456',br:'(11) 91234-5678',ar:'9 11 1234-5678'},FONE_MSG={py:'Número do Paraguai inválido. Use o celular, ex.: 0981 123 456.',br:'Número do Brasil inválido. Use DDD + 9 + 8 dígitos, ex.: (11) 91234-5678.',ar:'Número da Argentina inválido. Use o celular com DDD, ex.: 9 11 1234-5678.'};
+  function paisSel(){if(st.pais)return st.pais;return (window.LFI&&LFI.lang==='es')?'py':'br'}
+  function foneFake(d){return /(\d)\1{6,}/.test(d)}
+  function foneNorm(pais,txt){
+    var d=String(txt||'').replace(/\D/g,'');if(!d||foneFake(d))return '';
+    if(pais==='br'){if(d.length>11&&d.indexOf('55')===0)d=d.slice(2);d=d.replace(/^0+/,'');
+      return /^[1-9][1-9]9\d{8}$/.test(d)?'+55'+d:''}
+    if(pais==='py'){if(d.length>9&&d.indexOf('595')===0)d=d.slice(3);d=d.replace(/^0+/,'');
+      return /^9[6-9]\d{7}$/.test(d)?'+595'+d:''}
+    if(pais==='ar'){if(d.indexOf('54')===0&&d.length>10)d=d.slice(2);d=d.replace(/^0+/,'');
+      if(/^9[1-3]\d{9}$/.test(d))return '+54'+d;if(/^[1-3]\d{9}$/.test(d))return '+549'+d;return ''}
+    return ''}
+  function foneErro(msg){var e=$('fze'),z=$('fz');if(e){e.textContent=msg||'';e.hidden=!msg}if(z)z.classList.toggle('bad',!!msg);if(msg){try{z.focus()}catch(_){}toast(msg)}}
+  /* tela de espera: o cliente precisa falar com o vendedor para garantir a reserva */
+  function pkEspera(id,cod,wa,ate){
+    var rest=Math.max(0,ate-Date.now()),tot=30*60000,fi=1-rest/tot;
+    pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:.1s">Falta um passo</h2><div class="pkt" style="animation-delay:.2s"><span>Fale com o vendedor primeiro para garantir sua reserva. O código do pedido já vai na mensagem.</span></div><div class="pkcod" style="animation-delay:.35s">PEDIDO '+esc(cod)+'</div><div class="pkb" style="animation-delay:.5s"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Falar com o vendedor</a><small>Sua reserva fica guardada por 30 minutos.</small><i class="pktm" style="animation-duration:'+Math.round(rest/1000)+'s"></i><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='';
+    var tk=setInterval(function(){
+      if(!$('pkok')||Date.now()>ate+60000){clearInterval(tk);if($('pkok')&&Date.now()>ate+60000){var t=document.querySelector('#pkok .pkt span');if(t)t.textContent='O tempo acabou. Se você já falou com o vendedor, sua reserva está sendo analisada.'}return}
+      fbg('reservas/'+encodeURIComponent(id)).then(function(d){var o=fbd(d);if(o&&o.ok){clearInterval(tk);if(!$('pkok'))return;
+        pkTela('<div class="pkl"></div><div class="pkc"><u></u>'+PK_SVG+'</div><h2>Reserva confirmada</h2><div class="pkt"><b>Obrigado pela preferência!</b><span>O vendedor recebeu sua mensagem. Sua reserva está garantida.</span></div><div class="pkb"><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className=''}}).catch(function(){})},4000)}
   function enviarPedido(retry){
-    var a=$('fn'),b=$('fz');if(a)st.nome=a.value;if(b)st.zap=b.value;
+    var a=$('fn'),b=$('fz'),pp=$('fp');if(a)st.nome=a.value;if(b)st.zap=b.value;if(pp)st.pais=pp.value;
     var ks=Object.keys(st.cart);if(!ks.length)return;
-    if(!retry&&(String(st.nome||'').trim().length<2||String(st.zap||'').replace(/\D/g,'').length<6)){toast('Digite seu nome e seu WhatsApp para a loja confirmar o pedido.');(String(st.nome||'').trim().length<2?a:b)&&(String(st.nome||'').trim().length<2?a:b).focus();return}
-    var txt=mensagem('reserva'),wa='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(txt);
+    if(!retry&&String(st.nome||'').trim().length<2){toast('Digite seu nome para a loja confirmar o pedido.');a&&a.focus();return}
+    var fone=retry&&st.fone?st.fone:foneNorm(paisSel(),st.zap);
+    if(!fone){foneErro(FONE_MSG[paisSel()]);return}
+    foneErro('');st.fone=fone;
     var id=st.pkid&&retry?st.pkid:(Date.now().toString(36)+Math.random().toString(36).slice(2,7));st.pkid=id;
+    var cod=id.slice(-4).toUpperCase(),ate=Date.now()+30*60000;
+    var txt='PEDIDO '+cod+'\n'+mensagem('reserva'),wa='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(txt);
     var ff=st.rosto?FACES.filter(function(x){return x.id===st.rosto})[0]:null;
-    var doc={ts:Date.now(),nome:String(st.nome).trim(),tel:String(st.zap).trim(),lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:Math.round(total()),rosto:ff?ff.nome:'',
+    var doc={ts:Date.now(),nome:String(st.nome).trim(),tel:fone,pais:paisSel(),cod:cod,ate:ate,lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:Math.round(total()),rosto:ff?ff.nome:'',
       itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',preco:Math.round(p.n)}})};
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
     pkEnviar(doc,id).then(function(){
       st.cart={};try{drawBag()}catch(_){}
-      pkTela('<div class="pkl"></div><div class="pkc"><u></u>'+PK_SVG+'</div><h2>Pedido recebido</h2><div class="pkt"><b>Obrigado pela preferência!</b><span>Sua reserva vai ser analisada.</span></div><div class="pkb"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Falar com o vendedor</a><small>Para agilizar a reserva, toque aqui</small><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='';
+      pkEspera(id,cod,wa,ate);
     },function(){
       pkTela('<div class="pkl"></div><h2 style="animation-delay:0s">Quase lá!</h2><div class="pkt" style="animation-delay:.1s"><span>Não deu para enviar o pedido agora. Mande pelo WhatsApp para a loja receber.</span></div><div class="pkb" style="animation-delay:.2s"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Enviar pelo WhatsApp</a><button type="button" data-pkretry>Tentar de novo</button><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0'})}
   function message(modo,ref){
