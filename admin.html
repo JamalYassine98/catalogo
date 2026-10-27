@@ -1,94 +1,90 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>Painel La Fouch</title>
+<html lang="pt-BR"><head><meta charset="utf-8"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#120d15"><title>Painel La Fouch</title>
 <style>
-:root{--bg:#fbf6f9;--pn:#fff;--tx:#2a1f27;--mu:#7a6772;--ln:#ead9e2;--ac:#8a3068;--ok:#0e8a43;--bad:#d6232a}
-@media (prefers-color-scheme:dark){:root{--bg:#171116;--pn:#231a21;--tx:#f5eaf0;--mu:#b6a2ad;--ln:#3a2c35;--ac:#e08abf;--ok:#47c77f;--bad:#ff6b6b}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 Inter,system-ui,sans-serif;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
-main{max-width:1100px;margin:0 auto;display:grid;gap:16px}h1{font:600 28px Georgia,serif;margin:6px 0 0}h2{font:600 20px Georgia,serif;margin:0 0 10px}
-.card{background:var(--pn);border:1px solid var(--ln);border-radius:20px;padding:18px}
-label{display:grid;gap:5px;font-size:13px;color:var(--mu);font-weight:600}input,select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px;min-height:46px;width:100%}
-.btn{font:700 15px Inter,system-ui,sans-serif;border:0;border-radius:14px;min-height:48px;padding:0 18px;cursor:pointer;background:var(--ac);color:#fff}.btn.o{background:transparent;color:var(--ac);border:1.5px solid var(--ac)}.btn.d{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}.btn:disabled{opacity:.5}
-.row{display:grid;gap:12px;grid-template-columns:1fr 1fr}@media(max-width:520px){.row{grid-template-columns:1fr}}
-.sw{display:flex;align-items:center;justify-content:space-between;gap:14px}.tg{position:relative;width:78px;height:42px;border-radius:999px;background:var(--bad);border:0;cursor:pointer;flex:none;transition:.2s}.tg::after{content:"";position:absolute;top:4px;left:4px;width:34px;height:34px;border-radius:50%;background:#fff;transition:.2s}.tg.on{background:var(--ok)}.tg.on::after{left:40px}
-.st{font:800 18px Inter,sans-serif}.st.on{color:var(--ok)}.st.off{color:var(--bad)}
-.pl{display:grid;gap:10px}.pi{display:flex;gap:12px;align-items:center;background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:10px;cursor:pointer}.pi img{width:84px;height:56px;object-fit:contain;background:#fff;border-radius:10px;flex:none}.pi b{display:block;font-size:15px}.pi small{color:var(--mu)}.pi .r{margin-left:auto;text-align:right;font-weight:800;color:var(--ok);white-space:nowrap}.pi.h{opacity:.5}
-.tags{display:flex;gap:6px;flex-wrap:wrap}.tags span{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac)}.tags .x{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
-.rem{display:flex;flex-direction:row;align-items:center;gap:12px;font-size:14px;color:var(--tx);font-weight:500;cursor:pointer}.rem input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--ac);flex:none}.rem small{display:block;color:var(--mu);font-size:12px;font-weight:400;margin-top:2px;line-height:1.4}
-.chk{display:flex;gap:8px;flex-wrap:wrap}.chk label{flex-direction:row;align-items:center;gap:6px;font-size:14px;color:var(--tx);font-weight:500;background:var(--bg);border:1px solid var(--ln);border-radius:999px;padding:8px 12px}.chk input{width:auto;min-height:0}
-.msg{font-size:14px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ok) 14%,transparent)}.msg.e{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
-.ph{width:100%;height:180px;object-fit:contain;background:#fff;border-radius:14px;border:1px solid var(--ln)}
-.tabs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;position:sticky;top:0;z-index:20;background:var(--bg);padding:6px 0}.tab{font:700 14px Inter,sans-serif;border:1.5px solid var(--ln);background:var(--pn);color:var(--tx);border-radius:999px;padding:10px 16px;cursor:pointer}.tab.on{background:var(--ac);border-color:var(--ac);color:#fff}
-.sw2{display:none!important;font:800 13px Inter,sans-serif;border:0;border-radius:999px;padding:11px 16px;cursor:pointer;color:#fff;background:var(--bad)}.sw2.on{background:var(--ok)}
-.ctb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.ctb .btn{min-height:42px;font-size:14px}
-@media (min-width:1000px){html,body{height:100%;overflow:hidden}body{padding-bottom:12px}main{max-width:none;height:100%;display:flex;flex-direction:column;gap:10px;padding-inline:4px}#work{flex:1;min-height:0;display:grid;grid-template-columns:minmax(400px,.8fr) minmax(0,1.2fr);grid-template-rows:minmax(0,1fr);gap:16px}#app,#ed{order:1}#cat{order:2;height:100%;display:flex;flex-direction:column}.tabs{display:none!important}#cat iframe{flex:1;height:auto!important;min-height:0!important;width:100%}#app,#ed{height:100%;overflow:auto;align-content:start}.tab{display:none}.tabs{padding:0;position:static}}
-.btn.sm{min-height:40px;font-size:13px;padding:0 14px}
-.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--ln)}.hd h1{margin:0;font-size:24px}.hd .btn{flex:none}
-[hidden]{display:none!important}
-.tb{display:flex;justify-content:space-between;align-items:center;gap:10px}
-
-/* ===== celular: site em tela cheia, barra no topo, dock embaixo, folhas por cima ===== */
-@media (max-width:999px){
- body.mob{padding:0}body.mob main{max-width:none;display:block}
- body.mob #tabs{display:none!important}
- body.mob #mtop{position:fixed;top:0;left:0;right:0;z-index:30;height:56px;padding:8px max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));display:flex;gap:8px;align-items:center;background:var(--bg);border-bottom:1px solid var(--ln)}
- body.mob #mtop[hidden],body.mob #mdock[hidden],body.mob #mbk[hidden]{display:none!important}
- .mp{height:40px;border-radius:999px;padding:0 14px;font:700 13px Inter,system-ui,sans-serif;border:1px solid var(--ln);background:var(--pn);color:var(--tx);cursor:pointer}.mp.on{background:var(--ok);border-color:var(--ok);color:#fff}.mp.off{background:var(--bad);border-color:var(--bad);color:#fff}
- body.mob #work{display:block}
- body.mob #cat{position:fixed;top:56px;left:0;right:0;bottom:0;z-index:10}
- body.mob #cat iframe{width:100%!important;height:100%!important;min-height:0!important;border:0!important;border-radius:0!important}
- body.mob #mdock{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:31;height:62px;border-radius:22px;background:color-mix(in srgb,var(--pn) 94%,transparent);border:1px solid var(--ln);display:flex;justify-content:space-around;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.35);backdrop-filter:blur(8px)}
- .dkb{display:flex;flex-direction:column;align-items:center;gap:2px;font:700 11px Inter,system-ui,sans-serif;color:var(--tx);background:none;border:0;padding:6px 12px;border-radius:16px;cursor:pointer;min-width:60px}.dkb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.dkb.p{background:var(--ac);color:#fff}
- body.mob #mbk{position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.45)}
- body.mob #app,body.mob #ed{position:fixed;left:0;right:0;bottom:0;z-index:40;max-height:88vh;overflow:auto;background:var(--pn);border-radius:26px 26px 0 0;border:1px solid var(--ln);border-bottom:0;padding:22px max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));box-shadow:0 -14px 40px rgba(0,0,0,.4);display:block!important;margin:0}
- body.mob #app[hidden],body.mob #ed[hidden]{display:none!important}
- body.mob #app::before,body.mob #ed::before{content:"";display:block;width:44px;height:5px;border-radius:9px;background:var(--ln);margin:-12px auto 12px}
- body.mob #app>section{border:0;padding:0;background:none;border-radius:0}
- body.mob #app>section[hidden]{display:none!important}
- body.mob #app .hd{display:none}
- body.mob #c_cfg #pvc,body.mob #c_cfg #pvr{display:none!important}
- body.mob #out2,body.mob #svc2{display:block!important}
- body.mob #ed.card{border-radius:26px 26px 0 0}
-}
-</style></head><body><main>
-
-<div id="msg" class="msg" hidden></div>
-
-<section class="card" id="lock" hidden><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Desbloquear</h2><p style="color:var(--mu);margin:0 0 14px">Use a biometria do celular para entrar.</p><div style="display:grid;gap:12px"><button class="btn" id="bgo" type="button">Desbloquear com biometria</button><button class="btn o" id="bpw" type="button">Entrar com senha</button></div></section>
-
-<section class="card" id="login"><h1 style="margin:0 0 10px">Painel La Fouch</h1><h2>Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><label class="rem"><input type="checkbox" id="rem"><span>Lembrar e-mail e senha<small id="remh" hidden>Ative a biometria nos Ajustes do app para poder lembrar.</small></span></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
-
-<nav class="tabs" id="tabs" hidden><button class="tab on" data-v="cat">Catálogo</button><button class="tab" data-v="app">Lista e ajustes</button><button class="mp fsb" id="tfs" type="button" aria-label="Tela cheia" hidden style="width:40px;padding:0;display:inline-flex;align-items:center;justify-content:center;margin-left:auto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button><button class="sw2" id="tg2" style="margin-left:10px" role="switch" aria-label="Ligar ou desligar o site"></button></nav>
-<div id="mtop" hidden><button class="mp" id="mst" type="button" aria-label="Ligar ou desligar o site"></button><span style="flex:1"></span><button class="mp" id="mcl" type="button">👁 Cliente</button><button class="mp fsb" id="mfs" type="button" aria-label="Tela cheia" hidden style="width:40px;padding:0;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button></div>
-<div id="mbk" hidden></div>
-<nav id="mdock" hidden aria-label="Ações"><button type="button" class="dkb p" data-s="new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Novo</button><button type="button" class="dkb" data-s="dst"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Destaque</button><button type="button" class="dkb" data-s="lst"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Produtos</button><button type="button" class="dkb" data-s="cfg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2L10 21h4l.6-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>Ajustes</button></nav>
-<div id="work"><section id="cat" hidden><iframe id="pvf" title="Catálogo" style="width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff"></iframe></section>
-<div id="app" hidden style="display:grid;gap:16px">
- 
- <section class="card" id="c_cfg"><div class="hd"><h1>Painel La Fouch</h1><button class="btn o sm" id="out">Sair</button></div><div class="sw"><div><h2 style="margin:0">Site no ar?</h2><div class="st" id="stt"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site"></button></div>
-  <div style="margin-top:12px;display:grid;gap:12px"><label>Mensagem quando estiver desligado<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><button class="btn o" id="pvc">Ver como o cliente vê</button><button class="btn msair" id="svc2" type="button" style="display:none">Salvar aviso</button><button class="btn o msair" id="out2" type="button" style="display:none">Sair da conta</button><button class="btn o" id="pvr" hidden>Voltar ao modo administrador</button><button class="btn o" id="pwb" type="button">Alterar senha</button><form id="pwf" style="display:none;gap:12px" autocomplete="off"><label>Senha atual<input id="pw0" type="password" autocomplete="current-password"></label><label>Nova senha (mínimo 6 caracteres)<input id="pw1" type="password" autocomplete="new-password"></label><label>Repetir nova senha<input id="pw2" type="password" autocomplete="new-password"></label><button class="btn" id="pws" type="submit">Salvar nova senha</button></form></div></section>
- <section class="card" id="c_dst"><h2>Destaque da semana</h2><div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst"></select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" placeholder="https://…/promo.mp4"></label><button class="btn" id="svc">Salvar destaque e aviso</button></div></section>
- <section class="card" id="c_lst"><div class="tb"><h2 style="margin:0">Catálogo</h2><button class="btn" id="new">+ Novo produto</button></div><p style="color:var(--mu);font-size:14px;margin:8px 0 12px" id="cnt"></p><div class="pl" id="pl"></div><div id="seed" hidden style="margin-top:12px"><button class="btn o" id="seedb">Enviar o catálogo atual do site</button></div></section>
-</div>
-
-<section class="card" id="ed" hidden><h2 id="edt">Produto</h2><div style="display:grid;gap:12px">
- <img class="ph" id="fp" alt="" hidden><label>Foto (fundo branco, não corte o óculos)<input type="file" id="ff" accept="image/*"></label>
- <div class="row"><label>Código (ref)<input id="f_ref" placeholder="SL2310"></label><label>Tipo<select id="f_tipo"><option value="solar">Solar</option><option value="armacao">Armação</option><option value="grau">Óculos de grau</option></select></label></div>
- <label>Nome<input id="f_nome"></label>
- <div class="row"><label>Preço em guaranis (Gs.)<input id="f_n" inputmode="numeric"></label><label>Preço antigo (oferta, opcional)<input id="f_de" inputmode="numeric" placeholder="vazio = sem oferta"></label></div>
- <small id="hint" style="color:var(--mu)"></small>
- <div class="row"><label>Aviso<select id="f_av"><option value="">Nenhum</option><option>Chegou esta semana</option><option>Última unidade</option><option>Últimas 2 unidades</option><option>Últimas 3 unidades</option><option>Esgotado</option></select></label><label>Etiqueta (ex.: NOVO, METAL, SOLAR)<input id="f_tag"></label></div>
- <div class="row"><label>Material<input id="f_mat"></label><label>Cor principal<input id="f_cor" type="color" style="padding:4px"></label></div>
- <div class="row" style="grid-template-columns:repeat(3,1fr)"><label>Lente (mm)<input id="m0" inputmode="numeric"></label><label>Ponte (mm)<input id="m1" inputmode="numeric"></label><label>Haste (mm)<input id="m2" inputmode="numeric"></label></div>
- <div><div style="font-size:13px;color:var(--mu);font-weight:600;margin-bottom:6px">Combina com rosto</div><div class="chk" id="f_rosto"></div></div>
- <div class="row"><label>Mais pedidos (0 = fora, 1 a 3)<select id="f_rank"><option value="0">Fora</option><option value="1">Nº 1</option><option value="2">Nº 2</option><option value="3">Nº 3</option></select></label><label>Aparece no site?<select id="f_ocu"><option value="0">Sim</option><option value="1">Não (escondido)</option></select></label></div>
- <div class="row"><button class="btn" id="sv">Salvar</button><button class="btn o" id="cc">Cancelar</button></div>
- <button class="btn d" id="del" hidden>Excluir produto</button></div></section></div>
-</main>
+:root{--bg:#fbf6f9;--s1:#fff;--s2:#f4eaf0;--ln:#e6d5df;--tx:#2a1f27;--mu:#7a6772;--ac:#a2447c;--ac2:#7d2f5f;--ok:#0e8a43;--wn:#a86a00;--bad:#d6232a;--gl:linear-gradient(135deg,#bd5a95,#8b3a72)}
+@media (prefers-color-scheme:dark){:root{--bg:#120d15;--s1:#1a131e;--s2:#231a28;--ln:#33283a;--tx:#f5eff7;--mu:#a493ad;--ac:#d476b2;--ac2:#9b3f7c;--ok:#5be3a0;--wn:#f3c26b;--bad:#ff8a8a;--gl:linear-gradient(135deg,#c9619f,#8e3b78)}}
+*{box-sizing:border-box;margin:0}[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden}#wrap,#main{height:100%}body{background:var(--bg);color:var(--tx);font:15px/1.45 Inter,system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--s2);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;min-height:48px;width:100%}
+input:focus,select:focus{outline:2px solid color-mix(in srgb,var(--ac) 60%,transparent);outline-offset:1px}
+label{display:grid;gap:6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);font-weight:600}
+.serif{font-family:'GFS Baskerville','Bitstream Charter',Georgia,serif;font-weight:400}
+.mu{color:var(--mu)}.sm{font-size:13px}
+#msg{position:fixed;left:50%;transform:translateX(-50%);top:max(12px,env(safe-area-inset-top));z-index:200;max-width:92vw;padding:11px 16px;border-radius:99px;background:var(--s1);border:1px solid var(--ln);box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:14px}#msg.e{border-color:var(--bad);color:var(--bad)}
+.card{background:var(--s1);border:1px solid var(--ln);border-radius:22px;padding:16px}
+.ct{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);font-weight:600;margin-bottom:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:99px;background:var(--gl);color:#fff;font-weight:600;font-size:15px}.btn.o{background:transparent;border:1px solid var(--ln);color:var(--tx)}.btn.d{background:transparent;border:1px solid color-mix(in srgb,var(--bad) 50%,transparent);color:var(--bad)}.btn.w{width:100%}.btn.sm{min-height:40px;padding:0 14px;font-size:13px}.btn:disabled{opacity:.5}
+.pill{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 13px;border-radius:99px;font-size:13px;font-weight:600;background:var(--s2);border:1px solid var(--ln)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 20%,transparent)}.off .dot{background:var(--bad);box-shadow:0 0 0 3px color-mix(in srgb,var(--bad) 20%,transparent)}
+.tg{width:52px;height:30px;border-radius:99px;background:var(--s2);border:1px solid var(--ln);position:relative;flex:0 0 52px;transition:.2s}.tg:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--mu);transition:.2s}.tg.on{background:var(--gl);border-color:transparent}.tg.on:after{left:25px;background:#fff}
+.seg{display:flex;gap:6px;flex-wrap:wrap}.seg button{padding:9px 14px;border-radius:99px;background:var(--s2);border:1px solid var(--ln);font-size:13px;color:var(--mu);white-space:nowrap}.seg button.on{background:var(--gl);border-color:transparent;color:#fff;font-weight:600}
+.chip{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11.5px;font-weight:700}.cw{background:color-mix(in srgb,var(--wn) 16%,transparent);color:var(--wn)}.co{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}.ca{background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}.cx{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.row{display:flex;align-items:center;gap:12px}.row>.g{flex:1;min-width:0}
+.lock{display:inline-flex;align-items:center;gap:5px;color:var(--mu);font-size:12.5px}.lock svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+/* shell */
+#shell{display:flex;flex-direction:column;height:100%;max-width:560px;margin:0 auto}
+.top{display:flex;align-items:center;gap:8px;padding:max(14px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 8px max(16px,env(safe-area-inset-left))}
+.logo{font-family:'GFS Baskerville','Bitstream Charter',Georgia,serif;font-size:20px;margin-right:auto}.logo i{color:var(--ac);font-style:normal}
+.page{flex:1;min-height:0;overflow:auto;padding:6px max(16px,env(safe-area-inset-right)) 24px max(16px,env(safe-area-inset-left));display:grid;gap:14px;align-content:start}
+.page h1{font-size:27px;line-height:1.15}.page>.card{margin:0}
+.bn{display:flex;justify-content:space-around;gap:6px;padding:8px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));border-top:1px solid var(--ln);background:color-mix(in srgb,var(--bg) 94%,transparent)}
+.bn button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;color:var(--mu);padding:7px 0;border-radius:16px}.bn button.on{color:var(--tx);background:var(--s2)}.bn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.srch{position:relative}.srch input{padding-left:42px}.srch svg{position:absolute;left:14px;top:15px;width:18px;height:18px;stroke:var(--mu);fill:none;stroke-width:2}
+.pr{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--ln);cursor:pointer}.pr:first-child{border-top:0}
+.th{width:64px;height:64px;flex:0 0 64px;border-radius:14px;background:#fff;border:1px solid var(--ln);overflow:hidden;display:grid;place-items:center;color:#999;font-size:22px}.th img{width:100%;height:100%;object-fit:cover;transform:scale(1.5)}
+.pr.h .g{opacity:.55}
+/* folhas */
+#sh{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:560px;max-height:94vh;overflow:auto;background:var(--s1);border:1px solid var(--ln);border-bottom:0;border-radius:28px 28px 0 0;padding:10px max(18px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));display:grid;gap:12px;align-content:start}
+.grab{width:42px;height:4px;border-radius:9px;background:var(--ln);margin:2px auto 6px}
+.pv{position:relative;height:190px;border-radius:18px;background:#fff;overflow:hidden;border:1px solid var(--ln)}.pv img{width:100%;height:100%;object-fit:cover;transform:scale(1.25)}
+.pv .tag{position:absolute;left:10px;top:10px;background:rgba(18,13,21,.82);color:#fff}.pv label.up{position:absolute;right:10px;bottom:10px;background:rgba(18,13,21,.82);color:#fff;padding:8px 14px;border-radius:99px;font-size:13px;text-transform:none;letter-spacing:0;display:flex;gap:6px;cursor:pointer}.pv input[type=file]{display:none}
+.pv .none{height:100%;display:grid;place-items:center;color:#888}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:5px 0}.kv b{font-weight:600}
+.chk{display:flex;gap:8px;flex-wrap:wrap}.chk label{flex-direction:row;align-items:center;gap:7px;text-transform:none;letter-spacing:0;font-size:14px;color:var(--tx);font-weight:500;background:var(--s2);border:1px solid var(--ln);border-radius:99px;padding:8px 13px}.chk input{width:auto;min-height:0}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
+#cli{position:fixed;inset:0;z-index:150;background:var(--bg);display:flex;flex-direction:column}#cli .bar{display:flex;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top)) 14px 10px}#cli iframe{flex:1;width:100%;border:0;background:#fff}
+#dpv{display:none}
+@media (min-width:1000px){#wrap{display:grid;grid-template-columns:minmax(380px,1fr) 520px;height:100%;gap:0}#dpv{display:block;border-right:1px solid var(--ln);background:var(--s2);position:relative}#dpv iframe{width:100%;height:100%;border:0;background:#fff}#shell{max-width:none;border-left:0}#shell .top .cli{display:none}.bn{padding-bottom:12px}#sh{align-items:center}.sheet{border-radius:28px;border-bottom:1px solid var(--ln);max-height:90vh}}
+#login,#lock{max-width:440px;margin:max(40px,env(safe-area-inset-top)) 16px 0;display:block}@media(min-width:480px){#login,#lock{margin-inline:auto}}#main{overflow:auto}#shell{height:100%}#login{padding:22px}#lock{padding:22px}
+.rem{display:flex;flex-direction:row;align-items:center;gap:12px;font-size:14px;color:var(--tx);text-transform:none;letter-spacing:0;font-weight:500;cursor:pointer}.rem input{width:22px;height:22px;min-height:0;padding:0;accent-color:var(--ac);flex:none}.rem small{display:block;color:var(--mu);font-size:12px;font-weight:400}
+</style></head><body><div id="msg" hidden></div>
+<div id="wrap">
+<div id="dpv" hidden><iframe id="pvd" title="Site do cliente"></iframe></div>
+<div id="main">
+<section class="card" id="lock" hidden><h1 class="serif" style="margin:0 0 10px">Painel La Fouch</h1><h2 style="margin:0 0 6px;font-size:18px">Desbloquear</h2><p class="mu" style="margin:0 0 14px">Use a biometria do celular para entrar.</p><div style="display:grid;gap:12px"><button class="btn" id="bgo" type="button">Usar biometria</button><button class="btn o" id="bpw" type="button">Entrar com a senha</button></div></section>
+<section class="card" id="login"><h1 class="serif" style="margin:0 0 10px">Painel La Fouch</h1><h2 style="margin:0 0 10px;font-size:18px">Entrar</h2><form id="lf" method="post" action="#" autocomplete="on" style="display:grid;gap:12px"><label>E-mail<input id="em" name="username" type="email" autocomplete="username" inputmode="email" autocapitalize="none"></label><label>Senha<input id="pw" name="password" type="password" autocomplete="current-password"></label><label class="rem"><input type="checkbox" id="rem"><span>Lembrar e-mail e senha<small id="remh" hidden>Ative a biometria nos Ajustes do app para poder lembrar.</small></span></label><button class="btn" id="go" type="submit">Entrar</button></form></section>
+<div id="shell" hidden>
+ <header class="top"><div class="logo">La <i>Fouch</i></div><button class="pill" id="st" type="button" aria-label="Estado do site"><span class="dot"></span><span id="stt">No ar</span></button><button class="pill cli" id="cl" type="button">👁 Cliente</button><button class="pill fsb" id="tfs" type="button" aria-label="Tela cheia" hidden style="width:38px;padding:0;justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fe" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fc" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" style="display:none"/></svg></button></header>
+ <main class="page" id="v_vit">
+  <div><h1 class="serif">Sua vitrine</h1><div class="mu sm" id="vsub"></div></div>
+  <section class="card" id="c_dst"><div class="ct">Destaque da semana</div><div id="dstb"></div></section>
+  <section class="card" id="c_att"><div class="ct">Precisa de atenção</div><div id="att"></div></section>
+  <section class="card"><div class="ct">Preços e estoque</div><div class="mu sm">Vêm sempre do app (Inventário). Para mudar um preço ou fazer uma oferta, use o app; o site acompanha em até 1 minuto.</div></section>
+ </main>
+ <main class="page" id="v_prod" hidden>
+  <div class="row"><div class="g"><h1 class="serif">Produtos</h1><div class="mu sm" id="psub"></div></div><button class="btn sm" id="new" type="button">+ Novo</button></div>
+  <div class="srch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar por nome ou código" autocomplete="off"></div>
+  <div class="seg" id="flt"><button class="on" data-f="all" type="button">Todos</button><button data-f="on" type="button">No ar</button><button data-f="hid" type="button">Ocultos</button><button data-f="nof" type="button">Sem foto</button><button data-f="esg" type="button">Esgotado</button></div>
+  <section class="card" style="padding:4px 16px"><div id="pl"></div></section>
+ </main>
+ <main class="page" id="v_cfg" hidden>
+  <div><h1 class="serif">Configurar</h1><div class="mu sm">lafouch.com</div></div>
+  <section class="card" id="c_cfg"><div class="row"><div class="g"><div class="serif" style="font-size:21px" id="onl">O site está no ar</div><div class="mu sm" id="onl2"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site" type="button"></button></div></section>
+  <section class="card"><div class="ct">Se você desligar</div><label>Mensagem que os clientes veem<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><div style="display:grid;gap:10px;margin-top:12px"><button class="btn" id="svc" type="button">Salvar mensagem</button><button class="btn o" id="pvc" type="button">👁 Ver como o cliente vê</button></div></section>
+  <section class="card"><div class="ct">Conta</div><div style="display:grid;gap:10px"><button class="btn o" id="pwb" type="button">Alterar senha</button><form id="pwf" style="display:none;gap:12px" autocomplete="off"><label>Senha atual<input id="pw0" type="password" autocomplete="current-password"></label><label>Nova senha (mínimo 6 caracteres)<input id="pw1" type="password" autocomplete="new-password"></label><label>Repetir nova senha<input id="pw2" type="password" autocomplete="new-password"></label><button class="btn" id="pws" type="submit">Salvar nova senha</button></form><button class="btn o" id="out" type="button">Sair do painel</button></div></section>
+ </main>
+ <nav class="bn" aria-label="Painel"><button class="on" data-v="vit" type="button"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Vitrine</button><button data-v="prod" type="button"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Produtos</button><button data-v="cfg" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2L10 21h4l.6-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>Configurar</button></nav>
+</div></div></div>
+<div id="sh" hidden></div>
+<div id="cli" hidden><div class="bar"><button class="pill" id="clx" type="button">✕ Fechar</button><span class="mu sm">Assim o cliente vê o site</span></div><iframe id="pvf" title="Site do cliente"></iframe></div>
 <script>
+
 (function(){
 var FB={p:'lafouch-2f6bd',k:'AIzaSyAW-54tS1A_VL2EC9OJWFsw1EtboptpEvc'};
 var DB='https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/';
-var SEED=[{"ref":"SL2210","nome":"Solar hexagonal preto","tipo":"solar","n":130000,"cor":"#2a2d33","raio":26,"aviso":"Chegou esta semana","tag":"NOVO","rosto":["oval","quadrado","alongado"],"mat":"Acetato","med":[54,17,145],"cores":["#2a2d33"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":1},{"ref":"AC1050","nome":"Armação acetato roxa","tipo":"armacao","n":118000,"cor":"#4a2a55","raio":14,"aviso":"Chegou esta semana","tag":"ACETATO","rosto":["redondo","oval","diamante"],"mat":"Acetato","med":[50,21,145],"cores":["#4a2a55"],"rank":3,"de":0,"oculto":false,"fv":0,"ord":2},{"ref":"AC1055","nome":"Armação redonda rosa","tipo":"armacao","n":105000,"cor":"#e3a1ab","raio":40,"aviso":"","tag":"ACETATO","rosto":["quadrado","alongado","diamante"],"mat":"Acetato","med":[47,22,140],"cores":["#e3a1ab"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":3},{"ref":"GR3340","nome":"Óculos de grau quadrado preto","tipo":"grau","n":98000,"cor":"#1d1d1f","raio":8,"aviso":"","tag":"GRAU","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[50,22,145],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":4},{"ref":"SL2250","nome":"Solar quadrado dourado","tipo":"solar","n":148000,"cor":"#b08a4a","raio":10,"aviso":"","tag":"METAL","rosto":["oval","coracao","alongado"],"mat":"Metal","med":[54,18,145],"cores":["#b08a4a"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":5},{"ref":"SL2255","nome":"Solar esportivo polarizado","tipo":"solar","n":135000,"cor":"#2a2d33","raio":6,"aviso":"Últimas 2 unidades","tag":"SOLAR","rosto":["oval","quadrado","alongado"],"mat":"Policarbonato","med":[58,17,140],"cores":["#2a2d33"],"rank":1,"de":0,"oculto":false,"fv":0,"ord":6},{"ref":"SL2260","nome":"Solar redondo preto","tipo":"solar","n":128000,"cor":"#1d1d1f","raio":40,"aviso":"","tag":"SOLAR","rosto":["quadrado","alongado","diamante"],"mat":"Acetato","med":[49,22,145],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":7},{"ref":"SL2265","nome":"Solar gatinho branco","tipo":"solar","n":132000,"cor":"#d9d9d9","raio":24,"aviso":"Chegou esta semana","tag":"NOVO","rosto":["oval","quadrado","diamante"],"mat":"Acetato","med":[53,20,145],"cores":["#d9d9d9"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":8},{"ref":"SL2270","nome":"Solar hexagonal verde","tipo":"solar","n":142000,"cor":"#b08a4a","raio":20,"aviso":"","tag":"METAL","rosto":["redondo","oval","coracao"],"mat":"Metal","med":[50,20,145],"cores":["#b08a4a"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":9},{"ref":"SL2275","nome":"Solar quadrado tartaruga","tipo":"solar","n":150000,"cor":"#6b4a2b","raio":12,"aviso":"","tag":"SOLAR","rosto":["oval","alongado","coracao"],"mat":"Acetato","med":[55,19,145],"cores":["#6b4a2b"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":10},{"ref":"BR44140","nome":"Armação metal gatinho preta","tipo":"armacao","n":112000,"cor":"#1d1d1f","raio":22,"aviso":"Última unidade","tag":"METAL","rosto":["quadrado","redondo","diamante"],"mat":"Metal","med":[54,17,140],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":11},{"ref":"GR3350","nome":"Óculos de grau transparente","tipo":"grau","n":115000,"cor":"#cfd6dc","raio":8,"aviso":"","tag":"GRAU","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[50,21,145],"cores":["#cfd6dc"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":12},{"ref":"SL2280","nome":"Solar espelhado azul","tipo":"solar","n":138000,"cor":"#2f6fd0","raio":6,"aviso":"","tag":"SOLAR","rosto":["oval","quadrado","alongado"],"mat":"Acetato","med":[57,17,145],"cores":["#2f6fd0"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":13},{"ref":"SL2285","nome":"Solar redondo fino preto","tipo":"solar","n":126000,"cor":"#1d1d1f","raio":40,"aviso":"","tag":"SOLAR","rosto":["quadrado","alongado","diamante"],"mat":"Metal e acetato","med":[47,22,140],"cores":["#1d1d1f"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":14},{"ref":"SL2290","nome":"Solar clássico tartaruga","tipo":"solar","n":130000,"cor":"#6b4a2b","raio":14,"aviso":"","tag":"SOLAR","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[52,20,145],"cores":["#6b4a2b"],"rank":2,"de":0,"oculto":false,"fv":0,"ord":15},{"ref":"SL2295","nome":"Solar aviador rosa","tipo":"solar","n":145000,"cor":"#b0b5bb","raio":30,"aviso":"Esgotado","tag":"SOLAR","rosto":["coracao","quadrado","oval"],"mat":"Metal","med":[58,14,140],"cores":["#b0b5bb"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":16},{"ref":"BR44145","nome":"Armação metal redonda dourada","tipo":"armacao","n":119000,"cor":"#b08a4a","raio":40,"aviso":"Última unidade","tag":"METAL","rosto":["quadrado","diamante","alongado"],"mat":"Metal","med":[46,22,140],"cores":["#b08a4a"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":17},{"ref":"GR3345","nome":"Óculos de grau retangular tartaruga","tipo":"grau","n":96000,"cor":"#7a3b2e","raio":6,"aviso":"","tag":"GRAU","rosto":["redondo","oval","coracao"],"mat":"Acetato","med":[52,18,145],"cores":["#7a3b2e"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":18},{"ref":"SL2300","nome":"Solar gatinho tartaruga","tipo":"solar","n":136000,"cor":"#6b4a2b","raio":22,"aviso":"","tag":"SOLAR","rosto":["quadrado","diamante","oval"],"mat":"Acetato","med":[53,19,145],"cores":["#6b4a2b"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":19},{"ref":"SL2305","nome":"Solar aviador preto e dourado","tipo":"solar","n":168000,"cor":"#2a2d33","raio":30,"aviso":"Últimas 2 unidades","tag":"LUXO","rosto":["oval","quadrado","alongado"],"mat":"Metal e acetato","med":[51,21,145],"cores":["#2a2d33"],"rank":0,"de":0,"oculto":false,"fv":0,"ord":20}];
 var ROSTOS=[['oval','Oval'],['redondo','Redondo'],['quadrado','Quadrado'],['alongado','Alongado'],['coracao','Coração'],['diamante','Diamante']];
 var $=function(i){return document.getElementById(i)},S={tok:null,prods:[],cfg:{ativo:true},cur:null,fotoNova:null};
 function say(t,e){var m=$('msg');m.textContent=t;m.className='msg'+(e?' e':'');m.hidden=false;clearTimeout(say.t);say.t=setTimeout(function(){m.hidden=true},e?7000:3500)}
@@ -108,78 +104,120 @@ function signIn(){var em=$('em').value.trim(),pw=$('pw').value;
 function refresh(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}if(!rt)return Promise.resolve(false);
   return auth('https://securetoken.googleapis.com/v1/token','grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)).then(function(j){if(!j.id_token)return false;S.tok=j.id_token;saveRt(j.refresh_token||rt);return true}).catch(function(){return false})}
 /* dados */
+S.fotos={};S.f='all';S.q='';S.v='vit';
+var AVISOS=['','Chegou esta semana','Última unidade','Últimas 2 unidades','Últimas 3 unidades','Esgotado'];
+function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function gs(n){return 'Gs. '+Number(n||0).toLocaleString('pt-BR')}
+function W(){return window.matchMedia&&matchMedia('(min-width:1000px)').matches}
+function isOn(){return S.cfg.ativo!==false}
+function est(p){return p.est===undefined||p.est===null?null:+p.est}
+function esg(p){return p.aviso==='Esgotado'||est(p)===0}
 function load(){
   return Promise.all([api('GET','config/site'),api('GET','produtos?pageSize=300')]).then(function(r){
     S.cfg=Object.assign({ativo:true},r[0]?fd(r[0]):{});
     S.prods=((r[1]&&r[1].documents)||[]).map(function(d){var o=fd(d);o.ref=o.ref||d.name.split('/').pop();return o}).sort(function(a,b){return (a.ord||0)-(b.ord||0)});
     draw()})}
-function gs(n){return 'Gs. '+Number(n||0).toLocaleString('pt-BR')}
-function draw(){
-  var on=S.cfg.ativo!==false;$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('stt').textContent=on?'● No ar':'● Fora do ar (visitantes veem o aviso)';$('stt').className='st '+(on?'on':'off');$('tg2').className='sw2'+(on?' on':'');$('tg2').textContent=on?'● Site no ar':'● Site fora do ar';$('mst').className='mp '+(on?'on':'off');$('mst').textContent=on?'● No ar':'● Fora do ar';
-  $('avs').value=S.cfg.aviso||'';$('vid').value=S.cfg.video||'';
-  $('dst').innerHTML=S.prods.map(function(p){return '<option value="'+p.ref+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+p.ref+' · '+p.nome+'</option>'}).join('');
-  $('cnt').textContent=S.prods.length+' produtos';$('seed').hidden=S.prods.length>0;
-  $('pl').innerHTML=S.prods.map(function(p){return '<div class="pi'+(p.oculto?' h':'')+'" data-r="'+p.ref+'"><img alt="" data-ph="'+p.ref+'"'+(p.fv>0?'':' hidden')+'><div><b>'+p.nome+'</b><small>'+p.ref+'</small><div class="tags">'+(p.de>p.n?'<span>OFERTA</span>':'')+(p.aviso==='Esgotado'?'<span class="x">Esgotado</span>':'')+(p.oculto?'<span class="x">Escondido</span>':'')+'</div></div><div class="r">'+(p.de>p.n?'<s style="color:var(--mu);font-weight:500;font-size:12px;display:block">'+gs(p.de)+'</s>':'')+gs(p.n)+'</div></div>'}).join('');
-  S.prods.forEach(function(p){if(p.fv>0)api('GET','fotos/'+p.ref).then(function(d){var o=d&&fd(d),im=document.querySelector('[data-ph="'+p.ref+'"]');if(o&&o.d&&im){im.src=o.d;im.hidden=false}}).catch(function(){})})}
-function W(){return window.matchMedia&&matchMedia('(min-width:1000px)').matches}
-function mobSet(){var m=!W();document.body.classList.toggle('mob',m);['mtop'].forEach(function(i){$(i).hidden=!m||!S.tok});var ed=!$('ed').hidden,sh=!!S.sheet&&!ed;$('mdock').hidden=!m||!S.tok||ed;$('mbk').hidden=!m||!(sh||ed);if(m){$('app').hidden=!sh;['c_cfg','c_dst','c_lst'].forEach(function(i){$(i).hidden=i!=='c_'+S.sheet})}}
-function sheet(n){S.sheet=n||'';if(n)$('ed').hidden=true;view(S.view||'cat')}
-function view(v){S.view=v;if(!W()){$('cat').hidden=false;$('ed').hidden=true;$('tabs').hidden=true;mobSet();return}$('cat').hidden=W()?false:v!=='cat';$('app').hidden=W()?false:v!=='app';$('ed').hidden=true;$('tabs').hidden=false;Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){t.classList.toggle('on',t.getAttribute('data-v')===v)})}
-function reloadCat(){var f=$('pvf');if(f.src&&f.contentWindow){try{f.contentWindow.location.reload();return}catch(_){}}f.src='index.html?p='+Date.now()}
-function start(){$('login').hidden=true;$('out').hidden=false;view('cat');mobSet();$('pvf').src='index.html?p='+Date.now();load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
-addEventListener('resize',function(){if(S.tok&&$('ed').hidden)view(S.view||'cat');else mobSet()});
-$('mdock').onclick=function(e){var b=e.target.closest('.dkb');if(!b)return;var k=b.getAttribute('data-s');if(k==='new')edit('');else sheet(k)};
-$('mbk').onclick=function(){if(!$('ed').hidden){$('cc').click()}else sheet('')};
-$('mst').onclick=function(){$('tgl').click()};
-$('mcl').onclick=function(){var cli=$('pvc').hidden;if(cli){$('pvr').click()}else{$('pvc').click()}$('mcl').textContent=cli?'👁 Cliente':'↩ Admin'};
-$('out2').onclick=function(){$('out').click()};
-$('svc2').onclick=function(){$('svc').click()};
-document.getElementById('tabs').onclick=function(e){var t=e.target.closest('.tab');if(t)view(t.getAttribute('data-v'))};
-window.addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;border-radius:0;background:#fff':'width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--ln);border-radius:16px;background:#fff';return}if(!e.data.lfEdit)return;edit(e.data.lfEdit)});
-/* config */
+var LOCK='<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
+function draw(){drawTop();drawVit();drawProd();drawCfg();loadFotos()}
+function drawTop(){var on=isOn();$('st').className='pill'+(on?'':' off');$('stt').textContent=on?'No ar':'Fora do ar'}
+function drawCfg(){var on=isOn();$('tgl').className='tg'+(on?' on':'');$('tgl').setAttribute('aria-checked',on);$('onl').textContent=on?'O site está no ar':'O site está fora do ar';$('onl2').textContent=on?'Os clientes veem o catálogo agora.':'Os visitantes veem a mensagem de aviso.';if(document.activeElement!==$('avs'))$('avs').value=S.cfg.aviso||''}
+function visiveis(){return S.prods.filter(function(p){return !p.oculto&&!p.pend})}
+function drawVit(){
+  var v=visiveis().length,h=S.prods.filter(function(p){return p.oculto}).length;
+  $('vsub').textContent=v+' produto'+(v===1?'':'s')+' no ar'+(h?' · '+h+' oculto'+(h===1?'':'s'):'')+' · preços vêm do estoque';
+  drawDst();
+  var nof=S.prods.filter(function(p){return !(p.fv>0)}),pen=S.prods.filter(function(p){return p.pend}),es=visiveis().filter(esg),a='';
+  function li(c,cl,t,sub,go){return '<div class="row" style="padding:7px 0"'+(go?' data-go="'+go+'" role="button" tabindex="0"':'')+'><span class="chip '+cl+'">'+c+'</span><div class="g">'+t+(sub?'<div class="mu sm">'+sub+'</div>':'')+'</div>'+(go?'<span class="mu">›</span>':'')+'</div>'}
+  if(nof.length)a+=li(nof.length,'cw','Sem foto',esc(nof.slice(0,4).map(function(p){return p.ref}).join(', '))+(nof.length>4?'…':''),'nof');
+  if(pen.length)a+=li(pen.length,'cw','Aguardando o app','o código precisa existir no Inventário; o preço chega em até 1 minuto',pen.length?'':'');
+  if(es.length)a+=li(es.length,'cw','Esgotado no ar','saem sozinhos depois de alguns dias','esg');
+  if(!a)a=li('✓','co','Tudo certo','fotos completas e nada esgotado no ar');
+  $('att').innerHTML=a}
+function drawDst(){
+  var ok=visiveis().filter(function(p){return p.fv>0&&!esg(p)});
+  $('dstb').innerHTML='<div style="display:grid;gap:12px"><label>Modelo em destaque<select id="dst">'+ok.map(function(p){return '<option value="'+esc(p.ref)+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+esc(p.ref)+' · '+esc(p.nome)+'</option>'}).join('')+'</select></label><label>Endereço do vídeo promocional (.mp4, opcional)<input id="vid" value="'+esc(S.cfg.video||'')+'" placeholder="https://…/promo.mp4"></label><button class="btn" id="svd" type="button">Salvar destaque</button></div>'}
+function filtrados(){
+  var q=S.q.trim().toLowerCase();
+  return S.prods.filter(function(p){
+    if(q&&(p.nome+' '+p.ref).toLowerCase().indexOf(q)<0)return false;
+    if(S.f==='on')return !p.oculto&&!p.pend;if(S.f==='hid')return !!p.oculto;if(S.f==='nof')return !(p.fv>0);if(S.f==='esg')return esg(p);return true})}
+function drawProd(){
+  var l=filtrados();$('psub').textContent=S.prods.length+' no total';
+  $('pl').innerHTML=l.length?l.map(function(p){
+    var e=est(p),tags='';
+    if(p.pend)tags+='<span class="chip cw">aguardando o app</span> ';if(!(p.fv>0))tags+='<span class="chip cw">sem foto</span> ';if(p.oculto)tags+='<span class="chip ca">oculto</span> ';if(esg(p))tags+='<span class="chip cx">esgotado</span> ';
+    var price=p.pend?'<span class="mu sm">preço: aguardando</span>':'<span class="lock">'+LOCK+'<b style="color:var(--tx);font-weight:600">'+(p.de>p.n?'<s style="opacity:.55;font-weight:400">'+gs(p.de)+'</s> ':'')+gs(p.n)+'</b>'+(p.de>p.n?' <span class="chip co" style="padding:1px 7px">oferta</span>':'')+'</span>';
+    return '<div class="pr'+(p.oculto?' h':'')+'" data-r="'+esc(p.ref)+'"><div class="th" data-ph="'+esc(p.ref)+'">'+(S.fotos[p.ref]?'<img alt="" src="'+S.fotos[p.ref]+'">':(p.fv>0?'':'📷'))+'</div><div class="g"><b>'+esc(p.nome)+'</b><div class="mu sm">'+esc(p.ref)+(e!==null?' · '+e+' un.':'')+'</div><div style="margin-top:3px">'+price+'</div>'+(tags?'<div style="margin-top:4px">'+tags+'</div>':'')+'</div><button class="tg'+(p.oculto?'':' on')+'" data-t="'+esc(p.ref)+'" role="switch" aria-checked="'+(!p.oculto)+'" aria-label="Aparece no site: '+esc(p.nome)+'" type="button"></button></div>'}).join(''):'<div class="mu" style="padding:18px 0;text-align:center">Nenhum produto aqui.</div>'}
+var fq=[],fb=0;
+function loadFotos(){S.prods.forEach(function(p){if(p.fv>0&&!S.fotos[p.ref]&&fq.indexOf(p.ref)<0)fq.push(p.ref)});pump()}
+function pump(){while(fb<3&&fq.length){(function(ref){fb++;api('GET','fotos/'+ref).then(function(d){var o=d&&fd(d);if(o&&o.d){S.fotos[ref]=o.d;var e=document.querySelector('.th[data-ph="'+ref+'"]');if(e)e.innerHTML='<img alt="" src="'+o.d+'">'}}).catch(function(){}).then(function(){fb--;pump()})})(fq.shift())}}
+function go(v){S.v=v;['vit','prod','cfg'].forEach(function(k){$('v_'+k).hidden=k!==v});Array.prototype.forEach.call(document.querySelectorAll('.bn button'),function(b){b.classList.toggle('on',b.getAttribute('data-v')===v)});var m=$('v_'+v);if(m)m.scrollTop=0}
+document.querySelector('.bn').onclick=function(e){var b=e.target.closest('button');if(b)go(b.getAttribute('data-v'))};
+$('st').onclick=function(){go('cfg')};
+$('flt').onclick=function(e){var b=e.target.closest('button');if(!b)return;S.f=b.getAttribute('data-f');Array.prototype.forEach.call($('flt').children,function(x){x.classList.toggle('on',x===b)});drawProd()};
+$('q').oninput=function(){S.q=this.value;drawProd()};
+$('att').onclick=function(e){var g=e.target.closest('[data-go]');if(!g)return;S.f=g.getAttribute('data-go');Array.prototype.forEach.call($('flt').children,function(x){x.classList.toggle('on',x.getAttribute('data-f')===S.f)});go('prod');drawProd()};
+$('pl').onclick=function(e){var t=e.target.closest('[data-t]');if(t){e.stopPropagation();toggleOcu(t.getAttribute('data-t'));return}var r=e.target.closest('[data-r]');if(r)edit(r.getAttribute('data-r'))};
+function toggleOcu(ref){var p=S.prods.filter(function(x){return x.ref===ref})[0];if(!p)return;var nv=!p.oculto;p.oculto=nv;drawProd();drawVit();
+  put('produtos/'+ref,{oculto:nv},['oculto']).then(function(){reloadCat();say(nv?'Escondido do site.':'Agora aparece no site.')}).catch(function(e){p.oculto=!nv;drawProd();drawVit();say(e.message==='perm'?'Sem permissão. Entre de novo.':'Não consegui salvar.',1)})}
+/* prévia do cliente */
+function reloadCat(){var u='index.html?p='+Date.now();if(W()&&!$('dpv').hidden)$('pvd').src=S.cliD?u+'&cliente=1':u}
+function openCli(){$('pvf').src='index.html?cliente=1&p='+Date.now();$('cli').hidden=false}
+$('cl').onclick=openCli;$('clx').onclick=function(){$('cli').hidden=true;$('pvf').src='about:blank'};
+$('pvc').onclick=function(){if(W()){S.cliD=!S.cliD;$('pvc').textContent=S.cliD?'↩ Voltar ao modo administrador':'👁 Ver como o cliente vê';reloadCat()}else openCli()};
+/* configuração do site */
 function saveCfg(extra){var c=Object.assign({},S.cfg,extra||{});
   return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||''},['ativo','aviso','video','destaque']).then(function(){S.cfg=c;draw()})}
-$('tg2').onclick=function(){$('tgl').click()};
-$('tgl').onclick=function(){var nv=!(S.cfg.ativo!==false);if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
-$('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim(),video:$('vid').value.trim(),destaque:$('dst').value}).then(function(){say('Salvo.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
+$('tgl').onclick=function(){var nv=!isOn();if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
+$('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim()}).then(function(){say('Mensagem salva.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
+$('dstb').onclick=function(e){if(!e.target.closest('#svd'))return;saveCfg({video:$('vid').value.trim(),destaque:$('dst').value}).then(function(){say('Destaque salvo.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
 /* editor */
-$('f_rosto').innerHTML=ROSTOS.map(function(r){return '<label><input type="checkbox" value="'+r[0]+'">'+r[1]+'</label>'}).join('');
-function hint(){var n=+$('f_n').value||0;$('hint').textContent=n?'≈ R$ '+(Math.round(n/1400/5)*5)+' (referência: 1 real = 1.400 Gs.)':''}
-$('f_n').oninput=hint;
+function sheet(h){var s=$('sh');s.innerHTML='<div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>'+h+'</div>';s.hidden=false;s.onclick=function(e){if(e.target===s)closeSheet()}}
+function closeSheet(){$('sh').hidden=true;$('sh').innerHTML='';S.cur=null;S.fotoNova=null}
+function chips(id,list,cur){return '<div class="seg" id="'+id+'">'+list.map(function(x){return '<button type="button" data-v="'+esc(x[0])+'" class="'+(x[0]===cur?'on':'')+'">'+esc(x[1])+'</button>'}).join('')+'</div>'}
+function pickChip(id,v){var r=$(id);Array.prototype.forEach.call(r.children,function(b){b.classList.toggle('on',b.getAttribute('data-v')===v)})}
+function getChip(id){var b=$(id).querySelector('.on');return b?b.getAttribute('data-v'):''}
 function edit(ref){
-  var p=S.prods.filter(function(x){return x.ref===ref})[0]||null;S.cur=p;S.fotoNova=null;
-  var d=p||{ref:'',nome:'',tipo:'solar',n:'',de:0,aviso:'',tag:'',mat:'Acetato',cor:'#2a2d33',med:[52,19,145],rosto:['oval'],rank:0,oculto:false};
-  $('edt').textContent=p?'Editar '+p.ref:'Novo produto';$('f_ref').value=d.ref;$('f_ref').disabled=!!p;$('f_tipo').value=d.tipo||'solar';$('f_nome').value=d.nome;$('f_n').value=d.n;$('f_de').value=d.de||'';
-  $('f_av').value=d.aviso||'';$('f_tag').value=d.tag||'';$('f_mat').value=d.mat||'';$('f_cor').value=d.cor||'#2a2d33';
-  [0,1,2].forEach(function(i){$('m'+i).value=(d.med||[])[i]||''});$('f_rank').value=String(d.rank||0);$('f_ocu').value=d.oculto?'1':'0';
-  Array.prototype.forEach.call($('f_rosto').querySelectorAll('input'),function(c){c.checked=(d.rosto||[]).indexOf(c.value)>=0});
-  var im=document.querySelector('[data-ph="'+(p&&p.ref)+'"]');$('fp').hidden=!(im&&im.src&&!im.hidden);if(!$('fp').hidden)$('fp').src=im.src;$('ff').value='';
-  $('del').hidden=!p;hint();$('ed').hidden=false;$('app').hidden=true;if(!W()){S.sheet='';$('cat').hidden=false;$('tabs').hidden=true;mobSet();$('ed').scrollTop=0}else scrollTo(0,0)}
-$('pl').onclick=function(e){var t=e.target.closest('[data-r]');if(t)edit(t.getAttribute('data-r'))};
+  var p=S.prods.filter(function(x){return x.ref===ref})[0]||null;S.cur=p;S.fotoNova=null;S.delArm=false;
+  var d=p||{ref:'',nome:'',tipo:'solar',aviso:'',tag:'',mat:'Acetato',cor:'#2a2d33',med:[52,19,145],rosto:['oval'],oculto:false};
+  var foto=p&&S.fotos[p.ref]||'';
+  var h='<div class="pv" id="pv">'+(foto?'<img id="fp" alt="" src="'+foto+'">':'<div class="none" id="fn">Sem foto ainda</div>')+'<span class="chip tag">Pré-visualização</span><label class="up">📷 '+(foto?'Trocar foto':'Adicionar foto')+'<input type="file" id="ff" accept="image/*"></label></div>'
+   +'<div class="serif" style="font-size:23px;line-height:1.15">'+(p?esc(p.nome):'Novo produto')+'</div>';
+  if(!p)h+='<label>Código do produto (igual ao do Inventário)<input id="f_ref" placeholder="SL2310" autocapitalize="characters"></label><div class="mu sm" style="margin-top:-4px">Depois de salvar, o app preenche o preço e o estoque em até 1 minuto. Até lá o produto fica escondido do cliente.</div>';
+  else h+='<div class="card" style="background:var(--s2)"><div class="ct" style="margin-bottom:6px">Vem do estoque <span class="lock" style="margin-left:4px">'+LOCK+'</span></div>'+(p.pend?'<div class="mu sm">Aguardando o app. O código '+esc(p.ref)+' precisa existir no Inventário.</div>':'<div class="kv"><span class="mu">Preço</span><b>'+(p.de>p.n?'<s style="opacity:.55;font-weight:400">'+gs(p.de)+'</s> ':'')+gs(p.n)+'</b></div>'+(est(p)!==null?'<div class="kv"><span class="mu">Estoque</span><b>'+est(p)+' un.</b></div>':'')+'<div class="sm" style="margin-top:8px;color:var(--ac)">Para mudar o preço ou fazer uma oferta, use o app (Inventário).</div>')+'</div>';
+  h+='<label>Nome no site<input id="f_nome" value="'+esc(d.nome)+'"></label><div><div class="ct" style="margin-bottom:8px">Aviso no cartão</div>'+chips('f_av',AVISOS.map(function(a){return [a,a||'Nenhum']}),d.aviso||'')+'</div>'
+   +'<div class="row"><div class="g"><b>Aparece no site</b><div class="mu sm">Esgotado sai sozinho depois de alguns dias</div></div><button class="tg'+(d.oculto?'':' on')+'" id="f_ocu" role="switch" aria-checked="'+(!d.oculto)+'" type="button" aria-label="Aparece no site"></button></div>'
+   +'<details><summary>Mais detalhes</summary><div style="display:grid;gap:12px;margin-top:8px"><div><div class="ct" style="margin-bottom:8px">Tipo</div>'+chips('f_tipo',[['solar','Solar'],['armacao','Armação'],['grau','Óculos de grau']],d.tipo||'solar')+'</div><div class="g3"><label>Etiqueta<input id="f_tag" value="'+esc(d.tag||'')+'" placeholder="NOVO"></label><label>Material<input id="f_mat" value="'+esc(d.mat||'')+'"></label><label>Cor<input id="f_cor" type="color" value="'+esc(d.cor||'#2a2d33')+'" style="padding:4px"></label></div><div class="g3"><label>Lente (mm)<input id="m0" inputmode="numeric" value="'+((d.med||[])[0]||'')+'"></label><label>Ponte (mm)<input id="m1" inputmode="numeric" value="'+((d.med||[])[1]||'')+'"></label><label>Haste (mm)<input id="m2" inputmode="numeric" value="'+((d.med||[])[2]||'')+'"></label></div><div><div class="ct" style="margin-bottom:8px">Combina com rosto</div><div class="chk" id="f_rosto">'+ROSTOS.map(function(r){return '<label><input type="checkbox" value="'+r[0]+'"'+((d.rosto||[]).indexOf(r[0])>=0?' checked':'')+'>'+r[1]+'</label>'}).join('')+'</div></div></div></details>'
+   +'<button class="btn w" id="sv" type="button">Salvar</button><button class="btn o w" id="cc" type="button">Cancelar</button>'+(p?'<button class="btn d w" id="del" type="button">Excluir produto</button>':'');
+  sheet(h);
+  $('f_av').onclick=function(e){var b=e.target.closest('button');if(b)pickChip('f_av',b.getAttribute('data-v'))};
+  $('f_tipo').onclick=function(e){var b=e.target.closest('button');if(b)pickChip('f_tipo',b.getAttribute('data-v'))};
+  $('f_ocu').onclick=function(){var on=this.classList.toggle('on');this.setAttribute('aria-checked',on)};
+  $('f_nome').oninput=function(){var t=document.querySelector('.sheet .serif');if(t)t.textContent=this.value||(p?p.nome:'Novo produto')};
+  $('cc').onclick=closeSheet;$('sv').onclick=save;if(p)$('del').onclick=del;
+  $('ff').onchange=function(){var f=this.files&&this.files[0];if(!f)return;
+    createImageBitmap(f,{imageOrientation:'from-image'}).then(function(bm){var s=Math.min(1,900/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);
+      var q=.85,u=c.toDataURL('image/jpeg',q);while(u.length>700000&&q>.4){q-=.1;u=c.toDataURL('image/jpeg',q)}S.fotoNova=u;var pv=$('pv'),im=$('fp');if(!im){im=document.createElement('img');im.id='fp';im.alt='';pv.insertBefore(im,pv.firstChild);var n=$('fn');if(n)n.remove()}im.src=u}).catch(function(){say('Não consegui abrir essa foto.',1)})}}
 $('new').onclick=function(){edit('')};
-$('cc').onclick=function(){view(S.view||'cat')};
-$('ff').onchange=function(){var f=this.files&&this.files[0];if(!f)return;
-  createImageBitmap(f,{imageOrientation:'from-image'}).then(function(bm){var s=Math.min(1,900/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);
-    var q=.85,u=c.toDataURL('image/jpeg',q);while(u.length>700000&&q>.4){q-=.1;u=c.toDataURL('image/jpeg',q)}S.fotoNova=u;$('fp').src=u;$('fp').hidden=false}).catch(function(){say('Não consegui abrir essa foto.',1)})};
-$('sv').onclick=function(){
-  var ref=$('f_ref').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');if(!ref){say('Informe o código do produto.',1);return}
-  if(!S.cur&&S.prods.some(function(p){return p.ref===ref})){say('Esse código já existe.',1);return}
-  var nome=$('f_nome').value.trim(),n=parseInt($('f_n').value,10);if(!nome||!n){say('Preencha nome e preço.',1);return}
+addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;background:#fff':'';return}if(e.data.lfEdit)edit(e.data.lfEdit)});
+function save(){
+  var nome=$('f_nome').value.trim();if(!nome){say('Informe o nome do produto.',1);return}
   var rosto=Array.prototype.filter.call($('f_rosto').querySelectorAll('input'),function(c){return c.checked}).map(function(c){return c.value});if(!rosto.length)rosto=['oval'];
-  var old=S.cur||{},o={ref:ref,nome:nome,tipo:$('f_tipo').value,n:n,de:parseInt($('f_de').value,10)||0,aviso:$('f_av').value,tag:$('f_tag').value.trim()||$('f_tipo').value.toUpperCase(),mat:$('f_mat').value.trim()||'Acetato',cor:$('f_cor').value,cores:[$('f_cor').value],raio:old.raio||14,
-    med:[+$('m0').value||52,+$('m1').value||19,+$('m2').value||145],rosto:rosto,rank:+$('f_rank').value,oculto:$('f_ocu').value==='1',fv:old.fv||0,ord:old.ord||(S.prods.reduce(function(m,p){return Math.max(m,p.ord||0)},0)+1),uv:$('f_tipo').value==='solar'};
+  var tipo=getChip('f_tipo')||'solar',old=S.cur,ref=old?old.ref:$('f_ref').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');
+  if(!ref){say('Informe o código do produto.',1);return}
+  if(!old&&S.prods.some(function(p){return p.ref===ref})){say('Esse código já existe.',1);return}
+  var cor=$('f_cor').value,o={nome:nome,tipo:tipo,aviso:getChip('f_av'),tag:$('f_tag').value.trim()||tipo.toUpperCase(),mat:$('f_mat').value.trim()||'Acetato',cor:cor,cores:[cor],med:[+$('m0').value||52,+$('m1').value||19,+$('m2').value||145],rosto:rosto,oculto:!$('f_ocu').classList.contains('on'),uv:tipo==='solar'};
   if(S.fotoNova)o.fv=Math.floor(Date.now()/1000);
+  var pr;
+  if(old)pr=put('produtos/'+ref,o,Object.keys(o));
+  else{o.ref=ref;o.n=0;o.de=0;o.rank=0;o.raio=14;o.pend=true;o.fv=o.fv||0;o.ord=S.prods.reduce(function(m,p){return Math.max(m,p.ord||0)},0)+1;pr=put('produtos/'+ref,o)}
   $('sv').disabled=true;
-  var p=S.fotoNova?put('fotos/'+ref,{d:S.fotoNova}):Promise.resolve();
-  p.then(function(){return put('produtos/'+ref,o)}).then(function(){return load()}).then(function(){view(S.view||'cat');reloadCat();say('Produto salvo.')}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)}).then(function(){$('sv').disabled=false})};
-$('del').onclick=function(){if(!S.cur||!confirm('Excluir '+S.cur.nome+'?'))return;var ref=S.cur.ref;
-  api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){view(S.view||'cat');reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})};
-$('seedb').onclick=function(){if(!confirm('Enviar os '+SEED.length+' produtos do site atual?'))return;$('seedb').disabled=true;
-  SEED.reduce(function(a,p){return a.then(function(){return put('produtos/'+p.ref,p)})},put('config/site',{ativo:true,aviso:'',video:'',destaque:'SL2210'})).then(load).then(function(){say('Catálogo enviado.')}).catch(function(){say('Erro ao enviar.',1)}).then(function(){$('seedb').disabled=false})};
-$('pvc').onclick=function(){if(!W())view('cat');$('pvf').src='index.html?cliente=1&p='+Date.now();$('pvc').hidden=true;$('pvr').hidden=false};
-$('pvr').onclick=function(){if(!W())view('cat');$('pvf').src='index.html?p='+Date.now();$('pvc').hidden=false;$('pvr').hidden=true};
+  (S.fotoNova?put('fotos/'+ref,{d:S.fotoNova}):Promise.resolve()).then(function(){if(S.fotoNova)S.fotos[ref]=S.fotoNova;return pr}).then(function(){return load()}).then(function(){closeSheet();reloadCat();say(old?'Produto salvo.':'Produto criado. O app completa o preço em até 1 minuto.')}).catch(function(e){var b=$('sv');if(b)b.disabled=false;say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}
+function del(){var b=$('del');if(!S.delArm){S.delArm=true;b.textContent='Toque de novo para excluir';return}var ref=S.cur.ref;
+  api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){delete S.fotos[ref];closeSheet();reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})}
 $('lf').onsubmit=function(e){e.preventDefault();signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
+function start(){$('login').hidden=true;$('lock').hidden=true;$('shell').hidden=false;if(W()){$('dpv').hidden=false;$('pvd').src='index.html?p='+Date.now()}go('vit');load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
 /* tela cheia: só quando o painel está dentro do app (o app amplia o quadro) */
 (function(){var framed=false;try{framed=window.parent!==window}catch(_){}if(!framed)return;var full=false;
   Array.prototype.forEach.call(document.querySelectorAll('.fsb'),function(b){b.hidden=false;b.onclick=function(){full=!full;

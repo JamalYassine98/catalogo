@@ -683,7 +683,6 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
 
   <section class="sec" id="vitrine">
     <h2>Catálogo</h2>
-    <div id="top3" class="top3"></div>
     <div id="resultado"></div>
     <div class="shopbar">
       <div class="chips" id="tipos" role="group" aria-label="Tipo de óculos"></div>
@@ -997,14 +996,9 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
     if(p.uv===undefined)p.uv=p.tipo==='solar';
     if(p.rank===undefined)p.rank=0});
   if(LFI.lang==='es'){P.forEach(function(p){p.nome=LFI.tn(p.nome)});FACES.forEach(function(f){f.nome=LFI.tn(f.nome);f.dica=LFI.tn(f.dica)})}
-  var RANK={SL2255:1,SL2290:2,AC1050:3};P.forEach(function(p){if(RANK[p.ref])p.rank=RANK[p.ref]});
   function faceMini(id){var f=FD[id];if(!f)return '';return '<svg viewBox="8 4 64 84" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round" aria-hidden="true"><path d="'+f.d+'"/></svg>'}
   function faceName(id){var f=FACES.filter(function(x){return x.id===id})[0];return f?f.nome:id}
   var UVI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>',MATI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>',LENI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4.5"/><circle cx="16" cy="12" r="4.5"/></svg>';
-  function top3(){
-    var el=document.getElementById('top3');if(!el)return;
-    var L=P.filter(function(p){return p.rank}).sort(function(a,b){return a.rank-b.rank});
-    el.innerHTML='<h3>Mais pedidos da semana</h3><p>Os modelos que os clientes mais reservaram.</p><div class="t3">'+L.map(function(p){return '<button type="button" data-open="'+p.ref+'"><span class="rth">'+vis(p,6)+'</span><span class="tx"><span class="tg2">Nº '+p.rank+'</span><b>'+esc(p.nome)+'</b><span class="pr">'+prx(p)+'</span></span></button>'}).join('')+'</div>'}
   function prx(p){return p.aviso==='Esgotado'?'':p.de&&p.de>p.n?'<s>'+fmt(p.de)+'</s>'+fmt(p.n):fmt(p.n)}
   function ofx(p){return ''}
   function isOf(p){return !!(p.de&&p.de>p.n&&p.aviso!=='Esgotado')}
@@ -1701,7 +1695,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
   function syncProds(docs){
     var base={};P.forEach(function(p){base[p.ref]=p});
     var L=docs.map(function(d){var r=fbd(d);r.ref=r.ref||d.name.split('/').pop();var b=base[r.ref]||{};
-      var p=Object.assign({},b,r);if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);return p}).filter(function(p){return !p.oculto});
+      var p=Object.assign({},b,r);if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);return p}).filter(function(p){return !p.oculto&&!p.pend});
     if(!L.length)return;
     L.sort(function(a,b){return (a.ord||0)-(b.ord||0)});
     L.forEach(function(p){
@@ -1720,7 +1714,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
       if(c&&c.v===p.fv&&c.d){p.foto=c.d;fo=1;return}
       fbg('fotos/'+p.ref).then(function(d){var o=fbd(d);if(!o.d)return;p.foto=o.d;try{localStorage.setItem(key,JSON.stringify({v:p.fv,d:o.d}))}catch(_){}clearTimeout(syncProds.t);syncProds.t=setTimeout(function(){redraw();setHero(CFG.destaque)},250)}).catch(function(){})});
     if(fo)redraw()}
-  function redraw(){drawGen();drawChips();drawFaces();top3();drawGrid();drawBag();setHero(CFG.destaque)}
+  function redraw(){drawGen();drawChips();drawFaces();drawGrid();drawBag();setHero(CFG.destaque)}
   function syncRun(){
     fbg('config/site').then(function(d){CFG=Object.assign({ativo:true},fbd(d));try{localStorage.setItem('lf_cfg',JSON.stringify(CFG))}catch(_){}manut();applyCot();applyVideo(CFG.video||'')},function(){}).then(function(){
       return fbg('produtos?pageSize=300')}).then(function(j){if(j&&j.documents){try{localStorage.setItem('lf_pdocs',JSON.stringify(j.documents))}catch(_){}syncProds(j.documents)}}).catch(function(){})}
@@ -1744,7 +1738,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
       try{if(t.hasAttribute('data-lg')){localStorage.setItem('lf_lang',t.getAttribute('data-lg'));localStorage.setItem('lf_cur','auto')}else localStorage.setItem('lf_cur',t.getAttribute('data-cu'));sessionStorage.setItem('lf_skip','1');sessionStorage.setItem('lf_drw','1')}catch(_){}
       var bg=getComputedStyle(document.body).backgroundColor,ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;z-index:99999;background:'+bg+';opacity:0;transition:opacity .28s ease;pointer-events:all';document.body.appendChild(ov);try{sessionStorage.setItem('lf_fade',bg)}catch(_){}requestAnimationFrame(function(){ov.style.opacity='1'});setTimeout(function(){location.reload()},300)},true)})();
   try{var _cd=JSON.parse(localStorage.getItem('lf_pdocs')||'null');if(_cd&&_cd.length)syncProds(_cd)}catch(_){}
-  drawGen();drawChips();drawFaces();top3();drawBag();setHero(CFG.destaque);
+  drawGen();drawChips();drawFaces();drawBag();setHero(CFG.destaque);
   (function(){var h=location.hash.slice(1);if(h&&PAN[h]&&MOBQ.matches)openPanel(h,true);var d=false;try{d=sessionStorage.getItem('lf_drw')==='1';sessionStorage.removeItem('lf_drw')}catch(_){}if(d&&MOBQ.matches){var dp=document.querySelector('#drw .dpn');if(dp)dp.style.transition='none';drwSet(true);setTimeout(function(){if(dp)dp.style.transition=''},60)}})();
   (function(){var a=$('tA'),b=$('tB'),sh=document.getElementById('shP');if(!a||!sh||!sh.getTotalLength)return;
     var L=sh.getTotalLength();a.setAttribute('textLength',L-1);b.setAttribute('textLength',L-1);b.setAttribute('startOffset',-L);
