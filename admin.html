@@ -317,6 +317,15 @@ function start(){$('login').hidden=true;$('lock').hidden=true;$('shell').hidden=
   Array.prototype.forEach.call(document.querySelectorAll('.fsb'),function(b){b.hidden=false;b.onclick=function(){full=!full;
     Array.prototype.forEach.call(document.querySelectorAll('.fsb'),function(x){x.setAttribute('aria-label',full?'Sair da tela cheia':'Tela cheia');x.querySelector('.fe').style.display=full?'none':'';x.querySelector('.fc').style.display=full?'':'none'});
     try{window.parent.postMessage({lfFull:full},'*')}catch(_){}}})})();
+/* mantém a lista em dia: relê o Firebase ao voltar ao app, ao abrir a aba Produtos e a cada 30 s com a tela aberta */
+(function(){var last=Date.now(),busy=false;
+  function fresh(force){if(busy||$('shell').hidden||(S.cur&&!force))return;if(!force&&Date.now()-last<4000)return;if(!S.tok&&!force)return;busy=true;last=Date.now();load().catch(function(){}).then(function(){busy=false})}
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)fresh(true)});
+  window.addEventListener('focus',function(){fresh(true)});
+  window.addEventListener('pageshow',function(){fresh(true)});
+  setInterval(function(){if(!document.hidden)fresh(false)},30000);
+  var g0=go;go=function(v){g0(v);if(v==='prod')fresh(false)};
+  document.querySelector('.bn').onclick=function(e){var b=e.target.closest('button');if(b)go(b.getAttribute('data-v'))}})();
 /* biometria (WebAuthn: trava o painel neste aparelho) e troca de senha */
 function b64(b){var u=new Uint8Array(b),s='';for(var i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s)}
 function unb64(t){var s=atob(t),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
