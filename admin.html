@@ -110,6 +110,7 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
   <div><h1 class="serif">Configurar</h1><div class="mu sm">lafouch.com</div></div>
   <section class="card" id="c_cfg"><div class="row"><div class="g"><div class="serif" style="font-size:21px" id="onl">O site está no ar</div><div class="mu sm" id="onl2"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site" type="button"></button></div></section>
   <section class="card"><div class="ct">Se você desligar</div><label>Mensagem que os clientes veem<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><div style="display:grid;gap:10px;margin-top:12px"><button class="btn" id="svc" type="button">Salvar mensagem</button></div></section>
+  <section class="card" id="c_gh"><div class="ct">GitHub (vídeo e fotos do destaque)</div><div id="ghc"></div></section>
   <section class="card"><div class="ct">Conta</div><div style="display:grid;gap:10px"><button class="btn o" id="pwb" type="button">Alterar senha</button><form id="pwf" style="display:none;gap:12px" autocomplete="off"><label>Senha atual<input id="pw0" type="password" autocomplete="current-password"></label><label>Nova senha (mínimo 6 caracteres)<input id="pw1" type="password" autocomplete="new-password"></label><label>Repetir nova senha<input id="pw2" type="password" autocomplete="new-password"></label><button class="btn" id="pws" type="submit">Salvar nova senha</button></form><button class="btn o" id="out" type="button">Sair do painel</button></div></section>
  </main>
  <nav class="bn" aria-label="Painel"><button class="on" data-v="vit" type="button"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Vitrine</button><button data-v="prod" type="button"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Produtos</button><button data-v="cfg" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2L10 21h4l.6-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>Configurar</button></nav>
@@ -229,11 +230,13 @@ function ghDel(f){return ghReq('DELETE','/contents/'+f.path,{message:'Remove '+f
 function ghErr(e){say(e&&e.message==='gh-auth'?'A chave do GitHub não vale mais. Conecte de novo.':'Não consegui falar com o GitHub. Tente de novo.',1);if(e&&e.message==='gh-auth'){try{localStorage.removeItem('lf_gh')}catch(_){}S.ghl=null;ghPaint()}}
 function ghMB(n){return (n/1048576).toFixed(1).replace('.',',')+' MB'}
 function ghDate(n){var t=+String(n).replace(/\D/g,'');return t>1e12?new Date(t).toLocaleDateString('pt-BR'):''}
+function ghGo(){return '<div class="ghb"><div class="mu sm">Para enviar da galeria, conecte o GitHub uma vez em <b>Configurar</b>.</div><button class="btn o w" type="button" data-gocfg style="margin-top:8px">Abrir Configurar</button></div>'}
+function ghCfg(){var e=$('ghc');if(!e)return;e.innerHTML=ghTk()?'<div class="row" style="gap:10px"><div class="g"><span class="chip co">Conectado</span><div class="mu sm" style="margin-top:6px">Você pode enviar vídeo e fotos da galeria no Destaque. A chave fica só neste aparelho.</div></div></div><button class="btn o w" type="button" data-ghx style="margin-top:10px">Desconectar</button>':ghBox()}
 function ghBox(){return '<div class="ghb"><b>Conectar ao GitHub</b><div class="mu sm" style="margin:2px 0 8px">Os arquivos ficam guardados no próprio site, de graça. Crie uma chave em <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--ac)">github.com/settings/personal-access-tokens</a>: só o repositório <b>catalogo</b>, permissão <b>Contents: Read and write</b>. Cole aqui (fica só neste celular).</div><input id="dgt" type="password" placeholder="Chave do GitHub" autocomplete="off"><button class="btn o w" type="button" data-ghc style="margin-top:8px">Conectar</button></div>'}
 function ghPaint(){
-  var v=$('dvx'),g=$('dgx');if(!v&&!g)return;var on=!!ghTk();
-  if(v)v.innerHTML=on?'<button class="btn o w" type="button" data-vup>🎞 Escolher vídeo da galeria</button><input id="dvf" type="file" accept="video/*" hidden><div id="dvs"></div><div class="mu sm" style="margin:12px 0 4px">Vídeos guardados</div><div id="dvl" class="mu sm">Carregando…</div><button type="button" class="lk" data-ghx>Desconectar GitHub</button>':ghBox();
-  if(g)g.innerHTML=on?'<button class="btn o w" type="button" data-gup style="margin-top:10px">＋ Escolher fotos da galeria</button><input id="dgf" type="file" accept="image/*" multiple hidden><div id="dgs"></div><div class="gp" id="dgg" style="margin-top:8px"></div>':ghBox();
+  ghCfg();var v=$('dvx'),g=$('dgx');if(!v&&!g)return;var on=!!ghTk();
+  if(v)v.innerHTML=on?'<button class="btn o w" type="button" data-vup>🎞 Escolher vídeo da galeria</button><input id="dvf" type="file" accept="video/*" hidden><div id="dvs"></div><div class="mu sm" style="margin:12px 0 4px">Vídeos guardados</div><div id="dvl" class="mu sm">Carregando…</div>':ghGo();
+  if(g)g.innerHTML=on?'<button class="btn o w" type="button" data-gup style="margin-top:10px">＋ Escolher fotos da galeria</button><input id="dgf" type="file" accept="image/*" multiple hidden><div id="dgs"></div><div class="gp" id="dgg" style="margin-top:8px"></div>':ghGo();
   if(on)(S.ghl?Promise.resolve(S.ghl):ghList()).then(ghRows).catch(ghErr);
   var f=$('dvf');if(f)f.onchange=function(){if(f.files[0])ghVid(f.files[0]);f.value=''};
   var q=$('dgf');if(q)q.onchange=function(){ghFotos([].slice.call(q.files));q.value=''}}
@@ -254,7 +257,8 @@ function ghFotos(fs){
   var i=0;(function next(){if(i>=fs.length){S.ghl=null;st.innerHTML='<div class="sm" style="margin-top:8px;color:var(--ok)">Fotos guardadas. Toque nelas para colocar no slide.</div>';ghList().then(ghRows).catch(ghErr);return}
     ghRed(fs[i]).then(function(d){var path='media/f-'+(Date.now()+i)+'.jpg';S.gpv[path]=d;return ghPut(path,d.split(',')[1])}).then(function(){i++;next()}).catch(function(e){st.innerHTML='';ghErr(e)})})()}
 function ghClick(e){
-  var t=e.target.closest('[data-ghc],[data-ghx],[data-vup],[data-gup],[data-vuse],[data-vdel],[data-gdel]');if(!t)return false;
+  var t=e.target.closest('[data-gocfg],[data-ghc],[data-ghx],[data-vup],[data-gup],[data-vuse],[data-vdel],[data-gdel]');if(!t)return false;
+  if(t.hasAttribute('data-gocfg')){closeSheet();go('cfg');return true}
   if(t.hasAttribute('data-ghc')){var k=(t.closest('.ghb').querySelector('input').value||'').trim();if(!k){say('Cole a chave do GitHub.',1);return true}
     ghReq('GET','',null,k).then(function(r){if(!r){say('A chave não enxerga o repositório catalogo.',1);return}try{localStorage.setItem('lf_gh',k)}catch(_){}S.ghl=null;say('GitHub conectado.');ghPaint()}).catch(function(){say('Chave não aceita pelo GitHub.',1)});return true}
   if(t.hasAttribute('data-ghx')){try{localStorage.removeItem('lf_gh')}catch(_){}S.ghl=null;ghPaint();return true}
@@ -376,7 +380,7 @@ function del(){var b=$('del');if(!S.delArm){S.delArm=true;b.textContent='Toque d
   api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){delete S.fotos[ref];closeSheet();reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})}
 $('lf').onsubmit=function(e){e.preventDefault();signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
-function start(){$('login').hidden=true;$('lock').hidden=true;$('shell').hidden=false;if(W()){$('dpv').hidden=false;$('pvd').src='index.html?p='+Date.now()}go('vit');load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
+function start(){ghCfg();$('c_gh').onclick=ghClick;$('login').hidden=true;$('lock').hidden=true;$('shell').hidden=false;if(W()){$('dpv').hidden=false;$('pvd').src='index.html?p='+Date.now()}go('vit');load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
 /* tela cheia: só quando o painel está dentro do app (o app amplia o quadro) */
 (function(){var framed=false;try{framed=window.parent!==window}catch(_){}if(!framed)return;var full=false;
   Array.prototype.forEach.call(document.querySelectorAll('.fsb'),function(b){b.hidden=false;b.onclick=function(){full=!full;
