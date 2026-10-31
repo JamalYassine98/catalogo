@@ -85,6 +85,7 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
 .btn.okb{background:#1f9d57!important;color:transparent!important;position:relative}.btn.okb:after{content:"✓";position:absolute;font-size:22px;color:#fff;animation:ckp .5s cubic-bezier(.2,1.8,.3,1)}
 @keyframes ckp{from{transform:scale(0)}to{transform:scale(1)}}
 .sheet{overscroll-behavior:contain}.grab{transition:background .2s}
+.ghb{border:1px dashed var(--ac);border-radius:14px;padding:12px;margin-top:6px}.vrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--ln)}.vrow .g{min-width:0;word-break:break-all}.btn.sm2{min-height:36px;padding:0 12px;font-size:13px}.btn.dg{color:var(--bad);border-color:var(--bad)}.pbar{height:8px;border-radius:99px;background:var(--s2);margin:8px 0;overflow:hidden}.pbar i{display:block;height:100%;width:40%;background:var(--gl);border-radius:99px;animation:pbm 1.2s ease-in-out infinite}@keyframes pbm{0%{margin-left:-40%}100%{margin-left:100%}}.lk{background:none;border:0;color:var(--mu);font-size:12px;text-decoration:underline;margin-top:10px;padding:4px 0}.pk .gx{position:absolute;left:6px;top:6px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.72);color:#fff;font:700 12px/22px system-ui;text-align:center;z-index:2}
 </style></head><body><div id="msg" hidden></div>
 <div id="wrap">
 <div id="dpv" hidden><iframe id="pvd" title="Site do cliente"></iframe></div>
@@ -183,7 +184,7 @@ function dElig(p){return !p.oculto&&!esg(p)}
 function dAuto(){var l=String(S.cfg.dauto||'').split(',').filter(Boolean),i,p;
   for(i=0;i<l.length;i++){p=S.prods.filter(function(x){return x.ref===l[i]})[0];if(p&&dElig(p)&&p.fv>0)return p}
   return null}
-function dSlide(c){return String(c.slide||'').split(',').filter(Boolean).map(function(r){return S.prods.filter(function(x){return x.ref===r})[0]}).filter(function(p){return p&&dElig(p)&&p.fv>0})}
+function dSlide(c){return String(c.slide||'').split(',').filter(Boolean).map(function(r){return r.indexOf('media/')===0?{ref:r,nome:'Foto da galeria',m:1}:S.prods.filter(function(x){return x.ref===r})[0]}).filter(function(p){return p&&(p.m||(dElig(p)&&p.fv>0))})}
 function dInfo(){var m=dmodo(),c=S.cfg,p,t='',w='';
   if(m==='nada'){t='Sem destaque';w='O site mostra só o título e os botões, sem o cartão de destaque.'}
   else if(m==='auto'){p=dAuto();if(p){t=p.ref+' · '+p.nome;w=(c.dmot&&c.dmot[p.ref])||'';}else{t='Aguardando o app';w='O app ainda não indicou um produto com foto e estoque. Abra o app para atualizar. Enquanto isso o site fica sem destaque.';return {m:m,t:t,w:w,bad:true}}}
@@ -210,15 +211,68 @@ function dSheet(){
   sheet(h);
   $('dcc').onclick=closeSheet;$('dsv').onclick=dSave;
   $('sh').querySelector('.sheet').onclick=function(e){
+    if(ghClick(e))return;
     var sa=e.target.closest('[data-sa]');if(sa){S.dsa=sa.getAttribute('data-sa');Array.prototype.forEach.call(document.querySelectorAll('[data-sa]'),function(b){b.classList.toggle('on',b===sa)});return}
     var t=e.target.closest('[data-pk]');if(t){var r=t.getAttribute('data-pk'),k=S.dsl.indexOf(r);if(k<0)S.dsl.push(r);else S.dsl.splice(k,1);dPaint();return}
     var o=e.target.closest('.opt');if(!o||e.target.closest('input,select'))return;S.dm=o.getAttribute('data-m');
     Array.prototype.forEach.call(document.querySelectorAll('.opt'),function(x){var on=x===o;x.classList.toggle('on',on);x.setAttribute('aria-checked',on);x.querySelector('.ox').hidden=!on})};
-  dPaint()}
+  dPaint();ghPaint()}
+/* GitHub: guarda vídeos e fotos da galeria no próprio site (pasta media/) */
+var GH={o:'JamalYassine98',r:'catalogo',b:'main',u:'https://lafouch.com/'};
+S.gpv={};S.ghl=null;
+function ghTk(){try{return localStorage.getItem('lf_gh')||''}catch(_){return ''}}
+function ghReq(m,p,b,tk){return fetch('https://api.github.com/repos/'+GH.o+'/'+GH.r+p,{method:m,headers:{'Authorization':'Bearer '+(tk||ghTk()),'Accept':'application/vnd.github+json'},body:b?JSON.stringify(b):undefined}).then(function(r){if(r.status===401||r.status===403)throw new Error('gh-auth');if(r.status===404&&m==='GET')return null;if(!r.ok)throw new Error('gh');return r.status===204?null:r.json()})}
+function ghList(){return ghReq('GET','/contents/media?ref='+GH.b).then(function(l){S.ghl=(l||[]).filter(function(f){return f.type==='file'});return S.ghl})}
+function ghB64(f){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(String(r.result).split(',')[1])};r.onerror=no;r.readAsDataURL(f)})}
+function ghPut(path,b64){return ghReq('PUT','/contents/'+path,{message:'Mídia do destaque: '+path,content:b64,branch:GH.b})}
+function ghDel(f){return ghReq('DELETE','/contents/'+f.path,{message:'Remove '+f.path,sha:f.sha,branch:GH.b})}
+function ghErr(e){say(e&&e.message==='gh-auth'?'A chave do GitHub não vale mais. Conecte de novo.':'Não consegui falar com o GitHub. Tente de novo.',1);if(e&&e.message==='gh-auth'){try{localStorage.removeItem('lf_gh')}catch(_){}S.ghl=null;ghPaint()}}
+function ghMB(n){return (n/1048576).toFixed(1).replace('.',',')+' MB'}
+function ghDate(n){var t=+String(n).replace(/\D/g,'');return t>1e12?new Date(t).toLocaleDateString('pt-BR'):''}
+function ghBox(){return '<div class="ghb"><b>Conectar ao GitHub</b><div class="mu sm" style="margin:2px 0 8px">Os arquivos ficam guardados no próprio site, de graça. Crie uma chave em <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--ac)">github.com/settings/personal-access-tokens</a>: só o repositório <b>catalogo</b>, permissão <b>Contents: Read and write</b>. Cole aqui (fica só neste celular).</div><input id="dgt" type="password" placeholder="Chave do GitHub" autocomplete="off"><button class="btn o w" type="button" data-ghc style="margin-top:8px">Conectar</button></div>'}
+function ghPaint(){
+  var v=$('dvx'),g=$('dgx');if(!v&&!g)return;var on=!!ghTk();
+  if(v)v.innerHTML=on?'<button class="btn o w" type="button" data-vup>🎞 Escolher vídeo da galeria</button><input id="dvf" type="file" accept="video/*" hidden><div id="dvs"></div><div class="mu sm" style="margin:12px 0 4px">Vídeos guardados</div><div id="dvl" class="mu sm">Carregando…</div><button type="button" class="lk" data-ghx>Desconectar GitHub</button>':ghBox();
+  if(g)g.innerHTML=on?'<button class="btn o w" type="button" data-gup style="margin-top:10px">＋ Escolher fotos da galeria</button><input id="dgf" type="file" accept="image/*" multiple hidden><div id="dgs"></div><div class="gp" id="dgg" style="margin-top:8px"></div>':ghBox();
+  if(on)(S.ghl?Promise.resolve(S.ghl):ghList()).then(ghRows).catch(ghErr);
+  var f=$('dvf');if(f)f.onchange=function(){if(f.files[0])ghVid(f.files[0]);f.value=''};
+  var q=$('dgf');if(q)q.onchange=function(){ghFotos([].slice.call(q.files));q.value=''}}
+function ghRows(l){
+  var vl=$('dvl'),gg=$('dgg'),cur=(($('dvd')||{}).value||S.cfg.video||'');
+  if(vl){var vs=l.filter(function(f){return /\.(mp4|webm|mov)$/i.test(f.name)}).sort(function(a,b){return a.name<b.name?1:-1});
+    vl.innerHTML=vs.length?vs.map(function(f){var use=cur.indexOf(f.path)>=0;return '<div class="vrow"><div class="g"><b style="color:var(--tx)">'+esc(f.name)+'</b><div class="mu sm">'+ghMB(f.size)+(ghDate(f.name)?' · '+ghDate(f.name):'')+'</div></div>'+(use?'<span class="chip co">em uso</span>':'<button type="button" class="btn o sm2" data-vuse="'+esc(f.path)+'">Usar</button><button type="button" class="btn o sm2 dg" data-vdel="'+esc(f.path)+'">Excluir</button>')+'</div>'}).join(''):'Nenhum vídeo guardado ainda.'}
+  if(gg){var fs=l.filter(function(f){return /\.(jpe?g|png|webp)$/i.test(f.name)}).sort(function(a,b){return a.name<b.name?1:-1});
+    gg.innerHTML=fs.map(function(f){return '<button type="button" class="pk" data-pk="'+esc(f.path)+'" aria-label="Foto da galeria"><img alt="" src="'+(S.gpv[f.path]||GH.u+f.path)+'"><i></i><span class="gx" data-gdel="'+esc(f.path)+'" role="button" aria-label="Excluir foto">✕</span></button>'}).join('');dPaint()}}
+function ghVid(f){
+  if(f.size>25*1048576){say('Vídeo grande demais ('+ghMB(f.size)+'). Use até 25 MB.',1);return}
+  var st=$('dvs');st.innerHTML='<div class="mu sm" style="margin-top:8px"><b style="color:var(--tx)">'+esc(f.name)+'</b> · '+ghMB(f.size)+'</div><div class="pbar"><i></i></div><div class="mu sm">Enviando…</div>';
+  var ext=(/\.(webm|mov)$/i.exec(f.name)||['.mp4'])[0].toLowerCase(),path='media/v-'+Date.now()+ext;
+  ghB64(f).then(function(b){return ghPut(path,b)}).then(function(){S.ghl=null;$('dvd').value=GH.u+path;st.innerHTML='<div class="sm" style="margin-top:8px;color:var(--ok)">Enviado. Toque em “Salvar destaque”. O vídeo aparece no site em cerca de 1 minuto.</div>';return ghList()}).then(ghRows).catch(function(e){st.innerHTML='';ghErr(e)})}
+function ghRed(f){return new Promise(function(ok,no){var im=new Image(),u=URL.createObjectURL(f);im.onload=function(){var m=1100,k=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.85))};im.onerror=no;im.src=u})}
+function ghFotos(fs){
+  if(!fs.length)return;var st=$('dgs');st.innerHTML='<div class="mu sm" style="margin-top:8px">Enviando '+fs.length+' foto'+(fs.length===1?'':'s')+'…</div>';
+  var i=0;(function next(){if(i>=fs.length){S.ghl=null;st.innerHTML='<div class="sm" style="margin-top:8px;color:var(--ok)">Fotos guardadas. Toque nelas para colocar no slide.</div>';ghList().then(ghRows).catch(ghErr);return}
+    ghRed(fs[i]).then(function(d){var path='media/f-'+(Date.now()+i)+'.jpg';S.gpv[path]=d;return ghPut(path,d.split(',')[1])}).then(function(){i++;next()}).catch(function(e){st.innerHTML='';ghErr(e)})})()}
+function ghClick(e){
+  var t=e.target.closest('[data-ghc],[data-ghx],[data-vup],[data-gup],[data-vuse],[data-vdel],[data-gdel]');if(!t)return false;
+  if(t.hasAttribute('data-ghc')){var k=$('dgt').value.trim();if(!k){say('Cole a chave do GitHub.',1);return true}
+    ghReq('GET','',null,k).then(function(r){if(!r){say('A chave não enxerga o repositório catalogo.',1);return}try{localStorage.setItem('lf_gh',k)}catch(_){}S.ghl=null;say('GitHub conectado.');ghPaint()}).catch(function(){say('Chave não aceita pelo GitHub.',1)});return true}
+  if(t.hasAttribute('data-ghx')){try{localStorage.removeItem('lf_gh')}catch(_){}S.ghl=null;ghPaint();return true}
+  if(t.hasAttribute('data-vup')){$('dvf').click();return true}
+  if(t.hasAttribute('data-gup')){$('dgf').click();return true}
+  if(t.hasAttribute('data-vuse')){$('dvd').value=GH.u+t.getAttribute('data-vuse');ghRows(S.ghl||[]);say('Vídeo escolhido. Toque em “Salvar destaque”.');return true}
+  if(t.hasAttribute('data-vdel')||t.hasAttribute('data-gdel')){
+    var p=t.getAttribute('data-vdel')||t.getAttribute('data-gdel'),isv=t.hasAttribute('data-vdel');
+    if(isv&&(($('dvd')||{}).value||'').indexOf(p)>=0){say('Esse vídeo está em uso. Escolha outro antes de excluir.',1);return true}
+    if(!isv&&S.dsl.indexOf(p)>=0){say('Essa foto está no slide. Tire-a do slide antes de excluir.',1);return true}
+    if(t.getAttribute('data-sure')!=='1'){t.setAttribute('data-sure','1');var o=t.textContent;t.textContent=isv?'Confirmar':'?';setTimeout(function(){t.removeAttribute('data-sure');t.textContent=o},3000);return true}
+    var f=(S.ghl||[]).filter(function(x){return x.path===p})[0];if(!f)return true;
+    ghDel(f).then(function(){S.ghl=null;say('Excluído.');return ghList()}).then(ghRows).catch(ghErr);return true}
+  return false}
 function dExtra(k,ok){
   if(k==='produto')return '<select id="dpr" style="margin-top:8px">'+ok.map(function(p){return '<option value="'+esc(p.ref)+'"'+(S.cfg.destaque===p.ref?' selected':'')+'>'+esc(p.ref)+' · '+esc(p.nome)+'</option>'}).join('')+'</select>';
-  if(k==='video')return '<input id="dvd" value="'+esc(S.cfg.video||'')+'" placeholder="https://…/promo.mp4" style="margin-top:8px">';
-  if(k==='slide')return '<div class="mu sm" style="margin:8px 0 6px">Troca das fotos</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" id="dsa">'+SA.map(function(x){return '<button type="button" class="tr'+(S.dsa===x[0]?' on':'')+'" data-sa="'+x[0]+'"><span class="ti">'+x[2]+'</span><b>'+x[1]+'</b></button>'}).join('')+'</div><div class="mu sm" style="margin:12px 0 6px">Toque nas fotos na ordem em que devem passar.</div><div class="gp" id="dgp">'+ok.map(function(p){return '<button type="button" class="pk" data-pk="'+esc(p.ref)+'" aria-label="'+esc(p.nome)+'">'+(S.fotos[p.ref]?'<img alt="" src="'+S.fotos[p.ref]+'">':'<span class="mu sm">'+esc(p.ref)+'</span>')+'<i></i></button>'}).join('')+'</div>';
+  if(k==='video')return '<div id="dvx" style="margin-top:8px"></div><div class="mu sm" style="margin:12px 0 0">ou cole o endereço do vídeo</div><input id="dvd" value="'+esc(S.cfg.video||'')+'" placeholder="https://…/promo.mp4" style="margin-top:6px">';
+  if(k==='slide')return '<div class="mu sm" style="margin:8px 0 6px">Troca das fotos</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" id="dsa">'+SA.map(function(x){return '<button type="button" class="tr'+(S.dsa===x[0]?' on':'')+'" data-sa="'+x[0]+'"><span class="ti">'+x[2]+'</span><b>'+x[1]+'</b></button>'}).join('')+'</div><div class="mu sm" style="margin:12px 0 6px">Toque nas fotos na ordem em que devem passar.</div><div class="gp" id="dgp">'+ok.map(function(p){return '<button type="button" class="pk" data-pk="'+esc(p.ref)+'" aria-label="'+esc(p.nome)+'">'+(S.fotos[p.ref]?'<img alt="" src="'+S.fotos[p.ref]+'">':'<span class="mu sm">'+esc(p.ref)+'</span>')+'<i></i></button>'}).join('')+'</div><div class="mu sm" style="margin:12px 0 0">Suas fotos (da galeria)</div><div id="dgx"></div>';
   if(k==='auto'){var p=dAuto();return p?'<div class="sm" style="margin-top:8px;color:var(--ac)">Agora: '+esc(p.ref+' · '+p.nome)+((S.cfg.dmot&&S.cfg.dmot[p.ref])?' — '+esc(S.cfg.dmot[p.ref]):'')+'</div>':'<div class="sm" style="margin-top:8px;color:var(--wn)">Ainda sem escolha do app.</div>'}
   return ''}
 function dPaint(){Array.prototype.forEach.call(document.querySelectorAll('.pk'),function(b){var k=S.dsl.indexOf(b.getAttribute('data-pk'));b.classList.toggle('on',k>=0);b.querySelector('i').textContent=k>=0?k+1:''})}
