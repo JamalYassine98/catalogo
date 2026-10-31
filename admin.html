@@ -255,7 +255,7 @@ function ghFotos(fs){
     ghRed(fs[i]).then(function(d){var path='media/f-'+(Date.now()+i)+'.jpg';S.gpv[path]=d;return ghPut(path,d.split(',')[1])}).then(function(){i++;next()}).catch(function(e){st.innerHTML='';ghErr(e)})})()}
 function ghClick(e){
   var t=e.target.closest('[data-ghc],[data-ghx],[data-vup],[data-gup],[data-vuse],[data-vdel],[data-gdel]');if(!t)return false;
-  if(t.hasAttribute('data-ghc')){var k=$('dgt').value.trim();if(!k){say('Cole a chave do GitHub.',1);return true}
+  if(t.hasAttribute('data-ghc')){var k=(t.closest('.ghb').querySelector('input').value||'').trim();if(!k){say('Cole a chave do GitHub.',1);return true}
     ghReq('GET','',null,k).then(function(r){if(!r){say('A chave não enxerga o repositório catalogo.',1);return}try{localStorage.setItem('lf_gh',k)}catch(_){}S.ghl=null;say('GitHub conectado.');ghPaint()}).catch(function(){say('Chave não aceita pelo GitHub.',1)});return true}
   if(t.hasAttribute('data-ghx')){try{localStorage.removeItem('lf_gh')}catch(_){}S.ghl=null;ghPaint();return true}
   if(t.hasAttribute('data-vup')){$('dvf').click();return true}
