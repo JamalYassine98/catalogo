@@ -986,10 +986,18 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 .mobsearch .search{height:calc(clamp(52px,3vw,88px) / (1 + (var(--kz,1) - 1) * .35))!important;font-size:calc(clamp(17px,.95vw,29px) / (1 + (var(--kz,1) - 1) * .35))!important}
 .bar .logo{height:calc(clamp(56px,4.3vw,120px) / (1 + (var(--kz,1) - 1) * .8))!important;width:calc(clamp(128px,9.8vw,270px) / (1 + (var(--kz,1) - 1) * .8))!important;flex:0 1 calc(clamp(128px,9.8vw,270px) / (1 + (var(--kz,1) - 1) * .8))!important}
 }
+/* página inicial: já é toda medida em % da tela, então não recebe a escala fluida (senão cresce em dobro) */
+@media (min-width:1100px){main .wrap .hero,main .wrap .trust{zoom:calc(1 / var(--kz,1))}}
+/* escala interna (--k) das páginas do PC: divide pela escala fluida para manter o mesmo tamanho final de antes */
+@media (min-width:1000px){body{--k:calc(1 / var(--kz,1))}}
+@media (min-width:1800px){body{--k:calc(1.15 / var(--kz,1))}}
+@media (min-width:2300px){body{--k:calc(1.6 / var(--kz,1))}}
 /*/CABECALHO-FLUIDO*/
 /*COTACAO-CENTRO*/
 /* a cotação fica no meio da faixa entre a linha do cabeçalho e a barra de busca (celular, tablet e PC) */
 #vitrine.pop #cbl:not([hidden]){margin-top:max(0px,calc(.7em - 8px))!important;margin-bottom:.7em!important;line-height:1.2}
+@media (max-width:599px){#vitrine.pop #cbl:not([hidden]){margin-inline:17px!important}}
+@media (min-width:600px) and (max-width:1099px){#vitrine.pop #cbl:not([hidden]){margin-inline:16px!important}}
 /*/COTACAO-CENTRO*/
 </style>
 
