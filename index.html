@@ -712,7 +712,7 @@ main .wrap .hero .cta{display:flex;flex-wrap:wrap;gap:.9vw;margin-top:1.8vw}
 main .wrap .hero .cta{max-width:none;gap:.9vw}
 main .wrap .hero .cta .btn{min-height:5.4vw!important;border-radius:1.6vw!important;padding:0 1.6vw 0 1.9vw!important;gap:2vw}
 main .wrap .hero .cta .t{font-size:1.35vw;gap:.25vw}
-main .wrap .hero .cta .t small{font-size:max(.75vw,calc(10.5px / var(--z,1)))}
+main .wrap .hero .cta .t small{font-size:.75vw}
 main .wrap .hero .cta .btn .ar{width:1.6vw!important;height:1.6vw!important}
 main .wrap .hero .stage{justify-self:end;width:38vw;height:auto!important;aspect-ratio:5/4;border-radius:2.2vw}
 main .wrap .hero .stage:not([hidden]){display:flex!important;align-items:center;justify-content:center}
@@ -788,7 +788,7 @@ main .wrap .hero h1{order:1;font-size:7.4vw!important;line-height:1.02;margin:0!
 main .wrap .hero p{order:2;display:block!important;font-size:2.5vw;max-width:80vw;margin:0}
 main .wrap .hero .cta{order:3;display:flex;flex-wrap:wrap;justify-content:center;gap:2vw;max-width:none;width:100%}
 main .wrap .hero .cta .btn{min-height:11vw!important;border-radius:3vw!important;padding:0 3vw 0 3.4vw!important;gap:3vw;min-width:44vw}
-main .wrap .hero .cta .t{font-size:2.7vw}main .wrap .hero .cta .t small{font-size:max(1.5vw,calc(10.5px / var(--z,1)))}
+main .wrap .hero .cta .t{font-size:2.7vw}main .wrap .hero .cta .t small{font-size:1.5vw}
 main .wrap .hero .cta .btn .ar{width:3vw!important;height:3vw!important}}
 /*/TABLET*/
 /*DOTS-ALINHA*/
@@ -959,7 +959,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 #atacado .whole{max-width:80vw!important;gap:3.6vw!important;padding:3.6vw!important}
 #atacado .whole h2{font-size:clamp(34px,3vw,86px)!important;line-height:1.15!important}
 #atacado .whole p{font-size:clamp(17px,1.25vw,36px)!important;line-height:1.55}
-#atacado .whole .eyebrow{font-size:max(clamp(13px,.9vw,26px),calc(11px / var(--z,1)))}
+#atacado .whole .eyebrow{font-size:clamp(13px,.9vw,26px)}
 #atacado .wf{gap:1vw}
 #atacado .wf .field{font-size:clamp(16px,1.2vw,34px)!important;padding:1.05vw 1.3vw!important;min-height:clamp(52px,3.6vw,100px)}
 #atacado .whole .btn.w{font-size:clamp(17px,1.3vw,36px)!important;min-height:clamp(58px,4.2vw,116px)!important;gap:.8vw}
@@ -967,6 +967,8 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 }
 /*/PC-PAGINAS*/
 /*PISO-TEXTO*/
+/* só celular e tablet: no PC os cartões mantêm as proporções originais */
+@media (max-width:1099px){
 .stk{font-size:max(8.5px,calc(10.5px / var(--z,1)))}
 .tg,.card .tg{font-size:max(10px,calc(10.5px / var(--z,1)))}
 .uvc{font-size:max(9.5px,calc(10.5px / var(--z,1)))}
@@ -976,6 +978,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 .eyebrow{font-size:max(13px,calc(11px / var(--z,1)))}
 .hero .btn small,.btn.p small{font-size:max(9.6px,calc(10.5px / var(--z,1)))}
 .ou span{font-size:max(13px,calc(11px / var(--z,1)))}
+}
 /*/PISO-TEXTO*/
 /*CARD-ESTREITO*/
 @media (max-width:380px){.card .tg{padding:3px 6px;left:6px;top:6px}.card .fav{width:30px;height:30px;right:5px;top:5px}.card .stk{left:5px;bottom:5px;padding:3px 6px}}
@@ -1032,7 +1035,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 
 <div id="intro" aria-hidden="true"><div class="ilogo"><i class="la"></i><i class="lb"></i><i class="lc"></i></div></div>
 <script>try{if(localStorage.getItem("lf_intro2")==="1")document.getElementById("intro").remove()}catch(_){}</script>
-<script>/*ESCALA-FLUIDA*/window.LFK=function(){var w=innerWidth,h=innerHeight,pc=matchMedia("(min-width:1100px)").matches,k=1;if(pc)k=Math.max(1,Math.min(1.75,w/1440));else if(Math.min(w,h)>=600)k=Math.max(1,Math.min(1.2,Math.min(w,h)/560));return +k.toFixed(3)};window.LFZ=function(i){var pc=matchMedia("(min-width:1100px)").matches,b=(pc?[.8,.9,1]:[1,1.12,1.25])[i]||1;return +(b*LFK()).toFixed(3)};try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=LFZ(_i)||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}document.body.style.setProperty("--kz",LFK());}catch(_){}</script>
+<script>/*ESCALA-FLUIDA*/window.LFK=function(){var w=innerWidth,h=innerHeight,pc=matchMedia("(min-width:1100px)").matches,k=1;if(pc)k=1;else if(Math.min(w,h)>=600)k=Math.max(1,Math.min(1.2,Math.min(w,h)/560));return +k.toFixed(3)};window.LFZ=function(i){var pc=matchMedia("(min-width:1100px)").matches,b=(pc?[.8,.9,1]:[1,1.12,1.25])[i]||1;return +(b*LFK()).toFixed(3)};try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=LFZ(_i)||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}document.body.style.setProperty("--kz",LFK());}catch(_){}</script>
 <main id="topo">
 <div class="wrap">
 
