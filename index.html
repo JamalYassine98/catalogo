@@ -1044,6 +1044,15 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
 .pgm .dh h2{font-size:clamp(32px,3.2vw,52px)}
 .pgm .dp .pr{font-size:34px}
 .pgm .pgl{top:90px}}
+/*CABECALHO-SEM-CIRCULO*/
+.bar #mnb,.bar #bagbtn,.bar #contabtn{border:0!important;background:transparent!important;border-radius:14px;transition:background .25s,box-shadow .25s,transform .25s}
+.bar #contabtn{order:1;width:auto!important;gap:7px;padding:0 12px;color:var(--tx)}
+.bar #contabtn .lgt{font:600 13px/1 Inter,system-ui,sans-serif;letter-spacing:.02em;text-transform:none;white-space:nowrap}
+.bar #contabtn.on svg{color:var(--ac)}
+@media (hover:hover){.bar #mnb:hover,.bar #bagbtn:hover,.bar #contabtn:hover{transform:translateY(-1px)!important;background:color-mix(in srgb,var(--tx) 6%,transparent)!important;box-shadow:0 6px 16px -6px var(--shadow),0 1px 0 color-mix(in srgb,#fff 55%,transparent) inset}}
+.bar #mnb:active,.bar #bagbtn:active,.bar #contabtn:active{transform:translateY(0)!important;box-shadow:none}
+.bar .ib:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media (min-width:1100px){.bar #contabtn .lgt{font-size:clamp(13px,.85vw,18px)}.bar #contabtn{padding:0 clamp(12px,.9vw,22px)}}
 </style>
 
 <div class="top"><div class="wrap">
@@ -1056,8 +1065,8 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
     <button class="ib" id="theme" data-l="Tema" aria-label="Trocar tema claro e escuro" title="Tema"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></button>
     <button class="ib lgb" id="lgb" data-l="Idioma" aria-label="Idioma e moeda" title="Idioma e moeda"><b></b></button>
     <button class="ib aa" id="aa" data-l="Texto" aria-label="Tamanho do texto" title="Tamanho do texto"><small>a</small><b>A</b></button>
-    <button class="ib" id="contabtn" type="button" data-cta="minha" aria-label="Minha conta"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></button>
-    <button class="ib" id="bagbtn" data-l="Sacola" aria-label="Abrir a reserva"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="badge">0</span></button>
+    <button class="ib" id="bagbtn" data-l="Sacola" aria-label="Abrir a reserva"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3h2.6l2.2 11.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L20.5 7H6"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg><span class="badge" id="badge">0</span></button>
+    <button class="ib" id="contabtn" type="button" data-cta="minha" aria-label="Minha conta"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="lgt">log in</span></button>
     <script>try{var _c=JSON.parse(localStorage.getItem('lf_cart')||'null'),_n=0;if(_c&&_c.c)for(var _k in _c.c)_n+=_c.c[_k]||0;document.getElementById('badge').textContent=_n}catch(_){}</script>
   </div>
   <div class="mobsearch"><label class="search" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q2" type="search" placeholder="Buscar por modelo ou referência" aria-label="Buscar no catálogo"></label><button type="button" class="ib fbtn" id="fbtn" aria-label="Filtrar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg><i class="fdot"></i></button><button type="button" class="ib fbtn" id="ftog" data-tipo="fav" hidden aria-label="Meus favoritos" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/></svg><b class="fcn"></b></button><script>try{if(Object.keys(JSON.parse(localStorage.getItem('lf_fav')||'{}')||{}).length)document.getElementById('ftog').hidden=false}catch(_){}</script><button type="button" class="ib fbtn" id="vtog" aria-label="Ver como lista"><svg class="vg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><svg class="vl" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></button></div>
@@ -1463,7 +1472,7 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
     r=pageOf(r);var HA=r.length?r.map(function(p,i){
       var esg=p.aviso==='Esgotado',n=st.cart[p.ref]||0;
       var sk=esg?'<span class="stk e">Esgotado</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':p.aviso==='Chegou esta semana'?'<span class="stk n">'+esc(p.aviso)+'</span>':'');
-      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr"><span class="ref">'+p.ref+'</span>'+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button><button class="add'+(esg?' alt':'')+'" data-add="'+p.ref+'">'+(esg?'Avise-me quando chegar':(n?'Na reserva ('+n+') · +1':'Comprar'))+'</button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
+      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr"><span class="ref">'+p.ref+'</span>'+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
     var G=$('grid');
     if(G._h!==GH){G._h=GH;
       if(!HA){G.innerHTML=GH}
@@ -1680,6 +1689,7 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
   function pgInit(p,pop){
     prodOpen=true;prodRef=p.ref;document.documentElement.classList.remove('bootprod');try{document.activeElement&&document.activeElement.blur()}catch(_){}
     if(!prodTitle)prodTitle=document.title;document.title=p.nome+' ('+p.ref+') · La Fouch';
+    if(!pop&&prodDepth===0){try{var vs0=$('vscr'),pp0=document.querySelector('.sec.pop');sessionStorage.setItem('lf_back',JSON.stringify({h:pp0?pp0.id:'',sy:vs0?vs0.scrollTop:0,ps:pp0?pp0.scrollTop:0,tipo:st.tipo,gen:st.gen,q:st.q,sort:st.sort,rosto:st.rosto}))}catch(_){}}
     if(!pop){try{prodDepth++;history.pushState({lfp:p.ref,d:prodDepth},'','/p/'+encodeURIComponent(p.ref))}catch(_){prodDepth--}}
     var sc=document.querySelector('#layer .scrim');if(sc){sc.scrollTop=0;var hd=document.querySelector('header.top,.top');if(hd){var z=parseFloat(getComputedStyle(document.body).zoom)||1,hb=hd.getBoundingClientRect().bottom/z;if(hb>0&&hb<400)sc.style.top=hb+'px'}}
     var th=document.querySelectorAll('#layer .cth button');
@@ -1721,6 +1731,12 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
     requestAnimationFrame(step)}
   var CARTI='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3h2.6l2.2 11.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L20.5 7H6"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>';
   var FI={loja:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9M4 9v10h16V9M4 9h16M9 19v-5h6v5"/></svg>',rel:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',ret:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg>'};
+  function baseRestore(){var sv=null;try{sv=JSON.parse(sessionStorage.getItem('lf_back')||'null')}catch(_){}
+    try{history.replaceState(null,'',location.pathname.replace(/^\/p\/.*/,'/'))}catch(_){}
+    var h=sv&&PAN[sv.h]?sv.h:'vitrine';
+    try{if(sv){st.tipo=sv.tipo||'todos';st.gen=sv.gen||'';st.q=sv.q||'';st.sort=sv.sort||'nov';st.rosto=sv.rosto||'';$('q').value=st.q;$('q2').value=st.q;$('sort').value=st.sort;drawGrid()}}catch(_){}
+    openPanel(h,true);
+    if(sv){var ap=function(){var vs=$('vscr'),pe=document.getElementById(h);if(h==='vitrine'&&vs)vs.scrollTop=sv.sy||0;else if(pe)pe.scrollTop=sv.ps||0};ap();[150,500,1200].forEach(function(t){setTimeout(ap,t)})}}
   var prodOpen=false,prodDepth=0,prodRef='',prodNext=false,prodTitle='';
   function product(ref,pop){
     var p=find(ref),esg=p.aviso==='Esgotado',dots=!!(p.lib&&p.cores&&p.cores.length>1),sw=dots||(!p.foto&&p.cores&&p.cores.length>1);if(p.lib)st.cor[p.ref]=0;
@@ -1880,7 +1896,7 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
     contaBtn();if(!old.nome)return contaCriada(volta,nome);toast('Conta salva.');if(volta)bag();else closeLayer()}}
   function contaCriada(volta,nome){
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Conta criada"><div class="ccok"><div class="cck">✓</div><h2 style="font-size:28px">Conta criada!</h2><div class="note" style="margin:0"><span>Bem-vinda,</span> '+esc(String(nome).split(' ')[0])+'. <span>Agora você já pode fazer seus pedidos.</span></div><button class="btn w" data-cta="cont" data-volta="'+(volta?1:0)+'" style="margin-top:18px">Continuar</button></div></aside>')}
-  function contaBtn(){var b=$('contabtn');if(!b)return;var c=getConta();b.classList.toggle('on',!!c);b.setAttribute('title',c?c.nome:'Minha conta')}
+  function contaBtn(){var b=$('contabtn');if(!b)return;var c=getConta();b.classList.toggle('on',!!c);b.setAttribute('title',c?c.nome:'Minha conta');var lt=b.querySelector('.lgt');if(lt)lt.textContent=c&&c.nome?String(c.nome).trim().split(/\s+/)[0].slice(0,12):'log in'}
   /* login: Firebase Authentication (e-mail + senha); o "usuário" é um apelido ligado ao e-mail */
   function sessG(){return lsG('lf_auth',null)}
   function logado(){return !!(sessG()&&getConta())}
@@ -2731,7 +2747,7 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
   (ADM||(ADM=isAdm())).then(function(a){if(a&&!LF_ADM&&window.parent!==window){LF_ADM=true;document.documentElement.classList.add('adm');redraw()}});
   manut();try{var qv=new URLSearchParams(location.search).get('video');if(qv)setTimeout(function(){var st=$('stage');st.hidden=false;st.setAttribute('data-sig','q');applyVideo(qv)},300)}catch(_){}
   if(!/[?&]nosync/.test(location.search))setTimeout(syncRun,50);
-  try{var qr=new URLSearchParams(location.search).get('ref');if(qr){var qn=0,qgo=function(){if(find(qr)){clearInterval(qt);try{history.replaceState(null,'',location.pathname.replace(/^\/p\/.*/,'/')+location.hash)}catch(_){}product(qr);return 1}if(++qn>50){clearInterval(qt);document.documentElement.classList.remove('bootprod')}},qt=setInterval(qgo,60);qgo()}}catch(_){}
+  try{var qr=new URLSearchParams(location.search).get('ref');if(qr){var qn=0,qgo=function(){if(find(qr)){clearInterval(qt);baseRestore();product(qr);return 1}if(++qn>50){clearInterval(qt);document.documentElement.classList.remove('bootprod')}},qt=setInterval(qgo,60);qgo()}}catch(_){}
   setTimeout(function(){document.documentElement.classList.add('nr')},3500);
 
   /* idioma e moeda */
