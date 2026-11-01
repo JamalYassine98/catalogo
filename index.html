@@ -1004,7 +1004,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 @media (min-width:600px) and (max-width:1099px){#vitrine.pop #cbl:not([hidden]){margin-inline:16px!important}}
 /*/COTACAO-CENTRO*/
 /*PAGINA-PRODUTO*/
-html .scrim.pg{position:fixed;inset:0;z-index:30;display:block;overflow-y:auto;overflow-x:hidden;background:var(--bg);padding:0;animation:pgin .28s cubic-bezier(.2,.8,.2,1)}
+html .scrim.pg{position:fixed;inset:0;z-index:30;display:block;overflow-y:auto;overflow-x:hidden;background:var(--bg);padding:0;animation:none!important}
 @keyframes pgin{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){html .scrim.pg{animation:none}}
 .pgbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:18px;padding:12px max(16px,3vw);background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
@@ -1063,6 +1063,11 @@ html .scrim.pg.acc{align-items:flex-start}html .scrim.pg.acc .panel{margin:28px 
 .bar #mnb:hover svg,.bar #bagbtn:hover svg,.bar #contabtn:hover svg{color:var(--ac);filter:drop-shadow(0 2px 3px color-mix(in srgb,var(--ac) 55%,transparent)) drop-shadow(0 0 7px color-mix(in srgb,var(--ac) 35%,transparent));transform:translateY(-1px)}
 .bar #contabtn:hover .lgt{color:var(--ac);text-shadow:0 1px 4px color-mix(in srgb,var(--ac) 40%,transparent)}}
 .bar #mnb svg,.bar #bagbtn svg,.bar #contabtn svg{transition:color .25s,filter .25s,transform .25s}
+/*PAGINA-SEM-PISCAR*/
+@keyframes pgrise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+html .scrim.pg>.modal.pgm:not(.msg):not(.cmp):not(.try),html .scrim.pg>.panel,html .scrim.pg.acc>.panel{animation:pgrise .28s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion:reduce){html .scrim.pg>.modal.pgm:not(.msg):not(.cmp):not(.try),html .scrim.pg>.panel,html .scrim.pg.acc>.panel{animation:none}}
+html .scrim.pg.still>.panel,html .scrim.pg.still>.modal.pgm{animation:none!important}
 </style>
 
 <div class="top"><div class="wrap">
