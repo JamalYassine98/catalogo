@@ -380,7 +380,7 @@ footer b{color:var(--tx)}
 .modal .big>svg{width:100%;height:100%}
 .modal .det{padding:26px 24px;display:flex;flex-direction:column;gap:12px}
 .modal.msg{grid-template-columns:1fr;width:min(520px,100%)}
-@media (min-width:861px){.modal:not(.msg):not(.cmp):not(.try){width:min(1240px,calc(96vw / var(--z,1)));grid-template-columns:1.45fr 1fr;background:linear-gradient(90deg,#fff 59.18%,var(--bg) 59.18%)}.modal:not(.msg):not(.cmp):not(.try){height:calc((100vh - 40px) / var(--z,1));max-height:100%;grid-template-rows:1fr auto}.modal:not(.msg):not(.cmp):not(.try) .big{aspect-ratio:auto;height:calc((100vh - 40px) / var(--z,1) - 88px);min-height:min(420px,calc((100vh - 40px) / var(--z,1) - 88px));position:sticky;top:0;align-self:start}.modal:not(.msg):not(.cmp):not(.try) .big .zh{left:18px;bottom:18px;font-size:14px;padding:9px 18px}.modal:not(.msg):not(.cmp):not(.try) .big:has(.pf)::after{right:20px;bottom:16px;width:52px;height:65px}.modal:not(.msg):not(.cmp):not(.try) .buy{background:var(--bg)}.scrim.center:has(.modal:not(.msg):not(.cmp):not(.try)){padding:20px}}
+@media (min-width:861px),(min-width:640px) and (orientation:landscape) and (max-height:560px){.modal:not(.msg):not(.cmp):not(.try){width:min(1240px,calc(96vw / var(--z,1)));grid-template-columns:1.45fr 1fr;background:linear-gradient(90deg,#fff 59.18%,var(--bg) 59.18%)}.modal:not(.msg):not(.cmp):not(.try){height:calc((100vh - 40px) / var(--z,1));max-height:100%;grid-template-rows:1fr auto}.modal:not(.msg):not(.cmp):not(.try) .big{aspect-ratio:auto;height:calc((100vh - 40px) / var(--z,1) - 88px);min-height:min(420px,calc((100vh - 40px) / var(--z,1) - 88px));position:sticky;top:0;align-self:start}.modal:not(.msg):not(.cmp):not(.try) .big .zh{left:18px;bottom:18px;font-size:14px;padding:9px 18px}.modal:not(.msg):not(.cmp):not(.try) .big:has(.pf)::after{right:20px;bottom:16px;width:52px;height:65px}.modal:not(.msg):not(.cmp):not(.try) .buy{background:var(--bg)}.scrim.center:has(.modal:not(.msg):not(.cmp):not(.try)){padding:20px}}
 .x{align-self:flex-end;width:44px;height:44px;border-radius:12px;border:1px solid var(--ln);background:var(--pn)}
 .line{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:10px;display:flex;gap:12px;align-items:center}
 .line .th{flex:0 0 72px;height:72px;background:#fff;border-radius:10px;overflow:hidden}
@@ -712,7 +712,7 @@ main .wrap .hero .cta{display:flex;flex-wrap:wrap;gap:.9vw;margin-top:1.8vw}
 main .wrap .hero .cta{max-width:none;gap:.9vw}
 main .wrap .hero .cta .btn{min-height:5.4vw!important;border-radius:1.6vw!important;padding:0 1.6vw 0 1.9vw!important;gap:2vw}
 main .wrap .hero .cta .t{font-size:1.35vw;gap:.25vw}
-main .wrap .hero .cta .t small{font-size:.75vw}
+main .wrap .hero .cta .t small{font-size:max(.75vw,calc(10.5px / var(--z,1)))}
 main .wrap .hero .cta .btn .ar{width:1.6vw!important;height:1.6vw!important}
 main .wrap .hero .stage{justify-self:end;width:38vw;height:auto!important;aspect-ratio:5/4;border-radius:2.2vw}
 main .wrap .hero .stage:not([hidden]){display:flex!important;align-items:center;justify-content:center}
@@ -788,7 +788,7 @@ main .wrap .hero h1{order:1;font-size:7.4vw!important;line-height:1.02;margin:0!
 main .wrap .hero p{order:2;display:block!important;font-size:2.5vw;max-width:80vw;margin:0}
 main .wrap .hero .cta{order:3;display:flex;flex-wrap:wrap;justify-content:center;gap:2vw;max-width:none;width:100%}
 main .wrap .hero .cta .btn{min-height:11vw!important;border-radius:3vw!important;padding:0 3vw 0 3.4vw!important;gap:3vw;min-width:44vw}
-main .wrap .hero .cta .t{font-size:2.7vw}main .wrap .hero .cta .t small{font-size:1.5vw}
+main .wrap .hero .cta .t{font-size:2.7vw}main .wrap .hero .cta .t small{font-size:max(1.5vw,calc(10.5px / var(--z,1)))}
 main .wrap .hero .cta .btn .ar{width:3vw!important;height:3vw!important}}
 /*/TABLET*/
 /*DOTS-ALINHA*/
@@ -921,7 +921,7 @@ html.nr .fcar .far{animation:none!important;opacity:.75}html.nr .far.off{opacity
 /*RECAPTCHA*/
 .grecaptcha-badge{visibility:hidden!important}.rcp{font-size:12px;color:var(--mu);opacity:.8}
 /*ROSTO-FIT*/
-@media (min-width:700px){
+@media (min-width:700px) and (min-height:560px){
 html[data-zi="0"] #rosto.pop{display:flex!important;flex-direction:column;overflow:hidden;padding-block:calc(10px*var(--k)) calc(14px*var(--k))}
 html[data-zi="0"] #rosto.pop h2{flex:none;font-size:calc(30px*var(--k))}
 html[data-zi="0"] #rosto.pop>p{flex:none;margin-top:calc(4px*var(--k));font-size:calc(15.5px*var(--k))}
@@ -935,7 +935,7 @@ html[data-zi="0"] #rosto.pop .fcar .face .go{flex:none;padding:calc(9px*var(--k)
 html[data-zi="0"] #rosto.pop .fac1{flex:none;width:min(calc(1240px*var(--k)),94vw);margin:calc(14px*var(--k)) auto 0;padding:calc(14px*var(--k)) calc(24px*var(--k))}
 html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 }
-@media (min-width:1000px){html[data-zi="0"] #rosto.pop .fcar .faces{grid-template-rows:repeat(2,minmax(0,1fr))}}
+@media (min-width:1000px) and (min-height:560px){html[data-zi="0"] #rosto.pop .fcar .faces{grid-template-rows:repeat(2,minmax(0,1fr))}}
 /*/ROSTO-FIT*/
 /*PC-PAGINAS*/
 @media (min-width:700px){
@@ -959,13 +959,27 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 #atacado .whole{max-width:80vw!important;gap:3.6vw!important;padding:3.6vw!important}
 #atacado .whole h2{font-size:clamp(34px,3vw,86px)!important;line-height:1.15!important}
 #atacado .whole p{font-size:clamp(17px,1.25vw,36px)!important;line-height:1.55}
-#atacado .whole .eyebrow{font-size:clamp(13px,.9vw,26px)}
+#atacado .whole .eyebrow{font-size:max(clamp(13px,.9vw,26px),calc(11px / var(--z,1)))}
 #atacado .wf{gap:1vw}
 #atacado .wf .field{font-size:clamp(16px,1.2vw,34px)!important;padding:1.05vw 1.3vw!important;min-height:clamp(52px,3.6vw,100px)}
 #atacado .whole .btn.w{font-size:clamp(17px,1.3vw,36px)!important;min-height:clamp(58px,4.2vw,116px)!important;gap:.8vw}
 #atacado .whole .btn.w svg{width:1.8vw!important;height:1.8vw!important;min-width:22px}
 }
 /*/PC-PAGINAS*/
+/*PISO-TEXTO*/
+.stk{font-size:max(8.5px,calc(10.5px / var(--z,1)))}
+.tg,.card .tg{font-size:max(10px,calc(10.5px / var(--z,1)))}
+.uvc{font-size:max(9.5px,calc(10.5px / var(--z,1)))}
+.ref{font-size:max(12px,calc(10.5px / var(--z,1)))}
+.av{font-size:max(13px,calc(11px / var(--z,1)))}
+.card .add,.card .add.alt{font-size:max(13px,calc(11.5px / var(--z,1)))}
+.eyebrow{font-size:max(13px,calc(11px / var(--z,1)))}
+.hero .btn small,.btn.p small{font-size:max(9.6px,calc(10.5px / var(--z,1)))}
+.ou span{font-size:max(13px,calc(11px / var(--z,1)))}
+/*/PISO-TEXTO*/
+/*CARD-ESTREITO*/
+@media (max-width:380px){.card .tg{padding:3px 6px;left:6px;top:6px}.card .fav{width:30px;height:30px;right:5px;top:5px}.card .stk{left:5px;bottom:5px;padding:3px 6px}}
+/*/CARD-ESTREITO*/
 </style>
 
 <div class="top"><div class="wrap">
@@ -999,7 +1013,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 
 <div id="intro" aria-hidden="true"><div class="ilogo"><i class="la"></i><i class="lb"></i><i class="lc"></i></div></div>
 <script>try{if(localStorage.getItem("lf_intro2")==="1")document.getElementById("intro").remove()}catch(_){}</script>
-<script>try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=(_pc?[.8,.9,1]:[1,1.12,1.25])[_i]||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}}catch(_){}</script>
+<script>/*ESCALA-FLUIDA*/window.LFZ=function(i){var w=innerWidth,h=innerHeight,pc=matchMedia("(min-width:1100px)").matches,b=(pc?[.8,.9,1]:[1,1.12,1.25])[i]||1,k=1;if(pc)k=Math.max(1,Math.min(1.75,w/1440));else if(Math.min(w,h)>=600)k=Math.max(1,Math.min(1.2,Math.min(w,h)/560));return +(b*k).toFixed(3)};try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=LFZ(_i)||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}}catch(_){}</script>
 <main id="topo">
 <div class="wrap">
 
@@ -2387,10 +2401,13 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
   document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='fafile'||t.id==='fafile2')){var f=t.files&&t.files[0];t.value='';faRun(f)}});
 
   /* texto maior (acessibilidade) */
-  var PCZ=matchMedia('(min-width:1100px)').matches,ZL=PCZ?[.8,.9,1]:[1,1.12,1.25],ZN=['Texto normal','Texto grande','Texto muito grande'],zi=0;
+  var PCZ=matchMedia('(min-width:1100px)').matches,ZL=[LFZ(0),LFZ(1),LFZ(2)],ZN=['Texto normal','Texto grande','Texto muito grande'],zi=0;
   try{var zs=localStorage.getItem('lf_zoom');if(zs!=null)zi=Math.max(0,Math.min(2,+zs||0))}catch(_){}
   function zset(i,say){zi=i;document.documentElement.setAttribute('data-zi',i);document.documentElement.classList.toggle('zl',ZL[i]>1);document.body.style.zoom=ZL[i]==1?'':ZL[i];document.body.style.setProperty('--z',ZL[i]);try{localStorage.setItem('lf_zoom',i)}catch(_){}if(say)toast(ZN[i])}
   zset(zi,false);
+  /* a escala acompanha a largura da tela: ao redimensionar a janela ou girar o aparelho, recalcula */
+  (function(){var tm=0;function re(){var n=[LFZ(0),LFZ(1),LFZ(2)];if(Math.abs(n[zi]-ZL[zi])>.02||(matchMedia('(min-width:1100px)').matches!==PCZ)){PCZ=matchMedia('(min-width:1100px)').matches;ZL=n;zset(zi,false)}}
+    addEventListener('resize',function(){clearTimeout(tm);tm=setTimeout(re,300)});addEventListener('orientationchange',function(){clearTimeout(tm);tm=setTimeout(re,400)})})();
   $('aa').addEventListener('click',function(){zset((zi+1)%3,true)});
   /* abertura com o logo da loja. aparece só na primeira visita deste aparelho e nunca dentro do painel admin (INTRO_SEMPRE=true força sempre, para testes) */
   var INTRO_SEMPRE=false;
