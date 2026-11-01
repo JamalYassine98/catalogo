@@ -980,6 +980,13 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 /*CARD-ESTREITO*/
 @media (max-width:380px){.card .tg{padding:3px 6px;left:6px;top:6px}.card .fav{width:30px;height:30px;right:5px;top:5px}.card .stk{left:5px;bottom:5px;padding:3px 6px}}
 /*/CARD-ESTREITO*/
+/*CABECALHO-FLUIDO*/
+@media (min-width:1100px){
+.bar .ib,.mobsearch .ib{width:calc(clamp(52px,3vw,88px) / (1 + (var(--kz,1) - 1) * .35))!important;height:calc(clamp(52px,3vw,88px) / (1 + (var(--kz,1) - 1) * .35))!important}
+.mobsearch .search{height:calc(clamp(52px,3vw,88px) / (1 + (var(--kz,1) - 1) * .35))!important;font-size:calc(clamp(17px,.95vw,29px) / (1 + (var(--kz,1) - 1) * .35))!important}
+.bar .logo{height:calc(clamp(56px,4.3vw,120px) / (1 + (var(--kz,1) - 1) * .8))!important;width:calc(clamp(128px,9.8vw,270px) / (1 + (var(--kz,1) - 1) * .8))!important;flex:0 1 calc(clamp(128px,9.8vw,270px) / (1 + (var(--kz,1) - 1) * .8))!important}
+}
+/*/CABECALHO-FLUIDO*/
 </style>
 
 <div class="top"><div class="wrap">
@@ -1013,7 +1020,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 
 <div id="intro" aria-hidden="true"><div class="ilogo"><i class="la"></i><i class="lb"></i><i class="lc"></i></div></div>
 <script>try{if(localStorage.getItem("lf_intro2")==="1")document.getElementById("intro").remove()}catch(_){}</script>
-<script>/*ESCALA-FLUIDA*/window.LFZ=function(i){var w=innerWidth,h=innerHeight,pc=matchMedia("(min-width:1100px)").matches,b=(pc?[.8,.9,1]:[1,1.12,1.25])[i]||1,k=1;if(pc)k=Math.max(1,Math.min(1.75,w/1440));else if(Math.min(w,h)>=600)k=Math.max(1,Math.min(1.2,Math.min(w,h)/560));return +(b*k).toFixed(3)};try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=LFZ(_i)||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}}catch(_){}</script>
+<script>/*ESCALA-FLUIDA*/window.LFK=function(){var w=innerWidth,h=innerHeight,pc=matchMedia("(min-width:1100px)").matches,k=1;if(pc)k=Math.max(1,Math.min(1.75,w/1440));else if(Math.min(w,h)>=600)k=Math.max(1,Math.min(1.2,Math.min(w,h)/560));return +k.toFixed(3)};window.LFZ=function(i){var pc=matchMedia("(min-width:1100px)").matches,b=(pc?[.8,.9,1]:[1,1.12,1.25])[i]||1;return +(b*LFK()).toFixed(3)};try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=LFZ(_i)||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}document.body.style.setProperty("--kz",LFK());}catch(_){}</script>
 <main id="topo">
 <div class="wrap">
 
@@ -2403,7 +2410,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
   /* texto maior (acessibilidade) */
   var PCZ=matchMedia('(min-width:1100px)').matches,ZL=[LFZ(0),LFZ(1),LFZ(2)],ZN=['Texto normal','Texto grande','Texto muito grande'],zi=0;
   try{var zs=localStorage.getItem('lf_zoom');if(zs!=null)zi=Math.max(0,Math.min(2,+zs||0))}catch(_){}
-  function zset(i,say){zi=i;document.documentElement.setAttribute('data-zi',i);document.documentElement.classList.toggle('zl',ZL[i]>1);document.body.style.zoom=ZL[i]==1?'':ZL[i];document.body.style.setProperty('--z',ZL[i]);try{localStorage.setItem('lf_zoom',i)}catch(_){}if(say)toast(ZN[i])}
+  function zset(i,say){zi=i;document.documentElement.setAttribute('data-zi',i);document.documentElement.classList.toggle('zl',ZL[i]>1);document.body.style.zoom=ZL[i]==1?'':ZL[i];document.body.style.setProperty('--z',ZL[i]);document.body.style.setProperty('--kz',LFK());try{localStorage.setItem('lf_zoom',i)}catch(_){}if(say)toast(ZN[i])}
   zset(zi,false);
   /* a escala acompanha a largura da tela: ao redimensionar a janela ou girar o aparelho, recalcula */
   (function(){var tm=0;function re(){var n=[LFZ(0),LFZ(1),LFZ(2)];if(Math.abs(n[zi]-ZL[zi])>.02||(matchMedia('(min-width:1100px)').matches!==PCZ)){PCZ=matchMedia('(min-width:1100px)').matches;ZL=n;zset(zi,false)}}
