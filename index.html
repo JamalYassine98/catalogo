@@ -1804,7 +1804,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
     return a.signInWithPopup(pr).then(function(r){rest();return r},function(e){rest();throw e})}
   function gErr(e){var c=String(e&&e.code||''),m=String(e&&e.message||'');
     if(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request')return;
-    var t=c==='wait'?'Aguarde um instante e toque de novo.':c==='auth/popup-blocked'?'O navegador bloqueou a janela do Google. Permita pop-ups e tente de novo.':c==='auth/unauthorized-domain'?'Este endereço ainda não está liberado para entrar com Google.':c==='auth/operation-not-allowed'?AUTH_MSG.OPERATION_NOT_ALLOWED:AUTH_MSG[m]||'Não deu para conectar com o Google. Tente de novo.';
+    var t=c==='wait'?'Aguarde um instante e toque de novo.':c==='auth/popup-blocked'?'O navegador bloqueou a janela do Google. Permita pop-ups e tente de novo.':c==='auth/unauthorized-domain'?'Este endereço ainda não está liberado para entrar com Google.':c==='auth/operation-not-allowed'?AUTH_MSG.OPERATION_NOT_ALLOWED:AUTH_MSG[m]||'Não deu para conectar com o Google. Tente de novo.'+(c?' ('+c+')':'');try{console.warn('GoogleAuth',c,m)}catch(_){}
     if($('cferr'))cfErro(t);else toast(t)}
   function gEntrar(){
     gPopup().then(function(r){var u=r.user;return u.getIdToken().then(function(t){var s=sessSave({localId:u.uid,email:u.email,idToken:t,refreshToken:u.refreshToken,expiresIn:3600},'',{via:'google',gn:u.displayName||''});try{gAuth().signOut()}catch(_){}return s})})
