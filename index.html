@@ -1795,7 +1795,13 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
     add('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js',function(){add('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js',function(){GFB=2})})}
   function gAuth(){if(!(window.firebase&&firebase.auth))return null;if(!firebase.apps.length)firebase.initializeApp({apiKey:FB.k,authDomain:FB.p+'.firebaseapp.com',projectId:FB.p});return firebase.auth()}
   function gPopup(){var a=gAuth();if(!a){gPre();return Promise.reject({code:'wait'})}
-    var pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:'select_account'});return a.signInWithPopup(pr)}
+    var pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:'select_account'});
+    /*GPOP-CENTRO*/var wo=window.open,done=0,rest=function(){if(!done){done=1;window.open=wo}};
+    window.open=function(u,n,f){try{if(typeof f==='string'&&/width=/.test(f)){var w=+(/width=(\d+)/.exec(f)||[])[1]||500,h=+(/height=(\d+)/.exec(f)||[])[1]||600,
+      L=Math.round((window.screenX||window.screenLeft||0)+((window.outerWidth||screen.availWidth)-w)/2),T=Math.round((window.screenY||window.screenTop||0)+((window.outerHeight||screen.availHeight)-h)/2);
+      f=f.replace(/(^|,)\s*(left|top)=[^,]*/g,'')+',left='+L+',top='+Math.max(T,0);rest()}}catch(e){rest()}return wo.call(window,u,n,f)};
+    setTimeout(rest,8000);
+    return a.signInWithPopup(pr).then(function(r){rest();return r},function(e){rest();throw e})}
   function gErr(e){var c=String(e&&e.code||''),m=String(e&&e.message||'');
     if(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request')return;
     var t=c==='wait'?'Aguarde um instante e toque de novo.':c==='auth/popup-blocked'?'O navegador bloqueou a janela do Google. Permita pop-ups e tente de novo.':c==='auth/unauthorized-domain'?'Este endereço ainda não está liberado para entrar com Google.':c==='auth/operation-not-allowed'?AUTH_MSG.OPERATION_NOT_ALLOWED:AUTH_MSG[m]||'Não deu para conectar com o Google. Tente de novo.';
