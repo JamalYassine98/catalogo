@@ -987,6 +987,10 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 .bar .logo{height:calc(clamp(56px,4.3vw,120px) / (1 + (var(--kz,1) - 1) * .8))!important;width:calc(clamp(128px,9.8vw,270px) / (1 + (var(--kz,1) - 1) * .8))!important;flex:0 1 calc(clamp(128px,9.8vw,270px) / (1 + (var(--kz,1) - 1) * .8))!important}
 }
 /*/CABECALHO-FLUIDO*/
+/*COTACAO-CENTRO*/
+/* a cotação fica no meio da faixa entre a linha do cabeçalho e a barra de busca (celular, tablet e PC) */
+#vitrine.pop #cbl:not([hidden]){margin-top:max(0px,calc(.7em - 8px))!important;margin-bottom:.7em!important;line-height:1.2}
+/*/COTACAO-CENTRO*/
 </style>
 
 <div class="top"><div class="wrap">
@@ -2499,7 +2503,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
   function isAdm(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}
     if(!rt||/[?&]cliente/.test(location.search))return Promise.resolve(false);
     return fetch('https://securetoken.googleapis.com/v1/token?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)}).then(function(r){return r.json()}).then(function(j){return !!j.id_token}).catch(function(){return false})}
-  function placeCbl(){var cb=$('cbl'),ms=document.querySelector('.mobsearch');if(!cb||!ms)return;if(matchMedia('(min-width:600px)').matches){if(cb.nextSibling!==ms)ms.parentNode.insertBefore(cb,ms)}else if(ms.nextSibling!==cb)ms.parentNode.insertBefore(cb,ms.nextSibling)}
+  function placeCbl(){var cb=$('cbl'),ms=document.querySelector('.mobsearch');if(!cb||!ms)return;if(cb.nextSibling!==ms)ms.parentNode.insertBefore(cb,ms)}
   matchMedia('(min-width:600px)').addEventListener('change',placeCbl);
   function cotLine(){var el=document.getElementById('cbl'),c=CFG.cotacao;if(!el||!c||!(c.brl>0))return;var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')};el.textContent='US$ 1 = Gs. '+th(c.usd)+(c.usd>0?'  ·  R$ '+(c.rpu>0?c.rpu:c.usd/c.brl).toFixed(2).replace('.',','):'');el.hidden=false}
   function applyCot(){var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')},c=CFG.cotacao,el=document.getElementById('cambio');if(!c||!(c.brl>0))return;var ch=window.LF_RATE()!==c.brl;window.LF_RATE(c.brl);
