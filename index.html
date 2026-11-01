@@ -1003,12 +1003,12 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 @media (min-width:600px) and (max-width:1099px){#vitrine.pop #cbl:not([hidden]){margin-inline:16px!important}}
 /*/COTACAO-CENTRO*/
 /*PAGINA-PRODUTO*/
-html .scrim.pg{position:fixed;inset:0;z-index:90;display:block;overflow-y:auto;overflow-x:hidden;background:var(--bg);padding:0;animation:pgin .28s cubic-bezier(.2,.8,.2,1)}
+html .scrim.pg{position:fixed;inset:0;z-index:30;display:block;overflow-y:auto;overflow-x:hidden;background:var(--bg);padding:0;animation:pgin .28s cubic-bezier(.2,.8,.2,1)}
 @keyframes pgin{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){html .scrim.pg{animation:none}}
 .pgbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:18px;padding:12px max(16px,3vw);background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
-.pgback{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ln2);background:var(--pn);color:var(--ac);border-radius:999px;padding:10px 18px 10px 12px;font:700 15px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}
-.pgback:active{transform:scale(.97)}.pgback:focus,.pgback:focus-visible{outline:none;box-shadow:none}.pgback:focus-visible{border-color:var(--ac)}
+.pgback{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ln2);background:var(--pn);color:var(--tx);border-radius:999px;padding:10px 18px 10px 12px;font:600 15px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}
+.pgback svg{color:var(--ac)}@media (hover:hover){.pgback:hover{border-color:var(--ac)}}.pgback:active{transform:scale(.97)}.pgback:focus,.pgback:focus-visible{outline:none;box-shadow:none}.pgback:focus-visible{border-color:var(--ac)}
 .pgcr{color:var(--mu);font-size:13.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pgcr i{margin:0 8px;font-style:normal}
 html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try){width:min(1320px,100%);height:auto;max-height:none;margin:0 auto;border:0;border-radius:0;background:none;overflow:visible;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);grid-template-rows:auto;gap:clamp(20px,3vw,56px);padding:18px max(16px,3vw) 48px;animation:none}
 .pgm .xw{display:none}
@@ -1689,7 +1689,7 @@ html .scrim.pg .modal.pgm:not(.msg):not(.cmp):not(.try) .big{max-height:64vh}
     else if(prodOpen){prodOpen=false;prodDepth=0;closeLayer(true)}});
   document.addEventListener('click',function(e){
     if(e.target.closest('[data-pgback]')){closeLayer();return}
-    var na=prodOpen&&e.target.closest('.top a[href^="#"]');if(na){e.preventDefault();closeLayer();setTimeout(function(){na.click()},220);return}
+    var na=prodOpen&&e.target.closest('.top a[href^="#"],#drw a[href^="#"]');if(na){e.preventDefault();closeLayer();setTimeout(function(){na.click()},220);return}
     var tb=e.target.closest('[data-cth]');if(tb){var m=tb.closest('.modal'),d=m&&m.querySelector('.sw [data-sw="'+tb.getAttribute('data-cth')+'"]');if(d)d.click()}});
   function relHtml(p){
     var sc=function(q){return q.rosto.filter(function(r){return p.rosto.indexOf(r)>=0}).length+(q.tipo===p.tipo?.5:0)};
