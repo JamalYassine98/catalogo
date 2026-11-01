@@ -643,6 +643,22 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
 #pkok .pkb small{display:block;margin-top:10px;color:var(--mu);font-size:13px}
 #pkok .pkb button{background:none;border:0;color:var(--mu);text-decoration:underline;margin-top:18px;font:inherit;font-size:14px;cursor:pointer}
 #pkok.pkw0 h2,#pkok.pkw0 .pkt,#pkok.pkw0 .pkc{animation-delay:0s}
+/*CONTA-FORM*/
+.flg{width:26px;height:18px;border-radius:3px;flex:none;display:block;box-shadow:0 0 0 1px rgba(255,255,255,.2)}
+.cdd{position:relative}
+.cdb{display:flex;align-items:center;gap:10px;text-align:left;cursor:pointer;color:var(--tx)}
+.cdb .cdt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cdb .cdv{flex:none;width:12px;height:12px;opacity:.65;transition:transform .2s}
+.cdd.open .cdv{transform:rotate(180deg)}.cdd.open .cdb{border-color:var(--ac)}
+.cdl{position:absolute;left:0;top:calc(100% + 6px);min-width:100%;width:max-content;max-width:min(320px,86vw);z-index:40;background:var(--pn);border:1px solid var(--ln2);border-radius:14px;padding:6px;margin:0;list-style:none;box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.cdl[hidden]{display:none}
+.cdl li{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.cdl li:hover,.cdl li[aria-selected=true]{background:color-mix(in srgb,var(--ac) 18%,transparent)}
+.fzr .cdd{flex:0 0 136px}.fzr .cdd .cdl{min-width:220px}
+.scrim.acc .panel .fzr input.field{flex:1 1 0;width:auto;min-width:0}.scrim.acc .panel .fzr .cdd{flex:0 0 clamp(136px,9vw,200px)}.scrim.acc .panel .cdb .flg{width:clamp(26px,1.7vw,40px);height:auto;aspect-ratio:3/2}.scrim.acc .panel .cdl li{font-size:clamp(15px,1vw,24px)}
+.cfh{font-size:13px;margin-top:4px;color:var(--mu)}.cfh.ok{color:#7fd69a}.cfh.er{color:#ff9a9a}
+.cfx.cn{display:block;width:100%;text-align:center;margin-top:4px}
+/*/CONTA-FORM*/
 /*CONTA*/
 .cfl{display:block;font-size:13px;font-weight:700;color:var(--mu);margin:12px 0 4px}
 .cfc{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:14px;margin-top:12px;line-height:1.5;font-size:15px}
@@ -1123,7 +1139,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 'Seu rosto é':'Tu rostro es',
 'Ver os modelos para o meu rosto':'Ver los modelos para mi rostro',
 'Não parece com você? Escolher o formato sozinho':'¿No se parece a ti? Elegir la forma yo mismo',
-'Ver como lista':'Ver como lista','Ver como catálogo':'Ver como catálogo','Catálogo':'Catálogo','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones','Pedido recebido':'Pedido recibido','Obrigado pela preferência!':'¡Gracias por su preferencia!','Sua reserva vai ser analisada.':'Tu reserva será analizada.','Falar com o vendedor':'Hablar con el vendedor','Para agilizar a reserva, toque aqui':'Para agilizar la reserva, toca aquí','Enviando seu pedido…':'Enviando tu pedido…','Voltar ao catálogo':'Volver al catálogo','Quase lá!':'¡Casi listo!','Não deu para enviar o pedido agora. Mande pelo WhatsApp para a loja receber.':'No se pudo enviar el pedido ahora. Envíalo por WhatsApp para que la tienda lo reciba.','Enviar pelo WhatsApp':'Enviar por WhatsApp','Tentar de novo':'Intentar de nuevo','Digite seu nome e seu WhatsApp para a loja confirmar o pedido.':'Escribe tu nombre y tu WhatsApp para que la tienda confirme el pedido.','Para quem são os óculos?':'¿Para quién son los lentes?','Link copiado':'Enlace copiado','Política de Privacidade':'Política de Privacidad','Salvar QR na galeria':'Guardar QR en la galería','Está pagando pelo celular? Salve o QR e, no app do banco, escolha ler QR pela galeria.':'¿Pagas desde el celular? Guarda el QR y, en la app del banco, elige leer QR desde la galería.','Ou transfira manualmente':'O transfiere manualmente','Não consegue ler o QR? Use o alias do Itaú.':'¿No puedes leer el QR? Usa el alias de Itaú.','Alias (Itaú)':'Alias (Itaú)','Titular':'Titular','Valor':'Valor','Copiar':'Copiar','Copiado ✓':'Copiado ✓','Copie manualmente':'Copia manualmente','QR salvo':'QR guardado','Depois, toque em "Já paguei" e envie o comprovante.':'Después, toca en "Ya pagué" y envía el comprobante.','Compartilhar':'Compartir','Gênero':'Género','Masculino':'Masculino','Feminino':'Femenino','Unissex':'Unisex','A moeda acompanha o idioma: Português em reais, Español em guaranis.':'La moneda sigue al idioma: Português en reales, Español en guaraníes.','Como chegar':'Cómo llegar','Voltar à loja':'Volver a la tienda','Aumentar zoom':'Acercar','Diminuir zoom':'Alejar','Abrir no Google Maps':'Abrir en Google Maps','Menu':'Menú','Filtrar':'Filtrar','Tipo':'Tipo','Ver resultados':'Ver resultados','Claro':'Claro','Escuro':'Oscuro','Auto':'Auto','Português':'Português','Español':'Español','Preferências':'Preferencias','Tema':'Tema','Texto':'Texto','Qual combina comigo?':'¿Cuál combina conmigo?',
+'Ver como lista':'Ver como lista','Ver como catálogo':'Ver como catálogo','Catálogo':'Catálogo','Seu rosto':'Tu rostro','Atacado':'Mayorista','Como comprar':'Cómo comprar','Dúvidas':'Dudas','Seções':'Secciones','Pedido recebido':'Pedido recibido','Obrigado pela preferência!':'¡Gracias por su preferencia!','Sua reserva vai ser analisada.':'Tu reserva será analizada.','Falar com o vendedor':'Hablar con el vendedor','Para agilizar a reserva, toque aqui':'Para agilizar la reserva, toca aquí','Enviando seu pedido…':'Enviando tu pedido…','Voltar ao catálogo':'Volver al catálogo','Quase lá!':'¡Casi listo!','Não deu para enviar o pedido agora. Mande pelo WhatsApp para a loja receber.':'No se pudo enviar el pedido ahora. Envíalo por WhatsApp para que la tienda lo reciba.','Enviar pelo WhatsApp':'Enviar por WhatsApp','Tentar de novo':'Intentar de nuevo','Digite seu nome e seu WhatsApp para a loja confirmar o pedido.':'Escribe tu nombre y tu WhatsApp para que la tienda confirme el pedido.','Para quem são os óculos?':'¿Para quién son los lentes?','Link copiado':'Enlace copiado','Conferindo a cidade…':'Comprobando la ciudad…','✓ Cidade confirmada':'✓ Ciudad confirmada','Conferindo…':'Comprobando…','Não encontramos essa cidade. Confira o nome.':'No encontramos esa ciudad. Revisa el nombre.','Não encontramos essa cidade. Confira o nome (ex.: Ciudad del Este, Foz do Iguaçu).':'No encontramos esa ciudad. Revisa el nombre (ej.: Ciudad del Este, Foz do Iguaçu).','Política de Privacidade':'Política de Privacidad','Salvar QR na galeria':'Guardar QR en la galería','Está pagando pelo celular? Salve o QR e, no app do banco, escolha ler QR pela galeria.':'¿Pagas desde el celular? Guarda el QR y, en la app del banco, elige leer QR desde la galería.','Ou transfira manualmente':'O transfiere manualmente','Não consegue ler o QR? Use o alias do Itaú.':'¿No puedes leer el QR? Usa el alias de Itaú.','Alias (Itaú)':'Alias (Itaú)','Titular':'Titular','Valor':'Valor','Copiar':'Copiar','Copiado ✓':'Copiado ✓','Copie manualmente':'Copia manualmente','QR salvo':'QR guardado','Depois, toque em "Já paguei" e envie o comprovante.':'Después, toca en "Ya pagué" y envía el comprobante.','Compartilhar':'Compartir','Gênero':'Género','Masculino':'Masculino','Feminino':'Femenino','Unissex':'Unisex','A moeda acompanha o idioma: Português em reais, Español em guaranis.':'La moneda sigue al idioma: Português en reales, Español en guaraníes.','Como chegar':'Cómo llegar','Voltar à loja':'Volver a la tienda','Aumentar zoom':'Acercar','Diminuir zoom':'Alejar','Abrir no Google Maps':'Abrir en Google Maps','Menu':'Menú','Filtrar':'Filtrar','Tipo':'Tipo','Ver resultados':'Ver resultados','Claro':'Claro','Escuro':'Oscuro','Auto':'Auto','Português':'Português','Español':'Español','Preferências':'Preferencias','Tema':'Tema','Texto':'Texto','Qual combina comigo?':'¿Cuál combina conmigo?',
 'Buscar por modelo ou referência':'Buscar por modelo o referencia','Buscar no catálogo':'Buscar en el catálogo',
 'Trocar tema claro e escuro':'Cambiar tema claro y oscuro','Mudar para o tema claro':'Cambiar al tema claro','Mudar para o tema escuro':'Cambiar al tema oscuro',
 'Tamanho do texto':'Tamaño del texto','Abrir a reserva':'Abrir la reserva','La Fouch, tudo em óculos':'La Fouch, todo en lentes',
@@ -1684,24 +1700,61 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
     return /^\d{5,9}(-\d)?$/.test(d)?d:(/^\d{6,10}$/.test(d)?d.slice(0,-1)+'-'+d.slice(-1):'')}
   function nascNorm(t){var m=/^(\d{1,2})\D?(\d{1,2})\D?(\d{4})$/.exec(String(t||'').trim());if(!m)return '';var d=+m[1],mo=+m[2],y=+m[3],dt=new Date(y,mo-1,d);
     if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d||y<1900||dt>new Date())return '';return ('0'+d).slice(-2)+'/'+('0'+mo).slice(-2)+'/'+y}
+  var FLG={
+    py:'<svg class="flg" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#d52b1e"/><rect y="6.67" width="30" height="6.66" fill="#fff"/><rect y="13.33" width="30" height="6.67" fill="#0038a8"/><circle cx="15" cy="10" r="2.5" fill="none" stroke="#2f8f3f" stroke-width=".9"/></svg>',
+    br:'<svg class="flg" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#009c3b"/><path d="M15 2 27.6 10 15 18 2.4 10z" fill="#ffdf00"/><circle cx="15" cy="10" r="4.5" fill="#002776"/><path d="M10.6 9c3.1-1 6.4-.5 8.9 1.3" fill="none" stroke="#fff" stroke-width=".9"/></svg>',
+    ar:'<svg class="flg" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#74acdf"/><rect y="6.67" width="30" height="6.66" fill="#fff"/><circle cx="15" cy="10" r="2" fill="#f6b40e"/></svg>'};
+  var CHEV='<svg class="cdv" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  /* seletor com bandeira (o <select> do navegador não mostra imagem); guarda o valor num campo escondido e dispara 'change' */
+  function cdd(id,aria,val,items){var cur=items.filter(function(x){return x.v===val})[0]||items[0];
+    return '<div class="cdd"><input type="hidden" id="'+id+'" value="'+cur.v+'"><button type="button" class="field cdb" data-cdb aria-haspopup="listbox" aria-expanded="false" aria-label="'+aria+'">'+FLG[cur.v]+'<span class="cdt">'+cur.s+'</span>'+CHEV+'</button><ul class="cdl" role="listbox" hidden>'+
+      items.map(function(i){return '<li role="option" data-v="'+i.v+'" data-s="'+i.s+'" aria-selected="'+(i.v===cur.v)+'">'+FLG[i.v]+'<span>'+i.l+'</span></li>'}).join('')+'</ul></div>'}
+  function digs(x){return String(x||'').replace(/\D/g,'')}
+  function maskDoc(nac,txt){var d=digs(txt);
+    if(nac==='br'){d=d.slice(0,11);return d.replace(/^(\d{3})(\d)/,'$1.$2').replace(/^(\d{3}\.\d{3})(\d)/,'$1.$2').replace(/^(\d{3}\.\d{3}\.\d{3})(\d)/,'$1-$2')}
+    if(nac==='ar'){d=d.slice(0,8);return d.replace(/(\d)(?=(\d{3})+$)/g,'$1.')}
+    d=d.slice(0,9);return d.length>=6?d.slice(0,-1)+'-'+d.slice(-1):d}
+  function maskNasc(txt){var d=digs(txt).slice(0,8);return d.replace(/^(\d{2})(\d)/,'$1/$2').replace(/^(\d{2}\/\d{2})(\d)/,'$1/$2')}
+  function maskCampo(el,fn){var v=el.value,pos=el.selectionStart==null?v.length:el.selectionStart,antes=digs(v.slice(0,pos)).length,n=fn(v);
+    if(n===v)return;el.value=n;var i=0,c=0;if(antes>0){for(;i<n.length;i++){if(/\d/.test(n[i]))c++;if(c===antes){i++;break}}}
+    try{if(document.activeElement===el)el.setSelectionRange(i,i)}catch(_){}}
+  /* confere se a cidade existe (OpenStreetMap, uma consulta só ao sair do campo; se estiver sem internet, deixa passar) */
+  var CIDC={};
+  function cidBusca(txt){var k=txt.toLowerCase();if(CIDC[k])return Promise.resolve(CIDC[k]);
+    var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort()},7000);
+    return fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&featuretype=settlement&accept-language=pt&countrycodes=py,br,ar,uy,bo,cl&q='+encodeURIComponent(txt),{signal:ctl?ctl.signal:undefined})
+      .then(function(r){clearTimeout(tm);if(!r.ok)throw 0;return r.json()}).then(function(a){
+        var o=(a||[]).filter(function(x){return x.category==='place'||(x.addresstype&&/city|town|village|municipality|suburb|hamlet/.test(x.addresstype))})[0];
+        var res;if(!o)res={ok:false};else{var ad=o.address||{},nm=o.name||ad.city||ad.town||ad.village||ad.municipality||txt,reg=ad.state||ad.region||ad.country||'';res={ok:true,nome:reg&&reg!==nm?nm+', '+reg:nm}}
+        CIDC[k]=res;return res},function(){clearTimeout(tm);return {off:true}})}
+  function cidMsg(t,c){var e=$('cfch');if(!e)return;e.textContent=t||'';e.className='cfh'+(c?' '+c:'');e.hidden=!t}
+  function cidConf(){var el=$('cfc');if(!el)return Promise.resolve({off:true});var v=el.value.trim().replace(/\s+/g,' ');
+    if(v.length<2)return Promise.resolve({ok:false,vazio:true});
+    if(el.getAttribute('data-ok')===v)return Promise.resolve({ok:true,nome:v});
+    cidMsg('Conferindo a cidade…');
+    return cidBusca(v).then(function(r){var e2=$('cfc');if(!e2||e2.value.trim().replace(/\s+/g,' ')!==v)return r;
+      if(r.ok){e2.value=r.nome;e2.setAttribute('data-ok',r.nome);e2.classList.remove('bad');cidMsg('✓ Cidade confirmada','ok')}
+      else if(r.off){cidMsg('')}
+      else{e2.setAttribute('data-ok','');cidMsg('Não encontramos essa cidade. Confira o nome (ex.: Ciudad del Este, Foz do Iguaçu).','er')}
+      return r})}
   var CTA_ERR='';
   function contaForm(volta){
     var c=getConta()||{},nac=c.nac||(paisSel()==='br'?'br':paisSel()==='ar'?'ar':'py'),pais=c.pais||nac;
-    var opt=function(k){return '<option value="'+k+'"'+(nac===k?' selected':'')+'>'+NAC[k].f+' '+NAC[k].n+'</option>'};
-    var po=function(k,l){return '<option value="'+k+'"'+(pais===k?' selected':'')+'>'+l+'</option>'};
+    var nacI=[{v:'py',s:'Paraguaio',l:'Paraguaio'},{v:'br',s:'Brasileiro',l:'Brasileiro'},{v:'ar',s:'Argentino',l:'Argentino'}],
+      telI=[{v:'py',s:'+595',l:'Paraguai &nbsp;+595'},{v:'br',s:'+55',l:'Brasil &nbsp;+55'},{v:'ar',s:'+54',l:'Argentina &nbsp;+54'}];
     var se0=sessG()||{},gg=!c.nome&&se0.via==='google';
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Sua conta"><div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">'+(c.nome||gg?'Seus dados':'Criar conta')+'</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'+
       (gg?'<div class="gban">'+G_BADGE+'<span>Conectada com o Google · <b>'+esc(se0.email)+'</b></span></div>':c.nome?'':'<div class="passos"><i class="on"></i><i class="on"></i></div><div class="note" style="margin:0">Passo 2 de 2 · cadastro</div>')+'<div class="note">Seus dados ficam salvos na sua conta e vão para a loja só quando você faz um pedido.</div>'+
       '<label class="cfl" for="cfn">Nome completo</label><input class="field" id="cfn" autocomplete="name" value="'+esc(c.nome||(gg?se0.gn:'')||'')+'">'+
-      '<label class="cfl" for="cfa2">Nacionalidade</label><select class="field" id="cfa2" aria-label="Nacionalidade">'+opt('py')+opt('br')+opt('ar')+'</select>'+
-      '<label class="cfl" for="cfd" id="cfdl">'+NAC[nac].d+'</label><input class="field" id="cfd" inputmode="numeric" autocomplete="off" placeholder="'+NAC[nac].ph+'" value="'+esc(c.doc||'')+'">'+
-      '<label class="cfl" for="cfb">Nascimento</label><input class="field" id="cfb" inputmode="numeric" placeholder="dd/mm/aaaa" autocomplete="bday" value="'+esc(c.nasc||'')+'">'+
-      '<label class="cfl" for="cfz">WhatsApp</label><div class="fzr"><select class="field" id="cfp" aria-label="País do WhatsApp">'+po('py','🇵🇾 +595')+po('br','🇧🇷 +55')+po('ar','🇦🇷 +54')+'</select><input class="field" id="cfz" inputmode="tel" autocomplete="tel-national" placeholder="'+FONE_EX[pais]+'" value="'+esc(c.telTxt||'')+'"></div>'+
-      '<label class="cfl" for="cfc">Cidade</label><input class="field" id="cfc" autocomplete="address-level2" value="'+esc(c.cidade||'')+'">'+
+      '<label class="cfl" for="cfa2">Nacionalidade</label>'+cdd('cfa2','Nacionalidade',nac,nacI)+
+      '<label class="cfl" for="cfd" id="cfdl">'+NAC[nac].d+'</label><input class="field" id="cfd" inputmode="numeric" autocomplete="off" placeholder="'+NAC[nac].ph+'" value="'+esc(maskDoc(nac,c.doc))+'">'+
+      '<label class="cfl" for="cfb">Nascimento</label><input class="field" id="cfb" inputmode="numeric" placeholder="dd/mm/aaaa" autocomplete="bday" maxlength="10" value="'+esc(maskNasc(c.nasc))+'">'+
+      '<label class="cfl" for="cfz">WhatsApp</label><div class="fzr">'+cdd('cfp','País do WhatsApp',pais,telI)+'<input class="field" id="cfz" inputmode="tel" autocomplete="tel-national" placeholder="'+FONE_EX[pais]+'" value="'+esc(c.telTxt||'')+'"></div>'+
+      '<label class="cfl" for="cfc">Cidade</label><input class="field" id="cfc" autocomplete="address-level2" value="'+esc(c.cidade||'')+'"'+(c.cidade?' data-ok="'+esc(c.cidade)+'"':'')+'><div class="cfh" id="cfch" hidden></div>'+
       '<label class="cfl" for="cfa">Endereço <span style="font-weight:400">(opcional)</span></label><input class="field" id="cfa" autocomplete="street-address" value="'+esc(c.end||'')+'">'+
       '<div class="fze" id="cferr" role="alert" hidden></div>'+
       '<button class="btn w" data-cta="salvar" data-volta="'+(volta?1:0)+'" style="margin-top:6px">Salvar conta</button>'+
-      '<button type="button" class="cfx" data-cta="sair">Sair da conta</button>'+'</aside>')}
+      '<button type="button" class="cfx cn" data-cta="sair">Sair da conta</button>'+'</aside>')}
   function cfErro(m,id){var e=$('cferr');if(e){e.textContent=m;e.hidden=!m}if(id){var f=$(id);if(f){f.classList.add('bad');try{f.focus()}catch(_){}}}if(m)toast(m)}
   function contaSalvar(volta){
     var g=function(i){var e=$(i);return e?e.value.trim():''};
@@ -1712,11 +1765,16 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
     var pais=$('cfp').value,tel=foneNorm(pais,g('cfz'));if(!tel)return cfErro(FONE_MSG[pais],'cfz');
     var se=sessG();if(!se)return entrarTela(volta);var email=se.email;
     var cid=g('cfc');if(cid.length<2)return cfErro('Digite a sua cidade.','cfc');
-    var old=getConta()||{};
+    var bt=document.querySelector('#layer [data-cta=salvar]');if(bt&&bt.disabled)return;
+    if(bt){bt.disabled=true;bt.setAttribute('data-t',bt.textContent);bt.textContent='Conferindo…'}
+    cidConf().then(function(r){if(bt){bt.disabled=false;bt.textContent=bt.getAttribute('data-t')||'Salvar conta'}
+      if(r&&r.ok===false)return cfErro('Não encontramos essa cidade. Confira o nome.','cfc');
+      fim(r&&r.ok?r.nome:cid)});
+    function fim(cid){var old=getConta()||{};
     var nc={nome:nome,nac:nac,doc:doc,nasc:nasc,pais:pais,tel:tel,telTxt:g('cfz'),email:email,cidade:cid,end:g('cfa'),user:se.user||old.user||'',ts:old.ts||Date.now()};
     lsS('lf_conta',nc);fsA('PATCH','clientes/'+se.uid,nc).catch(function(){toast('Conta salva só neste aparelho. Sem internet agora.')});
     if(nac!=='py')st.ent='loja';
-    contaBtn();if(!old.nome)return contaCriada(volta,nome);toast('Conta salva.');if(volta)bag();else closeLayer()}
+    contaBtn();if(!old.nome)return contaCriada(volta,nome);toast('Conta salva.');if(volta)bag();else closeLayer()}}
   function contaCriada(volta,nome){
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Conta criada"><div class="ccok"><div class="cck">✓</div><h2 style="font-size:28px">Conta criada!</h2><div class="note" style="margin:0"><span>Bem-vinda,</span> '+esc(String(nome).split(' ')[0])+'. <span>Agora você já pode fazer seus pedidos.</span></div><button class="btn w" data-cta="cont" data-volta="'+(volta?1:0)+'" style="margin-top:18px">Continuar</button></div></aside>')}
   function contaBtn(){var b=$('contabtn');if(!b)return;var c=getConta();b.classList.toggle('on',!!c);b.setAttribute('title',c?c.nome:'Minha conta')}
@@ -1828,7 +1886,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
     var L=lsG('lf_ped',[]).slice().reverse(),ln=function(k,v){return v?'<div class="pfl"><small>'+k+'</small><span>'+esc(v)+'</span></div>':''};
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Minha conta"><div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">Minha conta</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'+
       '<div class="cfc"><div class="pfh"><span class="pfa">'+esc(c.nome.charAt(0).toUpperCase())+'</span><span><b>'+esc(c.nome)+'</b>'+(c.user?'<small>@'+esc(c.user)+'</small>':'')+'</span></div>'+
-      ln('E-mail',c.email)+ln(NAC[c.nac].d,NAC[c.nac].f+' '+c.doc)+ln('Nascimento',c.nasc)+ln('WhatsApp',c.tel)+ln('Cidade',c.cidade)+ln('Endereço',c.end)+
+      ln('E-mail',c.email)+ln(NAC[c.nac].d,c.doc)+ln('Nascimento',c.nasc)+ln('WhatsApp',c.tel)+ln('Cidade',c.cidade)+ln('Endereço',c.end)+
       '<button type="button" class="cfx" data-cta="conta" style="margin-top:8px">Editar dados</button></div>'+
       '<div class="cfc gcd" id="gcard"><div class="gl">'+G_BADGE+'<span><b>Conta do Google</b><small>Verificando…</small></span></div></div>'+
       '<div class="note"><b style="color:var(--tx)">Minhas reservas</b></div>'+
@@ -1941,8 +1999,22 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
     else if(a==='ped'){var id=t.getAttribute('data-id');var po=$('pkok');if(po)po.remove();closeLayer();pkAbre(id)}
     else if(a==='teste0'){try{localStorage.removeItem('lf_teste')}catch(_){}location.search='';}
   });
+  document.addEventListener('click',function(e){var t=e.target,b=t.closest&&t.closest('[data-cdb]'),o=t.closest&&t.closest('.cdl li');
+    document.querySelectorAll('.cdd.open').forEach(function(d){if(!b||d!==b.parentNode){d.classList.remove('open');d.querySelector('.cdl').hidden=true;d.querySelector('.cdb').setAttribute('aria-expanded','false')}});
+    if(b){var d=b.parentNode,ab=!d.classList.contains('open');d.classList.toggle('open',ab);d.querySelector('.cdl').hidden=!ab;b.setAttribute('aria-expanded',ab?'true':'false')}
+    else if(o){var d2=o.closest('.cdd'),i=d2.querySelector('input'),v=o.getAttribute('data-v');
+      d2.querySelectorAll('li').forEach(function(x){x.setAttribute('aria-selected',x===o?'true':'false')});
+      d2.querySelector('.cdb').innerHTML=FLG[v]+'<span class="cdt">'+o.getAttribute('data-s')+'</span>'+CHEV;
+      d2.classList.remove('open');d2.querySelector('.cdl').hidden=true;d2.querySelector('.cdb').setAttribute('aria-expanded','false');
+      if(i.value!==v){i.value=v;i.dispatchEvent(new Event('change',{bubbles:true}))}}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var a=document.querySelector('.cdd.open');if(a){a.classList.remove('open');a.querySelector('.cdl').hidden=true;e.stopPropagation()}}},true);
+  document.addEventListener('input',function(e){var t=e.target;
+    if(t.id==='cfd'){var nc=$('cfa2').value;maskCampo(t,function(v){return maskDoc(nc,v)})}
+    else if(t.id==='cfb')maskCampo(t,maskNasc);
+    else if(t.id==='cfc'){t.setAttribute('data-ok','');cidMsg('')}});
+  document.addEventListener('focusout',function(e){if(e.target&&e.target.id==='cfc'&&e.target.value.trim().length>=3)cidConf()});
   document.addEventListener('change',function(e){var t=e.target;
-    if(t.id==='cfa2'){var n=NAC[t.value];$('cfdl').textContent=n.d;$('cfd').placeholder=n.ph;var p=$('cfp');if(p&&!$('cfz').value){p.value=t.value;$('cfz').placeholder=FONE_EX[t.value]}}
+    if(t.id==='cfa2'){var n=NAC[t.value];$('cfdl').textContent=n.d;$('cfd').placeholder=n.ph;$('cfd').value=maskDoc(t.value,$('cfd').value);var p=$('cfp');if(p&&!$('cfz').value&&p.value!==t.value){var dd=p.parentNode;dd.querySelectorAll('li').forEach(function(x){x.setAttribute('aria-selected',x.getAttribute('data-v')===t.value?'true':'false')});p.value=t.value;dd.querySelector('.cdb').innerHTML=FLG[t.value]+'<span class="cdt">'+({py:'+595',br:'+55',ar:'+54'})[t.value]+'</span>'+CHEV;$('cfz').placeholder=FONE_EX[t.value]}}
     else if(t.id==='cfp'){$('cfz').placeholder=FONE_EX[t.value]}
     else if(t.id==='pgf'&&t.files&&t.files[0]){var id=(lsG('lf_ped',[]).filter(function(x){return x.est==='pagar'||x.est==='recusado'}).slice(-1)[0]||{}).id;if(window.__pgid)id=window.__pgid;if(id)enviarComp(id,t.files[0])}});
   (function(){contaBtn();
