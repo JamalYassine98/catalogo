@@ -13,8 +13,12 @@ a{color:var(--ac)}h1,h2{font-family:Fraunces,Georgia,serif;line-height:1.2}h1{fo
 .lang{display:flex;gap:8px}.lang a{border:1px solid var(--ln);border-radius:999px;padding:4px 12px;background:var(--pn)}
 .up{color:var(--mu);font-size:14px;margin:0 0 1em}ul{padding-left:1.2em}li{margin:.3em 0}
 section{padding-top:8px;border-top:1px solid var(--ln);margin-top:36px}
+/*UMA-LINGUA*/
+html[data-l="pt"] #es,html[data-l="es"] #pt{display:none}
+.lang a.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.nota{color:var(--mu);font-size:14px;margin-top:2em}
 </style></head><body><main>
-<div class="top"><a href="/">← La Fouch</a><div class="lang"><a href="#pt">Português</a><a href="#es">Español</a></div></div>
+<div class="top"><a href="/">← La Fouch</a><div class="lang"><a href="#pt" data-l="pt">Português</a><a href="#es" data-l="es">Español</a></div></div>
 <section id="pt" style="border:0;margin-top:10px">
 <h1>Termos e Condições</h1>
 <p class="up">La Fouch · Ciudad del Este, Paraguai · Atualizados em 1º de novembro de 2026</p>
@@ -37,6 +41,7 @@ section{padding-top:8px;border-top:1px solid var(--ln);margin-top:36px}
 <p>O atacado é para grandes volumes e é feito sempre na loja, presencialmente: você retira e confere tudo na hora. Não há pedido de atacado pelo site.</p>
 <h2>9. Conta e dados</h2>
 <p>Seus dados são tratados conforme a <a href="/privacidade.html">Política de Privacidade</a>.</p>
+<p class="nota">Em caso de diferença entre as versões, vale a versão em português.</p>
 </section>
 <section id="es">
 <h1>Términos y Condiciones</h1>
@@ -60,4 +65,8 @@ section{padding-top:8px;border-top:1px solid var(--ln);margin-top:36px}
 <p>El mayorista es para grandes volúmenes y se hace siempre en la tienda, en persona: retiras y revisas todo en el momento. No hay pedidos mayoristas por el sitio.</p>
 <h2>9. Cuenta y datos</h2>
 <p>Tus datos se tratan según la <a href="/privacidade.html#es">Política de Privacidad</a>.</p>
-</section></main></body></html>
+<p class="nota">En caso de diferencia entre las versiones, vale la versión en portugués.</p>
+</section></main><script>(function(){var r=document.documentElement;function pick(){var h=location.hash.replace('#','');if(h==='pt'||h==='es')return h;try{var q=localStorage.getItem('lf_lang');if(q==='pt'||q==='es')return q}catch(_){}return /^es/i.test(navigator.language||'')?'es':'pt'}
+function set(l){r.setAttribute('data-l',l);r.lang=l==='es'?'es':'pt-BR';[].forEach.call(document.querySelectorAll('.lang a'),function(a){a.classList.toggle('on',a.getAttribute('data-l')===l)});window.scrollTo(0,0)}
+set(pick());window.addEventListener('hashchange',function(){set(pick())})})()</script>
+</body></html>

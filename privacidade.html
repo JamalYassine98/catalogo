@@ -13,8 +13,12 @@ a{color:var(--ac)}h1,h2{font-family:Fraunces,Georgia,serif;line-height:1.2}h1{fo
 .lang{display:flex;gap:8px}.lang a{border:1px solid var(--ln);border-radius:999px;padding:4px 12px;background:var(--pn)}
 .up{color:var(--mu);font-size:14px;margin:0 0 1em}ul{padding-left:1.2em}li{margin:.3em 0}
 section{padding-top:8px;border-top:1px solid var(--ln);margin-top:36px}
+/*UMA-LINGUA*/
+html[data-l="pt"] #es,html[data-l="es"] #pt{display:none}
+.lang a.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.nota{color:var(--mu);font-size:14px;margin-top:2em}
 </style></head><body><main>
-<div class="top"><a href="/">← La Fouch</a><div class="lang"><a href="#pt">Português</a><a href="#es">Español</a></div></div>
+<div class="top"><a href="/">← La Fouch</a><div class="lang"><a href="#pt" data-l="pt">Português</a><a href="#es" data-l="es">Español</a></div></div>
 
 <section id="pt" style="border:0;margin-top:10px">
 <h1>Política de Privacidade</h1>
@@ -50,6 +54,7 @@ section{padding-top:8px;border-top:1px solid var(--ln);margin-top:36px}
 
 <h2>Seus direitos</h2>
 <p>Você pode pedir para ver, corrigir ou <b>excluir</b> a sua conta e os seus dados. Fale com a loja pelo WhatsApp <a href="https://wa.me/595983642241">+595 983 642 241</a> ou pessoalmente: Galeria Jebai Center, 3º piso, torre A, n° 2242, Ciudad del Este (segunda a sábado, das 7h30 às 15h).</p>
+<p class="nota">Em caso de diferença entre as versões, vale a versão em português.</p>
 </section>
 
 <section id="es">
@@ -86,5 +91,9 @@ section{padding-top:8px;border-top:1px solid var(--ln);margin-top:36px}
 
 <h2>Tus derechos</h2>
 <p>Puedes pedir ver, corregir o <b>eliminar</b> tu cuenta y tus datos. Escríbenos por WhatsApp <a href="https://wa.me/595983642241">+595 983 642 241</a> o ven a la tienda: Galería Jebai Center, 3.er piso, torre A, n.° 2242, Ciudad del Este (lunes a sábado, de 7:30 a 15:00).</p>
+<p class="nota">En caso de diferencia entre las versiones, vale la versión en portugués.</p>
 </section>
-</main></body></html>
+</main><script>(function(){var r=document.documentElement;function pick(){var h=location.hash.replace('#','');if(h==='pt'||h==='es')return h;try{var q=localStorage.getItem('lf_lang');if(q==='pt'||q==='es')return q}catch(_){}return /^es/i.test(navigator.language||'')?'es':'pt'}
+function set(l){r.setAttribute('data-l',l);r.lang=l==='es'?'es':'pt-BR';[].forEach.call(document.querySelectorAll('.lang a'),function(a){a.classList.toggle('on',a.getAttribute('data-l')===l)});window.scrollTo(0,0)}
+set(pick());window.addEventListener('hashchange',function(){set(pick())})})()</script>
+</body></html>
