@@ -1338,6 +1338,11 @@ footer .cpr{grid-column:1/-1;font-size:14px;color:var(--mu);margin-top:-4px}
 footer>.motto,footer>.lg,footer>.cpr,footer>.rcp,footer>#cambio{grid-column:1/-1}
 footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}footer>.fsc{grid-column:2;grid-row:3;margin-top:8px}
 }
+/*RES-SEM-BOTAO*/
+@media (max-width:700px){.res{display:none!important}}
+/*RES-CHIP*/
+.rchip{display:none}
+@media (max-width:700px){.rchip{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin:0 0 12px;padding:10px 16px;border-radius:14px;border:1px solid var(--ln);background:var(--hero);color:var(--tx);font:600 14px Inter,system-ui,sans-serif;text-align:left}.rchip b{color:var(--ac);font-weight:700;white-space:nowrap}}
 </style>
 
 <div class="top"><div class="wrap">
@@ -1544,7 +1549,7 @@ footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}foot
 'Armações grandes e largas trazem proporção e encurtam o rosto.':'Los armazones grandes y anchos traen proporción y acortan el rostro.',
 'Armações aviador ou leves trazem equilíbrio e suavidade ao queixo.':'Los armazones aviador o ligeros traen equilibrio y suavidad al mentón.',
 'Armações gatinho ou ovais trazem destaque e realce às maçãs do rosto.':'Los armazones gatito u ovalados traen protagonismo y realzan los pómulos.',
-'Ver armações':'Ver armazones','Escolher':'Elegir','Não sabe qual escolher?':'¿No sabes cuál elegir?','Mostrando · toque para limpar':'Mostrando · toca para quitar','Seu formato de rosto':'La forma de tu rostro','Ver todos os modelos':'Ver todos los modelos',
+'Ver armações':'Ver armazones','Escolher':'Elegir','Não sabe qual escolher?':'¿No sabes cuál elegir?','Mostrando · toque para limpar':'Mostrando · toca para quitar','Seu formato de rosto':'La forma de tu rostro','Limpar ✕':'Limpiar ✕','Ver todos os modelos':'Ver todos los modelos',
 'Para lojistas':'Para comerciantes','Tem uma ótica? Fale com a gente sobre atacado':'¿Tienes una óptica? Habla con nosotros sobre venta mayorista',
 'Sem cadastro. Toque em Fale conosco e o WhatsApp da loja abre com a mensagem já pronta, avisando que é um lojista. É só apertar enviar.':'Sin registro. Toca en Habla con nosotros y se abre el WhatsApp de la tienda con el mensaje ya listo, avisando que eres comerciante. Solo presiona enviar.',
 'Nome da ótica':'Nombre de la óptica','Cidade':'Ciudad','Quantidade':'Cantidad','Quantidade aproximada':'Cantidad aproximada','Fale conosco':'Habla con nosotros',
@@ -1835,7 +1840,7 @@ footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}foot
     var el=$('resultado');if(!el)return;
     if(!st.rosto){el.innerHTML='';return}
     var f=FACES.filter(function(x){return x.id===st.rosto})[0];if(!f){el.innerHTML='';return}
-    el.innerHTML='<div class="res"><div class="rf">'+fig(f,'m')+fig(f,'f')+'</div><div><span class="eyebrow">Seu formato de rosto</span><h3>Rosto '+f.nome.toLowerCase()+'</h3><p>'+esc(f.dica)+(st.rsem?' Ainda não separamos modelos para este formato; veja todos abaixo.':' Separamos '+n+' modelo'+(n===1?'':'s')+' para você.')+'</p><button class="btn o" data-face="'+f.id+'">Ver todos os modelos</button></div></div>'}
+    el.innerHTML='<div class="res"><div class="rf">'+fig(f,'m')+fig(f,'f')+'</div><div><span class="eyebrow">Seu formato de rosto</span><h3>Rosto '+f.nome.toLowerCase()+'</h3><p>'+esc(f.dica)+(st.rsem?' Ainda não separamos modelos para este formato; veja todos abaixo.':' Separamos '+n+' modelo'+(n===1?'':'s')+' para você.')+'</p></div></div><button type="button" class="rchip" data-face="'+f.id+'">Rosto '+f.nome.toLowerCase()+' · '+n+' modelo'+(n===1?'':'s')+' <b>Limpar ✕</b></button>'}
   function saveFav(){try{localStorage.setItem('lf_fav',JSON.stringify(st.fav))}catch(_){}}
   function shareProd(ref){var p=find(ref);if(!p)return;var url='https://lafouch.com/p/'+encodeURIComponent(ref)+'.html',tt=p.nome+' ('+ref+') · La Fouch';
     var cp=function(){try{navigator.clipboard.writeText(url).then(function(){toast('Link copiado')},function(){toast(url)})}catch(_){toast(url)}};
