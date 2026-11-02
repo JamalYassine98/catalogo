@@ -1364,6 +1364,7 @@ footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}foot
 .dlga a.dk{display:inline-block;text-decoration:none;border-radius:12px;padding:11px 16px;font:inherit;font-weight:700;color:#fff}.dlga button{border-radius:12px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;border:1.5px solid var(--ln2,#ddd);background:transparent;color:inherit}.dlga .dk{background:var(--ac,#8d3a69);border-color:transparent;color:#fff}.dlga .dr{background:#c0392b}.dlga button:disabled{opacity:.45;cursor:not-allowed}
 /*CARRINHO-PASSOS*/
 .stp{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;font-weight:700;color:var(--mu);margin:6px 0 4px}.stp i{font-style:normal}.stp span{display:inline-flex;align-items:center}.stp b{display:inline-flex;width:18px;height:18px;border:1.5px solid currentColor;border-radius:50%;font-size:11px;align-items:center;justify-content:center;margin-right:5px}.stp .ok{color:#14803f}.stp .on{color:var(--ac)}
+#pkok .cdx{width:100%;max-width:320px;margin:12px auto 0;padding:12px 14px;border-radius:14px;border:1px solid var(--ln2);text-align:center}#pkok .cdx small{display:block;color:var(--mu);font-size:12.5px}#pkok .cdx b{display:block;font-size:34px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums;margin:2px 0}#pkok .cdx i{display:block;height:6px;border-radius:9px;background:var(--ln2);overflow:hidden;margin:6px 0}#pkok .cdx i u{display:block;height:100%;width:100%;background:#e6a64c;transition:width 1s linear}#pkok .cdx.lvx b{color:#c0392b}#pkok .cdx.lvx i u{background:#c0392b}#pkok .exx{max-width:320px;margin:10px auto 0;font-size:14px;line-height:1.45;text-align:center;color:var(--mu)}#pkok .exx b{display:block;color:var(--tx);font-size:15px;margin-bottom:4px}
 #pkok .pgx{background:none;border:0;color:#c0392b;font:600 13.5px Inter,system-ui,sans-serif;margin-top:6px;padding:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;flex:none}
 #pkok .tm{margin-top:18px}
 body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
@@ -1789,7 +1790,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
     $('count').textContent=r.length+' modelo'+(r.length===1?'':'s');
     r=pageOf(r);var HA=r.length?r.map(function(p,i){
       var esg=p.aviso==='Esgotado',n=st.cart[p.ref]||0;
-      var sk=esg?'<span class="stk e">Esgotado</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':p.aviso==='Chegou esta semana'?'<span class="stk n">'+esc(p.aviso)+'</span>':'');
+      var sk=esg?'<span class="stk e">'+(p.esgRes?'Reservada agora':'Esgotado')+'</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':p.aviso==='Chegou esta semana'?'<span class="stk n">'+esc(p.aviso)+'</span>':'');
       return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+p.tag+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr"><span class="ref">'+p.ref+'</span>'+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm">'+esc(p.nome)+'</span><span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
     var G=$('grid');
     if(G._h!==GH){G._h=GH;
@@ -2112,7 +2113,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
     var thumbsD=thumbs.replace('cth cthm','cth cthd');
     var pubL={m:'Masculino',f:'Feminino',u:'Unissex'}[p.gen];
     prodNext=true;
-    layer(pgBar(p)+'<div class="modal pgm" role="dialog" aria-modal="true" aria-label="'+esc(p.nome)+'"><div class="xw"><button class="x" data-close aria-label="Fechar">×</button></div><div class="pgl"><div class="big" data-zoom>'+((offer||p.tag)?'<div class="pgtags">'+(offer?'<span class="ofpill">OFERTA</span>':'')+(p.tag?'<span class="pgtag">'+esc(p.tag)+'</span>':'')+'</div>':'')+(!esg&&/Últim/.test(p.aviso||'')?'<span class="stk u pgstk">'+esc(p.aviso)+'</span>':(!esg&&p.aviso==='Chegou esta semana'?'<span class="stk n pgstk">'+esc(p.aviso)+'</span>':''))+'<button type="button" class="fav dfav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button>'+vis(p,4.5)+'<span class="zh"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>Toque para ampliar</span><span class="shine" style="position:absolute;top:0;bottom:0;left:0;width:18%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);animation:shine 4.5s ease-in-out infinite"></span></div>'+thumbs+'</div>'+
+    layer(pgBar(p)+'<div class="modal pgm" role="dialog" aria-modal="true" aria-label="'+esc(p.nome)+'"><div class="xw"><button class="x" data-close aria-label="Fechar">×</button></div><div class="pgl"><div class="big" data-zoom>'+((offer||p.tag)?'<div class="pgtags">'+(offer?'<span class="ofpill">OFERTA</span>':'')+(p.tag?'<span class="pgtag">'+esc(p.tag)+'</span>':'')+'</div>':'')+(esg&&p.esgRes?'<span class="stk e pgstk">Reservada agora</span>':'')+(!esg&&/Últim/.test(p.aviso||'')?'<span class="stk u pgstk">'+esc(p.aviso)+'</span>':(!esg&&p.aviso==='Chegou esta semana'?'<span class="stk n pgstk">'+esc(p.aviso)+'</span>':''))+'<button type="button" class="fav dfav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button>'+vis(p,4.5)+'<span class="zh"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>Toque para ampliar</span><span class="shine" style="position:absolute;top:0;bottom:0;left:0;width:18%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);animation:shine 4.5s ease-in-out infinite"></span></div>'+thumbs+'</div>'+
     '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+'</span>'+edb(p)+'<div class="dact"><button type="button" class="ia'+(st.cmp.indexOf(p.ref)>=0?' on':'')+'" data-cmp="'+p.ref+'" aria-label="Comparar">'+CMPI+'</button><button type="button" class="ia" data-share="'+p.ref+'" aria-label="Compartilhar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.7l6.8-4M8.6 13.3l6.8 4"/></svg></button></div></div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
     '<div class="chips">'+(pubL?'<span class="pub1">'+pubL+'</span>':'')+(p.mat?'<span class="bd">'+MATI+esc(p.mat)+'</span>':'')+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     (p.desc?'<div class="pdesc"><p>'+esc(p.desc)+'</p><button type="button" data-pdm>Ver mais</button></div>':'')+
@@ -2158,6 +2159,13 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
   var PK_SVG='<svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="#3ddc8c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M4.5 12.8l4.8 4.9L19.5 7"/></svg>';
   var PK_WA='<svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>';
   function fsv(v){if(v===null||v===undefined)return {nullValue:null};if(typeof v==='number')return Math.floor(v)===v?{integerValue:String(v)}:{doubleValue:v};if(typeof v==='boolean')return {booleanValue:v};if(Array.isArray(v))return {arrayValue:{values:v.map(fsv)}};if(typeof v==='object'){var f={};for(var k in v)f[k]=fsv(v[k]);return {mapValue:{fields:f}}}return {stringValue:String(v)}}
+  /* reserva de 10 min: o servidor decide a hora e quantas peças sobram; se a função estiver desligada ou fora do ar, o pedido segue como antes */
+  var RES_URL='https://southamerica-east1-lafouch-2f6bd.cloudfunctions.net/reserva';
+  function resCall(acao,pedido,itens,refs){
+    var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000),b={acao:acao,pedido:pedido};if(itens)b.itens=itens;if(refs)b.refs=refs;
+    return acFetch(RES_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b),signal:ct?ct.signal:undefined}).then(function(r){clearTimeout(tm);if(r.status>=500||r.status===404)return null;return r.json().catch(function(){return null})},function(){clearTimeout(tm);return null})}
+  function resItens(its){return (its||[]).map(function(i){return {ref:i.ref,cor:i.cor||'',q:i.q}})}
+  function resLeft(e){if(!e||!e.rx)return 0;return Math.max(0,e.rx-(Date.now()+(e.rd||0)))}
   function pkEnviar(doc,id){
     var f={};for(var k in doc)f[k]=fsv(doc[k]);
     var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000);
@@ -2382,6 +2390,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
     var id=window.__pgid,e=id&&pedGet(id),b=document.querySelector('#dlgb .dk');if(!e||(e.est!=='pagar'&&e.est!=='recusado')){dlgFecha();return}
     if(b)b.disabled=true;
     pkEnviar({tipo:'cancel',ref:id,ts:Date.now(),cod:e.cod||''},id+'x').then(function(){
+      if(CFG.reserva===true)resCall('cancelar',id,null,(e.itens||[]).map(function(i){return i.ref}));
       pkCancelado(id)
     },function(){var d=$('dlgb');if(!d)return;var m=LFI.lang==='es'?'¡Hola! Quiero cancelar mi pedido '+e.cod+'.':'Olá! Quero cancelar o meu pedido '+e.cod+'.';
       d.querySelector('.dlg').innerHTML='<h3>Cancelar este pedido?</h3><p>Não deu para avisar a loja automaticamente. Cancele pelo WhatsApp: a loja recebe o aviso e libera as peças.</p><div class="dlga"><button type="button" class="dc" data-dlgx>Voltar</button><a class="dk dr" target="_blank" rel="noopener" data-cta="pkcanc3" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(m)+'">Cancelar pelo WhatsApp</a></div>'})}
@@ -2483,7 +2492,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
     var e=pedGet(id);if(!e){return}window.__pgid=id;
     var pix=e.pag==='pix',val=pix?brl(e.brl):'Gs. '+mil(e.total);
     pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Pagamento</h2><div class="pkt" style="animation-delay:.1s"><span>Pague para garantir suas peças. Elas ficam reservadas para você até a entrega.</span></div>'+
-      '<div class="pgv">'+val+'</div>'+(e.teste?'<div class="pgt">MODO TESTE</div>':'')+
+      '<div class="pgv">'+val+'</div>'+(resLeft(e)>0&&e.est==='pagar'?'<div class="cdx" id="cdx"><small>Sua peça está reservada por</small><b id="cdxt">--:--</b><i><u id="cdxb"></u></i><small>Depois disso ela volta para o site.</small></div>':'')+(e.teste?'<div class="pgt">MODO TESTE</div>':'')+
       '<div class="pgq" id="pgq">'+(pix?'':'<div class="pks" style="width:44px;height:44px;border-radius:50%;border:4px solid var(--ln2);border-top-color:#e6a3c9;animation:pksp .9s linear infinite"></div><div class="pgw">Estamos gerando o QR com o valor do seu pedido. Ele aparece aqui em instantes.</div>')+'</div>'+
       (pix?'<button type="button" class="pgc" data-pgcopy>Copiar código PIX</button><div class="pgw">Abra o app do seu banco, escolha PIX e leia o QR (ou use o copia e cola). Favorecido: La Fouch · Jamal Ali Yassine.</div>':'<div class="pgw" id="pgfav">Favorecido: Jamal Ali Yassine · La Fouch.</div><button type="button" class="pgc" id="pgsave" data-pgsave hidden>Salvar QR na galeria</button><div class="pgw" id="pgsavet" hidden>Está pagando pelo celular? Salve o QR e, no app do banco, escolha ler QR pela galeria.</div>'+
         '<div class="pgm"><b>Ou transfira manualmente</b><small>Não consegue ler o QR? Use o alias do Itaú.</small>'+
@@ -2496,10 +2505,30 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
       '<p class="tm">Ao enviar o comprovante, você confirma a compra e aceita os <a href="/termos.html" target="_blank" rel="noopener">Termos e Condições</a>.</p>').className='pgw0';
     if(pix){var code=pixCode(e.brl,'LF'+e.cod);e.code=code;loadQr().then(function(){var q=$('pgq');if(q&&window.LFqr)q.innerHTML=LFqr.svg(code,240)}).catch(function(){var q=$('pgq');if(q)q.innerHTML='<div class="pgw">Não consegui desenhar o QR. Use o botão "Copiar código PIX".</div>'})}
     window.__pgcode=pix?pixCode(e.brl,'LF'+e.cod):'';
+    resRelogio(id);
     pkPoll(id,function(o){
       if(o.pago){pkOk(id,o);return}
       if(o.recusado&&e.est==='comp'){pedSet(id,{est:'pagar'});e.est='pagar'}
       if(!pix&&o.qr&&$('pgq')&&!$('pgq').getAttribute('data-q')){$('pgq').setAttribute('data-q','1');$('pgq').innerHTML='<img class="pgi" alt="QR para pagar" src="'+esc(o.qr)+'">';window.__pgqr=o.qr;['pgsave','pgsavet'].forEach(function(i){var x=$(i);if(x)x.hidden=false})}})}
+  var RELT=0;
+  function resRelogio(id){
+    clearInterval(RELT);RELT=0;var e=pedGet(id);if(!e||!e.rx||e.est!=='pagar'||!$('cdx'))return;
+    var tot=Math.max(1,e.rx-(e.ts+(e.rd||0))),tick=function(){
+      var c=$('cdx');if(!c||!$('pkok')){clearInterval(RELT);RELT=0;return}
+      var ms=resLeft(pedGet(id));
+      if(ms<=0){clearInterval(RELT);RELT=0;resExpirou(id);return}
+      var s=Math.ceil(ms/1000),t=$('cdxt'),b=$('cdxb');if(t)t.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');if(b)b.style.width=Math.min(100,ms/tot*100)+'%';c.classList.toggle('lvx',s<=60)};
+    tick();RELT=setInterval(tick,1000)}
+  function resExpirou(id){
+    var e=pedGet(id)||{};pedSet(id,{rx:0});
+    var w=NUM_LOJA,m=encodeURIComponent('Olá! Meu pedido '+(e.cod||'')+' venceu o prazo de reserva, mas eu já paguei. Posso enviar o comprovante?');
+    pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Reserva encerrada</h2><div class="pkt" style="animation-delay:.1s"><span>Passaram os 10 minutos e a peça voltou para o site. Se ainda estiver disponível, você pode reservar de novo.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-pkrenova="'+esc(id)+'">Reservar de novo</button><a class="pkw" target="_blank" rel="noopener" href="https://wa.me/'+w+'?text='+m+'">'+PK_WA+'Já paguei · falar com a loja</a><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0'}
+  function resRenova(id){
+    var e=pedGet(id);if(!e)return;
+    resCall('reservar',id,resItens(e.itens)).then(function(r){
+      if(r&&r.ok===false&&r.motivo==='esgotado'){resEsgotou(r.falta,{itens:e.itens});return}
+      if(r&&r.ok&&!r.off&&r.exp)pedSet(id,{rx:r.exp,rd:(r.agora||Date.now())-Date.now()});
+      pkPagar(id)})}
   function pkComp(id){
     pedSet(id,{est:'comp'});
     pkTela(PK_LOGO+'<div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Comprovante enviado</h2><div class="pkt" style="animation-delay:.1s"><span>A loja está conferindo o seu pagamento. Esta tela atualiza sozinha e você também pode acompanhar em Minha conta.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-pkfim>Voltar ao catálogo</button></div>'+(pedGet(id)?compZap(pedGet(id)):'')).className='pkw0';
@@ -2547,11 +2576,16 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
   function reciboSalvar(id){reciboBlob(id,function(b){var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='comprovante-lafouch-'+((pedGet(id)||{}).cod||'')+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)})}
   function reciboCompartilhar(id){reciboBlob(id,function(b){var f;try{f=new File([b],'comprovante-lafouch.png',{type:'image/png'})}catch(_){}
     if(f&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'Comprovante La Fouch'}).catch(function(){})}else reciboSalvar(id)})}
-  function pkAbre(id){var e=pedGet(id);if(!e)return;if(e.est==='cancelado'){toast('Este pedido foi cancelado.');return}closeLayer();if(e.est==='comp'){pkComp(id)}else if(e.est==='pago'){pkRecibo(id)}else{pkPagar(id)}}
+  function pkAbre(id){var e=pedGet(id);if(!e)return;if(e.est==='cancelado'){toast('Este pedido foi cancelado.');return}closeLayer();if(e.est==='comp'){pkComp(id)}else if(e.est==='pago'){pkRecibo(id)}else{if(e.rx&&e.est==='pagar'&&resLeft(e)<=0)resExpirou(id);else pkPagar(id)}}
   function resize(file){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var m=1100,w=im.width,h=im.height,k=Math.min(1,m/Math.max(w,h));var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.72))};im.onerror=no;im.src=r.result};r.onerror=no;r.readAsDataURL(file)})}
   function enviarComp(id,file){
     var btn=$('pgbtn');if(btn)btn.textContent='Enviando…';
-    resize(file).then(function(img){return pkEnviar({tipo:'comp',ref:id,img:img,ts:Date.now(),cod:(pedGet(id)||{}).cod||''},id+'c')}).then(function(){pkComp(id)},function(){if(btn)btn.textContent='Não deu para enviar. Tente de novo.';toast('Não deu para enviar o comprovante. Tente de novo.')})}
+    resize(file).then(function(img){return pkEnviar({tipo:'comp',ref:id,img:img,ts:Date.now(),cod:(pedGet(id)||{}).cod||''},id+'c')}).then(function(){if(CFG.reserva===true){var pe=pedGet(id)||{};resCall('comp',id,resItens(pe.itens)).then(function(r){if(r&&r.ok)pedSet(id,{rx:0})})}pkComp(id)},function(){if(btn)btn.textContent='Não deu para enviar. Tente de novo.';toast('Não deu para enviar o comprovante. Tente de novo.')})}
+  function resEsgotou(falta,doc){
+    var L=(falta||[]).map(function(f){var it=(doc.itens||[]).filter(function(i){return i.ref===f.ref&&String(i.cor||'').toLowerCase()===String(f.cor||'').toLowerCase()})[0]||{};return '<div class="exx" style="margin-top:6px"><b>'+esc(it.nome||f.ref)+(f.cor?' · '+esc(f.cor):'')+'</b>'+(f.disp>0?'Só restam '+f.disp+' no momento.':'Acabou de ser reservada por outra cliente.')+'</div>'}).join('');
+    st.pkid='';st.pkdoc=null;
+    pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Acabou de esgotar</h2><div class="pkt" style="animation-delay:.1s"><span>Alguém reservou esta peça agora. Se ela não for paga em 10 minutos, volta para o site. Nenhum pedido foi criado.</span></div>'+L+'<div class="pkb" style="animation-delay:.3s"><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0';
+    try{syncEstoque()}catch(_){}}
   function enviarPedido(retry){
     var c=logado()?getConta():($('gn')?gLer():gConta(true));if(!c){if(!$('gn')){toast('Preencha seus dados para continuar.');st.step='dados';bag()}return}st.nome=c.nome;st.zap=c.tel;
     var ks=Object.keys(st.cart);if(!ks.length&&!retry)return;
@@ -2568,12 +2602,17 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
       itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',preco:Math.round(p.n)}})};
     st.pkdoc=doc;
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
-    pkEnviar(doc,id).then(function(){
+    var rxo=null;
+    (CFG.reserva===true?resCall('reservar',id,resItens(doc.itens)):Promise.resolve(null)).then(function(rr){
+      if(rr&&rr.ok===false&&rr.motivo==='esgotado'){var err=new Error('esgotado');err.falta=rr.falta||[];throw err}
+      if(rr&&rr.ok&&!rr.off&&rr.exp)rxo={rx:rr.exp,rd:(rr.agora||Date.now())-Date.now()};
+      return pkEnviar(doc,id)}).then(function(){
       if(ent==='delivery'&&endE){var le=lsG('lf_ends',[]).filter(function(x){return x!==endE});le.unshift(endE);lsS('lf_ends',le.slice(0,4))}
-      var L=lsG('lf_ped',[]);if(!L.some(function(e){return e.id===id}))L.push({id:id,cod:cod,ts:doc.ts,total:doc.total,brl:vb,ent:ent,pag:pag,est:'pagar',teste:!!TESTE,itens:doc.itens.map(function(i){return {ref:i.ref,nome:i.nome,q:i.q,cor:i.cor}})});lsS('lf_ped',L.slice(-30));
+      var L=lsG('lf_ped',[]);if(!L.some(function(e){return e.id===id}))L.push({id:id,cod:cod,ts:doc.ts,total:doc.total,brl:vb,ent:ent,pag:pag,est:'pagar',teste:!!TESTE,rx:rxo?rxo.rx:0,rd:rxo?rxo.rd:0,itens:doc.itens.map(function(i){return {ref:i.ref,nome:i.nome,q:i.q,cor:i.cor}})});lsS('lf_ped',L.slice(-30));
       st.cart={};st.pkid='';st.pkdoc=null;st.step='cart';try{drawBag()}catch(_){}
       closeLayer();pkPagar(id)
-    },function(){
+    },function(er){
+      if(er&&er.message==='esgotado'){resEsgotou(er.falta,doc);return}
       pkTela('<div class="pkl"></div><h2 style="animation-delay:0s">Quase lá!</h2><div class="pkt" style="animation-delay:.1s"><span>Não deu para enviar o pedido agora. Tente de novo ou fale com a loja pelo WhatsApp.</span></div><div class="pkb" style="animation-delay:.2s"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Enviar pelo WhatsApp</a><button type="button" data-pkretry>Tentar de novo</button></div>')})}
   /* o olho da senha não rouba o foco do campo: o teclado do celular continua aberto */
   ['pointerup','pointercancel','pointerleave'].forEach(function(ev){document.addEventListener(ev,function(){document.querySelectorAll('.pwo.pr').forEach(function(b){b.classList.remove('pr')})},true)});
@@ -2627,7 +2666,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
   /*/CONTA*/
   /* eventos */
   document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-tipo],[data-gen],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-pkretry],[data-pkfim],[data-pkconta],[data-pkrec],[data-pkshare],[data-pksave],[data-copy],[data-sw],[data-fav],[data-share],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-facem],[data-fa],[data-facam],[data-facap],[data-camz],[data-edit],[data-fause],[data-fagen],[data-fanew],[data-fawrong],[data-copymsg],[data-newsim],[data-close]');
+    var t=e.target.closest('[data-tipo],[data-gen],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-pkretry],[data-pkfim],[data-pkconta],[data-pkrenova],[data-pkrec],[data-pkshare],[data-pksave],[data-copy],[data-sw],[data-fav],[data-share],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-facem],[data-fa],[data-facam],[data-facap],[data-camz],[data-edit],[data-fause],[data-fagen],[data-fanew],[data-fawrong],[data-copymsg],[data-newsim],[data-close]');
     if(!t){return}
     var d=t.dataset;
     if(d.close!==undefined){if(t.classList.contains('scrim')&&e.target!==t)return;closeLayer();return}
@@ -2659,6 +2698,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
     else if(t.hasAttribute('data-send')){enviarPedido()}
     else if(t.hasAttribute('data-pkretry')){enviarPedido(true)}
     else if(t.hasAttribute('data-pkfim')){var po=$('pkok');if(po)po.remove();closeLayer()}
+    else if(t.hasAttribute('data-pkrenova')){resRenova(t.getAttribute('data-pkrenova'))}
     else if(t.hasAttribute('data-pkconta')){var po2=$('pkok');if(po2)po2.remove();document.documentElement.classList.remove('lock');closeLayer();minhaConta()}
     else if(t.hasAttribute('data-pkrec')){pkRecibo(t.getAttribute('data-pkrec'))}
     else if(t.hasAttribute('data-pkshare')){reciboCompartilhar(t.getAttribute('data-pkshare'))}
@@ -3224,7 +3264,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
   function syncProds(docs){
     var base={};P.forEach(function(p){base[p.ref]=p});
     var L=docs.map(function(d){var r=fbd(d);r.ref=r.ref||d.name.split('/').pop();var b=base[r.ref]||{};
-      var p=Object.assign({},b,r);if(b.fv!==r.fv)p.fc=[];if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);return p}).filter(function(p){return !p.oculto});
+      var p=Object.assign({},b,r);p.esgRes=false;if(b.fv!==r.fv)p.fc=[];if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);return p}).filter(function(p){return !p.oculto});
     if(!L.length)return;
     L.sort(function(a,b){return (a.ord||0)-(b.ord||0)});
     L.forEach(function(p){
@@ -3234,7 +3274,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
       if(p.uv===undefined)p.uv=p.tipo==='solar';
       if(!p.rosto||!p.rosto.length)p.rosto=['oval'];if(!p.tag)p.tag=String(p.tipo||'').toUpperCase();if(p.aviso===undefined)p.aviso='';
       if(!p.cores||!p.cores.length)p.cores=[p.cor||'#2a2d33'];if(!p.cor)p.cor=p.cores[0];if(!p.raio&&p.raio!==0)p.raio=14});
-    P.length=0;Array.prototype.push.apply(P,L);
+    P.length=0;Array.prototype.push.apply(P,L);try{aplicaEst()}catch(_){}
     var has={};P.forEach(function(p){has[p.ref]=1});
     Object.keys(st.cart).forEach(function(k){if(!has[k])delete st.cart[k]});Object.keys(st.fav).forEach(function(k){if(!has[k])delete st.fav[k]});st.cmp=st.cmp.filter(function(k){return has[k]});
     redraw();
@@ -3247,11 +3287,31 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
       /* as fotos do destaque vêm primeiro; o resto do catálogo só depois, para não disputar a rede */
       if(heroRefs[p.ref])busca();else setTimeout(busca,900)});
     if(fo)redraw()}
+  /* reservas em tempo real: a lista pública estoque/<ref> só existe enquanto há peça reservada */
+  var EST=null,ESTT=0,ESTAG=0,ESTRD=0;
+  function aplicaEst(){
+    var ch=false;
+    P.forEach(function(p){
+      var d=EST&&EST[p.ref],tinha=!!p.esgRes;
+      if(p.esgRes){p.aviso=p._av0||'';p.esgRes=false}
+      p.rv=0;
+      if(d&&CFG.reserva===true&&p.aviso!=='Esgotado'){
+        var agora=Date.now()+ESTRD,cn=(p.cores&&p.cores.length)?p.cores.length:1,qs=Array.isArray(p.qs)&&p.qs.length?p.qs:[+p.est||0],tot=0,livre=0;
+        var rs={};Object.keys(d.res||{}).forEach(function(k){var r=d.res[k];if(!r||!(r.pago===true||+r.exp>agora))return;var c=String(r.cor||'').toLowerCase();rs[c]=(rs[c]||0)+(+r.q||0);p.rv+=(+r.q||0)});
+        if(p.rv&&qs){for(var i=0;i<qs.length;i++){var nm=String((p.cn&&p.cn[i])||'').toLowerCase();var disp=(+qs[i]||0)-(rs[nm]||0);if(disp>0)livre+=disp}
+          if(livre<=0){p._av0=p.aviso;p.aviso='Esgotado';p.esgRes=true}}
+      }
+      if(tinha!==!!p.esgRes)ch=true});
+    if(ch){drawGrid();var pg=document.querySelector('.pgm');if(pg&&pg.getAttribute('data-ref')){}}}
+  function syncEstoque(){
+    if(CFG.reserva!==true){if(EST){EST=null;aplicaEst()}return Promise.resolve()}
+    return fbg('estoque?pageSize=300').then(function(j){var o={};((j&&j.documents)||[]).forEach(function(d){o[d.name.split('/').pop()]=fbd(d)});EST=o;aplicaEst()},function(){})}
+  function estLoop(){clearInterval(ESTT);ESTT=0;if(CFG.reserva!==true)return;ESTT=setInterval(function(){if(!document.hidden)syncEstoque()},20000)}
   function redraw(){drawGen();drawChips();drawFaces();drawGrid();drawBag();setHero()}
   function syncRun(){
     var pp=fbg('produtos?pageSize=300');pp.catch(function(){});
     fbg('config/site').then(function(d){CFG=Object.assign({ativo:true},fbd(d),{_f:1});try{localStorage.setItem('lf_cfg',JSON.stringify(CFG))}catch(_){}manut();applyCot();setHero()},function(){}).then(function(){
-      return pp}).then(function(j){if(j&&j.documents){try{localStorage.setItem('lf_pdocs',JSON.stringify(j.documents))}catch(_){}syncProds(j.documents)}}).catch(function(){}).then(function(){var l=document.getElementById('prevld');if(l)l.remove()})}
+      return pp}).then(function(j){if(j&&j.documents){try{localStorage.setItem('lf_pdocs',JSON.stringify(j.documents))}catch(_){}syncProds(j.documents)}}).catch(function(){}).then(function(){var l=document.getElementById('prevld');if(l)l.remove();syncEstoque().then(estLoop)})}
   (ADM||(ADM=isAdm())).then(function(a){if(a&&!LF_ADM&&window.parent!==window){LF_ADM=true;document.documentElement.classList.add('adm');redraw()}});
   manut();try{var qv=new URLSearchParams(location.search).get('video');if(qv)setTimeout(function(){var st=$('stage');st.hidden=false;st.setAttribute('data-sig','q');applyVideo(qv)},300)}catch(_){}
   if(!/[?&]nosync/.test(location.search))setTimeout(syncRun,50);
