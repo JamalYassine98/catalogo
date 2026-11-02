@@ -2462,8 +2462,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
       '<div class="note"><b style="color:var(--tx)">Como você recebe?</b></div>'+
       '<button type="button" class="cfo'+(ent==='loja'?' on':'')+'" data-ent="loja" aria-pressed="'+(ent==='loja')+'"><span>🏬</span><b>Retirar na loja</b><small>Venha quando quiser, seg a sáb, 7h30 às 15h</small></button>'+
       (py?'<button type="button" class="cfo'+(ent==='delivery'?' on':'')+'" data-ent="delivery" aria-pressed="'+(ent==='delivery')+'"><span>🚚</span><b>Delivery</b><small>Entrega pela transportadora. O frete é pago à transportadora na entrega.</small></button>':'<div class="note" style="margin:4px 0 0">Para clientes de fora do Paraguai, a entrega é somente retirando na loja.</div>')+
-      (ent==='delivery'?endBloco(c):'')+
-      '<div class="note">Pagamento por '+(py?'QR do banco (Itaú)':'PIX')+' depois de fazer o pedido.</div>'}
+      (ent==='delivery'?endBloco(c):'')}
   /* PIX: código "copia e cola" e QR */
   function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return ('000'+c.toString(16).toUpperCase()).slice(-4)}
   function pixCode(v,txid){var f=function(i,x){return i+('0'+x.length).slice(-2)+x};
