@@ -902,6 +902,7 @@ html.nr .fcar .far{animation:none!important;opacity:.75}html.nr .far.off{opacity
 .fac1 .go{min-width:calc(260px*var(--k));min-height:calc(60px*var(--k));font-size:calc(16px*var(--k))}
 .fac1 li span{width:calc(30px*var(--k));height:calc(30px*var(--k));font-size:calc(14px*var(--k))}.fac1 .go i{width:calc(44px*var(--k));height:calc(44px*var(--k))}.fac1 .go i svg{width:calc(24px*var(--k));height:calc(24px*var(--k))}
 }
+/* tablet com zoom da página (--z): 92vw não considera o zoom e o cartão da direita saía da tela */
 @media (min-width:700px) and (max-width:1279px){.fac1{grid-template-columns:1fr auto}.fac1 ol{grid-column:1/-1;grid-row:2;grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}.fac1 li{max-width:none}}
 @media (min-width:1000px){:root{--k:1}.fcar .faces{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (min-width:1800px){:root{--k:1.15}}
@@ -937,6 +938,7 @@ html[data-zi="0"] #rosto.pop .fac1{flex:none;width:min(calc(1240px*var(--k)),94v
 html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 }
 @media (min-width:1000px) and (min-height:560px){html[data-zi="0"] #rosto.pop .fcar .faces{grid-template-rows:repeat(2,minmax(0,1fr))}}
+@media (min-width:700px) and (max-width:1099px){.fcar,.fac1{width:min(calc(1120px*var(--k)),calc(92vw / var(--z,1)))}html[data-zi="0"] #rosto.pop .fcar,html[data-zi="0"] #rosto.pop .fac1{width:min(calc(1240px*var(--k)),calc(94vw / var(--z,1)))}}
 /*/ROSTO-FIT*/
 /*PC-PAGINAS*/
 @media (min-width:700px){
