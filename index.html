@@ -2401,7 +2401,7 @@ footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}foot
         [['Alias (Itaú)',ITAU.alias,ITAU.alias],['Titular',ITAU.titular,ITAU.titular],['Valor','Gs. '+mil(e.total),String(Math.round(e.total))]].map(function(r){return '<div class="pgr"><div><small>'+r[0]+'</small><b>'+esc(r[1])+'</b></div><button type="button" data-pgc2="'+esc(r[2])+'">Copiar</button></div>'}).join('')+
         '<small>Depois, toque em "Já paguei" e envie o comprovante.</small></div>')+
       '<label class="pgb" for="pgf" id="pgbtn">Já paguei · enviar comprovante</label><input type="file" id="pgf" accept="image/*" hidden>'+'<p class="tm">Ao enviar o comprovante, você confirma a compra e aceita os <a href="/termos.html" target="_blank" rel="noopener">Termos e Condições</a>.</p>'+
-      '<button type="button" class="pgs" data-pkfim>Pagar depois (continua em Minha conta)</button>').className='pgw0';
+      '<button type="button" class="pgs" data-pkconta>Pagar depois (continua em Minha conta)</button>').className='pgw0';
     if(pix){var code=pixCode(e.brl,'LF'+e.cod);e.code=code;loadQr().then(function(){var q=$('pgq');if(q&&window.LFqr)q.innerHTML=LFqr.svg(code,240)}).catch(function(){var q=$('pgq');if(q)q.innerHTML='<div class="pgw">Não consegui desenhar o QR. Use o botão "Copiar código PIX".</div>'})}
     window.__pgcode=pix?pixCode(e.brl,'LF'+e.cod):'';
     pkPoll(id,function(o){
@@ -2534,7 +2534,7 @@ footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}foot
   /*/CONTA*/
   /* eventos */
   document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-tipo],[data-gen],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-pkretry],[data-pkfim],[data-pkrec],[data-pkshare],[data-pksave],[data-copy],[data-sw],[data-fav],[data-share],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-facem],[data-fa],[data-facam],[data-facap],[data-camz],[data-edit],[data-fause],[data-fagen],[data-fanew],[data-fawrong],[data-copymsg],[data-newsim],[data-close]');
+    var t=e.target.closest('[data-tipo],[data-gen],[data-face],[data-open],[data-add],[data-addm],[data-dec],[data-inc],[data-rm],[data-send],[data-pkretry],[data-pkfim],[data-pkconta],[data-pkrec],[data-pkshare],[data-pksave],[data-copy],[data-sw],[data-fav],[data-share],[data-cmp],[data-cmpopen],[data-cmpclear],[data-bag],[data-facem],[data-fa],[data-facam],[data-facap],[data-camz],[data-edit],[data-fause],[data-fagen],[data-fanew],[data-fawrong],[data-copymsg],[data-newsim],[data-close]');
     if(!t){return}
     var d=t.dataset;
     if(d.close!==undefined){if(t.classList.contains('scrim')&&e.target!==t)return;closeLayer();return}
@@ -2566,6 +2566,7 @@ footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}foot
     else if(t.hasAttribute('data-send')){enviarPedido()}
     else if(t.hasAttribute('data-pkretry')){enviarPedido(true)}
     else if(t.hasAttribute('data-pkfim')){var po=$('pkok');if(po)po.remove();closeLayer()}
+    else if(t.hasAttribute('data-pkconta')){var po2=$('pkok');if(po2)po2.remove();document.documentElement.classList.remove('lock');closeLayer();minhaConta()}
     else if(t.hasAttribute('data-pkrec')){pkRecibo(t.getAttribute('data-pkrec'))}
     else if(t.hasAttribute('data-pkshare')){reciboCompartilhar(t.getAttribute('data-pkshare'))}
     else if(t.hasAttribute('data-pksave')){reciboSalvar(t.getAttribute('data-pksave'))}
