@@ -132,12 +132,12 @@ function body(o){var f={};Object.keys(o).forEach(function(k){f[k]=tf(o[k])});ret
 function api(method,path,b){return fetch(DB+path+(path.indexOf('?')<0?'?':'&')+'key='+FB.k,{method:method,headers:Object.assign({'Content-Type':'application/json'},S.tok?{Authorization:'Bearer '+S.tok}:{}),body:b}).then(function(r){if(r.status===401||r.status===403)throw new Error('perm');if(!r.ok&&r.status!==404)throw new Error('http '+r.status);return r.status===404?null:r.json()})}
 function put(path,o,mask){return api('PATCH',path+(mask?'?'+mask.map(function(m){return 'updateMask.fieldPaths='+m}).join('&'):''),body(o))}
 /* login */
-function saveRt(t){try{localStorage.setItem('lf_rt',t)}catch(_){}}
+var NOSAVE=false;function saveRt(t){if(NOSAVE)return;try{localStorage.setItem('lf_rt',t)}catch(_){}}
 function auth(url,payload){return fetch(url+'?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:payload}).then(function(r){return r.json()})}
 function signIn(){var em=$('em').value.trim(),pw=$('pw').value;
   fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,password:pw,returnSecureToken:true})}).then(function(r){return r.json()}).then(function(j){
-    if(!j.idToken){say('E-mail ou senha incorretos.',1);return}S.tok=j.idToken;saveRt(j.refreshToken);gate(em,pw)}).catch(function(){say('Sem conexão.',1)})}
-function refresh(){var rt='';try{rt=localStorage.getItem('lf_rt')||''}catch(_){}if(!rt)return Promise.resolve(false);
+    if(!j.idToken){say('E-mail ou senha incorretos.',1);return}S.tok=j.idToken;saveRt(j.refreshToken);if(IN_APP)appSessPut(j.refreshToken,em);gate(em,pw)}).catch(function(){say('Sem conexão.',1)})}
+function refresh(rt0){var rt=rt0||'';if(!rt){try{rt=localStorage.getItem('lf_rt')||''}catch(_){}}if(!rt)return Promise.resolve(false);
   return auth('https://securetoken.googleapis.com/v1/token','grant_type=refresh_token&refresh_token='+encodeURIComponent(rt)).then(function(j){if(!j.id_token)return false;S.tok=j.id_token;saveRt(j.refresh_token||rt);return true}).catch(function(){return false})}
 /* dados */
 S.fotos={};S.f='all';S.q='';S.v='vit';
@@ -442,7 +442,17 @@ $('pwf').onsubmit=function(e){e.preventDefault();var o=$('pw0').value,n=$('pw1')
     if(!j.idToken)throw new Error('old');
     return fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken:j.idToken,password:n,returnSecureToken:true})}).then(function(x){return x.json()})}).then(function(j){
     if(!j.idToken)throw new Error('upd');S.tok=j.idToken;if(j.refreshToken)saveRt(j.refreshToken);$('pwf').reset();$('pwf').style.display='none';say('Senha alterada.')}).catch(function(er){say(er.message==='old'?'Senha atual incorreta.':'Não consegui trocar a senha. Tente de novo.',1)}).then(function(){$('pws').disabled=false})};
-function boot(){if(bioNeed()&&(function(){try{return !!localStorage.getItem('lf_rt')}catch(_){return false}})()){$('login').hidden=true;$('lock').hidden=false;bioUnlock()}
+/* login único: dentro do app a sessão vem do próprio app (que pede biometria ou PIN quando estão ligados); a sessão não fica guardada no painel */
+var _ps={};
+window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||e.data.lfSessR===undefined)return;var p=_ps[e.data.id];if(p){delete _ps[e.data.id];clearTimeout(p.t);p.f(e.data.lfSessR)}});
+function appSess(ms){return new Promise(function(res){var id=String(Math.random());_ps[id]={f:res,t:setTimeout(function(){delete _ps[id];res('no')},ms)};try{window.parent.postMessage({lfSess:'get',id:id},'*')}catch(_){var q=_ps[id];delete _ps[id];if(q)clearTimeout(q.t);res('no')}})}
+function appSessPut(rt,em){try{window.parent.postMessage({lfSess:'put',rt:rt,email:em||''},'*')}catch(_){}}
+function boot(){if(!IN_APP)return boot0();
+  appSess(180000).then(function(r){
+    if(r&&r.rt){NOSAVE=true;try{localStorage.removeItem('lf_rt')}catch(_){}return refresh(r.rt).then(function(ok){if(ok)start();else{NOSAVE=false;boot0()}})}
+    if(r==='cancel'){$('login').hidden=true;$('lock').hidden=false;$('bgo').onclick=function(){$('lock').hidden=true;boot()};$('bpw').onclick=function(){$('lock').hidden=true;$('login').hidden=false;boot0()};return}
+    boot0()})}
+function boot0(){if(bioNeed()&&(function(){try{return !!localStorage.getItem('lf_rt')}catch(_){return false}})()){$('login').hidden=true;$('lock').hidden=false;bioUnlock()}
 else refresh().then(function(ok){if(ok)start()})}
 if(IN_APP)appCall('check',2000).then(function(r){APP_BIO=r==='yes';remUi();boot()});else boot();
 })();
