@@ -1235,6 +1235,12 @@ html .scrim.pg.acc.auth .panel{background:none;border:0;box-shadow:none;width:mi
 @media (min-width:700px){.cthl{display:none}}
 /*REL-ARRASTAR*/
 @media (hover:hover) and (pointer:fine){.relg.relm{cursor:grab}.relg.relm.drag{cursor:grabbing;user-select:none}.relg.relm .ri{user-select:none;-webkit-user-drag:none}}
+/*PGBACK-ANIM*/
+.pgbar{padding-left:max(14px,1.2vw)}
+.pgback{transition:transform .18s cubic-bezier(.2,.8,.2,1),background .2s,border-color .2s,box-shadow .2s}
+.pgback svg{transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+@media (hover:hover){.pgback:hover svg{transform:translateX(-3px)}.pgback:hover{box-shadow:0 6px 16px -8px var(--shadow)}}
+.pgback:active{transform:scale(.94);background:color-mix(in srgb,var(--ac) 12%,var(--pn))}.pgback:active svg{transform:translateX(-6px)}
 </style>
 
 <div class="top"><div class="wrap">
