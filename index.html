@@ -2564,7 +2564,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
     var ff=st.rosto?FACES.filter(function(x){return x.id===st.rosto})[0]:null;
     var vb=TESTE?1:valorBRL();
     var doc=st.pkdoc&&retry?st.pkdoc:{ts:Date.now(),nome:c.nome,tel:c.tel,pais:c.pais,cod:cod,lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:Math.round(total()),rosto:ff?ff.nome:'',
-      nac:c.nac,doc:c.doc,nasc:c.nasc,email:c.email||'',obsC:c.obs||'',cidade:c.cidade,end:c.end||'',ent:ent,endE:ent==='delivery'?endE:'',refE:'',pag:pag,brl:vb,teste:!!TESTE,
+      nac:c.nac,doc:c.doc,nasc:c.nasc,email:c.email||'',cidade:c.cidade,end:c.end||'',ent:ent,endE:ent==='delivery'?endE:'',refE:'',pag:pag,brl:vb,teste:!!TESTE,
       itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',preco:Math.round(p.n)}})};
     st.pkdoc=doc;
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
