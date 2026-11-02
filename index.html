@@ -1233,6 +1233,8 @@ html .scrim.pg.acc.auth .panel{background:none;border:0;box-shadow:none;width:mi
 .cth.one .cim svg{width:100%;height:100%}
 @media (max-width:699px){.dcor1{display:none}}
 @media (min-width:700px){.cthl{display:none}}
+/*REL-ARRASTAR*/
+@media (hover:hover) and (pointer:fine){.relg.relm{cursor:grab}.relg.relm.drag{cursor:grabbing;user-select:none}.relg.relm .ri{user-select:none;-webkit-user-drag:none}}
 </style>
 
 <div class="top"><div class="wrap">
@@ -1924,6 +1926,13 @@ html .scrim.pg.acc.auth .panel{background:none;border:0;box-shadow:none;width:mi
   /* faixa "Combina também": desliza sozinha da direita para a esquerda; ao tocar, para e dá para arrastar */
   function relInit(){
     var el=$('relm');if(!el||!el.classList.contains('relm'))return;
+    (function(){var dn=false,sx=0,sl=0,moved=false;
+      el.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button!==0)return;dn=true;moved=false;sx=e.clientX;sl=el.scrollLeft});
+      window.addEventListener('pointermove',function(e){if(!dn)return;var dx=e.clientX-sx;if(!moved&&Math.abs(dx)>5){moved=true;el.classList.add('drag')}if(moved){el.scrollLeft=sl-dx;var h=el.scrollWidth/2;if(el.scrollLeft>=h){sl-=h;el.scrollLeft-=h}else if(el.scrollLeft<=0){sl+=h;el.scrollLeft+=h}}});
+      function end(){if(!dn)return;dn=false;el.classList.remove('drag')}
+      window.addEventListener('pointerup',end);window.addEventListener('pointercancel',end);
+      el.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
+      el.addEventListener('dragstart',function(e){e.preventDefault()})})();
     if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
     var pos=el.scrollLeft,last=0,hold=0,self=false,touching=false;
     function bump(){hold=Date.now()+2500}
