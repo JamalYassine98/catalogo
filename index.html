@@ -49,6 +49,12 @@ html body>main,html body>main>.wrap{flex:1 1 auto;display:flex;flex-direction:co
 html body .leg{padding:20px 76px calc(18px + env(safe-area-inset-bottom,0px))!important;margin-top:auto!important;text-align:center}
 }
 html body #fsh{position:fixed;inset:0;overflow:hidden}
+/*MENU-FONTE (celular: itens do menu um pouco menores)*/
+@media (max-width:899px){
+html body .dpn nav a{font-size:21px;line-height:26px;padding-top:14px;padding-bottom:14px}
+html body .cat .arr{height:54px}
+html body .dpn nav .sub a{font-size:16px;padding-top:12px;padding-bottom:12px}
+}
 /*CELULAR-DEITADO: destaque menor para caber*/
 @media (max-height:560px) and (orientation:landscape){html body main .stage{min-height:calc(140px * var(--kz,1) / var(--z,1))}html body .hero.nost h1{margin-top:calc(140px * var(--kz,1) / var(--z,1) + 12px)!important}}
 /*TABLET-RETRATO (600–1099): mesma lógica do celular, escalada*/
