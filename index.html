@@ -1,22 +1,33 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><script>try{localStorage.removeItem("lf_theme")}catch(e){}document.documentElement.dataset.theme="light"</script><link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:type" content="website"><meta property="og:site_name" content="La Fouch"><meta property="og:title" content="La Fouch · Tudo em Óculos"><meta property="og:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:url" content="https://lafouch.com/"><meta property="og:image" content="https://lafouch.com/og.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="La Fouch · Escolha o óculos que combina com você"><meta property="og:locale" content="pt_BR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="La Fouch · Tudo em Óculos"><meta name="twitter:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta name="twitter:image" content="https://lafouch.com/og.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"La Fouch","alternateName":["LaFouch","La Fouch Tudo em Óculos"],"url":"https://lafouch.com/"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"OpticianStore","name":"La Fouch","slogan":"Tudo em Óculos","url":"https://lafouch.com/","image":"https://lafouch.com/og.jpg","hasMap":"https://maps.app.goo.gl/zy6c1ZFq4gQhxWXC8","address":{"@type":"PostalAddress","streetAddress":"Galeria Jebai Center, 3° piso, torre A, n°2242","addressLocality":"Ciudad del Este","addressCountry":"PY"},"geo":{"@type":"GeoCoordinates","latitude":-25.510131,"longitude":-54.609959},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"07:30","closes":"15:00"}]}</script><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style><style id="ajuste-escala">
-/*ESCALA-CEL*/
+.ci .cif{display:contents}
+/*ESCALA-CEL (opção A: tudo na mesma margem)*/
 @media (max-width:760px){
-.cs{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:14px;row-gap:6px}
-.cs-t{align-self:center;justify-self:start;min-width:0}
-.cs-t span{line-height:1.2}.cs-t b{line-height:1.1;white-space:nowrap}
-.cs-b{display:flex;align-items:center;justify-content:center;height:auto!important;min-height:48px;padding:8px 12px!important;text-align:center;white-space:normal;line-height:1.15;align-self:center;justify-self:stretch}
-.cs-c{display:flex;align-items:center;justify-content:center;height:auto;min-height:36px;width:100%;text-align:center;justify-self:stretch}
-.cs-n{grid-column:1/-1}
-.cartp{padding-bottom:calc(190px*var(--z,1))!important}
-html body .cgr .ci{grid-template-columns:78px minmax(0,1fr);grid-template-areas:"img cit" "img cia" "img cis";row-gap:8px}
-html body .cgr .ci .cia{justify-self:start;align-self:center}
-html body .cgr .ci .cis{display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;text-align:left;align-self:center}
-html body .cgr .ci .cis small{margin:0}
-html body .cgr .ci .cis .pr{white-space:nowrap;font-size:17px}
-html body .cgr .ci .cis{padding-right:4px}
+html body .cs{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;row-gap:10px;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px))}
+html body .cs .cs-t{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:baseline;width:100%;padding:0;margin:0;gap:12px}
+html body .cs .cs-t span{font-size:16px;line-height:1}
+html body .cs .cs-t b{font-size:26px;line-height:1;white-space:nowrap}
+html body .cs .cs-b{grid-column:1/-1;display:flex;align-items:center;justify-content:center;width:100%;height:auto!important;min-height:52px;padding:10px 16px!important;text-align:center;white-space:normal;line-height:1.2;font-size:17px!important}
+html body .cs .cs-c{grid-column:1/-1;display:flex;align-items:center;justify-content:center;width:100%;height:auto;min-height:36px;text-align:center}
+html body .cs .cs-n{grid-column:1/-1}
+.cartp{padding-bottom:calc(200px*var(--z,1))!important}
+html body .cgr .ci{min-width:0;grid-template-columns:84px minmax(0,1fr) auto;grid-template-areas:"img cit cit";column-gap:14px;row-gap:12px;align-items:start;padding:16px}
+html body .cgr .ci .cimg{grid-area:img;grid-row:auto;width:84px;height:84px;align-self:start}
+html body .cgr .ci .cit{grid-area:cit;align-self:start;padding-right:34px}
+html body .cgr .ci .cif{grid-area:auto;grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;border-top:1px solid color-mix(in srgb,var(--tx) 8%,transparent);padding-top:12px;min-width:0}
+html body .cgr .ci .cia{margin:0;padding:0;width:auto;flex:0 0 auto}
+html body .cgr .ci .cis{display:block;text-align:right;padding:0;margin:0 0 0 auto;flex:1 1 auto}
+html body .cgr .ci .cis small{display:block;margin:0 0 2px}
+html body .cgr .ci .cis .pr{white-space:nowrap;font-size:20px;line-height:1.1}
 body:has(.cartp) .wa{display:none}
 }
+/*MENU-SEG*/
+#drw .prow .seg{display:flex;width:100%;max-width:100%;box-sizing:border-box}
+#drw .prow .seg button{flex:1 1 0;min-width:0!important;padding-left:8px!important;padding-right:8px!important;white-space:nowrap;justify-content:center}
+/*ALINHAMENTO-GERAL*/
+#atacado h2{line-height:1.2;text-wrap:balance}
+#atacado p{line-height:1.5}
+@media (max-width:860px){html.zl main{padding-bottom:calc(150px*var(--z,1))}html.zl .hero{padding-bottom:24px!important}}
 </style>
 </head><body>
 <script>(function(){var B='1793561010';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
@@ -2164,7 +2175,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
     if(re){var sc=document.querySelector('#layer .scrim'),top=sc?sc.scrollTop:0}
     prodNext=true;
     var TR='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg>';
-    var items=ks.map(function(k){var p=find(k);return '<div class="ci"><div class="cimg">'+vis(p,7)+'</div><div class="cit"><small>'+p.ref+'</small><b>'+esc(p.nome)+'</b><div class="pu"><span>'+fmtL(p,1)+'</span> <span>'+LFI.tr('por unidade')+'</span></div></div><div class="cia"><div class="qty"><button data-dec="'+k+'" aria-label="Menos">−</button><span>'+st.cart[k]+'</span><button data-inc="'+k+'" aria-label="Mais">+</button></div><button type="button" class="crl" data-rm="'+k+'">'+LFI.tr('Remover')+'</button></div><div class="cis"><small>'+LFI.tr('Subtotal')+'</small><div class="pr">'+fmtL(p,st.cart[k])+'</div></div><button class="crm" data-rm="'+k+'" aria-label="Remover"><span class="crx">×</span></button></div>'}).join('');
+    var items=ks.map(function(k){var p=find(k);return '<div class="ci"><div class="cimg">'+vis(p,7)+'</div><div class="cit"><small>'+p.ref+'</small><b>'+esc(p.nome)+'</b><div class="pu"><span>'+fmtL(p,1)+'</span> <span>'+LFI.tr('por unidade')+'</span></div></div><div class="cif"><div class="cia"><div class="qty"><button data-dec="'+k+'" aria-label="Menos">−</button><span>'+st.cart[k]+'</span><button data-inc="'+k+'" aria-label="Mais">+</button></div><button type="button" class="crl" data-rm="'+k+'">'+LFI.tr('Remover')+'</button></div><div class="cis"><small>'+LFI.tr('Subtotal')+'</small><div class="pr">'+fmtL(p,st.cart[k])+'</div></div></div><button class="crm" data-rm="'+k+'" aria-label="Remover"><span class="crx">×</span></button></div>'}).join('');
     var es=window.LFI&&LFI.lang==='es',cnt=nq+(es?(nq===1?' artículo':' artículos'):(nq===1?' item':' itens'));
     var dd=st.step==='dados'&&ks.length>0;
     var sum='<div class="cs"><h3 class="cs-h">'+(dd?'Seu pedido':'Resumo')+'</h3>'+
