@@ -2,7 +2,7 @@
 <html lang="pt-BR"><head><meta charset="utf-8"><script>try{localStorage.removeItem("lf_theme")}catch(e){}document.documentElement.dataset.theme="light"</script><link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:type" content="website"><meta property="og:site_name" content="La Fouch"><meta property="og:title" content="La Fouch · Tudo em Óculos"><meta property="og:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta property="og:url" content="https://lafouch.com/"><meta property="og:image" content="https://lafouch.com/og.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="La Fouch · Escolha o óculos que combina com você"><meta property="og:locale" content="pt_BR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="La Fouch · Tudo em Óculos"><meta name="twitter:description" content="Catálogo online: reserve pelo WhatsApp e retire na loja."><meta name="twitter:image" content="https://lafouch.com/og.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"La Fouch","alternateName":["LaFouch","La Fouch Tudo em Óculos"],"url":"https://lafouch.com/"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"OpticianStore","name":"La Fouch","slogan":"Tudo em Óculos","url":"https://lafouch.com/","image":"https://lafouch.com/og.jpg","hasMap":"https://maps.app.goo.gl/zy6c1ZFq4gQhxWXC8","address":{"@type":"PostalAddress","streetAddress":"Galeria Jebai Center, 3° piso, torre A, n°2242","addressLocality":"Ciudad del Este","addressCountry":"PY"},"geo":{"@type":"GeoCoordinates","latitude":-25.510131,"longitude":-54.609959},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"07:30","closes":"15:00"}]}</script><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style><style id="ajuste-escala">
 .ci .cif{display:contents}
 /*ESCALA-CEL (opção A: tudo na mesma margem)*/
-@media (max-width:760px){
+@media (max-width:899px){
 html body .cs{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;row-gap:10px;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px))}
 html body .cs .cs-t{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:baseline;width:100%;padding:0;margin:0;gap:12px}
 html body .cs .cs-t span{font-size:16px;line-height:1}
@@ -39,16 +39,29 @@ html body #drw .prow .seg button{flex:1 1 auto!important;padding-left:6px!import
 html body #drw .prow .seg button[data-zs]{font-size:inherit}
 /*INICIO-A (destaque 176px em qualquer texto; termos centralizados no pé; WhatsApp na mesma linha)*/
 @media (max-width:860px){
-html body main .stage{height:auto!important;flex:1 1 0;min-height:calc(222px / var(--z,1));max-height:calc(340px / var(--z,1))}
+html body main .stage{height:auto!important;flex:1 1 0;min-height:calc(222px * var(--kz,1) / var(--z,1));max-height:calc(340px * var(--kz,1) / var(--z,1))}
 html body main .stage img.pf{top:44px!important;bottom:46px!important;height:calc(100% - 90px)!important}
-html body .hero{padding-bottom:0!important;justify-content:flex-start!important;overflow:clip;flex:1 1 auto;min-height:0}
+html body .hero,html[class] body .hero{padding-bottom:0!important;justify-content:flex-start!important;overflow:clip;flex:1 1 auto;min-height:0;gap:10px}
 html body{min-height:calc(100svh / var(--z,1));display:flex;flex-direction:column}
 html{overflow-anchor:none}
-html body .hero.nost h1{margin-top:calc(222px / var(--z,1) + 12px)!important}
+html body .hero.nost h1{margin-top:calc(222px * var(--kz,1) / var(--z,1) + 12px)!important}
 html body>main,html body>main>.wrap{flex:1 1 auto;display:flex;flex-direction:column}
 html body .leg{padding:20px 76px calc(18px + env(safe-area-inset-bottom,0px))!important;margin-top:auto!important;text-align:center}
 }
 html body #fsh{position:fixed;inset:0;overflow:hidden}
+/*CELULAR-DEITADO: destaque menor para caber*/
+@media (max-height:560px) and (orientation:landscape){html body main .stage{min-height:calc(140px * var(--kz,1) / var(--z,1))}html body .hero.nost h1{margin-top:calc(140px * var(--kz,1) / var(--z,1) + 12px)!important}}
+/*TABLET-RETRATO (600–1099): mesma lógica do celular, escalada*/
+@media (min-width:600px) and (max-width:1099px){
+html body #grid .card .stk{top:auto!important;bottom:8px!important;left:10px!important}
+html.onprod body a.wa{bottom:calc(144px + env(safe-area-inset-bottom,0px))!important}
+}
+@media (min-width:600px) and (max-width:860px){
+html body main .stage{width:100%!important;max-width:none!important}
+html body .hero .cta{align-items:stretch!important;width:100%!important;max-width:none!important}
+html body .hero .cta .btn{width:100%!important;max-width:none!important;min-width:0!important}
+html body .hero h1,html body .hero p{text-align:left!important;max-width:none!important}
+}
 </style>
 </head><body>
 <script>(function(){var B='1793561010';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
@@ -903,7 +916,7 @@ main .stage:has(.dots) .sli{bottom:60px;height:calc(100% - 94px)}
 .scrim.acc .panel .ou{margin:0}
 .scrim.acc .panel .fze,.scrim.acc .panel .fzr{font-size:13.5px}
 }
-@media (max-width:599px) and (max-height:700px){
+@media (max-width:599px){
 .scrim.acc .panel{gap:6px;padding:10px 14px 12px}
 .scrim.acc .panel .field{height:38px}
 .scrim.acc .panel .btn,.scrim.acc .panel .gbtn{min-height:40px}
@@ -1038,7 +1051,7 @@ html[data-zi="0"] #rosto.pop .fac1 .go{min-height:calc(50px*var(--k))}
 }
 /*/PISO-TEXTO*/
 /*CARD-ESTREITO*/
-@media (max-width:380px){.card .tg{padding:3px 6px;left:6px;top:6px}.card .fav{width:30px;height:30px;right:5px;top:5px}.card .stk{left:5px;bottom:5px;padding:3px 6px}}
+@media (max-width:0px){.card .tg{padding:3px 6px;left:6px;top:6px}.card .fav{width:30px;height:30px;right:5px;top:5px}.card .stk{left:5px;bottom:5px;padding:3px 6px}}
 /*/CARD-ESTREITO*/
 /*CABECALHO-FLUIDO*/
 @media (min-width:1100px){
@@ -1154,7 +1167,7 @@ html .scrim.pg:not(.acc) .panel.cartp{width:min(1100px,100%)}
 .cs-b{margin-top:6px}
 .cs-c{background:transparent;border:1.5px solid var(--ln2);border-radius:14px;height:46px;color:var(--tx);font:600 15px Inter,system-ui,sans-serif;cursor:pointer;margin-top:6px}
 .cs-n{text-align:center;color:var(--mu);font-size:13px;margin-top:6px}
-@media (max-width:760px){
+@media (max-width:899px){
 .cgr{grid-template-columns:1fr;margin-top:12px}
 .ci{grid-template-columns:88px 1fr;gap:12px;padding:12px}.cit b{font-size:17px}.cit{padding-right:26px}
 .crm{position:absolute;right:10px;top:10px;width:26px;height:26px;border:0;background:color-mix(in srgb,var(--tx) 7%,transparent)}.crt{display:none}.crx{display:block}
@@ -1208,17 +1221,17 @@ html .scrim.pg.acc.auth .panel{background:none;border:0;box-shadow:none;width:mi
 .crl{background:none;border:0;padding:0;color:var(--mu);font:500 13px Inter,system-ui,sans-serif;text-decoration:underline;cursor:pointer}
 @media (hover:hover){.crl:hover{color:var(--ac)}}
 .ci .crm{display:none}
-@media (max-width:760px){
+@media (max-width:899px){
 .ci{grid-template-columns:78px minmax(0,1fr) auto;grid-template-areas:"img cit cit" "img cia cis";column-gap:12px;row-gap:10px;align-items:start;padding:12px}
 .ci .cimg{align-self:start}.ci .cit{align-self:start;padding-right:30px}.ci .cia{margin:0;align-self:end}.ci .crl{display:none}
 .ci .cis{padding:0;align-self:end}.ci .cis .pr{font-size:19px}.ci .cis small{font-size:10px}
 .ci .crm{display:flex}}
 /*CARRINHO-A2*/
-@media (max-width:760px){.ci .cimg{grid-row:1/3;align-self:center;width:78px;height:78px;aspect-ratio:auto}.cs-b{font-size:14px!important;line-height:1.15;padding:0 8px!important}}
+@media (max-width:899px){.ci .cimg{grid-row:1/3;align-self:center;width:78px;height:78px;aspect-ratio:auto}.cs-b{font-size:14px!important;line-height:1.15;padding:0 8px!important}}
 /*AJUSTES-3*/
 .card .av{display:none}
 .pgm .bb.p{min-height:50px;max-width:360px;font-size:15px;padding:0 7px 0 22px}.pgm .bb em{width:36px;height:36px}.pgm .bb em svg{width:20px;height:20px}
-@media (max-width:760px){.pgm .bb.p{max-width:none;min-height:48px}}
+@media (max-width:899px){.pgm .bb.p{max-width:none;min-height:48px}}
 .cadb{width:min(500px,100%);padding:34px 30px 28px;gap:14px;border-radius:30px}
 .cadk{width:84px;height:84px}.cadi{width:84px;height:84px}.cadt b{font-size:18px}.cadt span{font-size:16px}.cadb h3{font-size:30px;margin:4px 0 6px}
 .cadb .btn.w{height:56px;font-size:16px}.cadb .cs-c{height:52px;font-size:16px}
@@ -1460,7 +1473,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
 
 <div id="intro" aria-hidden="true"><div class="ilogo"><i class="la"></i><i class="lb"></i><i class="lc"></i></div></div>
 <script>try{if(localStorage.getItem("lf_intro2")==="1")document.getElementById("intro").remove()}catch(_){}</script>
-<script>/*ESCALA-FLUIDA*/window.LFK=function(){var w=innerWidth,h=innerHeight,pc=matchMedia("(min-width:1100px)").matches,k=1;if(pc)k=1;else if(Math.min(w,h)>=600)k=Math.max(1,Math.min(1.2,Math.min(w,h)/560));return +k.toFixed(3)};window.LFZ=function(i){var pc=matchMedia("(min-width:1100px)").matches,b=(pc?[.8,.9,1]:[1,1.12,1.25])[i]||1;return +(b*LFK()).toFixed(3)};try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=LFZ(_i)||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}document.body.style.setProperty("--kz",LFK());}catch(_){}</script>
+<script>/*ESCALA-FLUIDA*/window.LFK=function(){var w=innerWidth,h=innerHeight,pc=matchMedia("(min-width:1100px)").matches,k=1;if(pc)k=1;else if(w<600){k=Math.max(.8,Math.min(1.4,w/406));if(Math.abs(w-406)<=3)k=1;k=Math.round(k*100)/100}else if(Math.min(w,h)>=600)k=Math.max(1,Math.min(1.2,Math.min(w,h)/560));return +k.toFixed(3)};window.LFZ=function(i){var pc=matchMedia("(min-width:1100px)").matches,b=(pc?[.8,.9,1]:[1,1.12,1.25])[i]||1;return +(b*LFK()).toFixed(3)};try{var _pc=matchMedia("(min-width:1100px)").matches,_s=localStorage.getItem("lf_zoom"),_i=_s==null?0:+_s||0,_z=LFZ(_i)||1;document.documentElement.setAttribute("data-zi",_i);if(_z>1)document.documentElement.classList.add("zl");if(_z!=1){document.body.style.zoom=_z;document.body.style.setProperty("--z",_z)}document.body.style.setProperty("--kz",LFK());}catch(_){}</script>
 <main id="topo">
 <div class="wrap">
 
