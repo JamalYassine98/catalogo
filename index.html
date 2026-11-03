@@ -3159,7 +3159,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
   matchMedia('(min-width:600px)').addEventListener('change',placeCbl);
   function cotLine(){var el=document.getElementById('cbl'),c=CFG.cotacao;if(!el||!c||!(c.brl>0))return;var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')};el.textContent='US$ 1 = Gs. '+th(c.usd)+(c.usd>0?'  ·  R$ '+(c.rpu>0?c.rpu:c.usd/c.brl).toFixed(2).replace('.',','):'');el.hidden=false}
   function applyCot(){var th=function(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')},c=CFG.cotacao,el=document.getElementById('cambio');if(!c||!(c.brl>0))return;var ch=window.LF_RATE()!==c.brl;window.LF_RATE(c.brl);
-    if(el){var d=c.ts?new Date(c.ts):null,dd=d?('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2):'';el.innerHTML='<b>'+LFI.tr('Câmbio da loja')+'</b><br>US$ 1 = Gs. '+th(c.usd)+' · R$ 1 = Gs. '+th(c.brl)+(dd?'<br><small>'+LFI.tr('atualizado em')+' '+dd+'</small>':'');el.hidden=false}
+    if(el){el.innerHTML='<b>'+LFI.tr('Câmbio da loja')+'</b><br>US$ 1 = Gs. '+th(c.usd)+' · R$ 1 = Gs. '+th(c.brl);el.hidden=false}
     cotLine();if(ch&&typeof redraw==='function')redraw()}
   function manut(){
     var m=document.getElementById('manut'),ab=document.getElementById('admb');
