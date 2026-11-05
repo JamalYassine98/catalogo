@@ -370,7 +370,7 @@ function edit(ref){
   if($('inv'))$('inv').onclick=function(){try{window.parent.postMessage({lfAbrir:p.ref},'*')}catch(_){}};
   $('cc').onclick=function(){closeSheet()};$('sv').onclick=save;if(!p.lib)$('del').onclick=del}
 
-addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;background:#fff':'';return}if(e.data.lfEdit)edit(e.data.lfEdit)});
+addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;background:#fff':'';return}if(e.data.lfEdit)edit(e.data.lfEdit);if(e.data.lfPorNoAr&&!isOn()){saveCfg({ativo:true,aviso:$('avs').value.trim()}).then(function(){say('Site no ar.');var f=$('pvf');if(f&&!$('cli').hidden)f.src='index.html?cliente=1&p='+Date.now();reloadCat()}).catch(function(){say('Não consegui pôr no ar.')})}});
 function save(){
   var old=S.cur;if(!old)return;
   var o={oculto:!$('f_ocu').classList.contains('on'),fixo:$('f_fix').classList.contains('on')};
