@@ -86,6 +86,13 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
 @keyframes ckp{from{transform:scale(0)}to{transform:scale(1)}}
 .sheet{overscroll-behavior:contain}.grab{transition:background .2s}
 .ghb{border:1px dashed var(--ac);border-radius:14px;padding:12px;margin-top:6px}.vrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--ln)}.vrow .g{min-width:0;word-break:break-all}.btn.sm2{min-height:36px;padding:0 12px;font-size:13px}.btn.dg{color:var(--bad);border-color:var(--bad)}.pbar{height:8px;border-radius:99px;background:var(--s2);margin:8px 0;overflow:hidden}.pbar i{display:block;height:100%;width:40%;background:var(--gl);border-radius:99px;animation:pbm 1.2s ease-in-out infinite}@keyframes pbm{0%{margin-left:-40%}100%{margin-left:100%}}.lk{background:none;border:0;color:var(--mu);font-size:12px;text-decoration:underline;margin-top:10px;padding:4px 0}.pk .gx{position:absolute;left:6px;top:6px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.72);color:#fff;font:700 12px/22px system-ui;text-align:center;z-index:2}
+/* setinha que recolhe o painel (só no computador): o site fica no tamanho real */
+#pnTog{display:none}
+@media (min-width:1000px){#wrap{transition:grid-template-columns .42s cubic-bezier(.2,.8,.2,1)}#main{min-width:0;overflow:auto}#wrap.pfech{grid-template-columns:minmax(380px,1fr) 0px}#wrap.pfech #main{overflow:hidden}#wrap.pfech #shell,#wrap.pnAnim #shell{min-width:520px}#wrap.pnAnim #main{overflow:hidden}
+#pnTog{position:fixed;top:50%;right:520px;z-index:60;width:28px;height:64px;margin:-32px -14px 0 0;border-radius:14px;border:1px solid var(--ln);background:var(--s1,#1d1520);color:var(--tx);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:right .42s cubic-bezier(.2,.8,.2,1),background .2s,margin .42s}
+#pnTog.on{display:flex}#pnTog:hover{background:var(--ac)}#pnTog svg{width:16px;height:16px;transition:transform .42s cubic-bezier(.2,.8,.2,1)}
+#wrap.pfech~#pnTog{right:0;margin-right:6px}#wrap.pfech~#pnTog svg{transform:rotate(180deg)}}
+@media (min-width:1000px) and (prefers-reduced-motion:reduce){#wrap,#pnTog,#pnTog svg{transition:none}}
 </style></head><body><div id="msg" hidden></div>
 <div id="wrap">
 <div id="dpv" hidden><iframe id="pvd" title="Site do cliente"></iframe></div>
@@ -116,6 +123,7 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
  <nav class="bn" aria-label="Painel"><button class="on" data-v="vit" type="button"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Vitrine</button><button data-v="prod" type="button"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Produtos</button><button data-v="cfg" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2L10 21h4l.6-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>Configurar</button></nav>
 </div></div></div>
 <div id="sh" hidden></div>
+<button type="button" id="pnTog" aria-label="Recolher o painel e ver o site inteiro" title="Recolher o painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
 <div id="cli" hidden><iframe id="pvf" title="Site do cliente"></iframe></div>
 <script>
 
@@ -390,7 +398,12 @@ function del(){var b=$('del');if(!S.delArm){S.delArm=true;b.textContent='Toque d
   api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){delete S.fotos[ref];closeSheet();reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})}
 $('lf').onsubmit=function(e){e.preventDefault();signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
-function start(){ghCfg();$('c_gh').onclick=ghClick;$('login').hidden=true;$('lock').hidden=true;$('shell').hidden=false;if(W()){$('dpv').hidden=false;$('pvd').src='index.html?p='+Date.now()}go('vit');load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
+/* recolher o painel (lembra neste computador) */
+function pnSet(f){var w=$('wrap'),b=$('pnTog');if(!w||!b)return;w.classList.toggle('pfech',f);var t=f?'Mostrar o painel':'Recolher o painel e ver o site inteiro';b.setAttribute('aria-label',t);b.title=f?'Mostrar o painel':'Recolher o painel';b.setAttribute('aria-expanded',f?'false':'true');try{localStorage.setItem('lf_pfech',f?'1':'')}catch(_){}}
+function pnIni(){var b=$('pnTog');if(!b||b._ok)return;b._ok=1;b.classList.add('on');var f=false;try{f=localStorage.getItem('lf_pfech')==='1'}catch(_){}
+  if(f){var w=$('wrap');w.style.transition='none';pnSet(true);void w.offsetWidth;w.style.transition=''}
+  b.onclick=function(){var w=$('wrap');w.classList.add('pnAnim');clearTimeout(w._pa);w._pa=setTimeout(function(){w.classList.remove('pnAnim')},480);pnSet(!w.classList.contains('pfech'))}}
+function start(){ghCfg();$('c_gh').onclick=ghClick;$('login').hidden=true;$('lock').hidden=true;$('shell').hidden=false;if(W()){$('dpv').hidden=false;$('pvd').src='index.html?p='+Date.now();pnIni()}go('vit');load().then(function(){var q=new URLSearchParams(location.search).get('edit');if(q)edit(q)}).catch(function(){say('Não consegui carregar os dados.',1)})}
 /* tela cheia: só quando o painel está dentro do app (o app amplia o quadro) */
 (function(){var framed=false;try{framed=window.parent!==window}catch(_){}if(!framed)return;var full=false;
   Array.prototype.forEach.call(document.querySelectorAll('.fsb'),function(b){b.hidden=false;b.onclick=function(){full=!full;
