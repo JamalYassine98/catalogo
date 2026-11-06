@@ -37,7 +37,11 @@ def pagina(ref, nome, esg):
             '<body><p><a href="/?ref=%s">Ver %s na La Fouch</a></p></body></html>') % (t, desc, t, desc, url, img, ref, ref, html.escape(nome))
 
 def foto(dataurl, destino):
-    im = Image.open(io.BytesIO(base64.b64decode(dataurl.split(',', 1)[1]))).convert('RGBA')
+    # foto embutida (data:) ou arquivo do próprio site (/media/i/…: o site deixou de embutir as imagens)
+    if dataurl.startswith('/'):
+        im = Image.open(os.path.join(RAIZ, dataurl.lstrip('/'))).convert('RGBA')
+    else:
+        im = Image.open(io.BytesIO(base64.b64decode(dataurl.split(',', 1)[1]))).convert('RGBA')
     fundo = Image.new('RGB', (1200, 630), (255, 255, 255))
     im.thumbnail((1100, 580))
     fundo.paste(im, ((1200 - im.width) // 2, (630 - im.height) // 2), im)
@@ -77,7 +81,7 @@ def main():
     for ch in src.split("{ref:'")[1:]:
         ch = ch.split("{ref:'")[0]
         m = re.match(r"([A-Za-z0-9_-]+)'", ch)
-        n = re.search(r"nome:'([^']+)'", ch); f = re.search(r"foto:'(data:image/[^']+)'", ch); av = re.search(r"aviso:'([^']*)'", ch)
+        n = re.search(r"nome:'([^']+)'", ch); f = re.search(r"foto:'(data:image/[^']+|/media/i/[^']+)'", ch); av = re.search(r"aviso:'([^']*)'", ch)
         if not (m and n and f) or m.group(1) in vivos: continue
         ref = m.group(1); c = fs.get(ref, {})
         if c.get('oculto'): continue
