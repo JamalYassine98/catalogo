@@ -71,7 +71,7 @@ html body .hero h1,html body .hero p{text-align:left!important;max-width:none!im
 }
 </style>
 </head><body>
-<script>(function(){var B='1794058368';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
+<script>(function(){var B='1794058697';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1687,6 +1687,24 @@ html[data-ev] #home #hdst .hdots button.on{background:#ffffff44!important}html[d
 html[data-ev=anonovo-d] #home #hdst .hdots button.on{background:#c9a86a44!important}html[data-ev=anonovo-d] #home #hdst .hdots button.on::after{background:#a8854a}
 @media (hover:hover){#hdst:hover .hdots button.on::after,#hdst:hover .hdi img{animation-play-state:paused}}
 @media (prefers-reduced-motion:reduce){#hdst .hdi img,#hdst .hdots button.on::after{animation:none}#hdst .hdots button.on::after{transform:none}}
+
+/* v452 bugs: cabeçalho sempre visível na página da peça e na conta (e o carrinho para onde a peça voa) */
+html.v5:has(#layer .scrim.pg) .top{position:fixed!important;top:0;left:0;right:0;z-index:35!important}
+html.v5 #layer .scrim.pg{top:var(--hth,64px)!important}
+/* rodapé: nome da marca em texto no lugar do segundo logo */
+.lfft .fbr{font-family:var(--display);font-size:24px;color:var(--tx);margin:0 0 2px;letter-spacing:.01em}
+html[data-ev=natal] .lfft .fbr,html[data-ev=bf] .lfft .fbr,html[data-ev=anonovo-n] .lfft .fbr,html[data-ev=halloween] .lfft .fbr{color:#fff}
+@media(max-width:700px){.lfft .in>div:first-child{text-align:center}}
+/* aquecimento da Black Friday */
+.hbfq{position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(135deg,#0b0b0b,#1c1c1c);color:#fff;padding:38px 40px;text-align:center}
+.hbfq .hlb{color:#ff3b5c;letter-spacing:.16em;font-size:12px;font-weight:700}
+.hbfq h1{font-family:var(--display);font-weight:500;font-size:46px;margin:10px 0 6px}.hbfq h1 em{color:#ff3b5c!important}
+.hbfq p{color:#fffc;margin:0 0 20px}
+.hbfq .bq{display:flex;justify-content:center;gap:10px;margin:0 0 24px}
+.hbfq .bq div{min-width:74px;border:1px solid #ffffff2e;background:#ffffff0d;border-radius:14px;padding:12px 8px}.hbfq .bq b{display:block;font:800 34px var(--body);font-variant-numeric:tabular-nums}.hbfq .bq small{font-size:11px;letter-spacing:.1em;opacity:.7}
+.hbfq button{border:0;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;background:#e11d48;color:#fff}
+html.bfq #evbar{display:block;background:#000;color:#fff}
+@media(max-width:700px){.hbfq{padding:26px 18px;border-radius:20px}.hbfq h1{font-size:34px}.hbfq .bq{gap:6px}.hbfq .bq div{min-width:0;flex:1}.hbfq .bq b{font-size:26px}}
 /* v452: uma lupa só (a do cabeçalho); no catálogo a busca ativa vira etiqueta */
 html.v5 #vscr .mobsearch>label.search{display:none!important}
 html.v5 #vscr .mobsearch{display:flex!important;justify-content:flex-end;gap:10px}
@@ -2066,6 +2084,7 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
 "Faltam":"Faltan",
 "DIAS":"DÍAS",
 "Ideal para o seu rosto":"Ideal para tu rostro",
+"PREPARE-SE":"PREPARATE","Começa em":"Empieza en","começa em":"empieza en","SEG":"SEG","Me avise quando começar":"Avisame cuando empiece",
 "Limpar busca":"Borrar búsqueda","resultado":"resultado",
 "A oferta termina em":"La oferta termina en",
 "Inclui estojo e flanela":"Incluye estuche y franela",
@@ -2352,7 +2371,6 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
     var sr=null;if(src&&src.getBoundingClientRect){sr=src.getBoundingClientRect();if(!sr.width)sr=null}
     var d0=sr?520:0,D=function(el,k,o){return el.animate(k,Object.assign({fill:'both'},o))};
     ft._anim=true;ft.style.overflow='visible';
-    D(ft,[{width:'0px',minWidth:'0px',marginLeft:(-gap)+'px',borderWidth:'0px'},{width:w+'px',minWidth:w+'px',marginLeft:'0px',borderWidth:'1px'}],{duration:700,delay:Math.max(0,d0-220),easing:E});
     var fillT=d0+700;
     D(ft,[{opacity:0,transform:'scale(.3)'},{opacity:1,transform:'scale(1.18)',offset:.55},{opacity:1,transform:'scale(.97)',offset:.8},{opacity:1,transform:'none'}],{duration:480,delay:d0-40,easing:'ease-out'});
     pa.setAttribute('pathLength','1');pa.style.strokeDasharray='1';
@@ -2378,7 +2396,6 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
     D(sv,[{fill:'rgba(0,0,0,0)'},{fill:ac},{fill:ac,offset:.5},{fill:'rgba(0,0,0,0)'}],{duration:700});
     D(pa,[{strokeDashoffset:0,stroke:ac},{strokeDashoffset:0,stroke:ac,offset:.4},{strokeDashoffset:1,stroke:ac}],{duration:700});
     D(ft,[{opacity:1,transform:'none'},{opacity:1,transform:'scale(1.08)',offset:.2},{opacity:0,transform:'translateY(26px) rotate(-22deg) scale(.2)'}],{duration:620,delay:380,easing:'ease-in'});
-    D(ft,[{width:w+'px',minWidth:w+'px',marginLeft:'0px',borderWidth:'1px'},{width:'0px',minWidth:'0px',marginLeft:(-gap)+'px',borderWidth:'0px'}],{duration:620,delay:560,easing:'cubic-bezier(.4,0,.2,1)'});
     setTimeout(function(){if(ft._anim){favCancel(ft);ft.hidden=Object.keys(st.fav).length===0}},1250);
   }
   function favMais(ft,src,nOld,nNew){
@@ -3567,7 +3584,7 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
       (m==='em'?'<input type="email" id="hnem" placeholder="'+LFI.tr('Seu e-mail')+'" autocomplete="email" aria-label="'+LFI.tr('Seu e-mail')+'"><button type="button" class="nb" data-news="em">'+LFI.tr('Quero receber')+'</button><div class="nc">'+LFI.tr('Ao se inscrever, você aceita receber e-mails da La Fouch.')+'</div>'
         :'<button type="button" class="nb" data-news="wa">'+LFI.tr('Quero receber pelo WhatsApp')+'</button><div class="nc">'+LFI.tr('Abre o WhatsApp com a mensagem pronta. Você só aperta enviar.')+'</div>')}
   function rodape5(){var es=LFI.lang==='es',ig=(typeof SOCIAL!=='undefined'&&SOCIAL.ig)||'';
-    return '<div class="lfft"><div class="in"><div><div class="flg" role="img" aria-label="La Fouch"></div><p>'+LFI.tr('Tudo em óculos')+' · Ciudad del Este</p><p>Galeria Jebai Center, 3° piso, torre A, n°2242</p><p>'+LFI.tr('Segunda a sábado, das 7h30 às 15h')+'</p><p><a class="mp" href="https://maps.app.goo.gl/zy6c1ZFq4gQhxWXC8" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">'+LFI.tr('Como chegar')+' ›</a></p></div>'+
+    return '<div class="lfft"><div class="in"><div><p class="fbr">La Fouch</p><p>'+LFI.tr('Tudo em óculos')+' · Ciudad del Este</p><p>Galeria Jebai Center, 3° piso, torre A, n°2242</p><p>'+LFI.tr('Segunda a sábado, das 7h30 às 15h')+'</p><p><a class="mp" href="https://maps.app.goo.gl/zy6c1ZFq4gQhxWXC8" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">'+LFI.tr('Como chegar')+' ›</a></p></div>'+
       '<div><b>'+LFI.tr('Comprar')+'</b><p><a href="#vitrine" data-mf="tipo:solar">'+LFI.tr('De sol')+'</a></p><p><a href="#vitrine" data-mf="tipo:grau">'+LFI.tr('De grau')+'</a></p><p><a href="#vitrine" data-mf="tipo:armacao">'+LFI.tr('Armações')+'</a></p><p><a href="#vitrine" data-mf="tipo:of">'+LFI.tr('Ofertas')+'</a></p><p><a href="#atacado">'+LFI.tr('Atacado')+'</a></p></div>'+
       '<div><b>'+LFI.tr('Ajuda')+'</b><p><a href="#como">'+LFI.tr('Como comprar')+'</a></p><p><a href="#como">'+LFI.tr('Entrega e retirada')+'</a></p><p><a href="#duvidas">'+LFI.tr('Trocas e dúvidas')+'</a></p><p><a href="#" data-guia="rosto">'+LFI.tr('Guia La Fouch')+'</a></p><p><a href="#rosto">'+LFI.tr('Qual combina com meu rosto?')+'</a></p></div>'+
       '<div><b>'+LFI.tr('Contato')+'</b><p><a href="https://wa.me/'+NUM5()+'" target="_blank" rel="noopener">WhatsApp +595 983 642 241</a></p>'+(ig?'<p><a href="'+esc(ig)+'" target="_blank" rel="noopener">Instagram</a></p>':'')+'</div></div>'+
@@ -3719,6 +3736,21 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
     idTok().then(function(tk){return fetch(fnUrl('avaliacao'),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk},body:JSON.stringify({acao:'avaliar',ref:ref,nota:V5.an||5,txt:($('prvt')||{}).value||'',cidade:($('prvc')||{}).value||''})})}).then(function(r){return r.json()}).then(function(j){
       if(!j||!j.ok)throw 0;toast(LFI.tr('Obrigado! Sua avaliação foi publicada.'));avalCarrega(ref)}).catch(function(){toast(LFI.tr('Não consegui publicar agora. Tente de novo mais tarde.'))})}
 
+
+  /* v452: altura do cabeçalho (a página da peça e a conta abrem logo abaixo dele) */
+  (function(){var f=function(){var t=document.querySelector('.top');if(t)document.documentElement.style.setProperty('--hth',Math.round(t.getBoundingClientRect().height)+'px')};f();addEventListener('resize',f);setTimeout(f,800);setTimeout(f,2500)})();
+  /* v452: aquecimento da Black Friday — contagem para o começo (o site fica normal até a hora) */
+  function bfAq(){var e=CFG.evento;if(!e||e.tema!=='bf'||!(+e.aq>0)||!(+e.ini>0))return null;var t=Date.now();return t>=+e.aq&&t<+e.ini?e:null}
+  function bfPartes(ms){var s=Math.max(0,Math.floor(ms/1000));return [Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60]}
+  function bfAqHtml(e){var q=bfPartes(+e.ini-Date.now());return '<section class="hbfq" id="hdst"><span class="hlb">'+LFI.tr('PREPARE-SE')+'</span><h1>BLACK <em>FRIDAY</em></h1><p>'+LFI.tr('Começa em')+'</p><div class="bq" data-bfq>'+[[q[0],'DIAS'],[q[1],'HORAS'],[q[2],'MIN'],[q[3],'SEG']].map(function(x){return '<div><b>'+dd(x[0])+'</b><small>'+LFI.tr(x[1])+'</small></div>'}).join('')+'</div><button type="button" data-bfav>'+LFI.tr('Me avise quando começar')+'</button></section>'}
+  var _dstHtml5=dstHtml;dstHtml=function(){var e=bfAq();return e?bfAqHtml(e):_dstHtml5()};
+  var _evAplica5=evAplica;evAplica=function(){var r=_evAplica5(),q=bfAq(),b=$('evbar');document.documentElement.classList.toggle('bfq',!!q);
+    if(q&&b){var p=bfPartes(+q.ini-Date.now()),tx='⚡ BLACK FRIDAY '+LFI.tr('começa em')+' '+(p[0]?p[0]+' d ':'')+p[1]+' h '+dd(p[2])+' min';if(b._t!==tx){b._t=tx;b.textContent=tx}}return r};
+  setInterval(function(){if(document.hidden)return;var q=bfAq(),c=document.querySelector('#home [data-bfq]');
+    if(!q){if(c||document.documentElement.classList.contains('bfq')){evAplica();homeDraw()}return}
+    if(c){var p=bfPartes(+q.ini-Date.now());c.querySelectorAll('b').forEach(function(b,i){var v=dd(p[i]);if(b.textContent!==v)b.textContent=v})}
+    var b=$('evbar');if(b){var p2=bfPartes(+q.ini-Date.now()),tx='⚡ BLACK FRIDAY '+LFI.tr('começa em')+' '+(p2[0]?p2[0]+' d ':'')+p2[1]+' h '+dd(p2[2])+' min';if(b._t!==tx){b._t=tx;b.textContent=tx}}},1000);
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-bfav]');if(!t)return;var f=$('hnf');if(f){f.scrollIntoView({behavior:'smooth',block:'center'})}});
   setTimeout(homeDraw,0);
 
   /* giro 360° (vídeo guardado no site pelo app): toca no lugar da foto; tocar de novo volta para a foto */

@@ -410,13 +410,16 @@ function drawEv(){var e=$('evb');if(!e)return;var v=S.cfg.evento||{},t=v.tema||'
   e.innerHTML='<div class="mu sm" style="margin:-2px 0 10px">A página inteira ganha as cores do evento nas datas escolhidas e volta sozinha ao normal no fim. Os preços e as ofertas continuam os do app (o evento só muda a aparência). Ano Novo: de dia branco e dourado, de noite (depois das 19h30) azul-noite.</div>'+
    '<div class="evt" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+EVN.map(function(x){return '<button type="button" class="btn '+(x[0]===t?'':'o ')+'evp" data-evt="'+x[0]+'" style="padding:8px 14px;min-height:0">'+x[1]+'</button>'}).join('')+'</div>'+
    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label>Começa<input id="evi" type="datetime-local" value="'+dtl(v.ini)+'"></label><label>Termina<input id="evf" type="datetime-local" value="'+dtl(v.fim)+'"></label></div>'+
+   '<label>Black Friday: mostrar a contagem para o começo a partir de (opcional)<input id="evaq" type="datetime-local" value="'+dtl(v.aq)+'"></label><div class="mu sm" style="margin:-6px 0 10px">Até o começo, o site fica normal com a faixa "Black Friday começa em…" e a contagem grande no destaque.</div>'+
    '<label>Título (opcional)<input id="evtt" maxlength="60" placeholder="Deixe vazio para usar o do evento" value="'+esc(v.tit||'')+'"></label><label>Subtítulo (opcional)<input id="evsb" maxlength="90" value="'+esc(v.sub||'')+'"></label><label>Faixa do topo (opcional)<input id="evbr" maxlength="90" value="'+esc(v.bar||'')+'"></label>'+
    '<div class="sm" style="margin:8px 0 10px;color:'+(on?'var(--ok)':'var(--mu)')+'">'+(t?(on?'● Ligado agora no site':'○ Agendado / fora das datas'):'Sem evento: o site fica normal.')+(t==='bf'?' · Black Friday mostra a contagem até o fim.':'')+'</div>'+
    '<button class="btn w" id="evs" type="button">Salvar evento</button>';
   e.querySelectorAll('[data-evt]').forEach(function(b){b.onclick=function(){e.querySelectorAll('[data-evt]').forEach(function(x){x.classList.toggle('o',x!==b)});e._t=b.getAttribute('data-evt')}});e._t=t;
   $('evs').onclick=function(){var tt=e._t||'',pi=$('evi').value,pf=$('evf').value,ini=pi?new Date(pi).getTime():0,fim=pf?new Date(pf).getTime():0;
     if(tt&&fim&&ini&&fim<=ini){say('O fim precisa ser depois do começo.',1);return}
-    var ev=tt?{tema:tt,ini:ini,fim:fim,tit:$('evtt').value.trim(),sub:$('evsb').value.trim(),bar:$('evbr').value.trim()}:null;
+    var pq=($('evaq')||{}).value||'',aq=pq?new Date(pq).getTime():0;
+    if(tt==='bf'&&aq&&(!ini||aq>=ini)){say('A contagem precisa começar antes do início da Black Friday.',1);return}
+    var ev=tt?{tema:tt,ini:ini,fim:fim,aq:tt==='bf'?aq:0,tit:$('evtt').value.trim(),sub:$('evsb').value.trim(),bar:$('evbr').value.trim()}:null;
     put('config/site',{evento:ev},['evento']).then(function(){S.cfg.evento=ev;drawEv();reloadCat();say(ev?'Evento salvo.':'Evento desligado.')}).catch(function(x){say(x.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}}
 var ACC=[['ACC-ESTOJO','Estojo rígido La Fouch',35000],['ACC-FLANELA','Flanela de microfibra',10000]];
 function drawAcc(){var e=$('accb');if(!e)return;var br=S.cfg.brinde!==false,by={};S.prods.forEach(function(p){by[p.ref]=p});
