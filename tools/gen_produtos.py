@@ -21,9 +21,9 @@ def val(v):
 def campos(d):
     return {k: val(v) for k, v in (d.get('fields') or {}).items()}
 
-def pagina(ref, nome, esg):
+def pagina(ref, nome, esg, temfoto=True):
     url = 'https://lafouch.com/p/%s.html' % ref
-    img = 'https://lafouch.com/p/%s.jpg' % ref
+    img = ('https://lafouch.com/p/%s.jpg' % ref) if temfoto else 'https://lafouch.com/icon-512.png'
     t = html.escape('%s (%s) · La Fouch' % (nome, ref))
     desc = html.escape(('Esgotado. Avise-me quando chegar. ' if esg else 'Reserve pelo WhatsApp e retire na loja. ') + 'La Fouch · Tudo em Óculos')
     return ('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
@@ -38,14 +38,24 @@ def pagina(ref, nome, esg):
 
 def foto(dataurl, destino):
     # foto embutida (data:) ou arquivo do próprio site (/media/i/…: o site deixou de embutir as imagens)
-    if dataurl.startswith('/'):
-        im = Image.open(os.path.join(RAIZ, dataurl.lstrip('/'))).convert('RGBA')
-    else:
-        im = Image.open(io.BytesIO(base64.b64decode(dataurl.split(',', 1)[1]))).convert('RGBA')
+    # Desenho (SVG) ou foto que não abre: devolve False e a página sai sem imagem própria (não derruba o robô).
+    try:
+        if dataurl.startswith('/'):
+            im = Image.open(os.path.join(RAIZ, dataurl.lstrip('/'))).convert('RGBA')
+        else:
+            cab, dado = dataurl.split(',', 1)
+            if 'svg' in cab or ';base64' not in cab:
+                return False
+            dado += '=' * (-len(dado) % 4)
+            im = Image.open(io.BytesIO(base64.b64decode(dado))).convert('RGBA')
+    except Exception as e:
+        print('foto ignorada:', destino, e)
+        return False
     fundo = Image.new('RGB', (1200, 630), (255, 255, 255))
     im.thumbnail((1100, 580))
     fundo.paste(im, ((1200 - im.width) // 2, (630 - im.height) // 2), im)
     fundo.save(destino, 'JPEG', quality=85, optimize=True)
+    return True
 
 def main():
     if len(sys.argv) > 2 and sys.argv[1] == '--teste':
@@ -68,8 +78,9 @@ def main():
         marca = os.path.join(SAIDA, ref + '.fv')
         fv = str(f.get('fv') or '')
         if not os.path.exists(jpg) or not os.path.exists(marca) or open(marca).read() != fv:
-            foto(fd, jpg); open(marca, 'w').write(fv)
-        novo = pagina(ref, f.get('nome') or ref, f.get('aviso') == 'Esgotado')
+            if foto(fd, jpg) or os.path.exists(jpg):
+                open(marca, 'w').write(fv)
+        novo = pagina(ref, f.get('nome') or ref, f.get('aviso') == 'Esgotado', os.path.exists(jpg))
         if not os.path.exists(pg) or open(pg, encoding='utf-8').read() != novo:
             open(pg, 'w', encoding='utf-8').write(novo)
     # produtos que já vêm dentro do próprio site (enquanto não foram publicados na vitrine)
