@@ -63,7 +63,7 @@ RT = {
   'pt': {'home': 'oculos', 'vitrine': 'catalogo', 'rosto': 'formato', 'atacado': 'atacado', 'como': 'como-comprar', 'duvidas': 'duvidas', 'p': 'p',
          't': {'solar': 'sol', 'grau': 'grau', 'armacao': 'armacoes', 'of': 'ofertas'}, 'g': {'f': 'feminino', 'm': 'masculino', 'u': 'unissex'}},
   'es': {'home': 'lentes', 'vitrine': 'tienda', 'rosto': 'tu-forma', 'atacado': 'mayorista', 'como': 'como-compro', 'duvidas': 'dudas', 'p': 'modelo',
-         't': {'solar': 'lentes-de-sol', 'grau': 'recetados', 'armacao': 'armazones', 'of': 'descuentos'}, 'g': {'f': 'mujer', 'm': 'hombre', 'u': 'unisex'}},
+         't': {'solar': 'lentes-de-sol', 'grau': 'lectura', 'armacao': 'armazones', 'of': 'descuentos'}, 'g': {'f': 'mujer', 'm': 'hombre', 'u': 'unisex'}},
 }
 TIT = {
   'pt': {'home': 'La Fouch · Tudo em Óculos', 'vitrine': 'Catálogo', 'solar': 'Óculos de sol', 'grau': 'Óculos de grau', 'armacao': 'Armações', 'of': 'Ofertas',
