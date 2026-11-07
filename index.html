@@ -71,7 +71,7 @@ html body .hero h1,html body .hero p{text-align:left!important;max-width:none!im
 }
 </style>
 </head><body>
-<script>(function(){var B='1794058697';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
+<script>(function(){var B='1794059081';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1705,6 +1705,14 @@ html[data-ev=natal] .lfft .fbr,html[data-ev=bf] .lfft .fbr,html[data-ev=anonovo-
 .hbfq button{border:0;border-radius:999px;padding:14px 26px;font-weight:700;font-size:15px;background:#e11d48;color:#fff}
 html.bfq #evbar{display:block;background:#000;color:#fff}
 @media(max-width:700px){.hbfq{padding:26px 18px;border-radius:20px}.hbfq h1{font-size:34px}.hbfq .bq{gap:6px}.hbfq .bq div{min-width:0;flex:1}.hbfq .bq b{font-size:26px}}
+
+/* v452: busca minimalista — só o campo, com a lupa dentro; ao digitar a lupa vira seta (fecha). Fecha também tocando fora ou no voltar do celular */
+#sov .sobar{padding:12px 14px!important;border-bottom:0!important}
+#sov .sofld{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:12px;background:color-mix(in srgb,var(--tx) 6%,transparent);border-radius:14px;padding:0 16px 0 12px;height:48px}
+#sov .soic{flex:none;width:30px;height:30px;border:0;background:none;padding:0;color:var(--mu);display:grid;place-items:center;border-radius:50%}
+#sov .sofld input{min-width:0;width:100%;padding:0!important;font-size:16.5px!important;background:transparent}
+#sov input::-webkit-search-cancel-button,#sov input::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none}
+#sov .sores{border-top:1px solid var(--ln)}
 /* v452: uma lupa só (a do cabeçalho); no catálogo a busca ativa vira etiqueta */
 html.v5 #vscr .mobsearch>label.search{display:none!important}
 html.v5 #vscr .mobsearch{display:flex!important;justify-content:flex-end;gap:10px}
@@ -2084,6 +2092,7 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
 "Faltam":"Faltan",
 "DIAS":"DÍAS",
 "Ideal para o seu rosto":"Ideal para tu rostro",
+"Fechar a busca":"Cerrar la búsqueda",
 "PREPARE-SE":"PREPARATE","Começa em":"Empieza en","começa em":"empieza en","SEG":"SEG","Me avise quando começar":"Avisame cuando empiece",
 "Limpar busca":"Borrar búsqueda","resultado":"resultado",
 "A oferta termina em":"La oferta termina en",
@@ -3623,23 +3632,26 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
     var bag=$('bagbtn');if(!bag||$('sbtn'))return;
     var b=document.createElement('button');b.className='ib';b.id='sbtn';b.type='button';b.setAttribute('aria-label','Buscar');b.innerHTML='<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
     var cb=$('contabtn');bag.parentNode.insertBefore(b,bag);if(cb)bag.parentNode.insertBefore(cb,bag);
+    var LUPA5='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',SETA5='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
     var o=document.createElement('div');o.id='sov';o.setAttribute('aria-hidden','true');
-    o.innerHTML='<div class="sosc" data-sox></div><div class="sopn" role="dialog" aria-modal="true" aria-label="Buscar"><div class="sobar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q5" type="search" placeholder="Buscar modelo ou código" aria-label="Buscar no catálogo" autocomplete="off" enterkeyhint="search"><button type="button" class="sox" data-sox aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="sores" id="sores"></div></div>';
+    o.innerHTML='<div class="sosc" data-sox></div><div class="sopn" role="dialog" aria-modal="true" aria-label="Buscar"><div class="sobar"><div class="sofld"><button type="button" class="soic" id="soic" tabindex="-1" aria-label="Buscar">'+LUPA5+'</button><input id="q5" type="search" placeholder="Buscar modelo ou código" aria-label="Buscar no catálogo" autocomplete="off" enterkeyhint="search"></div></div><div class="sores" id="sores"></div></div>';
     document.body.appendChild(o);
     var inp=$('q5'),res=$('sores');
     function achados(q){q=q.trim().toLowerCase();if(!q)return [];return cat5().filter(function(p){return (p.nome+' '+p.ref+' '+(p.col||'')).toLowerCase().indexOf(q)>=0}).sort(function(a,b){return (a.aviso==='Esgotado'?1:0)-(b.aviso==='Esgotado'?1:0)})}
-    function pinta(){var q=inp.value,l=achados(q);
+    function icone(){var ic=$('soic'),on=!!inp.value;if(ic._on===on)return;ic._on=on;ic.innerHTML=on?SETA5:LUPA5;ic.setAttribute('aria-label',on?LFI.tr('Fechar a busca'):LFI.tr('Buscar'));ic.tabIndex=on?0:-1}
+    function pinta(){icone();var q=inp.value,l=achados(q);
       if(!q.trim()){res.innerHTML='<div class="sohint">'+LFI.tr('Busque pelo nome ou pelo código da peça.')+'</div><div class="sochips"><button type="button" data-sq="solar">'+LFI.tr('Solar')+'</button><button type="button" data-sq="gatinho">'+LFI.tr('Gatinho')+'</button><button type="button" data-sq="redondo">'+LFI.tr('Redondo')+'</button><button type="button" data-sq="dourado">'+LFI.tr('Dourado')+'</button></div>';return}
       if(!l.length){res.innerHTML='<div class="sohint">'+LFI.tr('Nada encontrado para')+' “'+esc(q)+'”.</div>';return}
       res.innerHTML=l.slice(0,6).map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join('')+(l.length>6?'<button type="button" class="soall" data-soall>'+LFI.tr('Ver todos os')+' '+l.length+' '+LFI.tr('resultados')+'</button>':'')}
     function noCat(){var v=$('vitrine');return !!(v&&v.classList.contains('pop'))}
-    function abre(){if(noCat())inp.value=st.q||'';o.classList.add('on');o.setAttribute('aria-hidden','false');document.documentElement.classList.add('lock');pinta();setTimeout(function(){inp.focus()},40)}
-    function fecha(){o.classList.remove('on');o.setAttribute('aria-hidden','true');if(!$('layer').innerHTML.trim()&&!$('drw').classList.contains('on'))document.documentElement.classList.remove('lock')}
+    var hst=false;addEventListener('popstate',function(){if(hst&&o.classList.contains('on')){hst=false;fecha(true)}});
+    function abre(){if(noCat())inp.value=st.q||'';try{history.pushState({sov:1},'');hst=true}catch(_){}o.classList.add('on');o.setAttribute('aria-hidden','false');document.documentElement.classList.add('lock');pinta();setTimeout(function(){inp.focus()},40)}
+    function fecha(dePop){if(hst&&dePop!==true&&dePop!=='todos'){hst=false;try{history.back()}catch(_){}}if(dePop==='todos')hst=false;o.classList.remove('on');o.setAttribute('aria-hidden','true');if(!$('layer').innerHTML.trim()&&!$('drw').classList.contains('on'))document.documentElement.classList.remove('lock')}
     V5.sfecha=fecha;
     b.addEventListener('click',abre);inp.addEventListener('input',function(){pinta();if(noCat())setQ(inp.value)});
     inp.addEventListener('keydown',function(e){if(e.key==='Escape')fecha();if(e.key==='Enter'){e.preventDefault();todos()}});
-    function todos(){var q=inp.value;fecha();setQ(q);goTo('vitrine')}
-    o.addEventListener('click',function(e){var t=e.target.closest('[data-sox],[data-soall],[data-sq],[data-open]');if(!t)return;
+    function todos(){var q=inp.value;fecha('todos');setQ(q);goTo('vitrine')}
+    o.addEventListener('click',function(e){var ic=e.target.closest('#soic');if(ic){if(inp.value)fecha();else inp.focus();return}var t=e.target.closest('[data-sox],[data-soall],[data-sq],[data-open]');if(!t)return;
       if(t.hasAttribute('data-sox'))fecha();else if(t.hasAttribute('data-soall'))todos();else if(t.hasAttribute('data-sq')){inp.value=t.getAttribute('data-sq');pinta();inp.focus()}else fecha()});
   })();
 
