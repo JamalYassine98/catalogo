@@ -1,2 +1,7 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>La Fouch</title>
-<script>if(/^\/carrinho\/?$/.test(location.pathname)){location.replace('/?carrinho=1')}else if(/^\/conta\/?$/.test(location.pathname)){location.replace('/?conta=1')}else{var m=location.pathname.match(/^\/p\/([A-Za-z0-9_-]+)(?:\.html)?$/);location.replace(m?'/?ref='+m[1]:'/')}</script></head><body><p><a href="/">Ir para a La Fouch</a></p></body></html>
+<script>(function(){var p=location.pathname,s=location.search.replace(/^\?/,''),m;
+if(/^\/carrinho\/?$/.test(p)){location.replace('/?carrinho=1');return}
+if(/^\/conta\/?$/.test(p)){location.replace('/?conta=1');return}
+m=p.match(/^\/(?:p|modelo)\/([A-Za-z0-9_-]+)(?:\.html)?\/?$/);if(m){location.replace('/?ref='+m[1]);return}
+m=p.match(/^\/([a-z0-9-]{2,40})(?:\.html)?\/?$/i);if(m){location.replace('/?r='+m[1].toLowerCase()+(s?'&'+s:''));return}
+location.replace('/')})()</script></head><body><p><a href="/">Ir para a La Fouch</a></p></body></html>
