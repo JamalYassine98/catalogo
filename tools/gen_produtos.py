@@ -247,7 +247,9 @@ def main():
     for d in docs:
         f = campos(d); ref = f.get('ref') or d['name'].split('/')[-1]
         if f.get('oculto') or not ref.replace('-', '').replace('_', '').isalnum(): continue
-        f['ref'] = ref; prods.append(f)
+        f['ref'] = ref
+        if f.get('cat') in ('grau', 'armacao') and f.get('tipo') != 'solar': f['tipo'] = f['cat']  # categoria escolhida no painel
+        prods.append(f)
         try:
             fd = fotos.get(ref) if fotos is not None else campos(get('fotos/' + ref)).get('d')
         except Exception:
