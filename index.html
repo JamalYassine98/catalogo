@@ -71,7 +71,7 @@ html body .hero h1,html body .hero p{text-align:left!important;max-width:none!im
 }
 </style>
 </head><body>
-<script>(function(){var B='1794057406';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
+<script>(function(){var B='1794058368';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1675,6 +1675,18 @@ html[data-ev=bf] .top .ib,html[data-ev=anonovo-n] .top .ib{background:transparen
 #drw .dacc>span:last-child{display:block!important}#drw .dacc>span:last-child>*{float:none!important;position:static!important}
 #drw nav.dnv>a{font-family:var(--body)!important;font-weight:500!important}
 
+
+/* v452 (aprovado 2, 3 e 4): zoom lento na foto do destaque, bolinha com barra de progresso, prévia do giro 360° */
+@keyframes hdkb{from{transform:scale(1)}to{transform:scale(1.05)}}
+@keyframes hdpg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+#hdst .hdi img{animation:hdkb 6.2s linear forwards;transform-origin:50% 55%}
+#hdst .hdi video.hgv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+#hdst .hdots button.on{width:30px!important;background:var(--ln2)!important;position:relative;overflow:hidden}
+#hdst .hdots button.on::after{content:'';position:absolute;inset:0;border-radius:inherit;background:var(--ac);transform-origin:left;animation:hdpg 6s linear forwards}
+html[data-ev] #home #hdst .hdots button.on{background:#ffffff44!important}html[data-ev] #home #hdst .hdots button.on::after{background:#fff}
+html[data-ev=anonovo-d] #home #hdst .hdots button.on{background:#c9a86a44!important}html[data-ev=anonovo-d] #home #hdst .hdots button.on::after{background:#a8854a}
+@media (hover:hover){#hdst:hover .hdots button.on::after,#hdst:hover .hdi img{animation-play-state:paused}}
+@media (prefers-reduced-motion:reduce){#hdst .hdi img,#hdst .hdots button.on::after{animation:none}#hdst .hdots button.on::after{transform:none}}
 /* v452: uma lupa só (a do cabeçalho); no catálogo a busca ativa vira etiqueta */
 html.v5 #vscr .mobsearch>label.search{display:none!important}
 html.v5 #vscr .mobsearch{display:flex!important;justify-content:flex-end;gap:10px}
@@ -3500,7 +3512,8 @@ html.v5 .top .logo{position:relative!important;left:auto!important;transform:non
     if(!p&&!vid)return '';
     var lab=ed?(ed.lab+(e.tema==='natal'?' '+new Date().getFullYear():e.tema==='anonovo'?' '+(new Date().getFullYear()+(new Date().getMonth()===0?0:1)):'')):'DESTAQUE DA SEMANA';
     var tit=e&&e.tit?esc(e.tit):(ed?ed.h:nomeEm(p?p.nome:'')),sub=e&&e.sub?esc(e.sub):(ed?ed.sub:'');
-    var imgA=vid?'<video src="'+esc(vid)+'" autoplay muted loop playsinline></video>':img5(p);
+    var gv=p&&p.gv&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'/'+String(p.gv).replace(/^\/+/,''):'';
+    var imgA=vid?'<video src="'+esc(vid)+'" autoplay muted loop playsinline></video>':gv?img5(p)+'<video class="hgv" src="'+esc(gv)+'" autoplay muted loop playsinline disablepictureinpicture onerror="this.remove()"></video>':img5(p);
     return '<section class="hd" id="hdst"><button type="button" class="hdi" '+(p?'data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'"':'')+'>'+imgA+(p&&p.gv?'<span class="h360">↻ 360°</span>':'')+(ed&&ed.deco?'<span class="hdeco">'+ed.deco+'</span>':'')+'</button>'+
       '<div class="hdt"><span class="hlb">'+lab+'</span><h1>'+tit+'</h1>'+(sub?'<p class="hsub">'+sub+'</p>':'')+(ed&&p?'<p class="hsub" style="margin-top:6px"><b>'+esc(p.nome)+'</b></p>':'')+cdHtml(e)+
       (p?'<div class="hpr">'+prc5(p)+'</div>':'')+'<div class="hbt">'+(p?'<button type="button" class="p1" data-open="'+p.ref+'">'+LFI.tr('Ver o modelo')+'</button>':'')+'<a class="p2" href="#vitrine"'+(e&&e.tema==='bf'?' data-mf="tipo:of"':'')+'>'+LFI.tr(ed?ed.b2:'Ver catálogo')+'</a></div>'+
