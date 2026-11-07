@@ -116,6 +116,10 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
  <main class="page" id="v_cfg" hidden>
   <div><h1 class="serif">Configurar</h1><div class="mu sm">lafouch.com</div></div>
   <section class="card" id="c_cfg"><div class="row"><div class="g"><div class="serif" style="font-size:21px" id="onl">O site está no ar</div><div class="mu sm" id="onl2"></div></div><button class="tg" id="tgl" role="switch" aria-label="Ligar ou desligar o site" type="button"></button></div></section>
+  <section class="card" id="c_ev"><div class="ct">Evento do site</div><div id="evb"></div></section>
+  <section class="card" id="c_acc"><div class="ct">Estojo e flanela</div><div id="accb"></div></section>
+  <section class="card" id="c_av"><div class="ct">Avaliações dos clientes</div><div id="avb"><button class="btn o" id="avl" type="button">Ver as últimas avaliações</button></div></section>
+  <section class="card" id="c_nw"><div class="ct">Inscritos em novidades (e-mail)</div><div id="nwb"><button class="btn o" id="nwl" type="button">Ver inscritos</button></div></section>
   <section class="card"><div class="ct">Se você desligar</div><label>Mensagem que os clientes veem<input id="avs" placeholder="Voltamos já! Enquanto isso, fale com a gente pelo WhatsApp."></label><div style="display:grid;gap:10px;margin-top:12px"><button class="btn" id="svc" type="button">Salvar mensagem</button></div></section>
   <section class="card" id="c_gh"><div class="ct">GitHub (vídeo e fotos do destaque)</div><div id="ghc"></div></section>
   <section class="card"><div class="ct">Conta</div><div style="display:grid;gap:10px"><button class="btn o" id="pwb" type="button">Alterar senha</button><form id="pwf" style="display:none;gap:12px" autocomplete="off"><label>Senha atual<input id="pw0" type="password" autocomplete="current-password"></label><label>Nova senha (mínimo 6 caracteres)<input id="pw1" type="password" autocomplete="new-password"></label><label>Repetir nova senha<input id="pw2" type="password" autocomplete="new-password"></label><button class="btn" id="pws" type="submit">Salvar nova senha</button></form><button class="btn o" id="out" type="button">Sair do painel</button></div></section>
@@ -380,6 +384,7 @@ function edit(ref){
   else h+='<div class="card" style="background:var(--s2)"><div class="ct" style="margin-bottom:6px">Produto antigo do painel</div><div class="sm">Este produto não vem do app, então o preço e o estoque não são atualizados. Libere o modelo no Inventário ("Liberar para o site") e exclua este.</div></div>';
   h+='<div class="row"><div class="g"><b>Aparece no site</b><div class="mu sm">Esgotado sai sozinho depois de alguns dias</div></div><button class="tg'+(p.oculto?'':' on')+'" id="f_ocu" role="switch" aria-checked="'+(!p.oculto)+'" type="button" aria-label="Aparece no site"></button></div>'
    +'<div class="row"><div class="g"><b>Fixar no topo</b><div class="mu sm">Fica antes de todos os outros, na ordem automática</div></div><button class="tg'+(p.fixo?' on':'')+'" id="f_fix" role="switch" aria-checked="'+(!!p.fixo)+'" type="button" aria-label="Fixar no topo"></button></div>'
+   +'<label>Coleção no site (opcional)<input id="f_col" list="f_cols" maxlength="30" placeholder="Ex.: Verano, Oficina, Gatito" value="'+esc(p.col||'')+'"></label><datalist id="f_cols">'+colsExist().map(function(c){return '<option value="'+esc(c)+'">'}).join('')+'</datalist><div class="mu sm" style="margin-top:-6px">Peças com o mesmo nome formam uma coleção na página inicial (a partir de 2 peças).</div>'
    +(window.parent!==window?'<button class="btn o w" id="inv" type="button">Abrir no Inventário</button>':'')
    +'<button class="btn w" id="sv" type="button">Salvar</button><button class="btn o w" id="cc" type="button">Cancelar</button>'+(p.lib?'':'<button class="btn d w" id="del" type="button">Excluir produto</button>');
   sheet(h);
@@ -391,11 +396,56 @@ function edit(ref){
 addEventListener('message',function(e){if(e.origin!==location.origin||!e.data)return;if(e.data.lfFull!==undefined){var f=$('pvf');if(f)f.style.cssText=e.data.lfFull?'position:fixed;inset:0;width:100%;height:100%;z-index:999;border:0;background:#fff':'';return}if(e.data.lfEdit)edit(e.data.lfEdit);if(e.data.lfPorNoAr&&!isOn()){saveCfg({ativo:true,aviso:$('avs').value.trim()}).then(function(){say('Site no ar.');var f=$('pvf');if(f&&!$('cli').hidden)f.src='index.html?cliente=1&p='+Date.now();reloadCat()}).catch(function(){say('Não consegui pôr no ar.')})}});
 function save(){
   var old=S.cur;if(!old)return;
-  var o={oculto:!$('f_ocu').classList.contains('on'),fixo:$('f_fix').classList.contains('on')};
+  var o={oculto:!$('f_ocu').classList.contains('on'),fixo:$('f_fix').classList.contains('on'),col:String(($('f_col')||{}).value||'').trim().slice(0,30)};
   var b0=$('sv');b0.disabled=true;b0.classList.add('ld');S.snap=tops();if(o.fixo&&!old.fixo)S.popRef=old.ref;
-  put('produtos/'+old.ref,o,['oculto','fixo']).then(function(){var b=$('sv');if(b){b.classList.remove('ld');b.classList.add('okb')}return new Promise(function(r){setTimeout(r,RM?0:550)})}).then(function(){closeSheet();return new Promise(function(r){setTimeout(r,RM?0:340)})}).then(function(){return load()}).then(function(){reloadCat();say('Salvo.')}).catch(function(e){S.snap=null;S.popRef=null;var b=$('sv');if(b){b.disabled=false;b.classList.remove('ld','okb')}say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}
+  put('produtos/'+old.ref,o,['oculto','fixo','col']).then(function(){var b=$('sv');if(b){b.classList.remove('ld');b.classList.add('okb')}return new Promise(function(r){setTimeout(r,RM?0:550)})}).then(function(){closeSheet();return new Promise(function(r){setTimeout(r,RM?0:340)})}).then(function(){return load()}).then(function(){reloadCat();say('Salvo.')}).catch(function(e){S.snap=null;S.popRef=null;var b=$('sv');if(b){b.disabled=false;b.classList.remove('ld','okb')}say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}
 function del(){var b=$('del');if(!S.delArm){S.delArm=true;b.textContent='Toque de novo para excluir';return}var ref=S.cur.ref;
   api('DELETE','produtos/'+ref).then(function(){return api('DELETE','fotos/'+ref)}).then(load).then(function(){delete S.fotos[ref];closeSheet();reloadCat();say('Produto excluído.')}).catch(function(){say('Erro ao excluir.',1)})}
+
+/* ===== v451: coleções, evento do site, estojo e flanela, avaliações e inscritos ===== */
+function colsExist(){var m={};S.prods.forEach(function(p){var c=String(p.col||'').trim();if(c)m[c]=1});return Object.keys(m).sort()}
+var EVN=[['','Nenhum'],['natal','Natal'],['halloween','Halloween'],['bf','Black Friday'],['anonovo','Ano Novo']];
+function dtl(ms){if(!ms)return '';var d=new Date(+ms),z=function(n){return (n<10?'0':'')+n};return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+'T'+z(d.getHours())+':'+z(d.getMinutes())}
+function drawEv(){var e=$('evb');if(!e)return;var v=S.cfg.evento||{},t=v.tema||'',ag=Date.now(),on=t&&(!v.ini||ag>=v.ini)&&(!v.fim||ag<=v.fim);
+  e.innerHTML='<div class="mu sm" style="margin:-2px 0 10px">A página inteira ganha as cores do evento nas datas escolhidas e volta sozinha ao normal no fim. Os preços e as ofertas continuam os do app (o evento só muda a aparência). Ano Novo: de dia branco e dourado, de noite (depois das 19h30) azul-noite.</div>'+
+   '<div class="evt" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+EVN.map(function(x){return '<button type="button" class="btn '+(x[0]===t?'':'o ')+'evp" data-evt="'+x[0]+'" style="padding:8px 14px;min-height:0">'+x[1]+'</button>'}).join('')+'</div>'+
+   '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label>Começa<input id="evi" type="datetime-local" value="'+dtl(v.ini)+'"></label><label>Termina<input id="evf" type="datetime-local" value="'+dtl(v.fim)+'"></label></div>'+
+   '<label>Título (opcional)<input id="evtt" maxlength="60" placeholder="Deixe vazio para usar o do evento" value="'+esc(v.tit||'')+'"></label><label>Subtítulo (opcional)<input id="evsb" maxlength="90" value="'+esc(v.sub||'')+'"></label><label>Faixa do topo (opcional)<input id="evbr" maxlength="90" value="'+esc(v.bar||'')+'"></label>'+
+   '<div class="sm" style="margin:8px 0 10px;color:'+(on?'var(--ok)':'var(--mu)')+'">'+(t?(on?'● Ligado agora no site':'○ Agendado / fora das datas'):'Sem evento: o site fica normal.')+(t==='bf'?' · Black Friday mostra a contagem até o fim.':'')+'</div>'+
+   '<button class="btn w" id="evs" type="button">Salvar evento</button>';
+  e.querySelectorAll('[data-evt]').forEach(function(b){b.onclick=function(){e.querySelectorAll('[data-evt]').forEach(function(x){x.classList.toggle('o',x!==b)});e._t=b.getAttribute('data-evt')}});e._t=t;
+  $('evs').onclick=function(){var tt=e._t||'',pi=$('evi').value,pf=$('evf').value,ini=pi?new Date(pi).getTime():0,fim=pf?new Date(pf).getTime():0;
+    if(tt&&fim&&ini&&fim<=ini){say('O fim precisa ser depois do começo.',1);return}
+    var ev=tt?{tema:tt,ini:ini,fim:fim,tit:$('evtt').value.trim(),sub:$('evsb').value.trim(),bar:$('evbr').value.trim()}:null;
+    put('config/site',{evento:ev},['evento']).then(function(){S.cfg.evento=ev;drawEv();reloadCat();say(ev?'Evento salvo.':'Evento desligado.')}).catch(function(x){say(x.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}}
+var ACC=[['ACC-ESTOJO','Estojo rígido La Fouch',35000],['ACC-FLANELA','Flanela de microfibra',10000]];
+function drawAcc(){var e=$('accb');if(!e)return;var br=S.cfg.brinde!==false,by={};S.prods.forEach(function(p){by[p.ref]=p});
+  e.innerHTML='<div class="row"><div class="g"><b>Brinde em toda compra</b><div class="mu sm">Mostra "Inclui estojo e flanela" na página de cada óculos</div></div><button class="tg'+(br?' on':'')+'" id="brt" role="switch" aria-checked="'+br+'" type="button" aria-label="Brinde em toda compra"></button></div>'+
+   '<div class="mu sm" style="margin:10px 0 6px">À venda no site (aparecem em "Combina com" na página do óculos):</div>'+
+   ACC.map(function(a){var p=by[a[0]],on=!!(p&&!p.oculto);return '<div class="row" style="align-items:flex-end;gap:10px"><label class="g" style="margin:0">'+a[1]+' (Gs.)<input id="acp_'+a[0]+'" inputmode="numeric" value="'+(p?p.n:a[2])+'"></label><button class="tg'+(on?' on':'')+'" data-acc="'+a[0]+'" role="switch" aria-checked="'+on+'" type="button" aria-label="À venda: '+a[1]+'"></button></div>'}).join('')+
+   '<button class="btn w" id="accs" type="button" style="margin-top:10px">Salvar estojo e flanela</button><div class="mu sm" style="margin-top:6px">A venda do acessório chega no pedido do app; registre a venda à mão.</div>';
+  $('brt').onclick=function(){var on=this.classList.toggle('on');this.setAttribute('aria-checked',on)};
+  e.querySelectorAll('[data-acc]').forEach(function(b){b.onclick=function(){var on=b.classList.toggle('on');b.setAttribute('aria-checked',on)}});
+  $('accs').onclick=function(){var br2=$('brt').classList.contains('on');
+    var ps=ACC.map(function(a){var on=e.querySelector('[data-acc="'+a[0]+'"]').classList.contains('on'),n=parseInt(String($('acp_'+a[0]).value).replace(/\D/g,''),10)||0;
+      if(on&&!(n>0))throw new Error('preco');
+      if(!on&&!by[a[0]])return Promise.resolve();
+      return put('produtos/'+a[0],{ref:a[0],nome:a[1],tipo:'acessorio',n:n,de:0,est:999,qs:[999],cores:['#2a2d33'],cn:[''],aviso:'',tag:'ACESSÓRIO',lib:true,oculto:!on,rosto:['oval'],cad:by[a[0]]&&by[a[0]].cad||Date.now()})});
+    Promise.all(ps).then(function(){return put('config/site',{brinde:br2},['brinde'])}).then(function(){S.cfg.brinde=br2;return load()}).then(function(){reloadCat();say('Salvo.')}).catch(function(x){say(x&&x.message==='preco'?'Informe o preço.':'Erro ao salvar.',1)})}}
+var AVAL='https://southamerica-east1-'+FB.p+'.cloudfunctions.net/avaliacao',NOVI='https://southamerica-east1-'+FB.p+'.cloudfunctions.net/novidades';
+function fnPost(u,b){return fetch(u,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(S.tok||'')},body:JSON.stringify(b)}).then(function(r){return r.json().catch(function(){return {ok:false}})})}
+function avLista(){var e=$('avb');e.innerHTML='<div class="mu sm">Carregando…</div>';
+  fnPost(AVAL,{acao:'recentes'}).then(function(j){if(!j||!j.ok)throw 0;var l=j.itens||[];
+    e.innerHTML=l.length?l.map(function(a){return '<div class="row" style="align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln)"><div class="g"><b>'+'★★★★★'.slice(0,a.nota)+'</b> <span class="mu sm">'+esc(a.ref)+' · '+esc(a.nome)+(a.cidade?' · '+esc(a.cidade):'')+'</span><div class="sm">'+esc(a.txt||'(sem texto)')+'</div></div><button class="btn o" data-avh="'+esc(a.id)+'" data-avok="'+(a.ok!==false)+'" type="button" style="padding:6px 12px;min-height:0">'+(a.ok===false?'Mostrar':'Ocultar')+'</button></div>'}).join(''):'<div class="mu sm">Ainda não há avaliações. Só quem comprou (pagamento confirmado) pode avaliar.</div>'}).catch(function(){e.innerHTML='<div class="mu sm">Não consegui carregar. A função "avaliacao" precisa estar publicada (firebase deploy --only functions).</div>'})}
+$('avb').onclick=function(ev){var t=ev.target.closest('#avl,[data-avh]');if(!t)return;if(t.id==='avl'){avLista();return}
+  fnPost(AVAL,{acao:t.getAttribute('data-avok')==='true'?'ocultar':'mostrar',id:t.getAttribute('data-avh')}).then(function(j){if(!j||!j.ok)throw 0;avLista();reloadCat()}).catch(function(){say('Não consegui mudar.',1)})};
+$('nwb').onclick=function(ev){var t=ev.target.closest('#nwl,#nwc');if(!t)return;var e=$('nwb');
+  if(t.id==='nwc'){try{navigator.clipboard.writeText(S.nwl.join(', '));say('E-mails copiados.')}catch(_){say('Não consegui copiar.',1)}return}
+  e.innerHTML='<div class="mu sm">Carregando…</div>';fnPost(NOVI,{acao:'lista'}).then(function(j){if(!j||!j.ok)throw 0;S.nwl=(j.itens||[]).map(function(x){return x.email});
+    e.innerHTML='<div style="font-size:21px" class="serif">'+S.nwl.length+' inscrito'+(S.nwl.length===1?'':'s')+'</div><div class="mu sm" style="margin:4px 0 10px">Quem pediu pelo WhatsApp chega direto no WhatsApp da loja.</div>'+(S.nwl.length?'<button class="btn o" id="nwc" type="button">Copiar e-mails</button>':'')}).catch(function(){e.innerHTML='<div class="mu sm">Não consegui carregar. A função "novidades" precisa estar publicada.</div><button class="btn o" id="nwl" type="button" style="margin-top:8px">Tentar de novo</button>'})};
+var _draw5=draw;draw=function(){_draw5();try{[['evb',drawEv],['accb',drawAcc]].forEach(function(x){var e=$(x[0]);if(e&&!e._dirty&&!e.contains(document.activeElement))x[1]()})}catch(_){}};
+['evb','accb'].forEach(function(id){var e=$(id);if(!e)return;var d=function(ev){if(!ev.target.closest('#evs,#accs'))e._dirty=true};e.addEventListener('input',d);e.addEventListener('click',d)});
+['evs','accs'].forEach(function(id){document.addEventListener('click',function(ev){if(ev.target.closest('#'+id)){var b=$(id==='evs'?'evb':'accb');setTimeout(function(){b._dirty=false},50)}},true)});
 $('lf').onsubmit=function(e){e.preventDefault();signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
 /* recolher o painel (lembra neste computador) */

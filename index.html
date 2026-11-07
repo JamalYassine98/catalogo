@@ -71,7 +71,7 @@ html body .hero h1,html body .hero p{text-align:left!important;max-width:none!im
 }
 </style>
 </head><body>
-<script>(function(){var B='1794048887';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
+<script>(function(){var B='1794055734';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/p\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if(/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1454,6 +1454,226 @@ footer>.fad{grid-column:1;grid-row:2/4}footer>.fct{grid-column:2;grid-row:2}foot
 body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
 #pkok .pgwa{display:block;margin-top:10px;color:#1f9d55;font:600 13px Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;max-width:320px}
 #prevld{position:fixed;inset:0;z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg,#fcf7fa);color:var(--mu,#6f5f69);font:600 15px Inter,system-ui,sans-serif}#prevld i{width:38px;height:38px;border-radius:50%;border:4px solid var(--ln2,#e3d6de);border-top-color:var(--ac,#8d3a69);animation:pksp .9s linear infinite}
+/* ===== v451 (07/11/2026): página inicial nova, menu só no botão, busca na lupa, rodapé, eventos ===== */
+html.v5 main .wrap>section.hero{display:none!important}
+html.v5 .top .bar>.mnb{order:1!important}html.v5 .top .bar>.grow{order:2!important}html.v5 .top .bar>#sbtn{order:3!important}html.v5 .top .bar>#contabtn{order:4!important}html.v5 .top .bar>#bagbtn{order:5!important}
+html.v5 .top .nav,html.v5 .top .bar>.search,html.v5 #theme,html.v5 #lgb,html.v5 #aa,html.v5 .top .mobsearch{display:none!important}
+html.v5 .top .mnb{display:inline-flex!important}
+html.v5 .top .bar{position:relative;max-width:1240px;margin:0 auto}
+html.v5 .top .logo{position:absolute!important;left:50%;transform:translateX(-50%);margin:0!important;background-position:center!important}
+html.v5 #contabtn .lgt{display:none}
+#sbtn{display:inline-flex}
+/* busca */
+#sov{position:fixed;inset:0;z-index:10050;display:none}
+#sov.on{display:block}
+#sov .sosc{position:absolute;inset:0;background:rgba(20,10,18,.35);backdrop-filter:blur(3px);animation:sofd .25s ease}
+#sov .sopn{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);width:min(720px,calc(100% - 24px));transform:translateX(-50%);background:var(--bg);border:1px solid var(--ln);border-radius:22px;box-shadow:0 24px 60px var(--shadow);overflow:hidden;transform-origin:85% 0;animation:soin .32s cubic-bezier(.2,.8,.2,1)}
+#sov .sobar{display:flex;align-items:center;gap:10px;padding:10px 12px 10px 18px;border-bottom:1px solid var(--ln)}
+#sov .sobar svg{flex:none;color:var(--mu)}
+#sov input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:500 17px var(--body);color:var(--tx);padding:10px 0}
+#sov .sox{width:40px;height:40px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;color:var(--mu)}
+#sov .sores{max-height:min(62vh,520px);overflow:auto;padding:6px}
+#sov .sor{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:transparent;padding:8px 10px;border-radius:14px}
+#sov .sor:hover,#sov .sor:focus-visible{background:var(--pn)}
+#sov .sor .sim{width:64px;height:44px;border-radius:10px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}
+#sov .sor .sim img,#sov .sor .sim svg{width:100%;height:100%;object-fit:contain}
+#sov .sor b{display:block;font-size:15px;font-weight:600}#sov .sor small{color:var(--mu);font-size:13px}
+#sov .sor .spr{margin-left:auto;font-weight:700;white-space:nowrap;font-size:14px}
+#sov .soall{display:block;width:calc(100% - 12px);margin:4px 6px 8px;border:0;border-radius:14px;padding:13px;background:var(--ac);color:#fff;font-weight:700}
+#sov .sohint{padding:14px 16px;color:var(--mu);font-size:14px}
+#sov .sochips{display:flex;flex-wrap:wrap;gap:8px;padding:6px 10px 12px}
+#sov .sochips button{border:1px solid var(--ln);background:var(--pn);border-radius:999px;padding:7px 13px;font-size:13.5px}
+@keyframes soin{from{opacity:0;transform:translateX(-50%) translateY(-14px) scale(.96)}to{opacity:1;transform:translateX(-50%)}}
+@keyframes sofd{from{opacity:0}to{opacity:1}}
+/* menu lateral em blocos */
+#drw nav.dnv{display:block;padding:4px 18px 8px}
+#drw .dacc{display:flex!important;align-items:center;gap:12px;margin:6px 0 4px;padding:13px 14px!important;border:1px solid var(--ln);border-radius:16px;background:var(--pn);text-decoration:none}
+#drw .dacc .dav{width:42px;height:42px;border-radius:50%;background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac);display:grid;place-items:center;font-weight:800;flex:none}
+#drw .dacc b{display:block;font-size:15.5px}#drw .dacc small{color:var(--ac);font-weight:600;font-size:13px}
+#drw .dgl{display:block;letter-spacing:.14em;font-size:11px;font-weight:700;color:var(--mu);margin:16px 0 2px;text-transform:uppercase}
+#drw nav.dnv>a:not(.dacc){display:flex;justify-content:space-between;align-items:center;padding:11px 2px;border-bottom:1px solid var(--ln);font-size:16px;text-decoration:none}
+#drw nav.dnv>a:not(.dacc)::after{content:'›';color:var(--mu);font-size:18px}
+#drw nav.dnv>a.dof{color:#c0392b}
+#drw .dch{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 2px}
+#drw .dch a{border:1px solid var(--ln);background:var(--pn);border-radius:999px;padding:6px 14px;font-size:13.5px;text-decoration:none}
+/* página inicial */
+#home{max-width:1240px;margin:0 auto;padding:18px 32px 0;font-family:var(--body)}
+#home h2.h2{font-family:var(--display);font-weight:500;font-size:28px;margin:0;letter-spacing:-.01em}
+#home em{color:var(--ac);font-style:italic}
+.hsh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:38px 0 14px}
+.hsh a,.hsh button.lk{color:var(--ac);font-weight:600;font-size:14px;text-decoration:none;border:0;background:none;padding:0;white-space:nowrap}
+.hd{position:relative;display:grid;grid-template-columns:1.15fr .85fr;background:var(--pn);border:1px solid var(--ln);border-radius:24px;overflow:hidden;min-height:380px}
+.hd .hdi{position:relative;background:#fff;display:grid;place-items:center;overflow:hidden;cursor:pointer;border:0;padding:0;min-height:300px}
+.hd .hdi img,.hd .hdi svg{width:86%;max-height:330px;object-fit:contain;transition:opacity .45s,transform .6s}
+.hd .hdi video{width:100%;height:100%;object-fit:cover}
+.hd .hdi.out img{opacity:0;transform:scale(.97)}
+.hd .h360{position:absolute;right:14px;top:14px;background:#fff;border:1px solid var(--ln);border-radius:999px;padding:6px 12px;font:600 12px var(--body);color:var(--ac);display:flex;gap:6px;align-items:center}
+.hd .hdeco{position:absolute;left:16px;top:12px;font-size:28px}
+.hd .hdt{padding:40px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(160deg,color-mix(in srgb,var(--ac) 6%,var(--pn)),var(--pn))}
+.hd .hlb{letter-spacing:.14em;font-size:11.5px;font-weight:700;color:var(--ac)}
+.hd h1{font-family:var(--display);font-weight:500;font-size:40px;line-height:1.08;margin:10px 0 8px}
+.hd .hsub{color:var(--mu);font-size:15px;margin:0 0 6px}
+.hd .hpr{font-size:24px;font-weight:700;margin:8px 0 18px}.hd .hpr s{color:var(--mu);font-size:16px;font-weight:500;margin-right:8px}
+.hd .hbt{display:flex;gap:10px;flex-wrap:wrap}
+.hd .hbt button,.hd .hbt a{padding:13px 22px;border-radius:999px;font-weight:700;font-size:14.5px;text-decoration:none;border:1.5px solid var(--ac)}
+.hd .hbt .p1{background:var(--ac);color:#fff}.hd .hbt .p2{background:transparent;color:var(--ac)}
+.hd .hth{display:flex;gap:8px;margin-top:18px}
+.hd .hth button{width:64px;height:46px;border-radius:12px;border:1px solid var(--ln);background:#fff;overflow:hidden;padding:2px}
+.hd .hth button.on{border:2px solid var(--ac)}.hd .hth img,.hd .hth svg{width:100%;height:100%;object-fit:contain}
+.hd .hdots{display:flex;gap:6px;margin-top:18px}.hd .hdots button{width:8px;height:8px;border-radius:8px;border:0;padding:0;background:var(--ln2)}.hd .hdots button.on{width:22px;background:var(--ac)}
+.hcd{display:flex;gap:8px;margin:2px 0 16px}.hcd div{border:1px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:12px;padding:8px 10px;text-align:center;min-width:58px}.hcd b{display:block;font:700 22px var(--body)}.hcd small{font-size:10.5px;letter-spacing:.08em;opacity:.75}
+.htr{display:flex;justify-content:center;gap:28px;margin:16px 0 0;font-size:13px;color:var(--mu);flex-wrap:wrap}.htr span{display:flex;align-items:center;gap:6px}.htr b{color:var(--ac);font-weight:600}
+.hcat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.hcat a{display:block;border-radius:18px;overflow:hidden;background:var(--pn);border:1px solid var(--ln);text-decoration:none}
+.hcat .hci{background:#fff;aspect-ratio:16/8;display:grid;place-items:center;overflow:hidden}.hcat .hci img,.hcat .hci svg{width:80%;height:90%;object-fit:contain}
+.hcat span{display:block;padding:10px 16px 14px;font-family:var(--display);font-size:22px}.hcat small{display:block;font-family:var(--body);font-size:12px;color:var(--ac);font-weight:600}
+.hcol{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:16px}
+.hcol a{position:relative;display:block;border-radius:20px;overflow:hidden;aspect-ratio:3/4;background:#fff;border:1px solid var(--ln);text-decoration:none;color:#2a1f27}
+.hcol img{position:absolute;top:18%;left:50%;width:110%;transform:translateX(-50%)}
+.hcol .cx{position:absolute;left:0;right:0;bottom:0;padding:22px 16px 14px;background:linear-gradient(#fff0,#ffffffee 45%)}.hcol b{font-family:var(--display);font-weight:500;font-size:23px;display:block}.hcol small{color:#6b5a66;font-size:12.5px}
+.hros{display:flex;align-items:center;gap:14px;border:1px solid var(--ln);border-radius:18px;background:linear-gradient(120deg,color-mix(in srgb,var(--ac) 8%,var(--pn)),var(--pn));padding:16px 20px;margin:34px 0 12px;flex-wrap:wrap}
+.hros b{font-family:var(--display);font-weight:500;font-size:20px}.hros small{display:block;color:var(--mu);font-size:13px}.hros a{margin-left:auto;color:var(--ac);font-weight:600;font-size:14px;text-decoration:none}
+.htabs{display:flex;gap:22px;border-bottom:1px solid var(--ln);margin:38px 0 16px;align-items:flex-end}
+.htabs button{border:0;background:none;padding:0 0 10px;font-family:var(--display);font-size:24px;color:var(--mu);border-bottom:2px solid transparent;margin-bottom:-1px}
+.htabs button.on{color:var(--tx);border-color:var(--ac)}
+.htabs a{margin-left:auto;color:var(--ac);font-weight:600;font-size:14px;align-self:center;text-decoration:none}
+.hg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.hc{display:block;width:100%;text-align:left;background:var(--pn);border:1px solid var(--ln);border-radius:16px;overflow:hidden;padding:0;position:relative;color:inherit}
+.hc .hci{background:#fff;aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}.hc .hci img,.hc .hci svg{width:100%;height:100%;object-fit:cover;transform:scale(1.08)}
+.hc .hb{position:absolute;left:10px;top:10px;background:var(--ac);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;letter-spacing:.02em;z-index:1}
+.hc .hb.of{background:#c0392b}.hc .hb.esg{background:#6b6b6b}
+.hc .hn{display:block;padding:10px 14px 0;font-size:14px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hc .hsw{display:flex;gap:5px;padding:6px 14px 0}.hc .hsw i{width:12px;height:12px;border-radius:50%;border:1px solid color-mix(in srgb,var(--tx) 20%,transparent)}
+.hc .hp{display:block;padding:4px 14px 14px;font-weight:700;font-size:16px}.hc .hp s{color:var(--mu);font-weight:500;font-size:13px;margin-right:6px}
+.hc .hidl{position:absolute;left:10px;top:10px;background:#fff;color:var(--ac);border:1px solid var(--ln);font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;z-index:1}
+.hstr{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:38px 0 0}
+.hstr a{display:flex;justify-content:space-between;align-items:center;border-radius:18px;padding:24px 28px;border:1px solid var(--ln);background:linear-gradient(120deg,color-mix(in srgb,var(--ac) 9%,var(--pn)),var(--pn));text-decoration:none}
+.hstr small{display:block;letter-spacing:.14em;font-size:11px;font-weight:700;color:var(--ac);margin-bottom:6px}.hstr b{font-family:var(--display);font-weight:500;font-size:22px}.hstr span.ar{font-size:20px;color:var(--mu)}
+.hnews{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;border-radius:24px;background:#2a1f27;color:#fff;padding:36px 42px;margin:40px 0 0}
+.hnews h2{font-family:var(--display);font-weight:500;font-size:32px;margin:0}.hnews h2 em{color:#e7a6c8!important}.hnews p{opacity:.8;margin:8px 0 0;font-size:14.5px}
+.hnews .nf{display:flex;flex-direction:column;gap:10px}.hnews .nt{display:flex;gap:8px}.hnews .nt button{flex:1;border:1px solid #fff4;background:transparent;color:#fff;border-radius:999px;padding:9px;font-size:13.5px}.hnews .nt button.on{background:#fff;color:#2a1f27;font-weight:700}
+.hnews input{background:#ffffff14;border:1px solid #fff3;border-radius:14px;padding:14px 16px;color:#fff;font:15px var(--body);outline:0}.hnews input::placeholder{color:#fff9}
+.hnews .nb{border:0;background:linear-gradient(135deg,#d47aa9,#b4528a);color:#fff;border-radius:14px;padding:14px;font-weight:700;font-size:15px}
+.hnews .nc{font-size:11.5px;opacity:.6}.hnews .nok{background:#ffffff14;border-radius:14px;padding:14px;font-size:14px}
+.hgu{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:16px}
+.hgu button{display:block;text-align:left;background:var(--pn);border:1px solid var(--ln);border-radius:18px;overflow:hidden;padding:0;color:inherit}
+.hgu .gi{aspect-ratio:16/9;display:grid;place-items:center;background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 10%,#fff),#fff);overflow:hidden}.hgu .gi img{width:72%;mix-blend-mode:multiply}
+.hgu .gt{padding:14px 16px 18px}.hgu small{color:var(--ac);font-weight:700;font-size:12px}.hgu b{display:block;font-family:var(--display);font-weight:500;font-size:20px;line-height:1.2;margin:6px 0}.hgu p{margin:0;color:var(--mu);font-size:13.5px}
+.lfft{border-top:1px solid var(--ln);margin-top:44px;font-family:var(--body);color:var(--mu);font-size:13.5px}
+.lfft .in{max-width:1240px;margin:0 auto;padding:36px 32px 0;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+.lfft b{display:block;color:var(--tx);font-size:14px;margin-bottom:10px}.lfft p{margin:0 0 8px}.lfft a{color:inherit;text-decoration:none}
+.lfft .flg{width:110px;height:44px;background:var(--logo) left center/contain no-repeat;margin-bottom:10px}
+.lfft .fbt{max-width:1240px;margin:26px auto 0;padding:16px 32px calc(22px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--ln);display:flex;justify-content:space-between;align-items:center;font-size:12px;gap:12px;flex-wrap:wrap}
+.lfft .pay{display:flex;gap:6px}.lfft .pay span{border:1px solid var(--ln);background:var(--pn);border-radius:6px;padding:3px 8px;font-weight:700;color:var(--tx);font-size:11px}
+.lfft .lng{border:1px solid var(--ln);border-radius:999px;padding:3px;display:inline-flex;gap:2px;background:var(--pn)}.lfft .lng button{border:0;background:none;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;color:var(--tx)}.lfft .lng button.on{background:var(--ac);color:#fff}
+/* página da peça: rosto, brinde, combina com, avaliações */
+.pidl{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;margin:6px 0 2px}
+.pofa{color:#c0392b;font-size:13.5px;font-weight:700;margin:6px 0 0}
+.pbr{display:flex;gap:12px;align-items:center;border:1px solid var(--ln);background:var(--pn);border-radius:16px;padding:12px 14px;margin:14px 0 0;font-size:14px}.pbr b{display:block}.pbr small{color:var(--mu)}.pbr i{font-style:normal;width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--ac) 12%,transparent);display:grid;place-items:center;font-size:22px;flex:none}
+.pcb{margin:22px 0 0}.pcb h3{font-family:var(--display);font-weight:500;font-size:22px;margin:0 0 10px}
+.pcb button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:1px solid var(--ln);border-radius:16px;background:var(--pn);padding:10px 12px;margin-bottom:8px;color:inherit}
+.pcb .ai{width:58px;height:58px;border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}.pcb .ai img,.pcb .ai svg{width:100%;height:100%;object-fit:contain}
+.pcb b{display:block;font-size:14.5px}.pcb small{color:var(--mu);font-size:13px}
+.pcb .ck{margin-left:auto;width:26px;height:26px;border-radius:8px;border:1.5px solid var(--ac);display:grid;place-items:center;color:#fff;font-size:15px;flex:none}.pcb button[aria-pressed=true] .ck{background:var(--ac)}
+.prv{margin:30px 0 10px;border-top:1px solid var(--ln);padding-top:26px}
+.prv .rh{display:grid;grid-template-columns:220px 1fr;gap:30px}
+.prv .rs b.rn{font-family:var(--display);font-size:50px;font-weight:500;display:block;line-height:1}
+.prv .st5{color:#c9952b;letter-spacing:2px}.prv .st5 i{font-style:normal;opacity:.25}
+.prv .rbar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mu);margin:5px 0}.prv .rbar u{flex:1;height:6px;border-radius:6px;background:var(--ln);overflow:hidden;text-decoration:none}.prv .rbar u i{display:block;height:100%;background:#c9952b}
+.prv .rw{display:inline-block;margin-top:14px;border:1.5px solid var(--ac);color:var(--ac);background:none;border-radius:999px;padding:10px 18px;font-weight:700;font-size:14px}
+.prv .rl{display:grid;gap:12px}.prv .r{border:1px solid var(--ln);border-radius:16px;background:var(--pn);padding:14px 16px}
+.prv .r .rt{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--mu)}.prv .r .rt b{color:var(--tx)}.prv .vf{color:var(--ok);font-size:12px;font-weight:700}.prv .r p{margin:8px 0 0;font-size:14.5px;line-height:1.5}
+.prv .rv0{color:var(--mu);font-size:14px}
+.prv form{display:grid;gap:10px;margin-top:12px;border:1px solid var(--ln);border-radius:16px;padding:14px;background:var(--pn)}
+.prv .stp{display:flex;gap:4px}.prv .stp button{border:0;background:none;font-size:30px;color:#c9952b;opacity:.3;padding:0 2px;line-height:1}.prv .stp button.on{opacity:1}
+.prv textarea{border:1px solid var(--ln);border-radius:12px;padding:10px;font:15px var(--body);background:var(--bg);color:var(--tx);min-height:80px;resize:vertical}
+.prv form .go{justify-self:start}
+/* guia */
+.guia .det{max-width:760px}.guia h1{font-family:var(--display);font-weight:500;font-size:38px;line-height:1.1;margin:8px 0 10px}.guia .glb{letter-spacing:.14em;font-size:11.5px;font-weight:700;color:var(--ac)}
+.guia p{font-size:16.5px;line-height:1.7}.guia h2{font-family:var(--display);font-weight:500;font-size:25px;margin:26px 0 6px}
+.guia .gtb{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.guia .gtb div{border:1px solid var(--ln);border-radius:14px;background:var(--pn);padding:12px;display:flex;gap:10px;align-items:center}.guia .gtb svg{width:46px;height:54px;flex:none;color:var(--ac)}.guia .gtb b{display:block}.guia .gtb small{color:var(--mu);font-size:13px}
+.guia .gbx{border-radius:18px;background:color-mix(in srgb,var(--ac) 10%,transparent);padding:18px 20px;margin:22px 0;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.guia .gbx b{font-family:var(--display);font-weight:500;font-size:20px}
+.guia .gpr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+@media(max-width:700px){
+  #home{padding:12px 16px 0}
+  #home h2.h2{font-size:22px}.hsh{margin:26px 0 10px}
+  .hd{grid-template-columns:1fr;min-height:0;border-radius:20px}.hd .hdi{min-height:0;aspect-ratio:16/11}.hd .hdt{padding:18px 20px 22px}.hd h1{font-size:28px}.hd .hpr{font-size:20px;margin:4px 0 12px}
+  .hd .hbt button,.hd .hbt a{flex:1;text-align:center;padding:12px 10px}.hd .hth{display:none}.hd .hdots{margin-top:14px}
+  .htr{gap:10px;justify-content:space-between;font-size:11.5px;margin-top:10px}.htr span{flex-direction:column;text-align:center;gap:2px}
+  .hcat{gap:8px}.hcat .hci{aspect-ratio:4/3}.hcat span{font-size:15px;padding:6px 10px 10px}.hcat small{display:none}
+  .hcol{grid-template-columns:repeat(min(2,var(--n,4)),minmax(0,1fr));gap:10px}.hcol a{aspect-ratio:4/3}.hcol img{top:6%;width:96%}
+  html.v5 .top .logo{width:96px!important;min-width:0!important}.hcol b{font-size:19px}
+  .htabs{gap:16px;margin:26px 0 12px}.htabs button{font-size:18px}.htabs a{display:none}
+  .hg{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.hg .hc:nth-child(n+7){display:none}
+  .hc .hn{padding:8px 10px 0;font-size:13px}.hc .hsw{padding:5px 10px 0}.hc .hp{padding:3px 10px 12px;font-size:14px}.hc .hp s{display:block;font-size:12px}
+  .hstr{grid-template-columns:1fr;gap:10px;margin-top:26px}.hstr a{padding:18px 20px}.hstr b{font-size:18px}
+  .hnews{grid-template-columns:1fr;padding:24px 20px;gap:16px;margin-top:28px}.hnews h2{font-size:25px}
+  .hgu{grid-template-columns:1fr;gap:10px}.hgu button{display:grid;grid-template-columns:112px 1fr;align-items:center}.hgu .gi{aspect-ratio:1;height:100%}.hgu .gi img{width:92%}.hgu .gt{padding:12px 14px}.hgu b{font-size:16.5px;margin:4px 0 0}.hgu p{display:none}
+  .lfft .in{grid-template-columns:1fr 1fr;padding:28px 16px 0;gap:20px}.lfft .in>div:first-child{grid-column:1/-1}.lfft .fbt{padding:14px 16px calc(20px + env(safe-area-inset-bottom,0px));justify-content:center;text-align:center}
+  .prv .rh{grid-template-columns:1fr;gap:18px}
+  .guia h1{font-size:28px}.guia .gtb{grid-template-columns:1fr}.guia .gpr{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* ===== eventos (o evento só muda a aparência; o preço/oferta é o mesmo de sempre) ===== */
+#evbar{display:none;text-align:center;font:600 13px var(--body);padding:9px 14px;position:relative;z-index:10001}
+html[data-ev] #evbar{display:block}
+html[data-ev] #home .hd{border:0}
+html[data-ev] #home .hd .hdi{margin:14px;border-radius:18px}
+html[data-ev] #home .hd .hdt{background:transparent}
+html[data-ev] #home .hd .hbt .p2{border-color:#fff8;color:#fff}
+html[data-ev] #home .hd .hdots button{background:#fff4}html[data-ev] #home .hd .hdots button.on{background:#fff}
+html[data-ev] .hc .hb.of{background:var(--ac)}
+/* Natal: creme com neve leve, verde e vermelho */
+html[data-ev=natal]{--bg:#f7f2ea;--pn:#fff;--tx:#1d2b22;--mu:#5d6b62;--ln:#e4dccd;--ln2:#d7ccb8;--ac:#b3263a;color-scheme:light}
+html[data-ev=natal] body,html[data-ev=natal] .top{background:radial-gradient(circle,#1f5c3a14 1.5px,transparent 2px) 0 0/34px 34px,#f7f2ea}
+html[data-ev=natal] #evbar{background:#1f5c3a;color:#fff}
+html[data-ev=natal] #home .hd{background:radial-gradient(circle at 20% 20%,#ffffff22 0 2px,transparent 3px) 0 0/38px 38px,linear-gradient(135deg,#1f5c3a,#14432a);color:#fff}
+html[data-ev=natal] #home .hd .hlb{color:#ffd9a0}html[data-ev=natal] #home .hd h1 em{color:#ffd9a0}html[data-ev=natal] #home .hd .hsub{color:#fffc}html[data-ev=natal] #home .hd .hpr s{color:#fff9}
+html[data-ev=natal] #home h2.h2,html[data-ev=natal] .htabs button.on{color:#1f5c3a}html[data-ev=natal] .htr b{color:#1f5c3a}
+html[data-ev=natal] .lfft{background:#14432a;color:#d6e4da;border:0}html[data-ev=natal] .lfft b{color:#fff}html[data-ev=natal] .lfft .flg{filter:brightness(0) invert(1)}html[data-ev=natal] .lfft .fbt{border-color:#ffffff22}html[data-ev=natal] .lfft .pay span,html[data-ev=natal] .lfft .lng{background:#1f5c3a;border-color:#ffffff33;color:#fff}html[data-ev=natal] .lfft .lng button{color:#fff}
+/* Halloween: roxo escuro e laranja */
+html[data-ev=halloween]{--bg:#160c1a;--pn:#22132a;--tx:#f3e9f5;--mu:#b9a6bf;--ln:#3a2541;--ln2:#4a3352;--ac:#e2711d;--logo:url("/media/i/cfbd0d0ac220.png");color-scheme:dark}
+html[data-ev=halloween] body,html[data-ev=halloween] .top{background:radial-gradient(circle at 90% 0,#e2711d22,transparent 40%),#160c1a}
+html[data-ev=halloween] #evbar{background:#2a1530;color:#ffb15c}
+html[data-ev=halloween] #home .hd{background:radial-gradient(circle at 85% 15%,#ffb15c33,transparent 35%),linear-gradient(135deg,#2a1530,#120a16);color:#fff}
+html[data-ev=halloween] #home .hd .hlb,html[data-ev=halloween] #home .hd h1 em{color:#ffb15c}html[data-ev=halloween] #home .hd .hsub{color:#fffc}
+html[data-ev=halloween] #home h2.h2,html[data-ev=halloween] .htabs button.on{color:#ffb15c}
+html[data-ev=halloween] .hc .hci,html[data-ev=halloween] .hcat .hci{margin:8px 8px 0;border-radius:12px}
+html[data-ev=halloween] .hnews{background:#0d0710}
+html[data-ev=halloween] .lfft{background:#0d0710;border:0}
+/* Black Friday: página clara, cards pretos, topo/destaque/rodapé pretos e vermelho */
+html[data-ev=bf]{--bg:#f3f3f3;--pn:#fff;--tx:#111;--mu:#666;--ln:#e2e2e2;--ln2:#d0d0d0;--ac:#e11d48;color-scheme:light}
+html[data-ev=bf] body{background:#f3f3f3}
+html[data-ev=bf] .top{background:#0a0a0a;border-color:#ffffff1a;color:#fff}html[data-ev=bf] .top .ib{color:#fff}html[data-ev=bf] .top .logo{filter:brightness(0) invert(1)}
+html[data-ev=bf] #evbar{background:#000;color:#fff}
+html[data-ev=bf] #home .hd{background:linear-gradient(135deg,#0b0b0b,#1c1c1c);color:#fff}html[data-ev=bf] #home .hd .hlb{color:#ff3b5c}html[data-ev=bf] #home .hd h1 em{color:#ff3b5c}html[data-ev=bf] #home .hd .hsub{color:#fffc}html[data-ev=bf] #home .hd .hpr s{color:#fff9}
+html[data-ev=bf] .hc,html[data-ev=bf] .hcat a{background:#121212;border-color:#121212;box-shadow:0 10px 24px #0000001f}
+html[data-ev=bf] .hc .hci,html[data-ev=bf] .hcat .hci{margin:8px 8px 0;border-radius:12px}
+html[data-ev=bf] .hc .hn,html[data-ev=bf] .hc .hp s{color:#a3a3a3}html[data-ev=bf] .hc .hp,html[data-ev=bf] .hcat span{color:#fff}html[data-ev=bf] .hc .hsw i{border-color:#fff5}
+html[data-ev=bf] .lfft{background:#0a0a0a;color:#bdbdbd;border:0}html[data-ev=bf] .lfft b{color:#fff}html[data-ev=bf] .lfft .flg{filter:brightness(0) invert(1)}html[data-ev=bf] .lfft .fbt{border-color:#ffffff22}html[data-ev=bf] .lfft .pay span,html[data-ev=bf] .lfft .lng{background:#1a1a1a;border-color:#333;color:#eee}html[data-ev=bf] .lfft .lng button{color:#eee}
+/* Ano Novo de dia: branco e dourado metálico */
+html[data-ev=anonovo-d]{--bg:#fff;--pn:#fff;--tx:#1f1d1a;--mu:#77736b;--ln:#ece7de;--ln2:#e0d8c8;--ac:#a8854a;color-scheme:light}
+html[data-ev=anonovo-d] body,html[data-ev=anonovo-d] .top{background:radial-gradient(circle,#b8975a1f 1px,transparent 1.6px) 0 0/46px 46px,#fff}
+html[data-ev=anonovo-d] #evbar{background:#1f1d1a;color:#e3c88f}
+html[data-ev=anonovo-d] #home .hd{background:radial-gradient(circle at 12% 20%,#c9a86a40 0 1.6px,transparent 2.4px) 0 0/40px 40px,linear-gradient(135deg,#fbfaf7,#f1ede6);box-shadow:inset 0 0 0 1px #e9e1d2}
+html[data-ev=anonovo-d] #home .hd .hbt .p2{border-color:#c9a86a;color:#8a6a33}html[data-ev=anonovo-d] #home .hd .hdots button{background:#c9a86a44}html[data-ev=anonovo-d] #home .hd .hdots button.on{background:#a8854a}
+html[data-ev=anonovo-d] .lfft{border-top:2px solid #d9bd84}
+/* Ano Novo de noite (depois das 19h30 no relógio da pessoa): branco, dourado e azul-noite */
+html[data-ev=anonovo-n]{--bg:#fff;--pn:#fff;--tx:#16213a;--mu:#6b7385;--ln:#e6e9f0;--ln2:#d6dbe6;--ac:#a8854a;color-scheme:light}
+html[data-ev=anonovo-n] body{background:radial-gradient(circle,#b8975a1f 1px,transparent 1.6px) 0 0/46px 46px,#fff}
+html[data-ev=anonovo-n] .top{background:#16213a;border-color:#ffffff1a;color:#fff}html[data-ev=anonovo-n] .top .ib{color:#fff}html[data-ev=anonovo-n] .top .logo{filter:brightness(0) invert(1)}
+html[data-ev=anonovo-n] #evbar{background:#0f1830;color:#e3c88f}
+html[data-ev=anonovo-n] #home .hd{background:radial-gradient(circle at 12% 20%,#e3c88f55 0 1.6px,transparent 2.4px) 0 0/40px 40px,radial-gradient(circle at 70% 75%,#e3c88f33 0 1.2px,transparent 2px) 0 0/28px 28px,linear-gradient(135deg,#1c2a4a,#0f1830);color:#fff}
+html[data-ev=anonovo-n] #home .hd .hlb{color:#e3c88f}html[data-ev=anonovo-n] #home .hd .hsub{color:#fffc}
+html[data-ev=anonovo-n] .lfft{background:#16213a;color:#bfc6d6;border:0}html[data-ev=anonovo-n] .lfft b{color:#fff}html[data-ev=anonovo-n] .lfft .flg{filter:brightness(0) invert(1)}html[data-ev=anonovo-n] .lfft .fbt{border-color:#ffffff22}html[data-ev=anonovo-n] .lfft .pay span,html[data-ev=anonovo-n] .lfft .lng{background:#1c2a4a;border-color:#ffffff33;color:#fff}html[data-ev=anonovo-n] .lfft .lng button{color:#fff}
+html[data-ev^=anonovo] .gold{background:linear-gradient(135deg,#9c7a3c,#d9bd84 45%,#a8854a);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+html[data-ev^=anonovo] #home .hd .hbt .p1,html[data-ev^=anonovo] .hc .hb,html[data-ev^=anonovo] .lfft .lng button.on{background:linear-gradient(135deg,#9c7a3c,#d9bd84 45%,#a8854a);border-color:transparent}
+html[data-ev^=anonovo] #home .hd h1 em{background:linear-gradient(135deg,#c9a86a,#f1dcae 50%,#c9a86a);-webkit-background-clip:text;background-clip:text;color:transparent}
+html[data-ev=anonovo-d] #home .hd h1 em{background:linear-gradient(135deg,#9c7a3c,#d9bd84 45%,#a8854a);-webkit-background-clip:text;background-clip:text}
+html[data-ev] body,html[data-ev] .top,html[data-ev] #home .hd{transition:background-color .8s}
+
+html[data-ev=bf] .top .ib,html[data-ev=anonovo-n] .top .ib{background:transparent!important}
+#drw .dacc>span:last-child{display:block!important}#drw .dacc>span:last-child>*{float:none!important;position:static!important}
+#drw nav.dnv>a{font-family:var(--body)!important;font-weight:500!important}
 </style>
 
 <div class="top"><div class="wrap">
@@ -1736,6 +1956,135 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
 'Óculos de grau retangular tartaruga':'Lentes con receta rectangulares carey',
 'Solar gatinho tartaruga':'Solar gatito carey',
 'Solar aviador preto e dourado':'Solar aviador negro y dorado',
+/* v451 */
+"DESTAQUE DA SEMANA":"DESTACADO DE LA SEMANA",
+"Ver o modelo":"Ver el modelo",
+"Ver presentes":"Ver regalos",
+"Ver a seleção":"Ver la selección",
+"todo o Paraguai":"todo Paraguay",
+"Pagamento seguro":"Pago seguro",
+"PIX ou Itaú":"PIX o Itaú",
+"Retirada":"Retiro",
+"em CDE":"en CDE",
+"Coleções":"Colecciones",
+"Compre por categoria":"Comprá por categoría",
+"De grau":"De receta",
+"Armações":"Armazones",
+"Para o seu rosto":"Para tu rostro",
+"Você fez o teste · estes são os modelos que mais combinam":"Hiciste el test · estos son los modelos que más te favorecen",
+"Ver só os ideais":"Ver solo los ideales",
+"Ideal para você":"Ideal para ti",
+"Novidades":"Novedades",
+"Mais vendidos":"Más vendidos",
+"Mais vendido":"Más vendido",
+"Novo":"Nuevo",
+"Esgotado":"Agotado",
+"DESCUBRA EM 1 MINUTO":"DESCUBRE EN 1 MINUTO",
+"Qual combina com meu rosto?":"¿Cuál combina con mi rostro?",
+"PARA LOJISTAS":"PARA COMERCIANTES",
+"Preços de atacado":"Precios mayoristas",
+"Novidades e ofertas":"Novedades y ofertas",
+"primeiro":"primero",
+"Avisamos quando chegam modelos novos ou tem oferta. Sem spam: você sai quando quiser.":"Te avisamos cuando llegan modelos nuevos o hay ofertas. Sin spam: salís cuando quieras.",
+"Seu e-mail":"Tu correo",
+"Quero receber":"Quiero recibir",
+"Ao se inscrever, você aceita receber e-mails da La Fouch.":"Al suscribirte aceptás recibir correos de La Fouch.",
+"Quero receber pelo WhatsApp":"Quiero recibir por WhatsApp",
+"Abre o WhatsApp com a mensagem pronta. Você só aperta enviar.":"Abre WhatsApp con el mensaje listo. Solo tocás enviar.",
+"Pronto! Você vai receber as novidades por e-mail.":"¡Listo! Vas a recibir las novedades por correo.",
+"Digite um e-mail válido.":"Escribí un correo válido.",
+"Não consegui inscrever agora. Tente de novo mais tarde.":"No pude suscribirte ahora. Intentá de nuevo más tarde.",
+"Guia La Fouch":"Guía La Fouch",
+"GUIA · 4 min":"GUÍA · 4 min",
+"Como escolher óculos para o seu tipo de rosto":"Cómo elegir lentes para tu tipo de rostro",
+"Oval, redondo, quadrado ou coração: qual formato combina com você.":"Ovalado, redondo, cuadrado o corazón: qué forma te favorece.",
+"UV400 e polarizado: qual é a diferença?":"UV400 y polarizado: ¿cuál es la diferencia?",
+"Como limpar seus óculos sem riscar":"Cómo limpiar tus lentes sin rayarlos",
+"Tudo em óculos":"Todo en lentes",
+"Como chegar":"Cómo llegar",
+"Atacado":"Mayorista",
+"Ajuda":"Ayuda",
+"Como comprar":"Cómo comprar",
+"Entrega e retirada":"Envío y retiro",
+"Trocas e dúvidas":"Cambios y dudas",
+"Contato":"Contacto",
+"Dinheiro na loja":"Efectivo en tienda",
+"Termos":"Términos",
+"Privacidade":"Privacidad",
+"Buscar modelo ou código":"Buscar modelo o código",
+"Busque pelo nome ou pelo código da peça.":"Buscá por el nombre o el código del modelo.",
+"Gatinho":"Gatito",
+"Dourado":"Dorado",
+"Nada encontrado para":"No encontramos nada para",
+"Ver todos os":"Ver los",
+"Entrar ou criar conta":"Entrar o crear cuenta",
+"Minha conta · Meus pedidos ›":"Mi cuenta · Mis pedidos ›",
+"Olá":"Hola",
+"Descobrir":"Descubrir",
+"Feminino":"Femenino",
+"Unissex":"Unisex",
+"Dúvidas frequentes":"Preguntas frecuentes",
+"Natal La Fouch · todo óculos vai com estojo e flanela de presente":"Navidad La Fouch · cada lente va con estuche y franela de regalo",
+"NATAL":"NAVIDAD",
+"Ideias de presente · retirada no mesmo dia em Ciudad del Este":"Ideas de regalo · retiro el mismo día en Ciudad del Este",
+"Semana de Halloween na La Fouch":"Semana de Halloween en La Fouch",
+"Solares escuros e armações gatinho":"Solares oscuros y armazones gatito",
+"BLACK FRIDAY · ofertas em toda a loja":"BLACK FRIDAY · ofertas en toda la tienda",
+"SÓ ESTA SEMANA":"SOLO ESTA SEMANA",
+"Estoque limitado: quando acaba, acabou":"Stock limitado: cuando se acaba, se acaba",
+"ANO NOVO":"AÑO NUEVO",
+"Dourados e clássicos para receber o ano com estilo":"Dorados y clásicos para recibir el año con estilo",
+"Faltam":"Faltan",
+"DIAS":"DÍAS",
+"Ideal para o seu rosto":"Ideal para tu rostro",
+"A oferta termina em":"La oferta termina en",
+"Inclui estojo e flanela":"Incluye estuche y franela",
+"Todo óculos vai com estojo e flanela de limpeza, de presente.":"Cada lente va con estuche y franela de limpieza, de regalo.",
+"Combina com":"Combina con",
+"Tirado do carrinho":"Quitado del carrito",
+"Adicionado ao carrinho":"Agregado al carrito",
+"Carregando avaliações…":"Cargando opiniones…",
+"AVALIAÇÕES":"OPINIONES",
+"avaliação de quem comprou":"opinión de quien compró",
+"avaliações de quem comprou":"opiniones de quienes compraron",
+"Ainda sem avaliações. Comprou esta peça? Conte o que achou.":"Todavía sin opiniones. ¿Compraste este modelo? Contá qué te pareció.",
+"Escrever avaliação":"Escribir opinión",
+"retirou na loja":"retiró en la tienda",
+"Entre na sua conta para avaliar.":"Entrá a tu cuenta para opinar.",
+"Conferindo a sua compra…":"Verificando tu compra…",
+"Não consegui abrir agora. Tente de novo mais tarde.":"No pude abrir ahora. Intentá de nuevo más tarde.",
+"Confirme o seu e-mail para avaliar.":"Confirmá tu correo para opinar.",
+"Só quem comprou esta peça pela loja pode avaliar.":"Solo quien compró este modelo en la tienda puede opinar.",
+"Sua avaliação":"Tu opinión",
+"O que achou da peça? (opcional)":"¿Qué te pareció? (opcional)",
+"Publicar avaliação":"Publicar opinión",
+"Obrigado! Sua avaliação foi publicada.":"¡Gracias! Tu opinión fue publicada.",
+"Não consegui publicar agora. Tente de novo mais tarde.":"No pude publicar ahora. Intentá de nuevo más tarde.",
+"O óculos certo equilibra as proporções do rosto. A regra é simples: buscar o contraste. Um rosto redondo ganha com formatos angulares; um rosto quadrado, com curvas.":"El lente correcto equilibra las proporciones del rostro. La regla es simple: buscar el contraste. Un rostro redondo gana con formas angulares; un rostro cuadrado, con curvas.",
+"Descubra o seu tipo de rosto":"Descubrí tu tipo de rostro",
+"Oval":"Ovalado",
+"Quadrado":"Cuadrado",
+"Coração":"Corazón",
+"Quase tudo fica bem. Experimente formatos grandes e hexagonais.":"Casi todo te queda bien. Probá formas grandes y hexagonales.",
+"Prefira formatos quadrados ou retangulares.":"Elegí formas cuadradas o rectangulares.",
+"Formatos redondos e ovais suavizam os ângulos.":"Formas redondas y ovaladas suavizan los ángulos.",
+"Gatinho e aviador equilibram a testa.":"Gatito y aviador equilibran la frente.",
+"NÃO SABE O SEU TIPO?":"¿NO SABÉS TU TIPO?",
+"Descubra em 1 minuto com a câmera":"Descubrilo en 1 minuto con la cámara",
+"Modelos para rosto":"Modelos para rostro",
+"Ficou com dúvida? Passe na loja em Ciudad del Este e prove antes de levar.":"¿Tenés dudas? Pasá por la tienda en Ciudad del Este y probalos antes de llevar.",
+"UV400 e polarizado são coisas diferentes, e um bom óculos de sol pode ter as duas.":"UV400 y polarizado son cosas distintas, y un buen lente de sol puede tener las dos.",
+"É a proteção contra os raios ultravioleta (UVA e UVB), que não vemos mas fazem mal aos olhos. UV400 quer dizer que a lente bloqueia os raios até 400 nanômetros, praticamente 100% do UV. É o mais importante para a saúde dos olhos.":"Es la protección contra los rayos ultravioleta (UVA y UVB), que no vemos pero dañan los ojos. UV400 quiere decir que la lente bloquea los rayos hasta 400 nanómetros, prácticamente el 100% del UV. Es lo más importante para la salud de los ojos.",
+"É um filtro que corta o reflexo da luz em superfícies como asfalto, água e vidro. Deixa a visão mais nítida e confortável para dirigir, ir à praia ou pescar. Não substitui a proteção UV: o ideal é ter as duas.":"Es un filtro que corta el reflejo de la luz en superficies como asfalto, agua y vidrio. Deja la visión más nítida y cómoda para manejar, ir a la playa o pescar. No reemplaza la protección UV: lo ideal es tener las dos.",
+"Lente escura protege mais?":"¿La lente oscura protege más?",
+"Não. A cor escura só diminui a claridade. Um óculos escuro sem proteção UV é pior que nenhum, porque a pupila dilata e entra mais UV. Por isso todos os nossos solares têm UV400.":"No. El color oscuro solo baja la claridad. Un lente oscuro sin protección UV es peor que ninguno, porque la pupila se dilata y entra más UV. Por eso todos nuestros solares tienen UV400.",
+"A maioria dos riscos vem da limpeza feita do jeito errado. Siga estes passos:":"La mayoría de las rayas vienen de limpiar mal. Seguí estos pasos:",
+"Passo a passo":"Paso a paso",
+"Enxágue as lentes em água corrente, morna ou fria, para tirar a poeira antes de esfregar.":"Enjuagá las lentes con agua corriente, tibia o fría, para sacar el polvo antes de frotar.",
+"Use uma gota de detergente neutro e espalhe com os dedos, dos dois lados.":"Usá una gota de detergente neutro y esparcila con los dedos, de los dos lados.",
+"Enxágue de novo e seque com a flanela de microfibra, sem apertar.":"Enjuagá de nuevo y secá con la franela de microfibra, sin apretar.",
+"O que evitar":"Qué evitar",
+"Camiseta, papel, guardanapo e álcool riscam ou estragam o tratamento da lente. Nunca deixe o óculos no painel do carro: o calor deforma a armação. Guarde sempre no estojo.":"Remera, papel, servilleta y alcohol rayan o arruinan el tratamiento de la lente. Nunca dejes los lentes en el tablero del auto: el calor deforma el armazón. Guardalos siempre en el estuche.",
 'SL2210 · SOLAR HEXAGONAL PRETO':'SL2210 · SOLAR HEXAGONAL NEGRO','Ver Solar hexagonal preto, escolha da semana':'Ver Solar hexagonal negro, elección de la semana','Solar hexagonal preto, escolha da semana':'Solar hexagonal negro, elección de la semana','LUXO':'LUJO','Roxo':'Morado','Branco':'Blanco','Transparente':'Transparente','Policarbonato':'Policarbonato','Metal e acetato':'Metal y acetato'
   };
   var RX=[
@@ -1834,7 +2183,7 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
   function lista(){
     var q=st.q.trim().toLowerCase();
     var fl=function(face){return P.filter(function(p){
-      if(st.tipo==='fav'){if(!st.fav[p.ref])return false}else if(st.tipo!=='todos'&&p.tipo!==st.tipo)return false;
+      if(p.tipo==='acessorio')return false;if(st.col&&String(p.col||'').trim()!==st.col)return false;if(st.tipo==='fav'){if(!st.fav[p.ref])return false}else if(st.tipo==='of'){if(!isOf(p))return false}else if(st.tipo!=='todos'&&p.tipo!==st.tipo)return false;
       if(face&&st.rosto&&p.rosto.indexOf(st.rosto)<0)return false;
       if(!genOk(p,st.gen))return false
       if(q&&(p.nome+' '+p.ref).toLowerCase().indexOf(q)<0)return false;
@@ -3074,6 +3423,264 @@ body:has(#pkok) .top{z-index:10000}body:has(#pkok) #pkok{padding-top:100px}
       if(o.cancelado){pedSet(id,{est:'cancelado'});pkStop();pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Pedido cancelado pela loja</h2><div class="pkt"><span>Este pedido foi cancelado e as peças voltaram para o site. Dúvidas? Fale com a loja pelo WhatsApp.</span></div><div class="pkb"><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0';return}
       if(o.pago){pkOk(id,o);return}
       if(o.recusado&&e.est==='comp'){pedSet(id,{est:'pagar'});e.est='pagar'}})};
+  /* ===== v451 (aprovado 07/11/2026): página inicial nova, menu só no botão, busca na lupa, rodapé, eventos,
+     guia, avaliações (só de quem comprou) e estojo/flanela. O evento só muda a aparência: preço e oferta são os de sempre. ===== */
+  document.documentElement.classList.add('v5');
+  var V5={tab:'',di:0,tm:0,hov:false};
+  function fnUrl(n){return 'https://southamerica-east1-'+FB.p+'.cloudfunctions.net/'+n}
+  function vis5(p){return p&&p.tipo!=='acessorio'&&!p.oculto}
+  function cat5(){return P.filter(vis5)}
+  function pct5(p){return isOf(p)?Math.round((1-p.n/p.de)*100):0}
+  function nomeEm(n){var w=String(n||'').trim().split(' ');if(w.length<2)return esc(n);var u=w.pop();return esc(w.join(' '))+' <em>'+esc(u)+'</em>'}
+  var ACCI={'ACC-FLANELA':'<svg viewBox="0 0 200 150" aria-hidden="true"><path d="M45 35h110l-8 80H53z" fill="#cfd6dc"/><path d="M45 35l10 80M65 35l7 80M85 35l4 80M105 35l1 80M125 35l-2 80M145 35l-5 80" stroke="#b7c0c8" stroke-width="2"/></svg>',def:'<svg viewBox="0 0 200 150" aria-hidden="true"><rect x="28" y="48" width="144" height="58" rx="29" fill="#2a2d33"/><rect x="28" y="48" width="144" height="26" rx="13" fill="#3a3e46"/><path d="M28 77h144" stroke="#8d3a69" stroke-width="3"/></svg>'};
+  function accIco(p){return ACCI[p.ref]||ACCI.def}
+  var _vis5=vis;vis=function(p,w){return p&&p.tipo==='acessorio'&&!p.foto?accIco(p):_vis5(p,w)};
+  function img5(p){if(p&&p.tipo==='acessorio'&&!p.foto)return accIco(p);return p&&p.foto?'<img src="'+p.foto+'" alt="'+esc(p.nome)+'" loading="lazy" draggable="false">':glasses((p&&p.cor)||'#2a2d33',(p&&p.raio)||14,5)}
+  function prc5(p){return p.aviso==='Esgotado'?LFI.tr('Esgotado'):(isOf(p)?'<s>'+fmt(p.de)+'</s>':'')+fmt(p.n)}
+  function rostoAtual(){if(st.rosto)return st.rosto;try{return localStorage.getItem('lf_rosto5')||''}catch(_){return ''}}
+  function rostoNome(id){var f=FACES.filter(function(x){return x.id===id})[0];return f?f.nome.toLowerCase():id}
+  var NUM5=function(){return (typeof NUM_LOJA!=='undefined'&&NUM_LOJA)||'595983642241'};
+
+  /* ---- eventos ---- */
+  var EVD={
+    natal:{bar:'🎄 Natal La Fouch · todo óculos vai com estojo e flanela de presente',lab:'NATAL',h:'Presenteie estilo neste <em>Natal</em>',sub:'Ideias de presente · retirada no mesmo dia em Ciudad del Este',deco:'🎄',b2:'Ver presentes'},
+    halloween:{bar:'🎃 Semana de Halloween na La Fouch',lab:'HALLOWEEN',h:'Olhar <em>misterioso</em>',sub:'Solares escuros e armações gatinho',deco:'🦇',b2:'Ver a seleção'},
+    bf:{bar:'⚡ BLACK FRIDAY · ofertas em toda a loja',lab:'SÓ ESTA SEMANA',h:'BLACK <em>FRIDAY</em>',sub:'Estoque limitado: quando acaba, acabou',deco:'',b2:'Ver ofertas',cd:1},
+    anonovo:{bar:'✨ Ano Novo · comece o ano com um novo olhar',lab:'ANO NOVO',h:'Ano novo, <em>novo olhar</em>',sub:'Dourados e clássicos para receber o ano com estilo',deco:'🥂',b2:'Ver catálogo'}
+  };
+  function evAtivo(){var e=CFG.evento;if(!e||typeof e!=='object'||!EVD[e.tema])return null;var t=Date.now();if(+e.ini>0&&t<+e.ini)return null;if(+e.fim>0&&t>+e.fim)return null;return e}
+  function evNoite(){var d=new Date(),m=d.getHours()*60+d.getMinutes();return m>=19*60+30||m<6*60}
+  function evAplica(){
+    var e=evAtivo(),r=document.documentElement,t=e?e.tema:'';
+    if(t==='anonovo')t=evNoite()?'anonovo-n':'anonovo-d';
+    if(t)r.setAttribute('data-ev',t);else r.removeAttribute('data-ev');
+    var b=$('evbar');if(!b){b=document.createElement('div');b.id='evbar';var tp=document.querySelector('.top');tp.parentNode.insertBefore(b,tp)}
+    var tx=e?(e.bar||EVD[e.tema].bar):'';if(e&&e.tema==='anonovo'&&!e.bar){var y=new Date().getFullYear()+(new Date().getMonth()===0?0:1);tx='✨ Ano Novo · comece '+y+' com um novo olhar'}
+    if(b._t!==tx){b._t=tx;b.textContent=tx}
+    return e}
+  setInterval(function(){if(!document.hidden){var a=document.documentElement.getAttribute('data-ev')||'';evAplica();if(a!==(document.documentElement.getAttribute('data-ev')||''))homeDraw();cdTick()}},30000);
+  function dd(n){return (n<10?'0':'')+n}
+  function cdAlvo(e){if(!e)return 0;if(EVD[e.tema].cd&&+e.fim>Date.now())return +e.fim;
+    if(e.tema==='anonovo'){var d=new Date();if(d.getMonth()===11&&d.getDate()===31&&d.getHours()>=12){var m=new Date(d.getFullYear()+1,0,1,0,0,0);return m.getTime()}}return 0}
+  function cdHtml(e){var a=cdAlvo(e);
+    if(e&&e.tema==='anonovo'){var d=new Date();if(d.getMonth()===0&&d.getDate()===1)return '<p class="hsub" style="font-size:18px;font-weight:700">¡Feliz '+d.getFullYear()+'! 🥂</p>'}
+    if(!a)return '';var s=Math.max(0,Math.floor((a-Date.now())/1000)),D=Math.floor(s/86400),H=Math.floor(s%86400/3600),M=Math.floor(s%3600/60);
+    if(e.tema==='anonovo')return '<p class="hsub" data-cd>'+LFI.tr('Faltam')+' '+H+' h '+dd(M)+' min '+LFI.tr('para')+' '+(new Date().getFullYear()+1)+'</p>';
+    return '<div class="hcd" data-cd>'+(D?'<div><b>'+dd(D)+'</b><small>'+LFI.tr('DIAS')+'</small></div>':'')+'<div><b>'+dd(H)+'</b><small>'+LFI.tr('HORAS')+'</small></div><div><b>'+dd(M)+'</b><small>MIN</small></div></div>'}
+  function cdTick(){var c=document.querySelector('#home [data-cd]');if(!c)return;var t=document.createElement('div');t.innerHTML=cdHtml(evAtivo());var n=t.firstElementChild;if(n)c.replaceWith(n);else c.remove()}
+
+  /* ---- destaque (os mesmos modos do painel: produto, automático, slides, vídeo) ---- */
+  function dstItens(){
+    var m=CFG.dmodo||(CFG.video?'video':CFG.destaque?'produto':'nada'),ok=function(p){return vis5(p)&&p.aviso!=='Esgotado'},L=[],pus=function(p){if(p&&ok(p)&&L.indexOf(p)<0&&L.length<4)L.push(p)};
+    if(m==='slide')String(CFG.slide||'').split(',').forEach(function(r){if(r&&r.indexOf('media/')!==0)pus(find(r))});
+    if(m==='produto')pus(find(CFG.destaque||''));
+    String(CFG.dauto||'').split(',').forEach(function(r){if(r)pus(find(r))});
+    cat5().filter(function(p){return p.foto}).sort(function(a,b){return (b.cad||0)-(a.cad||0)}).forEach(pus);
+    return L}
+  function dstHtml(){
+    var e=evAtivo(),ed=e?EVD[e.tema]:null,L=dstItens(),i=Math.min(V5.di,Math.max(0,L.length-1)),p=L[i],vid=(CFG.dmodo==='video'&&CFG.video)?CFG.video:'';
+    if(!p&&!vid)return '';
+    var lab=ed?(ed.lab+(e.tema==='natal'?' '+new Date().getFullYear():e.tema==='anonovo'?' '+(new Date().getFullYear()+(new Date().getMonth()===0?0:1)):'')):'DESTAQUE DA SEMANA';
+    var tit=e&&e.tit?esc(e.tit):(ed?ed.h:nomeEm(p?p.nome:'')),sub=e&&e.sub?esc(e.sub):(ed?ed.sub:'');
+    var imgA=vid?'<video src="'+esc(vid)+'" autoplay muted loop playsinline></video>':img5(p);
+    return '<section class="hd" id="hdst"><button type="button" class="hdi" '+(p?'data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'"':'')+'>'+imgA+(p&&p.gv?'<span class="h360">↻ 360°</span>':'')+(ed&&ed.deco?'<span class="hdeco">'+ed.deco+'</span>':'')+'</button>'+
+      '<div class="hdt"><span class="hlb">'+lab+'</span><h1>'+tit+'</h1>'+(sub?'<p class="hsub">'+sub+'</p>':'')+(ed&&p?'<p class="hsub" style="margin-top:6px"><b>'+esc(p.nome)+'</b></p>':'')+cdHtml(e)+
+      (p?'<div class="hpr">'+prc5(p)+'</div>':'')+'<div class="hbt">'+(p?'<button type="button" class="p1" data-open="'+p.ref+'">'+LFI.tr('Ver o modelo')+'</button>':'')+'<a class="p2" href="#vitrine"'+(e&&e.tema==='bf'?' data-mf="tipo:of"':'')+'>'+LFI.tr(ed?ed.b2:'Ver catálogo')+'</a></div>'+
+      (L.length>1?'<div class="hth">'+L.map(function(q,k){return '<button type="button" data-hdi="'+k+'" class="'+(k===i?'on':'')+'" aria-label="'+esc(q.nome)+'">'+img5(q)+'</button>'}).join('')+'</div><div class="hdots">'+L.map(function(q,k){return '<button type="button" data-hdi="'+k+'" class="'+(k===i?'on':'')+'" aria-label="'+(k+1)+'"></button>'}).join('')+'</div>':'')+'</div></section>'}
+  function dstGira(){clearInterval(V5.tm);V5.tm=setInterval(function(){if(document.hidden||V5.hov||document.documentElement.classList.contains('lock'))return;var n=dstItens().length;if(n<2)return;dstVai((V5.di+1)%n)},6000)}
+  function dstVai(k){var h=$('hdst');V5.di=k;if(!h){homeDraw();return}var im=h.querySelector('.hdi');if(im&&!matchMedia('(prefers-reduced-motion: reduce)').matches){im.classList.add('out');setTimeout(function(){var t=document.createElement('div');t.innerHTML=dstHtml();var nv=t.firstElementChild;if(nv){h.replaceWith(nv);var i2=nv.querySelector('.hdi');i2.classList.add('out');requestAnimationFrame(function(){requestAnimationFrame(function(){i2.classList.remove('out')})})}},280)}else{var t=document.createElement('div');t.innerHTML=dstHtml();if(t.firstElementChild)h.replaceWith(t.firstElementChild)}}
+
+  /* ---- cards ---- */
+  function selo5(p){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';if(isOf(p))return '<span class="hb of">−'+pct5(p)+'%</span>';if(p.mv>0&&p.mv<=3)return '<span class="hb">'+LFI.tr('Mais vendido')+'</span>';if(isNovo(p))return '<span class="hb">'+LFI.tr('Novo')+'</span>';return ''}
+  function card5(p,idl){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p))+'<span class="hci">'+img5(p)+'</span><span class="hn">'+esc(p.nome)+'</span><span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
+  function abas5(){var C=cat5(),ok=function(p){return p.aviso!=='Esgotado'};
+    var nov=C.filter(ok).sort(function(a,b){return (b.cad||0)-(a.cad||0)||(a.ord||0)-(b.ord||0)}),
+      mv=C.filter(function(p){return ok(p)&&p.mv>0}).sort(function(a,b){return a.mv-b.mv}),
+      of=C.filter(function(p){return ok(p)&&isOf(p)}).sort(function(a,b){return pct5(b)-pct5(a)});
+    var e=evAtivo(),A=[['nov','Novidades',nov],['mv','Mais vendidos',mv],['of','Ofertas',of]];
+    if(e&&e.tema==='bf')A=[A[2],A[1],A[0]];
+    return A.filter(function(a){return a[2].length})}
+
+  /* ---- página inicial ---- */
+  var IC5={sol:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg>',
+    lock:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+    pin:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>'};
+  function homeHtml(){
+    var C=cat5(),h=dstHtml();
+    h+='<div class="htr"><span>'+IC5.sol+'<b>Delivery</b> '+LFI.tr('todo o Paraguai')+'</span><span>'+IC5.lock+'<b>'+LFI.tr('Pagamento seguro')+'</b> '+LFI.tr('PIX ou Itaú')+'</span><span>'+IC5.pin+'<b>'+LFI.tr('Retirada')+'</b> '+LFI.tr('em CDE')+'</span></div>';
+    /* coleções com nome (campo "Coleção" do painel) */
+    var cols={};C.forEach(function(p){var c=String(p.col||'').trim();if(c){(cols[c]=cols[c]||[]).push(p)}});
+    var CL=Object.keys(cols).filter(function(c){return cols[c].length>=2}).sort(function(a,b){return cols[b].length-cols[a].length}).slice(0,4);
+    if(CL.length)h+='<div class="hsh"><h2 class="h2">'+LFI.tr('Coleções')+'</h2></div><div class="hcol"'+(CL.length<4?' style="--n:'+CL.length+'"':'')+'>'+CL.map(function(c){var f=cols[c].filter(function(p){return p.foto})[0]||cols[c][0];return '<a href="#vitrine" data-mf="col:'+esc(c)+'">'+(f.foto?'<img src="'+f.foto+'" alt="" loading="lazy">':'')+'<span class="cx"><b>'+esc(c)+'</b><small>'+cols[c].length+' '+LFI.tr('modelos')+'</small></span></a>'}).join('')+'</div>';
+    /* categorias */
+    var CT=[['solar','De sol'],['grau','De grau'],['armacao','Armações']].map(function(t){var l=C.filter(function(p){return p.tipo===t[0]});return [t[0],t[1],l]}).filter(function(t){return t[2].length});
+    if(CT.length)h+='<div class="hsh"><h2 class="h2">'+LFI.tr('Compre por categoria')+'</h2></div><div class="hcat" style="grid-template-columns:repeat('+CT.length+',minmax(0,1fr))">'+CT.map(function(t){var f=t[2].filter(function(p){return p.foto&&p.aviso!=='Esgotado'})[0]||t[2][0];return '<a href="#vitrine" data-mf="tipo:'+t[0]+'"><span class="hci">'+img5(f)+'</span><span><small>'+t[2].length+' '+LFI.tr('modelos')+'</small>'+LFI.tr(t[1])+'</span></a>'}).join('')+'</div>';
+    /* para o seu rosto (depois do teste) */
+    var ro=rostoAtual();
+    if(ro){var ide=C.filter(function(p){return p.aviso!=='Esgotado'&&(p.rosto||[]).indexOf(ro)>=0}).slice(0,4);
+      if(ide.length)h+='<div class="hros"><span style="font-size:26px">✨</span><div><b>'+LFI.tr('Para o seu rosto')+' '+esc(rostoNome(ro))+'</b><small>'+LFI.tr('Você fez o teste · estes são os modelos que mais combinam')+'</small></div><a href="#vitrine" data-facem="'+ro+'">'+LFI.tr('Ver só os ideais')+' ›</a></div><div class="hg">'+ide.map(function(p){return card5(p,1)}).join('')+'</div>'}
+    /* abas */
+    var A=abas5();if(A.length){if(!A.some(function(a){return a[0]===V5.tab}))V5.tab=A[0][0];var cur=A.filter(function(a){return a[0]===V5.tab})[0];
+      h+='<div class="htabs" role="tablist">'+A.map(function(a){return '<button type="button" role="tab" data-htab="'+a[0]+'" class="'+(a[0]===V5.tab?'on':'')+'" aria-selected="'+(a[0]===V5.tab)+'">'+LFI.tr(a[1])+'</button>'}).join('')+'<a href="#vitrine"'+(V5.tab==='of'?' data-mf="tipo:of"':' data-mf="tipo:todos"')+'>'+LFI.tr('Ver todos')+' ›</a></div><div class="hg">'+cur[2].slice(0,8).map(function(p){return card5(p,0)}).join('')+'</div>'}
+    /* faixas do esboço B */
+    h+='<div class="hstr"><a href="#rosto"><span><small>'+LFI.tr('DESCUBRA EM 1 MINUTO')+'</small><b>'+LFI.tr('Qual combina com meu rosto?')+'</b></span><span class="ar">›</span></a><a href="#atacado"><span><small>'+LFI.tr('PARA LOJISTAS')+'</small><b>'+LFI.tr('Preços de atacado')+'</b></span><span class="ar">›</span></a></div>';
+    /* novidades */
+    h+='<section class="hnews"><div><h2>'+LFI.tr('Novidades e ofertas')+' <em>'+LFI.tr('primeiro')+'</em></h2><p>'+LFI.tr('Avisamos quando chegam modelos novos ou tem oferta. Sem spam: você sai quando quiser.')+'</p></div><div class="nf" id="hnf">'+newsForm()+'</div></section>';
+    /* guia */
+    h+='<div class="hsh"><h2 class="h2">'+LFI.tr('Guia La Fouch')+'</h2></div><div class="hgu">'+GUIA.map(function(g,k){var f=find(g.img)||C.filter(function(p){return p.foto})[k]||null;return '<button type="button" data-guia="'+g.id+'"><span class="gi">'+(f&&f.foto?'<img src="'+f.foto+'" alt="" loading="lazy">':'')+'</span><span class="gt"><small>'+LFI.tr(g.tag)+'</small><b>'+LFI.tr(g.t)+'</b>'+(k===0?'<p>'+LFI.tr(g.r)+'</p>':'')+'</span></button>'}).join('')+'</div>';
+    h+=rodape5();
+    return h}
+  function newsForm(){var m=V5.nm||'wa';
+    if(V5.nok)return '<div class="nok">✓ '+LFI.tr(V5.nok)+'</div>';
+    return '<div class="nt"><button type="button" data-nm="wa" class="'+(m==='wa'?'on':'')+'">WhatsApp</button><button type="button" data-nm="em" class="'+(m==='em'?'on':'')+'">E-mail</button></div>'+
+      (m==='em'?'<input type="email" id="hnem" placeholder="'+LFI.tr('Seu e-mail')+'" autocomplete="email" aria-label="'+LFI.tr('Seu e-mail')+'"><button type="button" class="nb" data-news="em">'+LFI.tr('Quero receber')+'</button><div class="nc">'+LFI.tr('Ao se inscrever, você aceita receber e-mails da La Fouch.')+'</div>'
+        :'<button type="button" class="nb" data-news="wa">'+LFI.tr('Quero receber pelo WhatsApp')+'</button><div class="nc">'+LFI.tr('Abre o WhatsApp com a mensagem pronta. Você só aperta enviar.')+'</div>')}
+  function rodape5(){var es=LFI.lang==='es',ig=(typeof SOCIAL!=='undefined'&&SOCIAL.ig)||'';
+    return '<div class="lfft"><div class="in"><div><div class="flg" role="img" aria-label="La Fouch"></div><p>'+LFI.tr('Tudo em óculos')+' · Ciudad del Este</p><p>Galeria Jebai Center, 3° piso, torre A, n°2242</p><p>'+LFI.tr('Segunda a sábado, das 7h30 às 15h')+'</p><p><a class="mp" href="https://maps.app.goo.gl/zy6c1ZFq4gQhxWXC8" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">'+LFI.tr('Como chegar')+' ›</a></p></div>'+
+      '<div><b>'+LFI.tr('Comprar')+'</b><p><a href="#vitrine" data-mf="tipo:solar">'+LFI.tr('De sol')+'</a></p><p><a href="#vitrine" data-mf="tipo:grau">'+LFI.tr('De grau')+'</a></p><p><a href="#vitrine" data-mf="tipo:armacao">'+LFI.tr('Armações')+'</a></p><p><a href="#vitrine" data-mf="tipo:of">'+LFI.tr('Ofertas')+'</a></p><p><a href="#atacado">'+LFI.tr('Atacado')+'</a></p></div>'+
+      '<div><b>'+LFI.tr('Ajuda')+'</b><p><a href="#como">'+LFI.tr('Como comprar')+'</a></p><p><a href="#como">'+LFI.tr('Entrega e retirada')+'</a></p><p><a href="#duvidas">'+LFI.tr('Trocas e dúvidas')+'</a></p><p><a href="#" data-guia="rosto">'+LFI.tr('Guia La Fouch')+'</a></p><p><a href="#rosto">'+LFI.tr('Qual combina com meu rosto?')+'</a></p></div>'+
+      '<div><b>'+LFI.tr('Contato')+'</b><p><a href="https://wa.me/'+NUM5()+'" target="_blank" rel="noopener">WhatsApp +595 983 642 241</a></p>'+(ig?'<p><a href="'+esc(ig)+'" target="_blank" rel="noopener">Instagram</a></p>':'')+'</div></div>'+
+      '<div class="fbt"><div class="pay"><span>PIX</span><span>Itaú</span><span>'+LFI.tr('Dinheiro na loja')+'</span></div><div class="lng"><button type="button" data-lg="es" class="'+(es?'on':'')+'">ES</button><button type="button" data-lg="pt" class="'+(es?'':'on')+'">PT</button></div><div><a href="/termos.html">'+LFI.tr('Termos')+'</a> · <a href="/privacidade.html">'+LFI.tr('Privacidade')+'</a> · © '+new Date().getFullYear()+' La Fouch</div></div></div>'}
+  function homeDraw(){
+    var H=$('home');if(!H){H=document.createElement('div');H.id='home';var hero=document.querySelector('.hero');hero.style.setProperty('display','none','important');hero.parentNode.insertBefore(H,hero.nextSibling)}
+    evAplica();if(st.rosto){try{localStorage.setItem('lf_rosto5',st.rosto)}catch(_){}}
+    var ht=homeHtml();if(H._h===ht)return;H._h=ht;H.innerHTML=ht;dstGira()}
+  var _redraw5=redraw;redraw=function(){_redraw5();homeDraw()};
+  var _setHero5=setHero;setHero=function(){_setHero5();clearTimeout(V5.sh);V5.sh=setTimeout(homeDraw,30)};
+
+  /* ---- catálogo: ofertas, coleção e acessórios ---- */
+  var _drawChips5=drawChips;drawChips=function(){
+    var tem=P.some(function(p){return vis5(p)&&isOf(p)});TIPOS.length=0;[['todos','Todos'],['armacao','Armações'],['grau','Óculos de grau'],['solar','Solares']].concat(tem||st.tipo==='of'?[['of','Ofertas']]:[]).forEach(function(t){TIPOS.push(t)});
+    _drawChips5();if(st.col){var tp=$('tipos');if(tp)tp.insertAdjacentHTML('afterbegin','<button class="chip" data-colx aria-pressed="true">'+esc(st.col)+' ×</button>')}};
+  document.addEventListener('click',function(e){
+    var t=e.target.closest&&e.target.closest('[data-tipo],[data-gen],[data-colx]');if(!t)return;
+    if(t.hasAttribute('data-colx')){e.stopPropagation();st.col='';drawChips();drawGrid();return}
+    st.col=''},true);
+  document.addEventListener('click',function(e){
+    var t=e.target.closest&&e.target.closest('[data-mf]');if(!t||t.closest('#drw'))return;
+    var kv=t.getAttribute('data-mf').split(':'),v=kv.slice(1).join(':');st.col='';st.rosto='';
+    if(kv[0]==='gen'){st.gen=v;st.tipo='todos'}else if(kv[0]==='col'){st.col=v;st.tipo='todos';st.gen=''}else{st.tipo=v;st.gen=''}
+    try{drawGen();drawChips();drawFaces();drawGrid()}catch(_){}},true);
+
+  /* ---- busca na lupa ---- */
+  (function(){
+    var bag=$('bagbtn');if(!bag||$('sbtn'))return;
+    var b=document.createElement('button');b.className='ib';b.id='sbtn';b.type='button';b.setAttribute('aria-label','Buscar');b.innerHTML='<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
+    var cb=$('contabtn');bag.parentNode.insertBefore(b,bag);if(cb)bag.parentNode.insertBefore(cb,bag);
+    var o=document.createElement('div');o.id='sov';o.setAttribute('aria-hidden','true');
+    o.innerHTML='<div class="sosc" data-sox></div><div class="sopn" role="dialog" aria-modal="true" aria-label="Buscar"><div class="sobar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q5" type="search" placeholder="Buscar modelo ou código" aria-label="Buscar no catálogo" autocomplete="off" enterkeyhint="search"><button type="button" class="sox" data-sox aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="sores" id="sores"></div></div>';
+    document.body.appendChild(o);
+    var inp=$('q5'),res=$('sores');
+    function achados(q){q=q.trim().toLowerCase();if(!q)return [];return cat5().filter(function(p){return (p.nome+' '+p.ref+' '+(p.col||'')).toLowerCase().indexOf(q)>=0}).sort(function(a,b){return (a.aviso==='Esgotado'?1:0)-(b.aviso==='Esgotado'?1:0)})}
+    function pinta(){var q=inp.value,l=achados(q);
+      if(!q.trim()){res.innerHTML='<div class="sohint">'+LFI.tr('Busque pelo nome ou pelo código da peça.')+'</div><div class="sochips"><button type="button" data-sq="solar">'+LFI.tr('Solar')+'</button><button type="button" data-sq="gatinho">'+LFI.tr('Gatinho')+'</button><button type="button" data-sq="redondo">'+LFI.tr('Redondo')+'</button><button type="button" data-sq="dourado">'+LFI.tr('Dourado')+'</button></div>';return}
+      if(!l.length){res.innerHTML='<div class="sohint">'+LFI.tr('Nada encontrado para')+' “'+esc(q)+'”.</div>';return}
+      res.innerHTML=l.slice(0,6).map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join('')+(l.length>6?'<button type="button" class="soall" data-soall>'+LFI.tr('Ver todos os')+' '+l.length+' '+LFI.tr('resultados')+'</button>':'')}
+    function abre(){o.classList.add('on');o.setAttribute('aria-hidden','false');document.documentElement.classList.add('lock');pinta();setTimeout(function(){inp.focus()},40)}
+    function fecha(){o.classList.remove('on');o.setAttribute('aria-hidden','true');if(!$('layer').innerHTML.trim()&&!$('drw').classList.contains('on'))document.documentElement.classList.remove('lock')}
+    V5.sfecha=fecha;
+    b.addEventListener('click',abre);inp.addEventListener('input',pinta);
+    inp.addEventListener('keydown',function(e){if(e.key==='Escape')fecha();if(e.key==='Enter'){e.preventDefault();todos()}});
+    function todos(){var q=inp.value;fecha();setQ(q);goTo('vitrine')}
+    o.addEventListener('click',function(e){var t=e.target.closest('[data-sox],[data-soall],[data-sq],[data-open]');if(!t)return;
+      if(t.hasAttribute('data-sox'))fecha();else if(t.hasAttribute('data-soall'))todos();else if(t.hasAttribute('data-sq')){inp.value=t.getAttribute('data-sq');pinta();inp.focus()}else fecha()});
+  })();
+
+  /* ---- menu lateral em blocos ---- */
+  (function(){
+    var nv=document.querySelector('#drw nav');if(!nv)return;nv.className='dnv';
+    var A=function(h,mf,t,c){return '<a href="'+h+'"'+(mf?' data-mf="'+mf+'"':'')+(c?' class="'+c+'"':'')+'>'+t+'</a>'};
+    nv.innerHTML='<a href="#" class="dacc" data-cta="minha"><span class="dav" id="dav">'+'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span><b id="dacn">Entrar ou criar conta</b><small id="dacs">Minha conta · Meus pedidos ›</small></span></a>'+
+      '<small class="dgl">Comprar</small>'+A('#vitrine','tipo:solar','De sol')+A('#vitrine','tipo:grau','De grau')+A('#vitrine','tipo:armacao','Armações')+A('#vitrine','tipo:of','Ofertas','dof')+
+      '<div class="dch">'+A('#vitrine','gen:f','Feminino')+A('#vitrine','gen:m','Masculino')+A('#vitrine','gen:u','Unissex')+'</div>'+
+      '<small class="dgl">Descobrir</small>'+A('#rosto','','Qual combina com meu rosto?')+A('#atacado','','Atacado')+
+      '<small class="dgl">Ajuda</small>'+A('#como','','Como comprar')+'<a href="#" data-guia="rosto">Guia La Fouch</a>'+A('#duvidas','','Dúvidas frequentes');
+    var dl=document.querySelector('#drw .dleg');if(dl)dl.style.display='';
+    function conta(){var c=null;try{c=logado()?getConta():null}catch(_){}var n=c&&c.nome?String(c.nome).split(' ')[0]:'';
+      $('dacn').textContent=n?LFI.tr('Olá')+', '+n:LFI.tr('Entrar ou criar conta');$('dav').innerHTML=n?esc(n.charAt(0).toUpperCase()):'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>'}
+    $('mnb').addEventListener('click',conta);
+    $('drw').addEventListener('click',function(e){var t=e.target.closest('.dacc,[data-guia]');if(!t)return;e.preventDefault();drwSet(false)},true);
+  })();
+
+  /* ---- cliques da página inicial ---- */
+  document.addEventListener('click',function(e){
+    var t=e.target.closest&&e.target.closest('[data-hdi],[data-htab],[data-nm],[data-news],[data-guia],[data-arst],[data-arok],[data-arw],[data-acc]');if(!t)return;
+    if(t.hasAttribute('data-hdi')){V5.di=+t.getAttribute('data-hdi');dstVai(V5.di);dstGira()}
+    else if(t.hasAttribute('data-htab')){V5.tab=t.getAttribute('data-htab');homeDraw()}
+    else if(t.hasAttribute('data-nm')){V5.nm=t.getAttribute('data-nm');$('hnf').innerHTML=newsForm()}
+    else if(t.hasAttribute('data-news'))newsEnvia(t.getAttribute('data-news'));
+    else if(t.hasAttribute('data-guia')){e.preventDefault();guiaAbre(t.getAttribute('data-guia')==='1'?'rosto':t.getAttribute('data-guia'))}
+    else if(t.hasAttribute('data-acc'))accToggle(t);
+    else if(t.hasAttribute('data-arw'))avalForm();
+    else if(t.hasAttribute('data-arst'))avalEstrela(+t.getAttribute('data-arst'));
+    else if(t.hasAttribute('data-arok')){e.preventDefault();avalEnvia()}});
+  (function(){var hov=function(on){return function(e){if(e.target.closest&&e.target.closest('#hdst'))V5.hov=on}};document.addEventListener('pointerover',hov(true));document.addEventListener('pointerout',hov(false))})();
+  /* deslizar o destaque no celular */
+  (function(){var x0=null;document.addEventListener('touchstart',function(e){x0=e.target.closest&&e.target.closest('#hdst')?e.touches[0].clientX:null},{passive:true});
+    document.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;var n=dstItens().length;if(Math.abs(dx)<50||n<2)return;dstVai((V5.di+(dx<0?1:n-1))%n);dstGira()},{passive:true})})();
+  function newsEnvia(m){
+    if(m==='wa'){var tx=LFI.lang==='es'?'¡Hola! Quiero recibir las novedades y ofertas de La Fouch por WhatsApp.':'Olá! Quero receber as novidades e ofertas da La Fouch pelo WhatsApp.';window.open('https://wa.me/'+NUM5()+'?text='+encodeURIComponent(tx),'_blank','noopener');return}
+    var em=($('hnem')||{}).value||'';if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(em.trim())){toast(LFI.tr('Digite um e-mail válido.'));return}
+    fetch(fnUrl('novidades'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'inscrever',email:em.trim(),lang:LFI.lang})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.ok)throw 0;V5.nok='Pronto! Você vai receber as novidades por e-mail.';$('hnf').innerHTML=newsForm()}).catch(function(){toast(LFI.tr('Não consegui inscrever agora. Tente de novo mais tarde.'))})}
+
+  /* ---- guia ---- */
+  var FX5={oval:'<ellipse cx="27" cy="32" rx="18" ry="26"/>',redondo:'<circle cx="27" cy="32" r="22"/>',quadrado:'<rect x="6" y="8" width="42" height="48" rx="8"/>',coracao:'<path d="M8 12h38l-8 34-11 12-11-12z"/>'};
+  var GUIA=[
+    {id:'rosto',img:'SL2210',tag:'GUIA · 4 min',t:'Como escolher óculos para o seu tipo de rosto',r:'Oval, redondo, quadrado ou coração: qual formato combina com você.'},
+    {id:'uv',img:'SL2270',tag:'SOL · 3 min',t:'UV400 e polarizado: qual é a diferença?'},
+    {id:'limpar',img:'AC1050',tag:'CUIDADOS · 2 min',t:'Como limpar seus óculos sem riscar'}];
+  function guiaAbre(id){
+    var g=GUIA.filter(function(x){return x.id===id})[0]||GUIA[0],h='',ro=rostoAtual()||'oval';
+    if(g.id==='rosto'){
+      h='<p>'+LFI.tr('O óculos certo equilibra as proporções do rosto. A regra é simples: buscar o contraste. Um rosto redondo ganha com formatos angulares; um rosto quadrado, com curvas.')+'</p><h2>'+LFI.tr('Descubra o seu tipo de rosto')+'</h2><div class="gtb">'+
+        [['oval','Oval','Quase tudo fica bem. Experimente formatos grandes e hexagonais.'],['redondo','Redondo','Prefira formatos quadrados ou retangulares.'],['quadrado','Quadrado','Formatos redondos e ovais suavizam os ângulos.'],['coracao','Coração','Gatinho e aviador equilibram a testa.']].map(function(x){return '<div><svg viewBox="0 0 54 64" fill="none" stroke="currentColor" stroke-width="2">'+FX5[x[0]]+'</svg><span><b>'+LFI.tr(x[1])+'</b><small>'+LFI.tr(x[2])+'</small></span></div>'}).join('')+'</div>'+
+        '<div class="gbx"><span><span class="glb">'+LFI.tr('NÃO SABE O SEU TIPO?')+'</span><br><b>'+LFI.tr('Descubra em 1 minuto com a câmera')+'</b></span><button type="button" class="go" data-fa>'+LFI.tr('Qual combina com meu rosto?')+'</button></div>';
+      var L=cat5().filter(function(p){return p.aviso!=='Esgotado'&&(p.rosto||[]).indexOf(ro)>=0}).slice(0,3);
+      if(L.length)h+='<h2>'+LFI.tr('Modelos para rosto')+' '+esc(rostoNome(ro))+'</h2><div class="gpr hg">'+L.map(function(p){return card5(p,0)}).join('')+'</div>';
+      h+='<p>'+LFI.tr('Ficou com dúvida? Passe na loja em Ciudad del Este e prove antes de levar.')+'</p>'}
+    else if(g.id==='uv')h='<p>'+LFI.tr('UV400 e polarizado são coisas diferentes, e um bom óculos de sol pode ter as duas.')+'</p><h2>UV400</h2><p>'+LFI.tr('É a proteção contra os raios ultravioleta (UVA e UVB), que não vemos mas fazem mal aos olhos. UV400 quer dizer que a lente bloqueia os raios até 400 nanômetros, praticamente 100% do UV. É o mais importante para a saúde dos olhos.')+'</p><h2>'+LFI.tr('Polarizado')+'</h2><p>'+LFI.tr('É um filtro que corta o reflexo da luz em superfícies como asfalto, água e vidro. Deixa a visão mais nítida e confortável para dirigir, ir à praia ou pescar. Não substitui a proteção UV: o ideal é ter as duas.')+'</p><h2>'+LFI.tr('Lente escura protege mais?')+'</h2><p>'+LFI.tr('Não. A cor escura só diminui a claridade. Um óculos escuro sem proteção UV é pior que nenhum, porque a pupila dilata e entra mais UV. Por isso todos os nossos solares têm UV400.')+'</p>';
+    else h='<p>'+LFI.tr('A maioria dos riscos vem da limpeza feita do jeito errado. Siga estes passos:')+'</p><h2>'+LFI.tr('Passo a passo')+'</h2><p>1. '+LFI.tr('Enxágue as lentes em água corrente, morna ou fria, para tirar a poeira antes de esfregar.')+'</p><p>2. '+LFI.tr('Use uma gota de detergente neutro e espalhe com os dedos, dos dois lados.')+'</p><p>3. '+LFI.tr('Enxágue de novo e seque com a flanela de microfibra, sem apertar.')+'</p><h2>'+LFI.tr('O que evitar')+'</h2><p>'+LFI.tr('Camiseta, papel, guardanapo e álcool riscam ou estragam o tratamento da lente. Nunca deixe o óculos no painel do carro: o calor deforma a armação. Guarde sempre no estojo.')+'</p>';
+    layer('<div class="modal msg guia" role="dialog" aria-modal="true" aria-label="'+esc(LFI.tr(g.t))+'"><div class="det"><button class="x" data-close aria-label="Fechar">×</button><span class="glb">'+LFI.tr(g.tag)+'</span><h1>'+LFI.tr(g.t)+'</h1>'+h+'</div></div>','center')}
+
+  /* ---- página da peça: rosto, estojo e flanela, combina com, avaliações ---- */
+  var _product5=product;product=function(ref,pop){_product5(ref,pop);try{prodExtra(ref)}catch(_){}};
+  function accs(){return P.filter(function(p){return p.tipo==='acessorio'&&!p.oculto&&p.aviso!=='Esgotado'})}
+  function accItem(p){var on=!!st.cart[p.ref];return '<button type="button" data-acc="'+p.ref+'" aria-pressed="'+on+'"><span class="ai">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+fmt(p.n)+'</small></span><span class="ck">'+(on?'✓':'')+'</span></button>'}
+  function accToggle(t){var r=t.getAttribute('data-acc'),p=find(r);if(!p)return;if(st.cart[r]){delete st.cart[r];toast(LFI.tr('Tirado do carrinho'))}else{st.cart[r]=1;toast(LFI.tr('Adicionado ao carrinho'),LFI.tr('Ver'))}drawBag();t.outerHTML=accItem(p)}
+  function prodExtra(ref){
+    var p=find(ref),m=document.querySelector('#layer .pgm');if(!p||!m)return;var det=m.querySelector('.det');if(!det)return;
+    var ro=rostoAtual(),dp=det.querySelector('.dp');
+    if(ro&&dp&&(p.rosto||[]).indexOf(ro)>=0)dp.insertAdjacentHTML('afterend','<div class="pidl">✓ '+LFI.tr('Ideal para o seu rosto')+' '+esc(rostoNome(ro))+'</div>');
+    if(dp&&isOf(p)&&+p.ofAte>Date.now()){var sx=Math.floor((+p.ofAte-Date.now())/1000),dx=Math.floor(sx/86400),hx=Math.floor(sx%86400/3600),mx=Math.floor(sx%3600/60);dp.insertAdjacentHTML('afterend','<div class="pofa">⏱ '+LFI.tr('A oferta termina em')+' '+(dx?dx+' d '+hx+' h':hx?hx+' h '+mx+' min':mx+' min')+'</div>')}
+    var buy=det.querySelector('.buy'),ex='';
+    if(p.tipo!=='acessorio'&&CFG.brinde!==false)ex+='<div class="pbr"><i>🎁</i><div><b>'+LFI.tr('Inclui estojo e flanela')+'</b><small>'+LFI.tr('Todo óculos vai com estojo e flanela de limpeza, de presente.')+'</small></div></div>';
+    var A=p.tipo==='acessorio'?[]:accs();if(A.length)ex+='<div class="pcb"><h3>'+LFI.tr('Combina com')+'</h3>'+A.map(accItem).join('')+'</div>';
+    if(ex&&buy)buy.insertAdjacentHTML('afterend',ex);
+    if(p.tipo!=='acessorio'){m.insertAdjacentHTML('beforeend','<section class="prv" id="prv" data-ref="'+esc(ref)+'"><div class="rv0">'+LFI.tr('Carregando avaliações…')+'</div></section>');avalCarrega(ref)}}
+  function st5(n){var s='';for(var i=1;i<=5;i++)s+=i<=Math.round(n)?'★':'<i>★</i>';return '<span class="st5">'+s+'</span>'}
+  function avalCarrega(ref){
+    fetch(fnUrl('avaliacao')+'?ref='+encodeURIComponent(ref)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){avalPinta(ref,j&&j.ok?j:{n:0})}).catch(function(){avalPinta(ref,{n:0})})}
+  function avalPinta(ref,j){var s=$('prv');if(!s||s.getAttribute('data-ref')!==ref)return;
+    var n=j.n||0,dist=j.dist||[0,0,0,0,0];
+    s.innerHTML='<div class="rh"><div class="rs"><span class="glb" style="letter-spacing:.14em;font-size:11px;font-weight:700;color:var(--ac)">'+LFI.tr('AVALIAÇÕES')+'</span>'+(n?'<b class="rn">'+String(j.media).replace('.',',')+'</b>'+st5(j.media)+'<div style="color:var(--mu);font-size:13px">'+n+' '+LFI.tr(n===1?'avaliação de quem comprou':'avaliações de quem comprou')+'</div>'+[5,4,3,2,1].map(function(k,i){var pc=n?Math.round(dist[i]/n*100):0;return '<div class="rbar">'+k+'★<u><i style="width:'+pc+'%"></i></u>'+pc+'%</div>'}).join(''):'<p class="rv0" style="margin:8px 0 0">'+LFI.tr('Ainda sem avaliações. Comprou esta peça? Conte o que achou.')+'</p>')+
+      '<button type="button" class="rw" data-arw>'+LFI.tr('Escrever avaliação')+'</button></div><div class="rl" id="prvl">'+(j.itens||[]).map(function(a){return '<div class="r"><div class="rt"><span><b>'+esc(a.nome)+'</b>'+(a.cidade?' · '+esc(a.cidade):'')+'</span>'+st5(a.nota)+'</div><div class="vf">✓ '+LFI.tr('Compra verificada')+(a.via==='delivery'?' · delivery':a.via?' · '+LFI.tr('retirou na loja'):'')+'</div>'+(a.txt?'<p>'+esc(a.txt)+'</p>':'')+'</div>'}).join('')+'</div></div>'}
+  function avalForm(){
+    var s=$('prv');if(!s)return;var ref=s.getAttribute('data-ref');
+    if(!logado()){toast(LFI.tr('Entre na sua conta para avaliar.'));try{AUTH_VOLTA=false}catch(_){}cadastrarTela();return}
+    var l=$('prvl');l.insertAdjacentHTML('afterbegin','<div class="rv0" id="prvw">'+LFI.tr('Conferindo a sua compra…')+'</div>');
+    idTok().then(function(tk){return fetch(fnUrl('avaliacao'),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk},body:JSON.stringify({acao:'posso',ref:ref})})}).then(function(r){return r.json()}).then(function(j){
+      var w=$('prvw');if(!w)return;
+      if(!j||!j.ok){w.textContent=LFI.tr('Não consegui abrir agora. Tente de novo mais tarde.');return}
+      if(!j.pode){w.textContent=LFI.tr(j.motivo==='email'?'Confirme o seu e-mail para avaliar.':'Só quem comprou esta peça pela loja pode avaliar.');return}
+      V5.an=j.ja?j.ja.nota:5;var c=getConta()||{};
+      w.outerHTML='<form id="prvf"><b>'+LFI.tr('Sua avaliação')+'</b><div class="stp">'+[1,2,3,4,5].map(function(k){return '<button type="button" data-arst="'+k+'" class="'+(k<=V5.an?'on':'')+'" aria-label="'+k+'">★</button>'}).join('')+'</div><textarea id="prvt" maxlength="500" placeholder="'+LFI.tr('O que achou da peça? (opcional)')+'">'+esc(j.ja&&j.ja.txt||'')+'</textarea><input type="hidden" id="prvc" value="'+esc(c.cidade||'')+'"><button type="button" class="go" data-arok>'+LFI.tr('Publicar avaliação')+'</button></form>'}).catch(function(){var w=$('prvw');if(w)w.textContent=LFI.tr('Não consegui abrir agora. Tente de novo mais tarde.')})}
+  function avalEstrela(k){V5.an=k;document.querySelectorAll('#prvf [data-arst]').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-arst')<=k)})}
+  function avalEnvia(){var s=$('prv');if(!s)return;var ref=s.getAttribute('data-ref');
+    idTok().then(function(tk){return fetch(fnUrl('avaliacao'),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tk},body:JSON.stringify({acao:'avaliar',ref:ref,nota:V5.an||5,txt:($('prvt')||{}).value||'',cidade:($('prvc')||{}).value||''})})}).then(function(r){return r.json()}).then(function(j){
+      if(!j||!j.ok)throw 0;toast(LFI.tr('Obrigado! Sua avaliação foi publicada.'));avalCarrega(ref)}).catch(function(){toast(LFI.tr('Não consegui publicar agora. Tente de novo mais tarde.'))})}
+
+  setTimeout(homeDraw,0);
+
   /* giro 360° (vídeo guardado no site pelo app): toca no lugar da foto; tocar de novo volta para a foto */
   document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-g360]');if(!b)return;e.preventDefault();e.stopPropagation();
     var big=b.closest('.big'),p=find(b.getAttribute('data-g360'));if(!big||!p||!p.gv)return;var v=big.querySelector('.g360v');
