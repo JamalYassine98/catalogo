@@ -550,7 +550,7 @@
   function pgBarAcc(t){return '';var _x='<div class="pgbar"><button type="button" class="pgback" data-pgback="cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Voltar ao catálogo</span></button><span class="pgcr">'+t+'</span></div>'}
   function pgCart(re,pop,kind,ttl){
     kind=kind||'#cart';var url=kind==='#cart'?'/carrinho':'/conta',stt=kind==='#cart'?{lfc:1}:{lfa:1};
-    document.documentElement.classList.remove('bootprod');
+    lfBootFim();
     var sc=document.querySelector('#layer .scrim');if(sc){if(!re)sc.scrollTop=0;var hd=document.querySelector('header.top,.top');if(hd){var z=parseFloat(getComputedStyle(document.body).zoom)||1,hb=hd.getBoundingClientRect().bottom/z;if(hb>0&&hb<400)sc.style.top=hb+'px'}}
     if(re||prodOpen&&prodRef===kind)return;
     var sw=prodOpen&&(prodRef==='#cart'||prodRef==='#acc');
@@ -560,7 +560,7 @@
     if(pop)return;
     try{if(sw){stt.d=prodDepth;history.replaceState(stt,'',url)}else{prodDepth++;stt.d=prodDepth;history.pushState(stt,'',url)}}catch(_){}}
   function pgInit(p,pop){
-    prodOpen=true;prodRef=p.ref;document.documentElement.classList.remove('bootprod');waProd(p);try{document.activeElement&&document.activeElement.blur()}catch(_){}
+    prodOpen=true;prodRef=p.ref;lfBootFim();waProd(p);try{document.activeElement&&document.activeElement.blur()}catch(_){}
     if(!prodTitle)prodTitle=document.title;document.title=p.nome+' ('+p.ref+') · La Fouch';
     if(!pop&&prodDepth===0){try{var vs0=$('vscr'),pp0=document.querySelector('.sec.pop');sessionStorage.setItem('lf_back',JSON.stringify({h:pp0?pp0.id:'',sy:vs0?vs0.scrollTop:0,ps:pp0?pp0.scrollTop:0,tipo:st.tipo,gen:st.gen,q:st.q,sort:st.sort,rosto:st.rosto}))}catch(_){}}
     if(!pop){try{prodDepth++;history.pushState({lfp:p.ref,d:prodDepth},'',rtProd(p.ref))}catch(_){prodDepth--}}
@@ -596,7 +596,7 @@
     var r=_product9.apply(this,arguments);navProdEnfeita(q,pop);return r};
   /* entrada: desliza da direita; o botão chega com a seta logo depois */
   function navProdEnfeita(q,pop){var sc=document.querySelector('#layer .scrim.pg');if(!sc)return;
-    if(!NAV_RM.matches){sc.classList.remove('navIn');void sc.offsetWidth;sc.classList.add('navIn');setTimeout(function(){sc.classList.remove('navIn')},460)}
+    if(!NAV_RM.matches&&!document.documentElement.classList.contains('bootprod')){sc.classList.remove('navIn');void sc.offsetWidth;sc.classList.add('navIn');setTimeout(function(){sc.classList.remove('navIn')},460)}
     var b=sc.querySelector('.pgback.navb');if(b){b.classList.add('ent');setTimeout(function(){b.classList.remove('ent')},900)}
     setTimeout(function(){navRel(q)},0);setTimeout(function(){navRel(q)},500)}
   /* fim da peça: "Mais Armações · Ver todas ›" (o título só muda se as sugestões forem todas da mesma categoria) */
@@ -637,7 +637,7 @@
   /* cabeçalho da vitrine: "‹ Início" + título (toque troca a categoria) */
   (function(){var ms=document.querySelector('.mobsearch'),fb=$('fbtn');if(!ms||!fb)return;
     var d=document.createElement('div');d.className='vnav';
-    d.innerHTML='<button type="button" class="navb vback" data-vback><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>'+LFI.tr('Início')+'</span></button><button type="button" class="vtit" data-vcat aria-haspopup="dialog"><b id="vtitT">'+LFI.tr('Catálogo')+'</b><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><small id="vtitN"></small></button>';
+    d.innerHTML='<button type="button" class="navb vback" data-vback><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>'+LFI.tr('Início')+'</span></button><div class="vtit"><b id="vtitT">'+LFI.tr('Catálogo')+'</b><small id="vtitN"></small></div>';
     ms.insertBefore(d,fb)})();
   function navTitulo(){var t=$('vtitT'),n=$('vtitN');if(!t)return;var g=$('grid'),c=g?g.querySelectorAll('.card').length:0;
     t.textContent=LFI.tr(navCat(st.tipo,st.gen));n.textContent='';
@@ -1649,12 +1649,14 @@
   function dstVai(k){var h=$('hdst');V5.di=k;if(!h){homeDraw();return}var im=h.querySelector('.hdi');if(im&&!matchMedia('(prefers-reduced-motion: reduce)').matches){im.classList.add('out');setTimeout(function(){var t=document.createElement('div');t.innerHTML=dstHtml();var nv=t.firstElementChild;if(nv){h.replaceWith(nv);var i2=nv.querySelector('.hdi');i2.classList.add('out');requestAnimationFrame(function(){requestAnimationFrame(function(){i2.classList.remove('out')})})}},280)}else{var t=document.createElement('div');t.innerHTML=dstHtml();if(t.firstElementChild)h.replaceWith(t.firstElementChild)}}
 
   /* ---- cards ---- */
-  function selo5(p){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';if(isOf(p))return '<span class="hb of">−'+pct5(p)+'%</span>';if(p.mv>0&&p.mv<=3)return '<span class="hb">'+LFI.tr('Mais vendido')+'</span>';if(isNovo(p))return '<span class="hb">'+LFI.tr('Novo')+'</span>';return ''}
-  function card5(p,idl){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p))+'<span class="hci">'+img5(p)+'</span><span class="hn">'+esc(p.nome)+'</span><span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
+  function selo5(p,sec){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';if(isOf(p))return '<span class="hb of">−'+pct5(p)+'%</span>';if(p.mv>0&&p.mv<=3&&sec!=='mv')return '<span class="hb">'+LFI.tr('Mais vendido')+'</span>';if(isNovo(p)&&sec!=='nov')return '<span class="hb">'+LFI.tr('Novo')+'</span>';return ''}
+  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(isOf(p)&&p.mv>0&&p.mv<=3&&sec!=='mv'?'<span class="hmx">'+LFI.tr('Mais vendido')+'</span>':'')+'<span class="hn">'+esc(p.nome)+'</span><span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
   function abas5(){var C=cat5(),ok=function(p){return p.aviso!=='Esgotado'};
-    var nov=C.filter(ok).sort(function(a,b){return (b.cad||0)-(a.cad||0)||(a.ord||0)-(b.ord||0)}),
-      mv=C.filter(function(p){return ok(p)&&p.mv>0}).sort(function(a,b){return a.mv-b.mv}),
-      of=C.filter(function(p){return ok(p)&&isOf(p)}).sort(function(a,b){return pct5(b)-pct5(a)});
+    /* 08/11 (aprovado): cada peça aparece em UMA seção só, na de maior hierarquia — Ofertas > Mais vendidos > Novidades.
+       Em Ofertas a mais vendida vem primeiro, depois o maior desconto. */
+    var of=C.filter(function(p){return ok(p)&&isOf(p)}).sort(function(a,b){var ma=a.mv>0?a.mv:1e9,mb=b.mv>0?b.mv:1e9;return ma-mb||pct5(b)-pct5(a)}),
+      mv=C.filter(function(p){return ok(p)&&!isOf(p)&&p.mv>0}).sort(function(a,b){return a.mv-b.mv}),
+      nov=C.filter(function(p){return ok(p)&&!isOf(p)&&!(p.mv>0)}).sort(function(a,b){return (b.cad||0)-(a.cad||0)||(a.ord||0)-(b.ord||0)});
     var e=evAtivo(),A=[['nov','Novidades',nov],['mv','Mais vendidos',mv],['of','Ofertas',of]];
     if(e&&e.tema==='bf')A=[A[2],A[1],A[0]];
     return A.filter(function(a){return a[2].length})}
@@ -1677,11 +1679,8 @@
     var ro=rostoAtual();
     if(ro){var ide=C.filter(function(p){return p.aviso!=='Esgotado'&&(p.rosto||[]).indexOf(ro)>=0}).slice(0,4);
       if(ide.length)h+='<div class="hros"><span style="font-size:26px">✨</span><div><b>'+LFI.tr('Para o seu rosto')+' '+esc(rostoNome(ro))+'</b><small>'+LFI.tr('Você fez o teste · estes são os modelos que mais combinam')+'</small></div><a href="#vitrine" data-facem="'+ro+'">'+LFI.tr('Ver só os ideais')+' ›</a></div><div class="hg">'+ide.map(function(p){return card5(p,1)}).join('')+'</div>'}
-    /* abas */
-    var A=abas5();if(A.length){if(!A.some(function(a){return a[0]===V5.tab}))V5.tab=A[0][0];var cur=A.filter(function(a){return a[0]===V5.tab})[0];
-      /* 07/11: uma aba só vira título (como "Guia La Fouch") com "Ver todos" à direita; com 2 ou 3 voltam as abas */
-      if(A.length===1)h+='<div class="hsh hsh1"><h2 class="h2">'+LFI.tr(A[0][1])+'</h2><a href="#vitrine" data-mf="'+(A[0][0]==='of'?'tipo:of':'tipo:todos')+'">'+LFI.tr('Ver todos')+' ›</a></div><div class="hg">'+cur[2].slice(0,8).map(function(p){return card5(p,0)}).join('')+'</div>';
-      else h+='<div class="htabs" role="tablist">'+A.map(function(a){return '<button type="button" role="tab" data-htab="'+a[0]+'" class="'+(a[0]===V5.tab?'on':'')+'" aria-selected="'+(a[0]===V5.tab)+'">'+LFI.tr(a[1])+'</button>'}).join('')+'<a href="#vitrine"'+(V5.tab==='of'?' data-mf="tipo:of"':' data-mf="tipo:todos"')+'>'+LFI.tr('Ver todos')+' ›</a></div><div class="hg">'+cur[2].slice(0,8).map(function(p){return card5(p,0)}).join('')+'</div>'}
+    /* 08/11 (aprovado): sem abas — Novidades, Mais vendidos e Ofertas, cada uma com seu título e "Ver todos ›" */
+    abas5().forEach(function(a){h+='<div class="hsh hsh1"><h2 class="h2">'+LFI.tr(a[1])+'</h2><a href="#vitrine" data-mf="'+(a[0]==='of'?'tipo:of':'tipo:todos')+'">'+LFI.tr('Ver todos')+' ›</a></div><div class="hg" data-hsec="'+a[0]+'">'+a[2].slice(0,8).map(function(p){return card5(p,0,a[0])}).join('')+'</div>'});
     /* faixas do esboço B */
     /* novidades */
     h+='<section class="hnews hn2"><div><h2>'+LFI.tr('Novidades e ofertas')+' <em>'+LFI.tr('primeiro')+'</em></h2><p>'+LFI.tr('Avisamos quando chegam modelos novos ou tem oferta. Sem spam.')+'</p></div><div class="nf" id="hnf">'+newsForm()+'</div></section>';
@@ -2895,6 +2894,56 @@
   document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#como .ajB');if(!b)return;e.preventDefault();ajAbre(b.parentNode.id)});
   var _openPanelAj=openPanel;openPanel=function(id,q){if(id==='duvidas'){_openPanelAj('como',q);ajAbre('ajDuv',1);return}if(id==='como')ajAbre('',0);return _openPanelAj.apply(this,arguments)};
   var _goToAj=goTo;goTo=function(id){if(id==='duvidas'){_goToAj('como');ajAbre('ajDuv',1);return}return _goToAj.apply(this,arguments)};
+
+  /* ===== 08/11 LaFouch (aprovado) =====
+     1) CORTINA: ao abrir/atualizar um endereço (produto, carrinho, conta) a página inteira fica só no fundo liso
+        até a tela final estar desenhada — nada de outra tela por baixo, nada entrando com animação.
+     2) ENQUADRAMENTO AUTOMÁTICO: o site mede onde a armação está em cada foto e mostra uma cópia em que todas
+        ficam do mesmo tamanho, centralizadas e sem encostar na borda. Vale para fotos novas sem ajuste à mão.
+     3) PRÉVIA DAS CORES nos cartões: tocar na bolinha mostra a foto daquela cor; tocar no cartão abre já nela. */
+  function lfBootFim(){var H=document.documentElement;if(!H.classList.contains('bootprod')||lfBootFim.on)return;lfBootFim.on=1;
+    var t0=Date.now(),fim=function(){document.querySelectorAll('#layer img').forEach(function(i){i.style.animation='none'});requestAnimationFrame(function(){requestAnimationFrame(function(){H.classList.remove('bootprod');lfBootFim.on=0})})};
+    (function espera(){var im=document.querySelector('#layer .big img.pf, #layer img');if(!im||im.complete||Date.now()-t0>900)fim();else setTimeout(espera,40)})()}
+  var LFQ_CFG=[['#home .hc .hci img',.80,.60,.56],['#home .hcat .hci img',.94,.88,.50],['#hdst .hdi img, .hd .hdi img',.90,.84,.52],['#grid .ph img.pf',.80,.56,.55],['.srv img',.86,.78,.50]];
+  var LFQ_SEL=LFQ_CFG.map(function(c){return c[0]}).join(','),LFQ_C={},LFQ_PEND={};
+  var LFQ_RO=window.ResizeObserver?new ResizeObserver(function(E){E.forEach(function(en){var im=en.target;if(im.clientWidth>4&&im.clientHeight>4&&im.classList.contains('lfq0'))lfqFaz(im)})}):null;
+  function lfqCfg(im){for(var i=0;i<LFQ_CFG.length;i++)if(im.matches(LFQ_CFG[i][0]))return LFQ_CFG[i];return null}
+  function lfqMede(img){/* caixa da armação: tudo que difere do fundo (média dos 4 cantos da foto) */
+    var W=96,H=Math.max(8,Math.round(W*img.naturalHeight/img.naturalWidth)),c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0,W,H);
+    var d=x.getImageData(0,0,W,H).data,k=function(i){return [d[i],d[i+1],d[i+2]]},cs=[k(0),k((W-1)*4),k((H-1)*W*4),k(((H-1)*W+W-1)*4)],bg=[0,1,2].map(function(j){return Math.round((cs[0][j]+cs[1][j]+cs[2][j]+cs[3][j])/4)});
+    var x0=W,y0=H,x1=-1,y1=-1;for(var y=0;y<H;y++)for(var xx=0;xx<W;xx++){var i=(y*W+xx)*4;if(Math.abs(d[i]-bg[0])+Math.abs(d[i+1]-bg[1])+Math.abs(d[i+2]-bg[2])>42){if(xx<x0)x0=xx;if(xx>x1)x1=xx;if(y<y0)y0=y;if(y>y1)y1=y}}
+    if(x1<0)return null;return {x:x0/W,y:y0/H,w:(x1-x0+1)/W,h:(y1-y0+1)/H,bg:'rgb('+bg.join(',')+')'}}
+  function lfqFaz(im){var cf=lfqCfg(im),src=im.getAttribute('src')||'';if(!cf||!src||/^blob:/.test(src)){im.classList.remove('lfq0');return}
+    var bw=im.clientWidth,bh=im.clientHeight;if(!(bw>4&&bh>4)){/* ainda invisível: enquadra quando aparecer */if(LFQ_RO){if(!im._lfqRo){im._lfqRo=1;LFQ_RO.observe(im)}}else im.classList.remove('lfq0');return}
+    if(im._lfqRo&&LFQ_RO){im._lfqRo=0;LFQ_RO.unobserve(im)}
+    var fit=getComputedStyle(im).objectFit,nat=(fit!=='contain'&&fit!=='cover')||!!im.closest('.hdi'),
+      key=src.length+':'+src.slice(0,60)+src.slice(-60)+'|'+cf[0]+'|'+(nat?'n':(bw/bh).toFixed(2));
+    var ok=function(u){if(im.getAttribute('src')!==src)return;if(u!==src){im.dataset.lfqo=src;im.src=u}im.classList.remove('lfq0')};
+    if(LFQ_C[key]){ok(LFQ_C[key]);return}
+    if(LFQ_PEND[key]){LFQ_PEND[key].push(ok);return}LFQ_PEND[key]=[ok];
+    var I=new Image(),acaba=function(u){var L=LFQ_PEND[key]||[];delete LFQ_PEND[key];LFQ_C[key]=u;L.forEach(function(f){f(u)})};
+    I.onload=function(){try{
+        var b=lfqMede(I);if(!b)throw 0;var asp=nat?I.naturalWidth/I.naturalHeight:bw/bh,CW=Math.min(1000,Math.max(400,Math.round(bw*(window.devicePixelRatio||1)*1.15))),CH=Math.round(CW/asp);
+        var fw=b.w*I.naturalWidth,fh=b.h*I.naturalHeight,sc=Math.min(CW*cf[1]/fw,CH*cf[2]/fh),c=document.createElement('canvas');c.width=CW;c.height=CH;var g=c.getContext('2d');
+        g.fillStyle=b.bg;g.fillRect(0,0,CW,CH);g.imageSmoothingQuality='high';var dw=I.naturalWidth*sc,dh=I.naturalHeight*sc;
+        g.drawImage(I,CW/2-(b.x+b.w/2)*dw,CH*cf[3]-(b.y+b.h/2)*dh,dw,dh);
+        c.toBlob(function(bl){acaba(bl?URL.createObjectURL(bl):src)},'image/jpeg',.9)
+      }catch(_){acaba(src)}};
+    I.onerror=function(){acaba(src)};I.src=src}
+  function lfqVe(im){if(!im||im.tagName!=='IMG'||!im.matches(LFQ_SEL))return;var s0=im.getAttribute('src')||'';if(/^blob:/.test(s0))return;im.classList.add('lfq0');lfqFaz(im)}
+  try{new MutationObserver(function(M){M.forEach(function(m){if(m.type==='attributes')lfqVe(m.target);else m.addedNodes.forEach(function(n){if(n.nodeType!==1)return;if(n.tagName==='IMG')lfqVe(n);else if(n.querySelectorAll)n.querySelectorAll('img').forEach(lfqVe)})})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['src']})}catch(_){}
+  document.querySelectorAll(LFQ_SEL).forEach(lfqVe);
+  var lfqRT=0,lfqW=innerWidth;window.addEventListener('resize',function(){if(Math.abs(innerWidth-lfqW)<40)return;lfqW=innerWidth;clearTimeout(lfqRT);lfqRT=setTimeout(function(){document.querySelectorAll(LFQ_SEL).forEach(function(im){if(im.dataset.lfqo){var o=im.dataset.lfqo;delete im.dataset.lfqo;im.setAttribute('src',o)}})},400)});
+  /* prévia das cores no cartão */
+  var LF_CORC={};
+  function lfCorPinta(card){var ref=card.getAttribute('data-open'),i=LF_CORC[ref]||0;card.querySelectorAll('.hsw i').forEach(function(d,k){d.classList.toggle('on',k===i)})}
+  document.addEventListener('click',function(e){var d=e.target.closest&&e.target.closest('.hc .hsw i');if(!d)return;var card=d.closest('.hc');if(!card)return;e.preventDefault();e.stopPropagation();
+    var ref=card.getAttribute('data-open'),p=find(ref);if(!p)return;var i=Array.prototype.indexOf.call(d.parentNode.children,d);if((LF_CORC[ref]||0)===i)return;LF_CORC[ref]=i;lfCorPinta(card);
+    var im=card.querySelector('.hci img');if(p.foto&&im){colorFoto(p,i,function(u){if(!u||LF_CORC[ref]!==i)return;im.classList.add('lfqx');setTimeout(function(){im.setAttribute('src',u);setTimeout(function(){im.classList.remove('lfqx')},60)},140)})}
+    else if(!p.foto){var sv=card.querySelector('.hci svg');if(sv)sv.outerHTML=glasses(p.cores[i],p.raio,5)}},true);
+  try{new MutationObserver(function(){document.querySelectorAll('.hc[data-open]').forEach(function(c){var r=c.getAttribute('data-open');if(LF_CORC[r]&&!c._lfc){c._lfc=1;lfCorPinta(c)}})}).observe(document.body,{childList:true,subtree:true})}catch(_){}
+  var _productCor=product;product=function(ref){var r=_productCor.apply(this,arguments),i=LF_CORC[ref];
+    if(i>0)setTimeout(function(){var b=document.querySelector('#layer .sw [data-sw="'+i+'"]');if(b)b.click()},0);return r};
   (function(){var h=location.hash.slice(1);if(h&&PAN[h]&&MOBQ.matches)openPanel(h,true);try{rtEntra()}catch(_){}var d=false;try{d=sessionStorage.getItem('lf_drw')==='1';sessionStorage.removeItem('lf_drw')}catch(_){}if(d&&MOBQ.matches){var dp=document.querySelector('#drw .dpn');if(dp)dp.style.transition='none';drwSet(true);setTimeout(function(){if(dp)dp.style.transition=''},60)}})();
   (function(){var a=$('tA'),b=$('tB'),sh=document.getElementById('shP');if(!a||!sh||!sh.getTotalLength)return;
     var L=sh.getTotalLength();a.setAttribute('textLength',L-1);b.setAttribute('textLength',L-1);b.setAttribute('startOffset',-L);
