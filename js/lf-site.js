@@ -1702,7 +1702,7 @@
   function rodape5(){var es=LFI.lang==='es',ig=(typeof SOCIAL!=='undefined'&&SOCIAL.ig)||'';
     return '<div class="lfft"><div class="in"><div><p class="fbr">La Fouch</p><p>'+LFI.tr('Tudo em óculos')+' · Ciudad del Este</p><p>Galeria Jebai Center, 3° piso, torre A, n°2242</p><p>'+LFI.tr('Segunda a sábado, das 7h30 às 15h')+'</p><p><a class="mp" href="https://maps.app.goo.gl/zy6c1ZFq4gQhxWXC8" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">'+LFI.tr('Como chegar')+' ›</a></p></div>'+
       '<div><b>'+LFI.tr('Comprar')+'</b><p><a href="#vitrine" data-mf="tipo:solar">'+LFI.tr('Solar')+'</a></p><p><a href="#vitrine" data-mf="tipo:grau">'+LFI.tr('Leitura')+'</a></p><p><a href="#vitrine" data-mf="tipo:armacao">'+LFI.tr('Armações')+'</a></p><p><a href="#vitrine" data-mf="tipo:of">'+LFI.tr('Ofertas')+'</a></p><p><a href="#atacado">'+LFI.tr('Atacado')+'</a></p></div>'+
-      '<div><b>'+LFI.tr('Ajuda')+'</b><p><a href="#como">'+LFI.tr('Como comprar')+'</a></p><p><a href="#como">'+LFI.tr('Entrega e retirada')+'</a></p><p><a href="#duvidas">'+LFI.tr('Dúvidas')+'</a></p><p><a href="#" data-guia="rosto">'+LFI.tr('Guia La Fouch')+'</a></p><p><a href="#rosto">'+LFI.tr('Descubra o seu formato')+'</a></p></div>'+
+      '<div><b>'+LFI.tr('Ajuda')+'</b><p><a href="#como">'+LFI.tr('Como comprar, dúvidas e guia')+'</a></p></div>'+
       '<div><b>'+LFI.tr('Contato')+'</b><p><a class="wct" href="https://wa.me/'+NUM5()+'" target="_blank" rel="noopener" aria-label="WhatsApp +595 983 642 241"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>+595 983 642 241</a></p>'+(ig?'<p><a href="'+esc(ig)+'" target="_blank" rel="noopener">Instagram</a></p>':'')+'</div></div>'+
       '<div class="fbt" style="justify-content:center;text-align:center"><div><a href="/termos.html">'+LFI.tr('Termos')+'</a> · <a href="/privacidade.html">'+LFI.tr('Privacidade')+'</a> · © '+new Date().getFullYear()+' La Fouch</div><div class="frc">'+LFI.tr('Protegido pelo reCAPTCHA do Google')+' · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">'+LFI.tr('Privacidade')+'</a> · <a href="https://policies.google.com/terms" target="_blank" rel="noopener">'+LFI.tr('Termos')+'</a></div></div></div>'}
   function homeDraw(){
@@ -1774,7 +1774,7 @@
       '<small class="dgl">Comprar</small>'+A('#vitrine','tipo:solar','Solar')+A('#vitrine','tipo:grau','Leitura')+A('#vitrine','tipo:armacao','Armações')+A('#vitrine','tipo:of','Ofertas','dof')+A('#rosto','','Descubra o seu formato')+
       '<div class="dch">'+A('#vitrine','gen:f','Feminino')+A('#vitrine','gen:m','Masculino')+A('#vitrine','gen:u','Unissex')+'</div>'+
       '<small class="dgl">Para lojistas</small>'+A('#atacado','','Atacado')+
-      '<small class="dgl">Ajuda</small>'+A('#como','','Como comprar')+'<a href="#" data-hguia>Guia La Fouch</a>'+A('#duvidas','','Dúvidas');
+      '<small class="dgl">Ajuda</small>'+A('#como','','Como comprar, dúvidas e guia');
     var dl=document.querySelector('#drw .dleg');if(dl)dl.style.display='';
     function conta(){var c=null;try{c=logado()?getConta():null}catch(_){}var n=c&&c.nome?String(c.nome).split(' ')[0]:'';
       $('dacn').textContent=n?LFI.tr('Olá')+', '+n:LFI.tr('Entrar ou criar conta');$('dav').innerHTML=n?esc(n.charAt(0).toUpperCase()):'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>'}
@@ -2835,9 +2835,15 @@
   try{var _cd=PREV?null:JSON.parse(localStorage.getItem('lf_pdocs')||'null');if(_cd&&_cd.length)syncProds(_cd)}catch(_){}
   if(PREV&&!/[?&]nosync/.test(location.search)){var _pl=document.createElement('div');_pl.id='prevld';_pl.setAttribute('role','status');_pl.innerHTML='<i></i><span>Carregando a vitrine atual…</span>';document.body.appendChild(_pl)}
   drawGen();drawChips();drawFaces();drawBag();setHero();
+  /* 08/11 Ajuda (aprovado): sanfona Como comprar / Dúvidas / Guia — abrir uma fecha a anterior; #duvidas abre a Ajuda já em Dúvidas */
+  function ajAbre(id,so){var L=document.querySelectorAll('#como .ajI');L.forEach(function(x){var on=x.id===id&&(so||!x.classList.contains('on'));x.classList.toggle('on',on);var b=x.querySelector('.ajB');if(b)b.setAttribute('aria-expanded',on?'true':'false')})}
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#como .ajB');if(!b)return;e.preventDefault();ajAbre(b.parentNode.id)});
+  var _openPanelAj=openPanel;openPanel=function(id,q){if(id==='duvidas'){_openPanelAj('como',q);ajAbre('ajDuv',1);return}if(id==='como')ajAbre('',0);return _openPanelAj.apply(this,arguments)};
+  var _goToAj=goTo;goTo=function(id){if(id==='duvidas'){_goToAj('como');ajAbre('ajDuv',1);return}return _goToAj.apply(this,arguments)};
   (function(){var h=location.hash.slice(1);if(h&&PAN[h]&&MOBQ.matches)openPanel(h,true);try{rtEntra()}catch(_){}var d=false;try{d=sessionStorage.getItem('lf_drw')==='1';sessionStorage.removeItem('lf_drw')}catch(_){}if(d&&MOBQ.matches){var dp=document.querySelector('#drw .dpn');if(dp)dp.style.transition='none';drwSet(true);setTimeout(function(){if(dp)dp.style.transition=''},60)}})();
   (function(){var a=$('tA'),b=$('tB'),sh=document.getElementById('shP');if(!a||!sh||!sh.getTotalLength)return;
     var L=sh.getTotalLength();a.setAttribute('textLength',L-1);b.setAttribute('textLength',L-1);b.setAttribute('startOffset',-L);
     if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
     var off=0;(function tick(){off=(off+.22)%L;a.setAttribute('startOffset',off);b.setAttribute('startOffset',off-L);requestAnimationFrame(tick)})()})();
+
 })();
