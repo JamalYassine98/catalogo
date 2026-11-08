@@ -1,0 +1,24 @@
+name: Diagnóstico (leitura pública)
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          python3 - <<'PY'
+          import json, urllib.request
+          B='https://firestore.googleapis.com/v1/projects/lafouch-2f6bd/databases/(default)/documents/'
+          K='key=AIzaSyAW-54tS1A_VL2EC9OJWFsw1EtboptpEvc'
+          def g(p): return json.load(urllib.request.urlopen(B+p+('&' if '?' in p else '?')+K))
+          def v(x):
+            for k in ('stringValue','integerValue','doubleValue','booleanValue'):
+              if k in x: return x[k]
+            if 'arrayValue' in x: return [v(y) for y in x['arrayValue'].get('values',[])]
+            return None
+          c=g('config/site'); f=c.get('fields',{})
+          print('CONFIG updateTime', c.get('updateTime'), 'pv', v(f.get('pv',{})), 'cotacao', v(f.get('cotacao',{})))
+          for d in g('produtos?pageSize=300').get('documents',[]):
+            f=d['fields']; print('PROD', d['name'].split('/')[-1], d.get('updateTime'), 'tipo', v(f.get('tipo',{})), 'est', v(f.get('est',{})), 'qs', v(f.get('qs',{})), 'n', v(f.get('n',{})), 'gr', v(f.get('gr',{})))
+          PY
