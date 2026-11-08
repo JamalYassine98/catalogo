@@ -1916,11 +1916,11 @@
     Object.keys(R.g).forEach(function(g){RTM[R.g[g]]={pan:'vitrine',gen:g}})});
     /* endereços antigos (07/11: recetados → lectura) */
     RTM['recetados']={pan:'vitrine',tipo:'grau'};['mujer','hombre','unisex'].forEach(function(g,i){RTM['recetados-'+g]={pan:'vitrine',tipo:'grau',gen:'fmu'[i]}});return RTM}
-  function rtSlug(){var R=rtL(),pp=document.querySelector('.sec.pop');if(!pp||!PAN[pp.id])return R.home;
+  function rtSlug(){var R=rtL(),pp=document.querySelector('.sec.pop');if(!pp||!PAN[pp.id])return '';/* 08/11: início é só lafouch.com (/oculos e /lentes antigos continuam abrindo o início) */
     if(pp.id!=='vitrine')return R[pp.id];
     var t=R.t[st.tipo]||'',g=R.g[st.gen]||'';return t&&g?t+'-'+g:(t||g||R.vitrine)}
   function rtProd(ref){return '/'+rtL().p+'/'+encodeURIComponent(ref)}
-  function rtUrl(id){var R=rtL();return 'https://lafouch.com/'+(R[id]&&typeof R[id]==='string'?R[id]:R.home)}
+  function rtUrl(id){var R=rtL();return 'https://lafouch.com/'+(R[id]&&typeof R[id]==='string'&&id!=='home'?R[id]:'')}
   window.rtUrl=rtUrl;
   function urlSync(){if(!RTOK||prodOpen||document.documentElement.classList.contains('bootprod'))return;
     var sl=rtSlug(),qs=new URLSearchParams(location.search);['r','busca','ref','carrinho','conta','v'].forEach(function(k){qs.delete(k)});
