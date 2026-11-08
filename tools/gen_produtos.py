@@ -271,6 +271,10 @@ def main():
     for d in docs:
         c = campos(d); fs[c.get('ref') or d['name'].split('/')[-1]] = c
     src = open(os.path.join(RAIZ, 'index.html'), encoding='utf-8').read()
+    # 08/11: o código do site saiu para js/lf-site.js (o celular guarda o arquivo e não lê tudo de novo a cada visita)
+    for extra in ('js/lf-site.js', 'js/lf-i18n.js'):
+        ep = os.path.join(RAIZ, extra)
+        if os.path.exists(ep): src += open(ep, encoding='utf-8').read()
     for ch in src.split("{ref:'")[1:]:
         ch = ch.split("{ref:'")[0]
         m = re.match(r"([A-Za-z0-9_-]+)'", ch)
