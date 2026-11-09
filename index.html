@@ -73,7 +73,7 @@ html body .hero h1,html body .hero p{text-align:left!important;max-width:none!im
 }
 </style>
 </head><body>
-<script>(function(){var B='1794212287';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794194681"><link rel="preload" as="script" href="/js/lf-site.js?v=1794194681">
+<script>(function(){var B='1794217766';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794194681"><link rel="preload" as="script" href="/js/lf-site.js?v=1794194681">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1992,8 +1992,10 @@ html.bootprod body>*{visibility:hidden!important}
 /* 09/11 S27h: o código é o nome; a descrição (formato · material ou marca · formato) fica na linha cinza de cima */
 #grid .card .ref.lfds,.card .ref.lfds{text-transform:none!important;letter-spacing:0!important;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:clip;min-width:0}
 #grid .card .nm.lfcod{letter-spacing:.02em;font-weight:700}
-.hc .hds{display:block;padding:10px 14px 0;font-size:13px;color:var(--mu);white-space:nowrap;overflow:hidden}
-.hc .hn.lfcod{padding-top:2px;color:var(--tx);font-weight:700;letter-spacing:.02em}
+.hc .hn.lfcod{color:var(--tx);font-weight:700;letter-spacing:.02em}
+/* 09/11 S33: a descrição fica dentro do mesmo bloco do código (mesma margem, qualquer tamanho de letra) */
+.hc .hn.lfcod .hds{display:block;font-size:13px;font-weight:400;letter-spacing:0;color:var(--mu);white-space:nowrap;overflow:hidden;margin-bottom:2px}
+.ri small .rds{white-space:nowrap;overflow:hidden}
 .ri small .rds{display:block;font-style:normal;color:var(--mu)}
 .ri small:has(.rds){color:var(--tx);font-weight:700}
 .ri small .rds{font-weight:400}
@@ -2037,6 +2039,9 @@ html.onprod.lfcmp .wa{bottom:calc(var(--lfbh,76px) + 58px)!important}}
 
 /* 09/11 S32 (aprovado, opção A): no Destaque da semana a última palavra do nome fica em itálico na cor do texto (a cor da marca dava a ideia de outra cor de armação) */
 .hdt h1 em{color:inherit!important}
+
+/* 09/11 S34 (aprovado): rolagem feita pelo site é instantânea nas trocas de tela (a suave travava no meio no celular: cabeçalho sumia, Início pulava). Suave só onde o código pede (logo no Início). */
+html{scroll-behavior:auto!important}
 </style>
 
 <div class="top"><div class="wrap">

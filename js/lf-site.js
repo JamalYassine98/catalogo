@@ -683,6 +683,8 @@
       try{var d=$('drw');if(d&&d.classList.contains('on')){var x=document.querySelector('#drw [data-dclose]');if(x)x.click()}}catch(_){}
       ['fsh','fvs','dsh','vcs'].forEach(function(id){var d=$(id);if(d&&d.classList.contains('on')){d.classList.remove('on');d.setAttribute('aria-hidden','true');if(id==='fvs')d.innerHTML=''}});
       try{if($('sov').classList.contains('on')&&V5.sfecha)V5.sfecha('todos')}catch(_){}
+      /* 09/11 S34: para o que ainda estiver animando (peça entrando, foto voando) antes de fechar */
+      try{document.querySelectorAll('#layer *,#layer').forEach(function(x){if(x.getAnimations)x.getAnimations().forEach(function(a){try{a.cancel()}catch(_){}})});document.querySelectorAll('#lfGhost,.lfGhost').forEach(function(x){x.remove()})}catch(_){}
       prodRef='';NAVO={k:'home',ts:0};window.__lfTopo=1;try{_closeLayer9(true)}catch(_){$('layer').innerHTML=''}
       closePanels();document.documentElement.classList.remove('lock');topo()}
     addEventListener('click',function(e){var l=e.target.closest&&e.target.closest('.top .logo');if(!l)return;e.preventDefault();e.stopImmediatePropagation();
@@ -693,10 +695,14 @@
       var troca=function(){window.__lfLogo=1;fechaTudo();
         if(n>0){window.__lfLogo=2;try{history.go(-n)}catch(_){window.__lfLogo=0}}else window.__lfLogo=0;
         setTimeout(function(){if(window.__lfLogo)window.__lfLogo=0},1500);
-        requestAnimationFrame(function(){requestAnimationFrame(function(){topo();
+        /* 09/11 S34: o Destaque volta para a 1ª peça e o giro recomeça (não troca de foto logo na chegada) */
+        try{if(typeof dstGira==='function'){if(V5.di){V5.di=0;var h=$('hdst');if(h&&typeof dstHtml==='function'){var t=document.createElement('div');t.innerHTML=dstHtml();if(t.firstElementChild)h.replaceWith(t.firstElementChild)}}dstGira()}}catch(_){}
+        /* o véu só sai quando a página já está mesmo no topo (no celular a rolagem pode demorar alguns quadros) */
+        var tent=0,sai=function(){topo();if((scrollY||0)>1&&tent++<20){requestAnimationFrame(sai);return}
           var fim=function(){topo();v.remove();VEU=null};
           if(RM.matches||!v.animate){fim();return}
-          var a=v.animate([{opacity:1},{opacity:0}],{duration:220,easing:'ease-in-out',fill:'forwards'});a.onfinish=fim})})};
+          var a=v.animate([{opacity:1},{opacity:0}],{duration:220,easing:'ease-in-out',fill:'forwards'});a.onfinish=fim};
+        requestAnimationFrame(function(){requestAnimationFrame(sai)})};
       if(RM.matches||!v.animate){v.style.opacity='1';troca();return}
       var a=v.animate([{opacity:0},{opacity:1}],{duration:120,easing:'ease-out',fill:'forwards'});a.onfinish=troca},true)})();
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-navcat]');if(!a)return;e.preventDefault();e.stopPropagation();var t=a.getAttribute('data-navcat');navApos(function(){navAbreCat(t)})},true);
@@ -1747,7 +1753,7 @@
 
   /* ---- cards ---- */
   function selo5(p,sec){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';if(isOf(p))return '<span class="hb of">−'+pct5(p)+'%</span>';if(p.mv>0&&p.mv<=3&&sec!=='mv')return '<span class="hb">'+LFI.tr('Mais vendido')+'</span>';if(isNovo(p)&&sec!=='nov')return '<span class="hb">'+LFI.tr('Novo')+'</span>';return ''}
-  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(isOf(p)&&p.mv>0&&p.mv<=3&&sec!=='mv'?'<span class="hmx">'+LFI.tr('Mais vendido')+'</span>':'')+(p.ds!=null?'<span class="hds">'+esc(p.ds)+'</span><span class="hn lfcod">'+esc(p.ref)+'</span>':'<span class="hn">'+esc(p.nome)+'</span>')+'<span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
+  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(isOf(p)&&p.mv>0&&p.mv<=3&&sec!=='mv'?'<span class="hmx">'+LFI.tr('Mais vendido')+'</span>':'')+(p.ds!=null?'<span class="hn lfcod"><small class="hds">'+esc(p.ds)+'</small>'+esc(p.ref)+'</span>':'<span class="hn">'+esc(p.nome)+'</span>')+'<span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
   function abas5(){var C=cat5(),ok=function(p){return p.aviso!=='Esgotado'};
     /* 08/11 (aprovado): cada peça aparece em UMA seção só, na de maior hierarquia — Ofertas > Mais vendidos > Novidades.
        Em Ofertas a mais vendida vem primeiro, depois o maior desconto. */
@@ -2865,8 +2871,13 @@
     var base=es?(t==='g'?'Lentes de lectura':t==='s'?'Lentes de sol':'Armazón'):(t==='g'?'Óculos de leitura':t==='s'?'Óculos de sol':'Armação');
     var adj=F?(t==='a'?F[1]:F[0]):(fm?fm.toLowerCase():''),adj1=F?(es?F[1]:F[0]):(fm?fm.toLowerCase():'');
     var tit=(fm||mr)?base+(mr?' '+mr:'')+(adj?' '+adj:''):p.nome,mat=lfnMat(p.mat);
-    var ds=mr?(mr+(adj1?' · '+adj1:'')):(fm?cap(adj1)+(mat?' · '+mat:''):(mat?cap(mat):''));
+    /* 09/11 S33 (aprovado): armação mostra o material; solar e leitura mostram o formato (se faltar, o outro) */
+    var w=t==='a'?(mat||adj1):(adj1||mat);var ds=mr?(mr+(w?' · '+w:'')):cap(w);
     return {tit:tit,ds:ds}}
+  /* 09/11 S33: a descrição nunca corta no meio — se "Marca · palavra" não couber, fica só a palavra */
+  function lfDsFit(todos){document.querySelectorAll(todos?'.hds,.lfds,.rds':'.hds:not([data-f]),.lfds:not([data-f]),.rds:not([data-f])').forEach(function(e){if(!e.clientWidth)return;var f=e.getAttribute('data-f');if(f==null){f=e.textContent;e.setAttribute('data-f',f)}if(f.indexOf(' · ')<0)return;
+    if(e.textContent!==f)e.textContent=f;if(e.scrollWidth>e.clientWidth+1)e.textContent=f.split(' · ').pop()})}
+  (function(){var q=0;try{new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;lfDsFit()})}).observe(document.body,{childList:true,subtree:true})}catch(_){}addEventListener('resize',function(){lfDsFit(true)})})();
   function syncProds(docs){
     var base={};P.forEach(function(p){base[p.ref]=p});
     var L=docs.map(function(d){var r=fbd(d);r.ref=r.ref||d.name.split('/').pop();var b=base[r.ref]||{};
