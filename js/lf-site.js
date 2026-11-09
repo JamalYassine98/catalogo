@@ -272,7 +272,7 @@
     r=pageOf(r);var HA=r.length?r.map(function(p,i){
       var esg=p.aviso==='Esgotado',n=st.cart[p.ref]||0;
       var sk=esg?'<span class="stk e">'+(p.esgRes?'Reservada agora':'Esgotado')+'</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':p.aviso==='Chegou esta semana'?'<span class="stk n">'+esc(p.aviso)+'</span>':'');
-      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+(p.tag==='GRAU'?LFI.tr('LEITURA'):p.tag)+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr"><span class="ref">'+p.ref+'</span>'+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm">'+esc(p.nome)+'</span>'+(p.cores&&p.cores.length?'<span class="esw">'+p.cores.slice(0,6).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span>':'')+'<span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
+      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+(p.tag==='GRAU'?LFI.tr('LEITURA'):p.tag)+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr">'+(p.ds!=null?'<span class="ref lfds">'+esc(p.ds)+'</span>':'<span class="ref">'+p.ref+'</span>')+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm'+(p.ds!=null?' lfcod':'')+'">'+esc(p.ds!=null?p.ref:p.nome)+'</span>'+(p.cores&&p.cores.length?'<span class="esw">'+p.cores.slice(0,6).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span>':'')+'<span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
     var G=$('grid');
     if(G._h!==GH){G._h=GH;
       if(!HA){G.innerHTML=GH}
@@ -447,7 +447,10 @@
     if(on)toast('Salvo nos favoritos')}
   function drawCmp(){
     var b=$('cmpbar'),n=st.cmp.length;b.classList.toggle('show',n>0);
-    $('cmpn').textContent='Comparar: '+n+' de 3';b.querySelector('.go').disabled=n<2}
+    $('cmpn').textContent='Comparar: '+n+' de 3';b.querySelector('.go').disabled=n<2;document.documentElement.classList.toggle('lfcmp',n>0);lfBh()}
+  /* 09/11 S25 B (aprovado): na página da peça (celular) a barra Comparar vira uma faixa fina colada em cima da barra de compra */
+  function lfBh(){try{var b=document.querySelector('#layer .pgm .buy');if(!b)return;document.documentElement.style.setProperty('--lfbh',Math.round(innerHeight-b.getBoundingClientRect().top)+'px');if(!b._lfro&&window.ResizeObserver){b._lfro=new ResizeObserver(function(){lfBh()});b._lfro.observe(b)}}catch(_){}}
+  addEventListener('resize',function(){lfBh()});
   function toggleCmp(ref,btn){
     var i=st.cmp.indexOf(ref);
     if(i>=0)st.cmp.splice(i,1);else{if(st.cmp.length>=3){toast('Você pode comparar até 3 modelos');return}st.cmp.push(ref)}
@@ -618,6 +621,56 @@
     if(k==='fav'&&window.__fshAbre&&Object.keys(st.fav).length)return navApos(function(){window.__fshAbre()});
     if(k==='link'){var t=p&&p.tipo;return navApos(function(){navAbreCat(t)})}
     closeLayer()}
+  /* 09/11 S29 (aprovado): o voltar do Android faz o mesmo que o ← do site. Tudo o que abre por cima (menu, folhas, foto ampliada,
+     comparação) vira um passo no histórico; o voltar fecha só o que está por cima. Busca/favoritos → peça: o voltar reabre a busca/folha.
+     Link direto da peça: o passo de baixo é a categoria da peça. */
+  (function(){
+    var H=history,OVP=false,OVSELF=0,ABERTO={};
+    var OV=[
+      {id:'drw',is:function(){var d=$('drw');return !!d&&d.classList.contains('on')},fecha:function(){var x=document.querySelector('#drw [data-dclose]');if(x)x.click()}},
+      {id:'fsh',is:function(){var d=$('fsh');return !!d&&d.classList.contains('on')},fecha:function(){var d=$('fsh');d.classList.remove('on');d.setAttribute('aria-hidden','true')}},
+      {id:'fvs',is:function(){var d=$('fvs');return !!d&&d.classList.contains('on')},fecha:function(){var d=$('fvs');d.classList.remove('on');d.innerHTML=''}},
+      {id:'dsh',is:function(){var d=$('dsh');return !!d&&d.classList.contains('on')},fecha:function(){var d=$('dsh');d.classList.remove('on');d.setAttribute('aria-hidden','true')}},
+      {id:'vcs',is:function(){var d=$('vcs');return !!d&&d.classList.contains('on')},fecha:function(){var d=$('vcs');d.classList.remove('on');d.setAttribute('aria-hidden','true')}},
+      {id:'zoom',is:function(){return !!document.querySelector('#layer .big.zm')},fecha:function(){var b=document.querySelector('#layer .big.zm');if(!b)return;b._s=1;b._x=0;b._y=0;b.classList.remove('zm');var im=b.querySelector(':scope>img,:scope>svg');if(im)im.style.transform=''}},
+      {id:'cmp',is:function(){return !!document.querySelector('#layer .modal.cmp')},fecha:function(){closeLayer()}}];
+    /* quem abre algo novo com uma folha aberta (ex.: menu → Catálogo) troca o passo da folha em vez de empilhar */
+    var _push=H.pushState;
+    H.pushState=function(s,t,u){if(H.state&&H.state.lfo&&!OVP){var o=OV.filter(function(x){return x.id===H.state.lfo})[0];if(!o||!o.is()){ABERTO[H.state.lfo]=false;return H.replaceState(s,t,u)}}return _push.apply(H,arguments)};
+    function confere(){OV.forEach(function(o){var ag=o.is(),era=!!ABERTO[o.id];if(ag===era)return;ABERTO[o.id]=ag;
+      if(ag){if(OVP)return;if(o.id==='cmp'){CMPW=setTimeout(empCmp,800);return}empurra(o.id)}
+      else if(!OVP&&H.state&&H.state.lfo===o.id){OVSELF++;try{H.back()}catch(_){OVSELF--}}})}
+    function empurra(id){var b=Object.assign({},H.state||{},{lfo:id});OVP=true;try{_push.call(H,b,'',location.href)}catch(_){}OVP=false}
+    /* a comparação fecha a peça (o histórico volta sozinho); o passo dela só entra depois disso */
+    var CMPW=0;function empCmp(){CMPW=0;if(OV[6].is())empurra('cmp')}
+    try{new MutationObserver(function(){confere()}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']})}catch(_){}
+    var POP=function(e){var s=e.state||{};
+      if(OVSELF>0){OVSELF--;e.__lfStop=1;return}
+      if(CMPW){clearTimeout(CMPW);CMPW=0;setTimeout(empCmp,0);return}
+      /* voltou de cima de uma folha/menu/zoom/comparação: fecha só ela */
+      var aberto=OV.filter(function(o){return o.is()});
+      if(aberto.length&&!(s.lfo&&aberto.some(function(o){return o.id===s.lfo}))){var o=aberto[aberto.length-1];e.__lfStop=1;OVP=true;var cr=o.id==='cmp'&&H.state&&H.state.lfcr;
+        try{o.fecha()}catch(_){}ABERTO[o.id]=false;OVP=false;
+        if(o.id==='cmp'){var r=(window.__lfCmpR||'');window.__lfCmpR='';if(r&&find(r))setTimeout(function(){product(r)},30)}
+        return}
+      /* passo velho de uma folha que já fechou: pula */
+      if(s.lfo&&!OV.some(function(o){return o.id===s.lfo&&o.is()})){e.__lfStop=1;OVSELF++;try{H.back()}catch(_){OVSELF--}return}
+      /* link direto: o passo de baixo é a categoria da peça */
+      if(s.lnk&&prodOpen){e.__lfStop=1;prodOpen=false;prodDepth=0;try{waReset()}catch(_){}closeLayer(true);navAbreCat(s.lnk);return}
+      /* saindo de uma peça aberta pela busca ou pela folha de favoritos: reabre como o ← do site */
+      if(prodOpen&&!s.lfp&&!s.lfc&&!s.lfa){var k=NAVO.k;
+        if(k==='busca'&&V5.sabre)setTimeout(function(){V5.sabre()},60);
+        else if(k==='fav'&&window.__fshAbre&&Object.keys(st.fav).length)setTimeout(function(){window.__fshAbre()},60)}
+    };
+    /* roda antes de todos os outros (fila criada no começo do index.html), para poder parar os demais */
+    if(window.__lfPop)window.__lfPop.push(POP);else addEventListener('popstate',POP,true);
+    /* comparação: lembra a peça de onde veio (o voltar volta para ela) */
+    var _cmp=compare;compare=function(){window.__lfCmpR=prodOpen?prodRef:'';return _cmp.apply(this,arguments)};
+    /* link direto da peça: põe a categoria embaixo (uma vez por visita) */
+    var _prodL=product;product=function(ref,pop){var r=_prodL.apply(this,arguments);
+      try{if(!pop&&NAVO.k==='link'&&!window.__lfLnk&&prodOpen){window.__lfLnk=1;var q=find(ref),cur=H.state,u=location.href;if(q){OVP=true;H.replaceState({lfv:1,pn:'vitrine',lnk:q.tipo||'todos'},'',u);_push.call(H,cur,'',u);OVP=false}}}catch(_){OVP=false}
+      return r};
+  })();
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-navcat]');if(!a)return;e.preventDefault();e.stopPropagation();var t=a.getAttribute('data-navcat');navApos(function(){navAbreCat(t)})},true);
   /* saída: a peça desliza de volta para a direita (a página já fica livre na hora) */
   var _closeLayer9=closeLayer;closeLayer=function(skip){var L=$('layer'),sc=L&&L.querySelector('.scrim.pg');
@@ -627,13 +680,22 @@
     return _closeLayer9.apply(this,arguments)};
   /* vitrine: entrada no histórico (o voltar do celular fecha a vitrine em vez de sair do site) */
   /* 08/11 SITE LEVE: o carrossel "Descubra o seu formato" só é desenhado quando a tela dele abre (antes era desenhado escondido em toda visita, forçando o celular a recalcular a página inteira) */
+  /* 09/11 S28d (aprovado, celular): página "Seu formato de rosto" no padrão do site — ‹ Início + título, câmera no topo (ícone no círculo), lista dos 6 formatos */
+  var RZ_C={oval:'quase qualquer formato',redondo:'retangulares ou angulares',quadrado:'arredondadas ou ovais',alongado:'grandes e largas',coracao:'aviador ou leves',diamante:'gatinho ou ovais'};
+  function rzMonta(){var r=$('rosto');if(!r||r.querySelector('.rzm'))return;var T=function(x){return LFI.tr(x)},CAM=function(z){return '<svg viewBox="0 0 24 24" width="'+z+'" height="'+z+'" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg>'};
+    var mk=function(u){return '<span class="rzi" style="-webkit-mask-image:url('+u+');mask-image:url('+u+')"></span>'};
+    var h='<div class="rzm"><button type="button" class="navb vback rzb" data-vback><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>'+T('Início')+'</span></button>'+
+      '<h2 class="rzt">'+T('Seu formato de rosto')+'</h2><p class="rzs">'+T('Veja quais armações valorizam o seu rosto.')+'</p>'+
+      '<div class="rzc"><span class="rzq"><span class="rzo">'+CAM(30)+'</span></span><span class="rzx"><small>'+T('PELA CÂMERA · 1 MIN')+'</small><b>'+T('Descubra o seu formato')+'</b><button type="button" class="rzg" data-fa>'+CAM(18)+'<span>'+T('Abrir a câmera')+'</span></button></span></div>'+
+      '<h3 class="rzh">'+T('Escolha o seu formato')+'</h3><div class="rzl">'+FACES.map(function(f){return '<button type="button" class="rzr" data-face="'+f.id+'"><span class="rzp">'+mk(f.m)+mk(f.f)+'</span><span class="rzn"><b>'+esc(f.nome)+'</b><small>'+T('Combina:')+' '+T(RZ_C[f.id]||'')+'</small></span><i aria-hidden="true">›</i></button>'}).join('')+'</div></div>';
+    r.insertAdjacentHTML('afterbegin',h)}
   var _drawFaces9=drawFaces;drawFaces=function(){var r=$('rosto');if(r&&!r.classList.contains('pop')){drawFaces.sujo=1;return}drawFaces.sujo=0;return _drawFaces9.apply(this,arguments)};
-  var _openPanel9=openPanel;openPanel=function(id,quiet){var r=_openPanel9.apply(this,arguments);if(id==='rosto'&&drawFaces.sujo)drawFaces();
-    if(id==='vitrine'&&!prodOpen&&!(history.state&&history.state.lfv)){try{history.pushState({lfv:1},'',location.href)}catch(_){}try{urlSync()}catch(_){}}
+  var _openPanel9=openPanel;openPanel=function(id,quiet){var r=_openPanel9.apply(this,arguments);if(id==='rosto'){try{rzMonta()}catch(_){}if(drawFaces.sujo)drawFaces()}
+    if(id!=='home'&&!prodOpen&&!(history.state&&history.state.lfv)){try{history.pushState({lfv:1,pn:id},'',location.href)}catch(_){}try{urlSync()}catch(_){}}else if(id!=='home'&&history.state&&history.state.lfv&&history.state.pn!==id){try{history.replaceState(Object.assign({},history.state,{pn:id}),'',location.href)}catch(_){}}
     navTitulo();return r};
   addEventListener('popstate',function(e){var s=e.state||{},H=document.documentElement;
     if(s.lfp||s.lfc||s.lfa||s.sov||prodOpen)return;
-    if(s.lfv){if(!H.classList.contains('ppop'))_openPanel9('vitrine',true);return}
+    if(s.lfv){if(!H.classList.contains('ppop'))_openPanel9(s.pn&&$(s.pn)?s.pn:'vitrine',true);return}
     if(H.classList.contains('ppop'))homeAnim()});
   /* logo = Início, de qualquer tela */
   document.addEventListener('click',function(e){var l=e.target.closest&&e.target.closest('.top .logo');if(!l||prodOpen)return;var H=document.documentElement;
@@ -691,7 +753,7 @@
     /* sempre uma mais em conta perto do começo */
     if(p.n&&!top.slice(0,4).some(function(q){return q.n<p.n*.85})){var bar=L.filter(function(x){return x.q.n<p.n*.85})[0];if(bar){top=top.filter(function(q){return q!==bar.q});top.splice(1,0,bar.q);top=top.slice(0,8)}}
     L=top;if(L.length<2)return ''; /* 08/11 (aprovado): com menos de 2 da mesma categoria a fileira não aparece */
-    var it=function(q,cp){return '<button type="button" class="ri" data-open="'+q.ref+'"'+(cp?' tabindex="-1" aria-hidden="true"':'')+'><span class="rth">'+vis(q,6)+'</span><small>'+esc(q.nome)+'</small><b>'+fmt(q.n)+'</b></button>'};
+    var it=function(q,cp){return '<button type="button" class="ri" data-open="'+q.ref+'"'+(cp?' tabindex="-1" aria-hidden="true"':'')+'><span class="rth">'+vis(q,6)+'</span><small>'+(q.ds!=null?'<i class="rds">'+esc(q.ds)+'</i>'+esc(q.ref):esc(q.nome))+'</small><b>'+fmt(q.n)+'</b></button>'};
     var html=L.map(function(q){return it(q,0)}).join('');
     if(L.length>3)html+=L.map(function(q){return it(q,1)}).join('');
     return '<div class="rel"><b>Combina também</b><div class="relg'+(L.length>3?' relm':'')+'" id="relm">'+html+'</div></div>'}
@@ -742,7 +804,7 @@
     var pubL={m:'Masculino',f:'Feminino',u:'Unissex'}[p.gen];
     prodNext=true;
     layer(pgBar(p)+'<div class="modal pgm" role="dialog" aria-modal="true" aria-label="'+esc(p.nome)+'"><div class="xw"><button class="x" data-close aria-label="Fechar">×</button></div><div class="pgl"><div class="big" data-zoom>'+(p.gv?'<button type="button" class="g360" data-g360="'+esc(p.ref)+'" aria-label="Ver a peça girando em 360°"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 4 0 1 1-4.5-3.5"/><path d="M17 5l-.5 3.5L20 9"/></svg><span>360°</span></button>':'')+((offer||p.tag)?'<div class="pgtags">'+(offer?'<span class="ofpill">OFERTA</span>':'')+(p.tag?'<span class="pgtag">'+esc(p.tag)+'</span>':'')+'</div>':'')+(esg&&p.esgRes?'<span class="stk e pgstk">Reservada agora</span>':'')+(!esg&&/Últim/.test(p.aviso||'')?'<span class="stk u pgstk">'+esc(p.aviso)+'</span>':(!esg&&p.aviso==='Chegou esta semana'?'<span class="stk n pgstk">'+esc(p.aviso)+'</span>':''))+'<button type="button" class="fav dfav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button>'+vis(p,4.5)+'<span class="zh"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>Toque para ampliar</span><span class="shine" style="position:absolute;top:0;bottom:0;left:0;width:18%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);animation:shine 4.5s ease-in-out infinite"></span></div>'+thumbs+'</div>'+
-    '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+'</span>'+edb(p)+'</div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
+    '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+(p.ds!=null&&p.mat?' · '+esc(lfnMat(p.mat).toUpperCase()):'')+'</span>'+edb(p)+'</div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
     '<div class="chips">'+(pubL?'<span class="pub1">'+pubL+'</span>':'')+(p.mat?'<span class="bd">'+MATI+esc(p.mat)+'</span>':'')+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     (p.desc?'<div class="pdesc"><p>'+esc(p.desc)+'</p><button type="button" data-pdm>Ver mais</button></div>':'')+
     (p.gr&&p.gr.length?grauSec(p):'')+
@@ -783,7 +845,7 @@
   function mensagem0(modo,ref){
     if(modo==='lojista'){var g=function(i){var e=$(i);return e?e.value.trim():''},m='Olá! Sou lojista e vim pelo catálogo da La Fouch. Quero saber sobre os preços e as quantidades de atacado.';if(g('an'))m+='\nÓtica: '+g('an');if(g('ac'))m+='\nCidade: '+g('ac');if(g('aq'))m+='\nQuantidade aproximada: '+g('aq');return m}
     if(modo==='avise'){var p=find(ref);return 'Olá! Me avise quando chegar: '+p.nome+' ('+p.ref+').\nVer o modelo: https://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html'}
-    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.nome+' ('+p.ref+')'+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
+    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.ref+' · '+p.nome+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
     if(st.rosto){var ff=FACES.filter(function(x){return x.id===st.rosto})[0];if(ff)t+='\nFormato do meu rosto: '+ff.nome}if(st.nome)t+='\nNome: '+st.nome;if(st.zap)t+='\nWhatsApp: '+st.zap;return t}
   /* pedido do site: grava na nuvem (o app da loja recebe sozinho) e mostra a tela de pedido recebido */
   var PK_SVG='<svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="#3ddc8c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M4.5 12.8l4.8 4.9L19.5 7"/></svg>';
@@ -1657,7 +1719,7 @@
 
   /* ---- cards ---- */
   function selo5(p,sec){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';if(isOf(p))return '<span class="hb of">−'+pct5(p)+'%</span>';if(p.mv>0&&p.mv<=3&&sec!=='mv')return '<span class="hb">'+LFI.tr('Mais vendido')+'</span>';if(isNovo(p)&&sec!=='nov')return '<span class="hb">'+LFI.tr('Novo')+'</span>';return ''}
-  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(isOf(p)&&p.mv>0&&p.mv<=3&&sec!=='mv'?'<span class="hmx">'+LFI.tr('Mais vendido')+'</span>':'')+'<span class="hn">'+esc(p.nome)+'</span><span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
+  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(isOf(p)&&p.mv>0&&p.mv<=3&&sec!=='mv'?'<span class="hmx">'+LFI.tr('Mais vendido')+'</span>':'')+(p.ds!=null?'<span class="hds">'+esc(p.ds)+'</span><span class="hn lfcod">'+esc(p.ref)+'</span>':'<span class="hn">'+esc(p.nome)+'</span>')+'<span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
   function abas5(){var C=cat5(),ok=function(p){return p.aviso!=='Esgotado'};
     /* 08/11 (aprovado): cada peça aparece em UMA seção só, na de maior hierarquia — Ofertas > Mais vendidos > Novidades.
        Em Ofertas a mais vendida vem primeiro, depois o maior desconto. */
@@ -2555,7 +2617,7 @@
     var o=document.getElementById('sor'),b=document.getElementById('fsc');if(o&&b){o.innerHTML=out;b.hidden=false}})();
 
   var waB=document.querySelector('a.wa');function waReset(){var w=document.querySelector('a.wa');if(w)w.href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.tr('Olá! Vim pelo catálogo da La Fouch e quero falar com a loja.'));document.documentElement.classList.remove('onprod')}
-  function waProd(p){var w=document.querySelector('a.wa');if(w)w.href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.tr('Olá! Quero falar com um vendedor sobre o '+p.nome+' ('+p.ref+').')+'\nhttps://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html');document.documentElement.classList.add('onprod')}
+  function waProd(p){var w=document.querySelector('a.wa');if(w)w.href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.tr('Olá! Quero falar com um vendedor sobre o '+p.nome+' ('+p.ref+').')+'\nhttps://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html');document.documentElement.classList.add('onprod');setTimeout(lfBh,60);setTimeout(lfBh,500)}
   waReset();
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="https://wa.me/"]');if(a&&!NUM_LOJA){e.preventDefault();toast('O WhatsApp da loja ainda não foi configurado')}},true);
   function setLoj(){$('lojista').href='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(mensagem('lojista'))}
@@ -2764,10 +2826,23 @@
         fcSolta()},function(){clearTimeout(lim);
         /* sem IndexedDB (modo privado antigo): usa o localStorage como antes */
         try{FCM={};Object.keys(localStorage).forEach(function(k){if(k.indexOf('lf_ph_')===0){try{FCM[k.slice(6)]=JSON.parse(localStorage.getItem(k))}catch(_){}}})}catch(_){}fcSolta()})})();
+  /* 09/11 S27h (aprovado): o código é o nome; a descrição explica. O app manda fm (formato) e mr (marca de verdade, da haste).
+     Cartão: linha cinza "Quadrado · acetato" (ou "Kazwini · gatinho") + o código como título. Página: "Óculos de leitura quadrado". Nada inventado, sem cor. */
+  var LFN_F={pt:{Redondo:['redondo','redonda'],Quadrado:['quadrado','quadrada'],Retangular:['retangular','retangular'],Gatinho:['gatinho','gatinho'],Aviador:['aviador','aviador'],Oval:['oval','oval'],Hexagonal:['hexagonal','hexagonal']},
+    es:{Redondo:['redondos','redondo','Redondo'],Quadrado:['cuadrados','cuadrado','Cuadrado'],Retangular:['rectangulares','rectangular','Rectangular'],Gatinho:['gatito','gatito','Gatito'],Aviador:['aviador','aviador','Aviador'],Oval:['ovalados','ovalado','Ovalado'],Hexagonal:['hexagonales','hexagonal','Hexagonal']}};
+  var LFN_M={es:{'Plástico':'plástico','Titânio':'titanio','Nylon':'nylon','Metal':'metal','Acetato':'acetato','TR90':'TR90'}};
+  function lfnMat(m){m=String(m||'').trim();if(!m)return '';if(LFI.lang==='es')return (LFN_M.es[m]||m.toLowerCase());return m==='TR90'?m:m.toLowerCase()}
+  function lfnNomes(p){var fm=String(p.fm||'').trim(),mr=String(p.mr||'').trim(),es=LFI.lang==='es',t=p.tipo==='solar'?'s':p.tipo==='grau'?'g':'a';
+    var F=fm?(es?LFN_F.es[fm]:LFN_F.pt[fm]):null,cap=function(x){return x?x.charAt(0).toUpperCase()+x.slice(1):x};
+    var base=es?(t==='g'?'Lentes de lectura':t==='s'?'Lentes de sol':'Armazón'):(t==='g'?'Óculos de leitura':t==='s'?'Óculos de sol':'Armação');
+    var adj=F?(t==='a'?F[1]:F[0]):(fm?fm.toLowerCase():''),adj1=F?(es?F[1]:F[0]):(fm?fm.toLowerCase():'');
+    var tit=(fm||mr)?base+(mr?' '+mr:'')+(adj?' '+adj:''):p.nome,mat=lfnMat(p.mat);
+    var ds=mr?(mr+(adj1?' · '+adj1:'')):(fm?cap(adj1)+(mat?' · '+mat:''):(mat?cap(mat):''));
+    return {tit:tit,ds:ds}}
   function syncProds(docs){
     var base={};P.forEach(function(p){base[p.ref]=p});
     var L=docs.map(function(d){var r=fbd(d);r.ref=r.ref||d.name.split('/').pop();var b=base[r.ref]||{};
-      var p=Object.assign({},b,r);p.esgRes=false;/* 08/11: a categoria vem só do tipo do app (o campo do painel saiu) */if(b.fv!==r.fv)p.fc=[];if(r.nome)r.nome=p.nome=String(r.nome).replace(/^[ÓO]culos de grau(?=\s|$)/i,'Óculos de leitura');/* 08/11: grau → leitura */if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);return p}).filter(function(p){return !p.oculto});
+      var p=Object.assign({},b,r);p.esgRes=false;/* 08/11: a categoria vem só do tipo do app (o campo do painel saiu) */if(b.fv!==r.fv)p.fc=[];if(r.nome)r.nome=p.nome=String(r.nome).replace(/^[ÓO]culos de grau(?=\s|$)/i,'Óculos de leitura');/* 08/11: grau → leitura */if(r.nome&&LFI.lang==='es')p.nome=LFI.tn(r.nome);if(r.fm!=null||r.mr!=null){var nn=lfnNomes(p);p.nome=nn.tit;p.ds=nn.ds}else delete p.ds;return p}).filter(function(p){return !p.oculto});
     if(!L.length)return;
     L.sort(function(a,b){return (a.ord||0)-(b.ord||0)});
     L.forEach(function(p){
@@ -2970,10 +3045,15 @@
   /* ===== 08/11 (aprovado S23): grau minimalista + cor e grau juntos =====
      Com várias cores e graus, o grau fica logo abaixo das miniaturas de cor, num bloco só ("COR · X | GRAU · Y").
      O grau que não existe na cor escolhida fica riscado e não dá para tocar (o app manda gc: graus de cada cor). */
-  function grDaCor(p,ci){if(!p.gc||!p.gc[ci])return null;return String(p.gc[ci]).split(',').map(function(x){return +x||0})}
+  function grDaCor(p,ci){if(!p.gc||!p.gc[ci])return null;return String(p.gc[ci]).split(',').map(function(x){return x.trim()==='-'?-1:(+x||0)})}
   function grAplica(p){var L=document.querySelector('#layer .dgr');if(!L||!p||!p.gr)return;var ci=st.cor[p.ref]||0,q=grDaCor(p,ci),bs=L.querySelectorAll('.gb');
-    bs.forEach(function(b,i){b.classList.toggle('nc',!!q&&!(q[i]>0))});
-    var cur=st.gr[p.ref]||0;if(q&&!(q[cur]>0)){var k=q.findIndex(function(x){return x>0});if(k>=0&&bs[k])bs[k].click()}
+    /* 09/11 S24 (aprovado): grau que não existe na cor some (encolhe/aparece suave); esgotado na cor fica riscado; se o grau escolhido não serve, vai para o mais próximo que tem */
+    var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    bs.forEach(function(b,i){var sai=!!q&&q[i]<0,era=b.classList.contains('some');b.classList.toggle('some',sai);b.classList.toggle('nc',!!q&&q[i]===0);
+      if(sai&&!era&&!rm&&b.animate&&b.offsetParent){var an=b.animate([{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.8)'}],{duration:180,easing:'ease-in'});an.onfinish=function(){if(b.classList.contains('some'))b.style.display='none'}}
+      else if(sai)b.style.display='none';
+      else if(era){b.style.display='';if(!rm&&b.animate)b.animate([{opacity:0,transform:'scale(.8)'},{opacity:1,transform:'scale(1)'}],{duration:260,delay:120,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'})}});
+    var cur=st.gr[p.ref]||0;if(q&&!(q[cur]>0)){var gv=function(x){return parseFloat(String(x).replace(',','.'))||0},c0=gv(p.gr[cur]),k=-1,d=1e9;q.forEach(function(x,i){if(x>0){var dd=Math.abs(gv(p.gr[i])-c0);if(dd<d-1e-9){d=dd;k=i}}});if(k>=0&&bs[k])bs[k].click()}
     var g=document.querySelector('#layer .cthg');if(g)g.textContent=p.gr[st.gr[p.ref]||0]||''}
   function grJunto(p){if(!p||!p.gr||!p.gr.length)return;var L=document.querySelector('#layer .dgr'),th=document.querySelector('#layer .cthm'),lb=document.querySelector('#layer .cthl');
     if(L&&th&&lb&&!lb.querySelector('.cthg')){lb.insertAdjacentHTML('beforeend','<span class="cthsep">|</span>'+LFI.tr('Grau')+' · <b class="cthg"></b>');th.parentNode.insertBefore(L,th.nextSibling);L.classList.add('grJ')}
