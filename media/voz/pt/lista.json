@@ -1,211 +1,211 @@
 {
-"Oi!": "pt000.mp3",
-"Eu sou o Mochi.": "pt001.mp3",
-"Vou te ajudar a achar o grau do seu óculos de leitura.": "pt002.mp3",
-"Quando quiser, é só tocar em Começar.": "pt003.mp3",
-"Faz como eu: tire os óculos…": "pt004.mp3",
-"…e segure o celular a 40 centímetros, um palmo e meio.": "pt005.mp3",
-"Chegue o celular um pouquinho mais perto, a 40 centímetros.": "pt006.mp3",
-"Afaste um pouquinho o celular, para uns 40 centímetros.": "pt007.mp3",
-"Consegue ler a frase aqui na minha frente, sem esforço?": "pt008.mp3",
-"E esta?": "pt009.mp3",
-"Consegue esta?": "pt010.mp3",
-"Agora esta aqui.": "pt011.mp3",
-"Vamos descendo…": "pt012.mp3",
-"e esta?": "pt013.mp3",
-"Esta é um pouquinho menor.": "pt014.mp3",
-"Sem pressa: e esta?": "pt015.mp3",
-"Isso!": "pt016.mp3",
-"Muito bem.": "pt017.mp3",
-"Ótimo.": "pt018.mp3",
-"Perfeito, próxima.": "pt019.mp3",
-"Você está indo bem.": "pt020.mp3",
-"Agora fica miudinha…": "pt021.mp3",
-"Esta é letra de bula.": "pt022.mp3",
-"Última, a mais pequena.": "pt023.mp3",
-"Tudo bem, é normal.": "pt024.mp3",
-"Sem problema — é para isso que servem as lentes.": "pt025.mp3",
-"Ótimo saber.": "pt026.mp3",
-"Vou pegar uma lente.": "pt027.mp3",
-"Vou testar uma um pouco mais forte.": "pt028.mp3",
-"Mais um passinho de grau…": "pt029.mp3",
-"Agora uma mais fraca, como o médico faz.": "pt030.mp3",
-"Só para ter certeza: e com esta?": "pt031.mp3",
-"Sem pressa.": "pt032.mp3",
-"Se estiver difícil, pode dizer que não consegue — sem problema.": "pt033.mp3",
-"Leu!": "pt034.mp3",
-"Agora vou tirando um pouquinho de grau, como o médico, até achar o mais leve que ainda funciona.": "pt035.mp3",
-"Consegue ler a última frase?": "pt036.mp3",
-"E agora?": "pt037.mp3",
-"Boa notícia: você lê bem de perto sem óculos!": "pt038.mp3",
-"Para não chutar um grau, vale consultar um oftalmologista.": "pt039.mp3",
-"Pronto!": "pt040.mp3",
+"Oi!": "pt2_000.mp3",
+"Eu sou o Mochi.": "pt2_001.mp3",
+"Vou te ajudar a achar o grau do seu óculos de leitura.": "pt2_002.mp3",
+"Quando quiser, é só tocar em Começar.": "pt2_003.mp3",
+"Faz como eu: tire os óculos…": "pt2_004.mp3",
+"…e segure o celular a 40 centímetros, um palmo e meio.": "pt2_005.mp3",
+"Chegue o celular um pouquinho mais perto, a 40 centímetros.": "pt2_006.mp3",
+"Afaste um pouquinho o celular, para uns 40 centímetros.": "pt2_007.mp3",
+"Consegue ler a frase aqui na minha frente, sem esforço?": "pt2_008.mp3",
+"E esta?": "pt2_009.mp3",
+"Consegue esta?": "pt2_010.mp3",
+"Agora esta aqui.": "pt2_011.mp3",
+"Vamos descendo…": "pt2_012.mp3",
+"e esta?": "pt2_013.mp3",
+"Esta é um pouquinho menor.": "pt2_014.mp3",
+"Sem pressa: e esta?": "pt2_015.mp3",
+"Isso!": "pt2_016.mp3",
+"Muito bem.": "pt2_017.mp3",
+"Ótimo.": "pt2_018.mp3",
+"Perfeito, próxima.": "pt2_019.mp3",
+"Você está indo bem.": "pt2_020.mp3",
+"Agora fica miudinha…": "pt2_021.mp3",
+"Esta é letra de bula.": "pt2_022.mp3",
+"Última, a mais pequena.": "pt2_023.mp3",
+"Tudo bem, é normal.": "pt2_024.mp3",
+"Sem problema — é para isso que servem as lentes.": "pt2_025.mp3",
+"Ótimo saber.": "pt2_026.mp3",
+"Vou pegar uma lente.": "pt2_027.mp3",
+"Vou testar uma um pouco mais forte.": "pt2_028.mp3",
+"Mais um passinho de grau…": "pt2_029.mp3",
+"Agora uma mais fraca, como o médico faz.": "pt2_030.mp3",
+"Só para ter certeza: e com esta?": "pt2_031.mp3",
+"Sem pressa.": "pt2_032.mp3",
+"Se estiver difícil, pode dizer que não consegue — sem problema.": "pt2_033.mp3",
+"Leu!": "pt2_034.mp3",
+"Agora vou tirando um pouquinho de grau, como o médico, até achar o mais leve que ainda funciona.": "pt2_035.mp3",
+"Consegue ler a última frase?": "pt2_036.mp3",
+"E agora?": "pt2_037.mp3",
+"Boa notícia: você lê bem de perto sem óculos!": "pt2_038.mp3",
+"Para não chutar um grau, vale consultar um oftalmologista.": "pt2_039.mp3",
+"Pronto!": "pt2_040.mp3",
 "Com a lente +0.75.": [
-"pt041.mp3",
-"pt044.mp3"
+"pt2_041.mp3",
+"pt2_044.mp3"
 ],
 "Esta é +0.75.": [
-"pt042.mp3",
-"pt044.mp3"
+"pt2_042.mp3",
+"pt2_044.mp3"
 ],
 "O grau que mais combina com você é +0.75.": [
-"pt043.mp3",
-"pt044.mp3"
+"pt2_043.mp3",
+"pt2_044.mp3"
 ],
 "Com a lente +1.00.": [
-"pt041.mp3",
-"pt045.mp3"
+"pt2_041.mp3",
+"pt2_045.mp3"
 ],
 "Esta é +1.00.": [
-"pt042.mp3",
-"pt045.mp3"
+"pt2_042.mp3",
+"pt2_045.mp3"
 ],
 "O grau que mais combina com você é +1.00.": [
-"pt043.mp3",
-"pt045.mp3"
+"pt2_043.mp3",
+"pt2_045.mp3"
 ],
 "Com a lente +1.25.": [
-"pt041.mp3",
-"pt046.mp3"
+"pt2_041.mp3",
+"pt2_046.mp3"
 ],
 "Esta é +1.25.": [
-"pt042.mp3",
-"pt046.mp3"
+"pt2_042.mp3",
+"pt2_046.mp3"
 ],
 "O grau que mais combina com você é +1.25.": [
-"pt043.mp3",
-"pt046.mp3"
+"pt2_043.mp3",
+"pt2_046.mp3"
 ],
 "Com a lente +1.50.": [
-"pt041.mp3",
-"pt047.mp3"
+"pt2_041.mp3",
+"pt2_047.mp3"
 ],
 "Esta é +1.50.": [
-"pt042.mp3",
-"pt047.mp3"
+"pt2_042.mp3",
+"pt2_047.mp3"
 ],
 "O grau que mais combina com você é +1.50.": [
-"pt043.mp3",
-"pt047.mp3"
+"pt2_043.mp3",
+"pt2_047.mp3"
 ],
 "Com a lente +1.75.": [
-"pt041.mp3",
-"pt048.mp3"
+"pt2_041.mp3",
+"pt2_048.mp3"
 ],
 "Esta é +1.75.": [
-"pt042.mp3",
-"pt048.mp3"
+"pt2_042.mp3",
+"pt2_048.mp3"
 ],
 "O grau que mais combina com você é +1.75.": [
-"pt043.mp3",
-"pt048.mp3"
+"pt2_043.mp3",
+"pt2_048.mp3"
 ],
 "Com a lente +2.00.": [
-"pt041.mp3",
-"pt049.mp3"
+"pt2_041.mp3",
+"pt2_049.mp3"
 ],
 "Esta é +2.00.": [
-"pt042.mp3",
-"pt049.mp3"
+"pt2_042.mp3",
+"pt2_049.mp3"
 ],
 "O grau que mais combina com você é +2.00.": [
-"pt043.mp3",
-"pt049.mp3"
+"pt2_043.mp3",
+"pt2_049.mp3"
 ],
 "Com a lente +2.25.": [
-"pt041.mp3",
-"pt050.mp3"
+"pt2_041.mp3",
+"pt2_050.mp3"
 ],
 "Esta é +2.25.": [
-"pt042.mp3",
-"pt050.mp3"
+"pt2_042.mp3",
+"pt2_050.mp3"
 ],
 "O grau que mais combina com você é +2.25.": [
-"pt043.mp3",
-"pt050.mp3"
+"pt2_043.mp3",
+"pt2_050.mp3"
 ],
 "Com a lente +2.50.": [
-"pt041.mp3",
-"pt051.mp3"
+"pt2_041.mp3",
+"pt2_051.mp3"
 ],
 "Esta é +2.50.": [
-"pt042.mp3",
-"pt051.mp3"
+"pt2_042.mp3",
+"pt2_051.mp3"
 ],
 "O grau que mais combina com você é +2.50.": [
-"pt043.mp3",
-"pt051.mp3"
+"pt2_043.mp3",
+"pt2_051.mp3"
 ],
 "Com a lente +2.75.": [
-"pt041.mp3",
-"pt052.mp3"
+"pt2_041.mp3",
+"pt2_052.mp3"
 ],
 "Esta é +2.75.": [
-"pt042.mp3",
-"pt052.mp3"
+"pt2_042.mp3",
+"pt2_052.mp3"
 ],
 "O grau que mais combina com você é +2.75.": [
-"pt043.mp3",
-"pt052.mp3"
+"pt2_043.mp3",
+"pt2_052.mp3"
 ],
 "Com a lente +3.00.": [
-"pt041.mp3",
-"pt053.mp3"
+"pt2_041.mp3",
+"pt2_053.mp3"
 ],
 "Esta é +3.00.": [
-"pt042.mp3",
-"pt053.mp3"
+"pt2_042.mp3",
+"pt2_053.mp3"
 ],
 "O grau que mais combina com você é +3.00.": [
-"pt043.mp3",
-"pt053.mp3"
+"pt2_043.mp3",
+"pt2_053.mp3"
 ],
 "Com a lente +3.25.": [
-"pt041.mp3",
-"pt054.mp3"
+"pt2_041.mp3",
+"pt2_054.mp3"
 ],
 "Esta é +3.25.": [
-"pt042.mp3",
-"pt054.mp3"
+"pt2_042.mp3",
+"pt2_054.mp3"
 ],
 "O grau que mais combina com você é +3.25.": [
-"pt043.mp3",
-"pt054.mp3"
+"pt2_043.mp3",
+"pt2_054.mp3"
 ],
 "Com a lente +3.50.": [
-"pt041.mp3",
-"pt055.mp3"
+"pt2_041.mp3",
+"pt2_055.mp3"
 ],
 "Esta é +3.50.": [
-"pt042.mp3",
-"pt055.mp3"
+"pt2_042.mp3",
+"pt2_055.mp3"
 ],
 "O grau que mais combina com você é +3.50.": [
-"pt043.mp3",
-"pt055.mp3"
+"pt2_043.mp3",
+"pt2_055.mp3"
 ],
 "Com a lente +3.75.": [
-"pt041.mp3",
-"pt056.mp3"
+"pt2_041.mp3",
+"pt2_056.mp3"
 ],
 "Esta é +3.75.": [
-"pt042.mp3",
-"pt056.mp3"
+"pt2_042.mp3",
+"pt2_056.mp3"
 ],
 "O grau que mais combina com você é +3.75.": [
-"pt043.mp3",
-"pt056.mp3"
+"pt2_043.mp3",
+"pt2_056.mp3"
 ],
 "Com a lente +4.00.": [
-"pt041.mp3",
-"pt057.mp3"
+"pt2_041.mp3",
+"pt2_057.mp3"
 ],
 "Esta é +4.00.": [
-"pt042.mp3",
-"pt057.mp3"
+"pt2_042.mp3",
+"pt2_057.mp3"
 ],
 "O grau que mais combina com você é +4.00.": [
-"pt043.mp3",
-"pt057.mp3"
+"pt2_043.mp3",
+"pt2_057.mp3"
 ]
 }
