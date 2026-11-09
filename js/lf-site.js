@@ -1808,7 +1808,21 @@
   function homeDraw(){
     var H=$('home');if(!H){H=document.createElement('div');H.id='home';var hero=document.querySelector('.hero');hero.style.setProperty('display','none','important');hero.parentNode.insertBefore(H,hero.nextSibling)}
     evAplica();if(st.rosto){try{localStorage.setItem('lf_rosto5',st.rosto)}catch(_){}}
-    var ht=homeHtml();if(H._h===ht)return;H._h=ht;H.innerHTML=ht;dstGira()}
+    var ht=homeHtml();if(H._h===ht)return;var ja=!!H._h&&H.firstChild;H._h=ht;
+    /* 09/11 S43 (aprovado): a 2ª pintura (dados da nuvem) troca só o que mudou — as fotos, os cartões e as animações do Destaque continuam os mesmos (sem piscar nem recomeçar) */
+    if(ja){var t=document.createElement('div');t.innerHTML=ht;try{lfMorph(H,t);try{lfDsFit(true)}catch(_){}return}catch(_){}}
+    H.innerHTML=ht;dstGira()}
+  function lfMorph(a,b){var A=[].slice.call(a.childNodes),B=[].slice.call(b.childNodes);
+    for(var i=0;i<B.length;i++){var x=A[i],y=B[i];
+      if(!x){a.appendChild(y);continue}
+      if(x.nodeType!==y.nodeType||x.nodeName!==y.nodeName||(x.nodeType===1&&((x.id||'')!==(y.id||'')||(x.getAttribute('data-open')||'')!==(y.getAttribute('data-open')||'')))){a.replaceChild(y.cloneNode(true),x);continue}
+      if(x.nodeType===3){if(x.nodeValue!==y.nodeValue)x.nodeValue=y.nodeValue;continue}
+      if(x.nodeType!==1)continue;
+      var keep=x.tagName==='IMG'&&(x.dataset.lfqo||x.getAttribute('src'))===y.getAttribute('src');
+      [].slice.call(y.attributes).forEach(function(at){if(keep&&(at.name==='src'||at.name==='class'))return;if(x.getAttribute(at.name)!==at.value)x.setAttribute(at.name,at.value)});
+      [].slice.call(x.attributes).forEach(function(at){if(!y.hasAttribute(at.name)&&!(keep&&(at.name==='data-lfqo'||at.name==='class'))&&!/^data-f$/.test(at.name))x.removeAttribute(at.name)});
+      lfMorph(x,y)}
+    for(var j=A.length-1;j>=B.length;j--)a.removeChild(A[j])}
   var _redraw5=redraw;redraw=function(){_redraw5();homeDraw()};
   var _setHero5=setHero;setHero=function(){_setHero5();clearTimeout(V5.sh);V5.sh=setTimeout(homeDraw,30)};
 
