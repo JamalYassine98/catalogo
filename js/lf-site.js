@@ -639,7 +639,7 @@
     H.pushState=function(s,t,u){if(H.state&&H.state.lfo&&!OVP){var o=OV.filter(function(x){return x.id===H.state.lfo})[0];if(!o||!o.is()){ABERTO[H.state.lfo]=false;return H.replaceState(s,t,u)}}return _push.apply(H,arguments)};
     function confere(){OV.forEach(function(o){var ag=o.is(),era=!!ABERTO[o.id];if(ag===era)return;ABERTO[o.id]=ag;
       if(ag){if(OVP)return;if(o.id==='cmp'){CMPW=setTimeout(empCmp,800);return}empurra(o.id)}
-      else if(!OVP&&H.state&&H.state.lfo===o.id){OVSELF++;try{H.back()}catch(_){OVSELF--}}})}
+      else if(!OVP&&!window.__lfLogo&&H.state&&H.state.lfo===o.id){OVSELF++;try{H.back()}catch(_){OVSELF--}}})}
     function empurra(id){var b=Object.assign({},H.state||{},{lfo:id});OVP=true;try{_push.call(H,b,'',location.href)}catch(_){}OVP=false}
     /* a comparação fecha a peça (o histórico volta sozinho); o passo dela só entra depois disso */
     var CMPW=0;function empCmp(){CMPW=0;if(OV[6].is())empurra('cmp')}
@@ -671,6 +671,34 @@
       try{if(!pop&&NAVO.k==='link'&&!window.__lfLnk&&prodOpen){window.__lfLnk=1;var q=find(ref),cur=H.state,u=location.href;if(q){OVP=true;H.replaceState({lfv:1,pn:'vitrine',lnk:q.tipo||'todos'},'',u);_push.call(H,cur,'',u);OVP=false}}}catch(_){OVP=false}
       return r};
   })();
+  /* 09/11 S30 (aprovado): logo = Início no topo, num movimento só. Um véu da cor do fundo cobre a tela (120 ms), tudo fecha por baixo
+     de uma vez (peça, catálogo, folhas, busca), a página vai ao topo e o véu some suave (220 ms). O histórico volta ao começo de uma vez
+     (cada passo tem um número, posto no começo do index.html). */
+  (function(){var RM=matchMedia('(prefers-reduced-motion: reduce)'),VEU=null;
+    if(window.__lfPop)window.__lfPop.unshift(function(e){if(window.__lfLogo===2){window.__lfLogo=0;e.__lfStop=1;setTimeout(function(){try{urlSync()}catch(_){}},0)}});
+    function aberto(){var H=document.documentElement,ly=$('layer');if(ly&&ly.innerHTML.trim())return true;if(H.classList.contains('ppop'))return true;
+      return ['drw','fsh','fvs','dsh','sov','vcs'].some(function(id){var d=$(id);return !!d&&d.classList.contains('on')})}
+    function topo(){try{scrollTo({top:0,left:0,behavior:'instant'})}catch(_){try{scrollTo(0,0)}catch(__){}}}
+    function fechaTudo(){
+      try{var d=$('drw');if(d&&d.classList.contains('on')){var x=document.querySelector('#drw [data-dclose]');if(x)x.click()}}catch(_){}
+      ['fsh','fvs','dsh','vcs'].forEach(function(id){var d=$(id);if(d&&d.classList.contains('on')){d.classList.remove('on');d.setAttribute('aria-hidden','true');if(id==='fvs')d.innerHTML=''}});
+      try{if($('sov').classList.contains('on')&&V5.sfecha)V5.sfecha('todos')}catch(_){}
+      prodRef='';NAVO={k:'home',ts:0};window.__lfTopo=1;try{_closeLayer9(true)}catch(_){$('layer').innerHTML=''}
+      closePanels();document.documentElement.classList.remove('lock');topo()}
+    addEventListener('click',function(e){var l=e.target.closest&&e.target.closest('.top .logo');if(!l)return;e.preventDefault();e.stopImmediatePropagation();
+      if(VEU)return;
+      if(!aberto()){if((scrollY||0)>0)try{scrollTo({top:0,behavior:RM.matches?'auto':'smooth'})}catch(_){topo()}return}
+      var n=(history.state&&history.state.__i)||0,v=VEU=document.createElement('div');
+      v.style.cssText='position:fixed;inset:0;z-index:2147483000;background:var(--bg);opacity:0;pointer-events:auto';document.body.appendChild(v);
+      var troca=function(){window.__lfLogo=1;fechaTudo();
+        if(n>0){window.__lfLogo=2;try{history.go(-n)}catch(_){window.__lfLogo=0}}else window.__lfLogo=0;
+        setTimeout(function(){if(window.__lfLogo)window.__lfLogo=0},1500);
+        requestAnimationFrame(function(){requestAnimationFrame(function(){topo();
+          var fim=function(){topo();v.remove();VEU=null};
+          if(RM.matches||!v.animate){fim();return}
+          var a=v.animate([{opacity:1},{opacity:0}],{duration:220,easing:'ease-in-out',fill:'forwards'});a.onfinish=fim})})};
+      if(RM.matches||!v.animate){v.style.opacity='1';troca();return}
+      var a=v.animate([{opacity:0},{opacity:1}],{duration:120,easing:'ease-out',fill:'forwards'});a.onfinish=troca},true)})();
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-navcat]');if(!a)return;e.preventDefault();e.stopPropagation();var t=a.getAttribute('data-navcat');navApos(function(){navAbreCat(t)})},true);
   /* saída: a peça desliza de volta para a direita (a página já fica livre na hora) */
   var _closeLayer9=closeLayer;closeLayer=function(skip){var L=$('layer'),sc=L&&L.querySelector('.scrim.pg');
