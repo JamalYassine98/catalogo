@@ -3029,8 +3029,13 @@
     var SPK='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
     var MUT='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
     var BK='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
-    function fala(t){var c=Z.el&&Z.el.querySelector('#gzct');if(c)c.textContent=t;try{speechSynthesis.cancel();if(mudo()||!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\+(\d)[.,](\d\d)/g,function(m,a,b){return gfala(a+'.'+b)}));u.lang=ES?'es-ES':'pt-BR';u.rate=.95;
-      var vs=speechSynthesis.getVoices().filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(ES?'es':'pt')===0});if(vs.length)u.voice=vs.filter(function(v){return /BR|419|PY|AR|MX/i.test(v.lang)})[0]||vs[0];speechSynthesis.speak(u)}catch(_){}}
+    /* voz: (S45, opção 2 aprovada) usa os áudios gravados com voz neural quando estiverem no site (media/voz/<pt|es>/lista.json: frase → arquivo);
+       enquanto não houver, usa a voz mais natural do celular */
+    var VZ={m:null,a:null};try{fetch('/media/voz/'+(ES?'es':'pt')+'/lista.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){VZ.m=j}).catch(function(){})}catch(_){}
+    function falaArq(t){if(!VZ.m)return false;var ps=t.split(/(?<=[.!?])\s+/).map(function(x){return x.trim()}).filter(Boolean),fs=[];for(var i=0;i<ps.length;i++){var f=VZ.m[ps[i]];if(!f)return false;fs.push(f)}
+      var k=0,toca=function(){if(k>=fs.length||!Z.el)return;var a=VZ.a=new Audio('/media/voz/'+(ES?'es':'pt')+'/'+fs[k++]);a.onended=toca;a.play().catch(function(){})};if(VZ.a)try{VZ.a.pause()}catch(_){}toca();return true}
+    function fala(t){var c=Z.el&&Z.el.querySelector('#gzct');if(c)c.textContent=t;if(VZ.a)try{VZ.a.pause()}catch(_){}try{speechSynthesis.cancel();if(mudo()||!t)return;if(falaArq(t))return;var u=new SpeechSynthesisUtterance(t.replace(/\+(\d)[.,](\d\d)/g,function(m,a,b){return gfala(a+'.'+b)}));u.lang=ES?'es-ES':'pt-BR';
+      var vs=speechSynthesis.getVoices().filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(ES?'es':'pt')===0}),nota=function(v){return (/natural|neural|online|premium|enhanced|google/i.test(v.name)?4:0)+(!v.localService?2:0)+((ES?/419|PY|AR|MX|US/:/BR/).test(v.lang)?1:0)};vs.sort(function(a,b){return nota(b)-nota(a)});if(vs.length)u.voice=vs[0];u.rate=1;speechSynthesis.speak(u)}catch(_){}}
     function pr(n){return '<div class="gzpr">'+[0,1,2].map(function(i){return '<i'+(i<n?' class="on"':'')+'></i>'}).join('')+'</div>'}
     function tela(h,f){if(!Z.el)return;Z.el.querySelector('.gzc').innerHTML=h;var b=Z.el.querySelector('.gzc');if(!RM.matches&&b.animate)b.animate([{opacity:0,translate:'18px 0'},{opacity:1,translate:'0 0'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});if(f)fala(f)}
     function cam(){if(Z.tm){clearTimeout(Z.tm);Z.tm=0}if(Z.st){Z.st.getTracks().forEach(function(t){t.stop()});Z.st=null}}
@@ -3045,47 +3050,58 @@
       document.body.appendChild(e);document.documentElement.classList.add('gzon');if(!RM.matches&&e.animate)e.animate([{opacity:0},{opacity:1}],{duration:220});
       try{history.pushState(Object.assign({},history.state||{},{lfo:'gw'}),'',location.href)}catch(_){}
       passo1()}
-    var FRASE=function(){return T('O café da manhã fica pronto às sete.')};
-    function passo1(){
-      tela(pr(1)+'<div class="gzeb">'+T('PASSO 1 DE 3')+'</div><h2>'+T('Afaste o celular devagar até ler sem esforço')+'</h2><p class="gzp">'+T('Sem óculos de leitura. A câmera mede a distância pelo seu rosto; nada é gravado.')+'</p>'+
-        '<div class="gzbx" style="text-align:center"><div class="gzfr">'+esc(FRASE())+'</div><div class="gzbar"><i id="gzbi"></i></div><b id="gzd">…</b><div class="gzp" id="gzdm" style="font-size:13px"></div></div>'+
-        '<div id="gzman" hidden><p class="gzp" style="margin-top:12px">'+T('Sem câmera: onde ficou nítido?')+'</p>'+[[30,'Perto do rosto'],[45,'Um palmo e meio'],[58,'Braço quase esticado'],[70,'Braço esticado']].map(function(x){return '<button type="button" class="gzgo o gzsm" data-gzd="'+x[0]+'">'+T(x[1])+'</button>'}).join('')+'</div>'+
-        '<button type="button" class="gzgo" data-gz="nitido" id="gzok">'+T('Agora está nítido')+'</button><button type="button" class="gzgo o" data-gz="longe">'+T('Mesmo longe não consigo ler')+'</button>',
-        T('Olá! Vou te ajudar a achar o seu grau. Afaste o celular devagar. Quando ficar nítido, toque no botão de cima. Se nem com o braço esticado der para ler, toque no de baixo.'));
+    /* 09/11 S45 (aprovado): UMA tela e UM botão. A câmera observa distância, olhos apertados, testa franzida e cabeça para trás e SUGERE o grau;
+       o cliente ajusta à vontade com − / + até ler. Os 3 primeiros segundos guardam a distância natural de leitura. */
+    var FRASE=function(){return T('O café da manhã fica pronto às sete. Depois, ligue para a farmácia e confirme o horário da entrega.')};
+    function passo1(){Z.g=1.5;Z.G=0;Z.man=false;Z.sig={};Z.b0=null;Z.t0=Date.now();Z.d0=0;Z.lf=0;Z.lfs='';Z.hist=[];
+      tela('<h2>'+T('Segure o celular como você costuma ler')+'</h2><p class="gzp">'+T('Leia a frase. A câmera observa a distância e o seu rosto; nada é gravado.')+'</p>'+
+        '<div class="gzbx"><div class="gztx" id="gztx" style="filter:blur(2px)">'+esc(FRASE())+'</div></div>'+
+        '<div class="gzst" id="gzst"><i></i><span>'+T('Observando…')+'</span></div><div class="gzsug" id="gzsug" hidden></div><div class="gzsig" id="gzsig"></div>'+
+        '<div class="gzaj"><button type="button" class="gzpm" data-gz="menos" aria-label="'+T('Menos grau')+'">−</button><div><b id="gzgv">'+gf(Z.g)+'</b><small id="gzgl">'+T('grau')+'</small></div><button type="button" class="gzpm" data-gz="mais" aria-label="'+T('Mais grau')+'">+</button></div>'+
+        '<button type="button" class="gzgo" data-gz="leio">'+T('Leio bem')+'</button>',
+        T('Olá! Segure o celular como você costuma ler e tente ler a frase. Eu vou ajustando o grau para você.'));
       medir()}
-    function semCam(){var m=Z.el&&Z.el.querySelector('#gzman'),o=Z.el&&Z.el.querySelector('#gzok');if(m)m.hidden=false;if(o)o.hidden=true;var d=Z.el&&Z.el.querySelector('#gzd');if(d)d.textContent='—'}
-    function medir(){
+    function semCam(){Z.semcam=true;var s=Z.el&&Z.el.querySelector('#gzst');if(s)s.innerHTML='<span>'+T('Sem câmera: ajuste no − e no + até ler sem esforço.')+'</span>';var t=Z.el&&Z.el.querySelector('#gztx');if(t)t.style.filter='none'}
+    function medir(){Z.semcam=false;
       if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){semCam();return}
       var v=Z.v=document.createElement('video');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');
       navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}}).then(function(s){if(!Z.el){s.getTracks().forEach(function(t){t.stop()});return}Z.st=s;v.srcObject=s;var p=v.play();if(p&&p.catch)p.catch(function(){});
-        var m=Z.el.querySelector('#gzdm');if(m)m.textContent=T('Procurando o seu rosto…');
         faLoad().then(function(fa){Z.fa=fa;laco()},function(){semCam()})},function(){semCam()})}
+    var med=function(a){var s=a.slice().sort(function(x,y){return x-y});return s[Math.floor(s.length/2)]};
     function laco(){if(!Z.el||!Z.st)return;var v=Z.v,fa=Z.fa;if(!v.videoWidth){Z.tm=setTimeout(laco,200);return}
       var W=480,H=Math.round(W*v.videoHeight/v.videoWidth),cv=Z.cv||(Z.cv=document.createElement('canvas'));cv.width=W;cv.height=H;cv.getContext('2d').drawImage(v,0,0,W,H);
       fa.detectSingleFace(cv,new fa.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.4})).withFaceLandmarks(!FA.full).then(function(r){if(!Z.el||!Z.st)return;
-        var m=Z.el.querySelector('#gzdm'),dEl=Z.el.querySelector('#gzd'),bi=Z.el.querySelector('#gzbi');
-        if(r&&r.landmarks){var P=r.landmarks.positions,c=function(a,b){var x=0,y=0;for(var i=a;i<=b;i++){x+=P[i].x;y+=P[i].y}return [x/(b-a+1),y/(b-a+1)]},e1=c(36,41),e2=c(42,47),ipd=Math.hypot(e1[0]-e2[0],e1[1]-e2[1]);
-          /* distância = foco × 6,3 cm (distância média entre as pupilas) ÷ pixels entre os olhos; câmera da frente ≈ 62° na horizontal */
-          var f=(W/2)/Math.tan(31*Math.PI/180),d=f*6.3/ipd;Z.dd.push(d);if(Z.dd.length>5)Z.dd.shift();var s=Z.dd.slice().sort(function(a,b){return a-b});Z.d=s[Math.floor(s.length/2)];
-          if(dEl)dEl.textContent=Math.round(Z.d)+' cm';if(bi)bi.style.width=Math.max(4,Math.min(100,(Z.d-20)/60*100))+'%';if(m)m.textContent=''}
-        else if(m&&!Z.d)m.textContent=T('Procurando o seu rosto…');
+        var stEl=Z.el.querySelector('#gzst');
+        if(r&&r.landmarks){var P=r.landmarks.positions,dd=function(a,b){return Math.hypot(P[a].x-P[b].x,P[a].y-P[b].y)},c=function(a,b){var x=0,y=0;for(var i=a;i<=b;i++){x+=P[i].x;y+=P[i].y}return [x/(b-a+1),y/(b-a+1)]},e1=c(36,41),e2=c(42,47),ipd=Math.hypot(e1[0]-e2[0],e1[1]-e2[1]);
+          var f=(W/2)/Math.tan(31*Math.PI/180),d=f*6.3/ipd;
+          /* abertura dos olhos (cai ao apertar) e distância sobrancelha–olho (cai ao franzir), medidas em relação à distância entre os olhos */
+          var ear=((dd(37,41)+dd(38,40))/(2*dd(36,39))+(dd(43,47)+dd(44,46))/(2*dd(42,45)))/2,brow=((P[19].y-P[37].y)*-1+(P[24].y-P[44].y)*-1)/2/ipd;
+          Z.hist.push({t:Date.now(),d:d,ear:ear,brow:brow});Z.hist=Z.hist.filter(function(h){return Date.now()-h.t<2200});
+          var dN=med(Z.hist.map(function(h){return h.d})),eN=med(Z.hist.map(function(h){return h.ear})),bN=med(Z.hist.map(function(h){return h.brow}));
+          if(!Z.b0&&Date.now()-Z.t0>3000)Z.b0={d:dN,ear:eN,brow:bN};if(!Z.b0){Z.d0=dN}
+          Z.d=dN;var b0=Z.b0||{d:dN,ear:eN,brow:bN};
+          Z.sig.afastou=dN>Math.max(42,b0.d+5);Z.sig.olhos=!!Z.b0&&eN<b0.ear*.82;Z.sig.testa=!!Z.b0&&bN<b0.brow*.88;
+          var G=grauDe(dN)+(Z.sig.olhos?.25:0)+(Z.sig.testa?.25:0);G=Math.max(.75,Math.min(4,Math.round(G*4)/4));
+          if(stEl)stEl.hidden=true;sugere(G)}
+        else if(stEl&&!Z.G){stEl.hidden=false;stEl.querySelector('span').textContent=T('Procurando o seu rosto…')}
         Z.tm=setTimeout(laco,180)},function(){Z.tm=setTimeout(laco,400)})}
-    function idade(){/* a idade (se o modelo carregou) só ajusta a frase da faixa esperada */
-      if(!Z.fa||!FA.gen||!Z.cv)return Promise.resolve(0);var fa=Z.fa;
-      return Promise.race([fa.detectSingleFace(Z.cv,new fa.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.4})).withFaceLandmarks(!FA.full).withAgeAndGender().then(function(r){return r&&r.age?Math.round(r.age):0},function(){return 0}),new Promise(function(r){setTimeout(function(){r(0)},1500)})])}
+    function sugere(G){if(!Z.el)return;var mudou=G!==Z.G;Z.G=G;var s=Z.el.querySelector('#gzsug'),sg=Z.el.querySelector('#gzsig'),gl=Z.el.querySelector('#gzgl');
+      if(!Z.man){Z.g=G}
+      s.hidden=false;s.textContent=Z.man?T('VOCÊ ESCOLHEU'):T('GRAU SUGERIDO');s.classList.toggle('mu',Z.man);
+      var L=[];if(Z.man)L.push(T('Sugerido: ')+gf(G));else{if(Z.sig.afastou)L.push(T('Afastou o celular')+' · '+Math.round(Z.d)+' cm');else if(Z.d)L.push(Math.round(Z.d)+' cm');if(Z.sig.olhos)L.push(T('Apertou os olhos'));if(Z.sig.testa)L.push(T('Franziu a testa'))}
+      var h=L.map(function(x){return '<span>'+esc(x)+'</span>'}).join('');if(sg._h!==h){sg.innerHTML=h;sg._h=h}
+      if(gl)gl.textContent=T(Z.man?'ajustado por você':'sugerido pela câmera');ajusta();
+      /* a voz só fala quando a sugestão muda e fica parada um pouco */
+      if(mudou&&!Z.man){clearTimeout(Z.lf);Z.lf=setTimeout(function(){if(!Z.el||Z.man||Z.G!==G)return;var por=[];if(Z.sig.afastou)por.push(T('afastou o celular'));if(Z.sig.olhos)por.push(T('apertou os olhos'));if(Z.sig.testa)por.push(T('franziu a testa'));
+        fala((por.length?T('Percebi que você ')+por.join(T(' e '))+'. ':'')+T('Sugiro ')+gf(G)+'.')},2200)}}
     function grauDe(dcm){/* ponto próximo: o olho foca 1/d; para ler a 40 cm com folga, guarda metade disso */var A=100/Math.max(15,dcm),g=2.5-A/2;g=Math.round(g*4)/4;return Math.max(.75,Math.min(4,g))}
     function idadeGr(a){return a>=60?2.75:a>=55?2.5:a>=50?2:a>=45?1.5:a>=40?1:0}
-    function passo2(){cam();Z.g=Z.G;
-      tela(pr(2)+(Z.longe?'<div class="gzeb">'+T('SEM PROBLEMA')+'</div><h2>'+T('Vamos começar com um grau mais forte')+'</h2><p class="gzp">'+T('Quem não lê nem de longe costuma precisar de +2.50 ou mais. Começamos por aí.')+'</p>':'<div class="gzeb">'+T('PASSO 2 DE 3')+'</div><h2>'+T('Confira se lê bem com este grau')+'</h2><p class="gzp">'+T('A tela mostra como fica a leitura com o grau calculado.')+'</p>')+
-        '<div class="gzbx"><div class="gztx" id="gztx">'+esc(T('O café da manhã fica pronto às sete. Depois, ligue para a farmácia e confirme o horário da entrega.'))+'</div></div>'+
-        '<div class="gzaj"><button type="button" class="gzpm" data-gz="menos" aria-label="'+T('Menos grau')+'">−</button><div><b id="gzgv">'+gf(Z.g)+'</b><small>'+T(Z.longe?'grau':'grau calculado')+'</small></div><button type="button" class="gzpm" data-gz="mais" aria-label="'+T('Mais grau')+'">+</button></div>'+
-        '<button type="button" class="gzgo" data-gz="leio">'+T('Leio bem')+'</button>',
-        Z.longe?T('Vamos começar com +2,50. A frase diz: O café da manhã fica pronto às sete. Toque no mais até ficar nítido.').replace('+2,50','+2.50'):T('Pela distância, o seu grau é ')+gf(Z.G)+T('. Se ainda estiver difícil, toque no mais.'));
-      ajusta()}
-    function ajusta(){var t=Z.el&&Z.el.querySelector('#gztx'),v=Z.el&&Z.el.querySelector('#gzgv');if(v)v.textContent=gf(Z.g);if(t)t.style.filter='blur('+Math.min(4,Math.abs(Z.g-Z.G)*2.6).toFixed(1)+'px)'}
-    function passo3(){var g=Z.g,a=Z.idade,ig=idadeGr(a),lo=gf(Math.max(.75,(ig||g)-.25)),hi=gf(Math.min(4,(ig||g)+.25));
-      var por=Z.longe?T('Você não conseguiu ler nem de longe e leu bem com ')+gf(g)+'.':Z.d?T('Você leu bem a ')+Math.round(Z.d)+' cm.':T('Você leu bem com ')+gf(g)+'.';
-      tela(pr(3)+'<div class="gzeb">'+T('SEU GRAU PARA COMEÇAR')+'</div><div class="gzres">'+gf(g)+'</div><p class="gzp">'+por+' '+(ig?T('Para a sua idade costuma ficar entre '):T('Costuma ficar entre '))+lo+T(' e ')+hi+'.</p>'+
+    function idade(){if(!Z.fa||!FA.gen||!Z.cv)return Promise.resolve(0);var fa=Z.fa;
+      return Promise.race([fa.detectSingleFace(Z.cv,new fa.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.4})).withFaceLandmarks(!FA.full).withAgeAndGender().then(function(r){return r&&r.age?Math.round(r.age):0},function(){return 0}),new Promise(function(r){setTimeout(function(){r(0)},1500)})])}
+    function ajusta(){var t=Z.el&&Z.el.querySelector('#gztx'),v=Z.el&&Z.el.querySelector('#gzgv');if(v)v.textContent=gf(Z.g);if(t&&!Z.semcam)t.style.filter=Z.G?'blur('+Math.min(4,Math.abs(Z.g-Z.G)*2.6).toFixed(1)+'px)':'blur(2px)'}
+    function passo3(){cam();var g=Z.g,a=Z.idade,ig=idadeGr(a),lo=gf(Math.max(.75,(ig||g)-.25)),hi=gf(Math.min(4,(ig||g)+.25));
+      var por=Z.G&&Z.man&&Z.G!==g?T('A câmera sugeriu ')+gf(Z.G)+T(' e você preferiu ')+gf(g)+'.':Z.G?T('Você leu bem a ')+Math.round(Z.d)+' cm.':T('Você leu bem com ')+gf(g)+'.';
+      tela('<div class="gzeb">'+T('SEU GRAU PARA COMEÇAR')+'</div><div class="gzres">'+gf(g)+'</div><p class="gzp">'+por+' '+(ig?T('Para a sua idade costuma ficar entre '):T('Costuma ficar entre '))+lo+T(' e ')+hi+'.</p>'+
         '<button type="button" class="gzgo" data-gz="ver">'+T('Ver óculos de leitura')+' '+gf(g)+'</button><button type="button" class="gzgo o" data-gz="guarda">'+T('Guardar meu grau')+'</button>'+
         '<p class="gzp" style="font-size:13.5px;margin-top:16px">'+T('É uma indicação, não um exame. Procure um oftalmologista se tiver dor de cabeça, visão dupla ou se um olho enxerga bem pior que o outro.')+'</p>',
         T('Pronto! O seu grau para começar é ')+gf(g)+'.')}
@@ -3093,13 +3109,10 @@
     document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-gzopen],[data-gz],[data-gzd]');if(!t)return;
       if(t.hasAttribute('data-gzopen')){e.preventDefault();e.stopPropagation();var dw=$('drw');if(dw&&dw.classList.contains('on')){var x=document.querySelector('#drw .dsc[data-dclose],#drw [data-dclose]');if(x)x.click();setTimeout(abre,420)}else abre();return}
       if(!Z.el||!Z.el.contains(t))return;e.preventDefault();var k=t.getAttribute('data-gz');
-      if(t.hasAttribute('data-gzd')){Z.d=+t.getAttribute('data-gzd');Z.G=grauDe(Z.d);passo2();return}
       if(k==='x'){fecha();return}
       if(k==='mudo'){try{localStorage.setItem('lf_gzmudo',mudo()?'0':'1')}catch(_){}t.innerHTML=mudo()?MUT:SPK;if(mudo()){try{speechSynthesis.cancel()}catch(_){}}else{var c=$('gzct');if(c)fala(c.textContent)}return}
-      if(k==='nitido'){if(!Z.d){fala(T('Ainda não achei o seu rosto. Olhe para a tela, com o rosto todo aparecendo.'));return}var d=Z.d;idade().then(function(a){Z.idade=a;Z.G=grauDe(d);passo2()});return}
-      if(k==='longe'){Z.longe=true;Z.d=0;idade().then(function(a){Z.idade=a;Z.G=2.5;passo2()});return}
-      if(k==='mais'||k==='menos'){Z.g=Math.max(.75,Math.min(4,Z.g+(k==='mais'?.25:-.25)));ajusta();fala(gf(Z.g));return}
-      if(k==='leio'){passo3();return}
+      if(k==='mais'||k==='menos'){Z.man=true;Z.g=Math.max(.75,Math.min(4,Z.g+(k==='mais'?.25:-.25)));if(Z.G)sugere(Z.G);else ajusta();fala(gf(Z.g)+'. '+T('Toque em “Leio bem” quando estiver confortável.'));return}
+      if(k==='leio'){idade().then(function(a){Z.idade=a;passo3()});return}
       if(k==='guarda'){var gg=Z.g;try{localStorage.setItem('lf_meugr',gf(gg))}catch(_){}fecha();toast(T('Grau guardado')+': '+gf(gg));try{if(st.tipo==='grau'&&document.documentElement.classList.contains('ppop')&&!prodOpen){st.fgr=perto(gg);drawGrid()}gzFaixa();}catch(_){}return}
       if(k==='ver'){var g=Z.g;fecha();var go=function(){st.fgr=perto(g);navAbreCat('grau')};if(prodOpen)navApos(go);else go();return}},true);
     /* faixa na Leitura (topo, antes dos óculos) */
