@@ -3363,7 +3363,7 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       var k=W<350?.74:W<400?.86:.95;L.k=k;var me=Z.m&&Z.m.el;if(me){me.style.width=(132*k)+'px';me.style.height=(110*k)+'px'}
       var teste=!q('#gzjan').hidden,bal=q('#gzbal');s.style.height=teste?H+'px':'';s.style.minHeight=H+'px';
       if(teste){bal.style.left='10px';bal.style.right=(120*k+8)+'px'}else{bal.style.left=(124*k)+'px';bal.style.right='10px'}
-      var bh=Math.max(64,bal.offsetHeight);L.top=bh+22;q('#gzc').style.paddingTop=(Math.max(104*k,bh+6)+14)+'px';
+      var bh=Math.max(64,bal.offsetHeight);L.top=bh+22;/* o desenho do Mochi (pezinhos, sombra, bracinhos) passa um pouco da caixa: reserva a altura inteira + folga para nunca encostar no texto */q('#gzc').style.paddingTop=(Math.max(6+122*k,bh+6)+10)+'px';
       /* S70: ponteiro com cabo maior → a faixa do Mochi à esquerda do quadro fica um pouco mais larga */
       L.wl=Math.round(173*k+6);L.ww=W-L.wl-18;var bt=q('#gzbt'),bth=bt.offsetHeight||124,nt0=q('#gznt');nt0.style.width=L.ww+'px';L.gap=Math.max(Math.round((H<520?92:108)*k),16+30+6+nt0.offsetHeight+10);
       L.wh=Math.max(150,Math.min(330,H-L.top-bth-L.gap-14));var j=q('#gzjan');j.style.left=L.wl+'px';j.style.top=L.top+'px';j.style.width=L.ww+'px';j.style.height=L.wh+'px';
