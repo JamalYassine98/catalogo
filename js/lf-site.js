@@ -1886,9 +1886,10 @@
     var nv=document.querySelector('#drw nav');if(!nv)return;nv.className='dnv';
     var A=function(h,mf,t,c){return '<a href="'+h+'"'+(mf?' data-mf="'+mf+'"':'')+(c?' class="'+c+'"':'')+'>'+t+'</a>'};
     nv.innerHTML='<a href="#" class="dacc" data-cta="minha"><span class="dav" id="dav">'+'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span><b id="dacn">Entrar ou criar conta</b><small id="dacs">Minha conta · Meus pedidos ›</small></span></a>'+
-      '<small class="dgl">Comprar</small>'+A('#vitrine','tipo:solar','Solar')+A('#vitrine','tipo:grau','Leitura')+A('#vitrine','tipo:armacao','Armações')+A('#vitrine','tipo:of','Ofertas','dof')+A('#rosto','','Descubra o seu formato')+
+      '<small class="dgl">Comprar</small>'+A('#vitrine','tipo:solar','Solar')+A('#vitrine','tipo:grau','Leitura')+A('#vitrine','tipo:armacao','Armações')+A('#vitrine','tipo:of','Ofertas','dof')+
       '<div class="dch">'+A('#vitrine','gen:f','Feminino')+A('#vitrine','gen:m','Masculino')+A('#vitrine','gen:u','Unissex')+'</div>'+
-      '<small class="dgl">Para lojistas</small>'+A('#atacado','','Atacado')+
+      /* 09/11 S44 A (aprovado): grupo Ferramentas */'<small class="dgl">'+LFI.tr('Ferramentas')+'</small>'+A('#rosto','','Descubra o seu formato')+'<a href="#" data-gzopen>'+LFI.tr('Descubra o seu grau')+'</a>'+
+       '<small class="dgl">Para lojistas</small>'+A('#atacado','','Atacado')+
       '<small class="dgl">Ajuda</small>'+A('#como','','Como comprar, dúvidas e guia');
     var dl=document.querySelector('#drw .dleg');if(dl)dl.style.display='';
     function conta(){var c=null;try{c=logado()?getConta():null}catch(_){}var n=c&&c.nome?String(c.nome).split(' ')[0]:'';
@@ -3090,7 +3091,7 @@
         T('Pronto! O seu grau para começar é ')+gf(g)+'.')}
     function perto(g){var G=navGraus(),b='',d=1e9;G.forEach(function(x){var k=Math.abs(gn(x)-g);if(k<d-1e-9){d=k;b=x}});return b}
     document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-gzopen],[data-gz],[data-gzd]');if(!t)return;
-      if(t.hasAttribute('data-gzopen')){e.preventDefault();e.stopPropagation();abre();return}
+      if(t.hasAttribute('data-gzopen')){e.preventDefault();e.stopPropagation();var dw=$('drw');if(dw&&dw.classList.contains('on')){var x=document.querySelector('#drw .dsc[data-dclose],#drw [data-dclose]');if(x)x.click();setTimeout(abre,420)}else abre();return}
       if(!Z.el||!Z.el.contains(t))return;e.preventDefault();var k=t.getAttribute('data-gz');
       if(t.hasAttribute('data-gzd')){Z.d=+t.getAttribute('data-gzd');Z.G=grauDe(Z.d);passo2();return}
       if(k==='x'){fecha();return}
@@ -3099,7 +3100,7 @@
       if(k==='longe'){Z.longe=true;Z.d=0;idade().then(function(a){Z.idade=a;Z.G=2.5;passo2()});return}
       if(k==='mais'||k==='menos'){Z.g=Math.max(.75,Math.min(4,Z.g+(k==='mais'?.25:-.25)));ajusta();fala(gf(Z.g));return}
       if(k==='leio'){passo3();return}
-      if(k==='guarda'){var gg=Z.g;try{localStorage.setItem('lf_meugr',gf(gg))}catch(_){}fecha();toast(T('Grau guardado')+': '+gf(gg));try{if(st.tipo==='grau'&&document.documentElement.classList.contains('ppop')&&!prodOpen){st.fgr=perto(gg);drawGrid()}gzFaixa();var pb=document.querySelector('#layer .gzb');if(pb)pb._ap='';gzPeca()}catch(_){}return}
+      if(k==='guarda'){var gg=Z.g;try{localStorage.setItem('lf_meugr',gf(gg))}catch(_){}fecha();toast(T('Grau guardado')+': '+gf(gg));try{if(st.tipo==='grau'&&document.documentElement.classList.contains('ppop')&&!prodOpen){st.fgr=perto(gg);drawGrid()}gzFaixa();}catch(_){}return}
       if(k==='ver'){var g=Z.g;fecha();var go=function(){st.fgr=perto(g);navAbreCat('grau')};if(prodOpen)navApos(go);else go();return}},true);
     /* faixa na Leitura (topo, antes dos óculos) */
     var EF='';
@@ -3112,14 +3113,17 @@
       if(m&&EF!=='grau'){var b=perto(gn(m));if(b&&!st.fgr){st.fgr=b;try{drawGrid()}catch(_){}}}EF='grau'}
     var _vgr=vgrDraw;vgrDraw=function(){var r=_vgr.apply(this,arguments);try{gzFaixa()}catch(_){}return r};
     /* botão grande na peça de leitura, logo abaixo dos graus */
-    function gzPeca(){var L=document.querySelector('#layer .dgr');if(!L)return;var p=find(prodRef);if(!p||p.tipo!=='grau'||!p.gr||!p.gr.length)return;
+    function gzPecaGrau(){var L=document.querySelector('#layer .dgr');if(!L)return;var p=find(prodRef),m=meu();if(!p||p.tipo!=='grau'||!p.gr||!m||L._ap===p.ref)return;L._ap=p.ref;
+      var bs=[].slice.call(L.querySelectorAll('.gb')).filter(function(x){return x.style.display!=='none'&&!x.classList.contains('some')&&!x.classList.contains('nc')&&!x.classList.contains('x')}),bb=null,dd=1e9;
+      bs.forEach(function(x){var z=Math.abs(gn(x.textContent)-gn(m));if(z<dd-1e-9||(bb&&Math.abs(z-dd)<1e-9&&gn(x.textContent)>gn(bb.textContent))){dd=z;bb=x}});if(bb&&!bb.classList.contains('on'))bb.click()}
+    function gzPeca(){return;var L=document.querySelector('#layer .dgr');if(!L)return;var p=find(prodRef);if(!p||p.tipo!=='grau'||!p.gr||!p.gr.length)return;
       var b=document.querySelector('#layer .gzb'),m=meu();if(!b){b=document.createElement('button');b.type='button';b.className='gzb';b.setAttribute('data-gzopen','')}
       if(L.nextSibling!==b)L.parentNode.insertBefore(b,L.nextSibling);
       /* com o grau guardado, a peça já escolhe o grau mais perto que existe na cor (uma vez por peça) */
       if(m&&b._ap!==p.ref){var bs=[].slice.call(L.querySelectorAll('.gb')).filter(function(x){return x.style.display!=='none'&&!x.classList.contains('some')&&!x.classList.contains('nc')&&!x.classList.contains('x')}),bb=null,dd=1e9;
         bs.forEach(function(x){var z=Math.abs(gn(x.textContent)-gn(m));if(z<dd-1e-9||(Math.abs(z-dd)<1e-9&&gn(x.textContent)>gn(bb.textContent))){dd=z;bb=x}});b._ap=p.ref;if(bb&&!bb.classList.contains('on'))bb.click()}
       b.innerHTML='<span>'+(m?T('Seu grau: ')+esc(m):T('Não sei o meu grau'))+'<small>'+(m?T('Refazer a ajuda com o grau'):T('Descubra em 1 minuto, com voz'))+'</small></span><i aria-hidden="true">›</i>'}
-    var _prGz=product;product=function(ref,pop){var r=_prGz.apply(this,arguments);[0,320,950].forEach(function(t){setTimeout(function(){try{gzPeca()}catch(_){}},t)});return r};
+    var _prGz=product;product=function(ref,pop){var r=_prGz.apply(this,arguments);/* 09/11 S44: o botão saiu da peça (fica a faixa na Leitura e o menu); com o grau guardado a peça ainda abre no grau mais perto */[0,320,950].forEach(function(t){setTimeout(function(){try{gzPecaGrau()}catch(_){}},t)});return r};
   })();
   /* 4: "Você estava vendo" — quem volta em outro dia (até 7 dias); some se o modelo esgotar ou sair */
   /* 08/11 (aprovado): aparece na PRÓXIMA visita (mesmo dia ou outro) — visita nova = abrir o site de novo ou voltar após 30 min sem usar;
