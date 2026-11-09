@@ -2929,6 +2929,27 @@
   function lfDsFit(todos){document.querySelectorAll(todos?'.hds,.lfds,.rds':'.hds:not([data-f]),.lfds:not([data-f]),.rds:not([data-f])').forEach(function(e){if(!e.clientWidth)return;var f=e.getAttribute('data-f');if(f==null){f=e.textContent;e.setAttribute('data-f',f)}if(f.indexOf(' · ')<0)return;
     if(e.textContent!==f)e.textContent=f;if(e.scrollWidth>e.clientWidth+1)e.textContent=f.split(' · ').pop()})}
   (function(){var q=0;try{new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;lfDsFit()})}).observe(document.body,{childList:true,subtree:true})}catch(_){}addEventListener('resize',function(){lfDsFit(true)})})();
+  /* 09/11 S57 (aprovado): sem colisões com letra grande — etiqueta que não cabe diminui; "Comprar · R$" que quebraria mostra só "Comprar";
+     WhatsApp some enquanto rola e, na peça, vira um botão dentro da barra de compra */
+  (function(){
+    function ajusta(){
+      document.querySelectorAll('.ph .tg,.card .stk').forEach(function(t){if(!t.clientWidth)return;var kw=t.clientWidth+'|'+t.textContent+'|'+innerWidth;if(t._kw===kw)return;t._kw=kw;var f=parseFloat(t.getAttribute('data-fz')||getComputedStyle(t).fontSize);if(!t.hasAttribute('data-fz')){t.setAttribute('data-fz',f);}
+        t.style.fontSize='';t.style.letterSpacing='';var n=0;while(t.scrollWidth>t.clientWidth+1&&n++<8){var cs=parseFloat(getComputedStyle(t).fontSize);t.style.fontSize=(cs*.9)+'px';t.style.letterSpacing='.06em'}});
+      document.querySelectorAll('#layer .bb.p').forEach(function(b){var s=b.querySelector('span');if(!s)return;b.classList.remove('cur');if(s.scrollWidth>s.clientWidth+1)b.classList.add('cur')});
+      if(matchMedia('(max-width:860px)').matches)document.querySelectorAll('#layer .buyrow').forEach(function(r){if(r.querySelector('.bbwa'))return;var w=document.querySelector('a.wa');if(!w)return;
+        var a=document.createElement('button');a.type='button';a.className='bbwa';a.setAttribute('aria-label',w.getAttribute('aria-label')||'WhatsApp');a.innerHTML=w.innerHTML;a.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();w.click()});r.insertBefore(a,r.querySelector('.bb.p'))})}
+    var q=0;try{new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;ajusta()})}).observe(document.body,{childList:true,subtree:true})}catch(_){}
+    addEventListener('resize',ajusta);
+    /* parado: se o botão ficaria por cima de algum texto ou botão, ele se recolhe para a beirada (aba) — toque nela abre o WhatsApp */
+    function cobre(){var w=document.querySelector('a.wa'),H=document.documentElement;if(!w||!matchMedia('(max-width:860px)').matches){H.classList.remove('wamin');return}
+      var era=H.classList.contains('wamin'),tr=w.style.transition;if(era){w.style.transition='none';H.classList.remove('wamin')}var r=w.getBoundingClientRect();if(!r.width){if(era)H.classList.add('wamin');w.style.transition=tr;return}var pe=w.style.pointerEvents;w.style.pointerEvents='none';var hit=false;
+      [[.5,.5],[.15,.5],[.85,.5],[.5,.15],[.5,.85]].forEach(function(f){if(hit)return;var x=r.left+r.width*f[0],y=r.top+r.height*f[1],e=document.elementFromPoint(x,y);if(!e||e===document.body||e===H)return;
+        if(e.closest('a.wa'))return;if(/^(BUTTON|A|IMG|INPUT|SELECT|TEXTAREA|SVG|PATH)$/i.test(e.tagName)||e.closest('button,a,input')){hit=true;return}
+        if([].some.call(e.childNodes,function(n){return n.nodeType===3&&n.textContent.trim()})){hit=true}});
+      w.style.pointerEvents=pe;if(era&&hit){H.classList.add('wamin');void w.offsetWidth;w.style.transition=tr}else{w.style.transition=tr;H.classList.toggle('wamin',hit)}}
+    var rt=0;document.addEventListener('scroll',function(){var H=document.documentElement;H.classList.add('warol');clearTimeout(rt);rt=setTimeout(function(){H.classList.remove('warol');cobre()},700)},true);
+    setTimeout(cobre,1500);addEventListener('resize',function(){setTimeout(cobre,200)});document.addEventListener('click',function(){setTimeout(cobre,900)},true);
+    window.__lfAjusta=ajusta})();
   function syncProds(docs){
     var base={};P.forEach(function(p){base[p.ref]=p});
     var L=docs.map(function(d){var r=fbd(d);r.ref=r.ref||d.name.split('/').pop();var b=base[r.ref]||{};
@@ -3050,188 +3071,291 @@
     var on=el.querySelector('.on');if(on&&on.offsetLeft>el.clientWidth-40)el.scrollLeft=on.offsetLeft-16}
   var _navTitNv=navTitulo;navTitulo=function(){var r=_navTitNv.apply(this,arguments);try{vgrDraw()}catch(_){}return r};
   document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-vgr]');if(!b)return;e.preventDefault();st.fgr=b.getAttribute('data-vgr');drawGrid();var vs=$('vscr'),g=$('grid');if(vs&&g&&vs.scrollTop>g.offsetTop)vs.scrollTop=0});
-  /* 09/11 S42 (aprovado): "Ajuda com o grau" — afaste o celular até ler (a câmera mede a distância pelo rosto; nada é gravado),
-     a conta do ponto próximo dá o grau, confere com − / + num texto grande, resultado com Ver óculos / Guardar meu grau.
-     Voz do próprio celular + legenda em todos os passos (dá para silenciar). Entradas: faixa na Leitura e botão na peça de leitura. */
+  /* 09/11 S54–S64 (aprovados): "Descubra o seu grau" = consulta com o Mochi.
+     Celular a 40 cm, sem óculos. Quadro com 9 frases do maior para o menor; o Mochi aponta a frase da frente e, a cada "Consigo ler",
+     puxa o quadro para cima. Onde a pessoa trava, ele traz a lente (o quadro todo cresce no tamanho que ela leria com aquele grau) e
+     vai subindo a lente até a pessoa ler a bula (última frase); confere uma lente mais fraca, como o médico. A letra do quadro tem tamanho
+     fixo: o "Texto grande" do site não mexe nela. O Mochi é vivo: respira, pisca, reage e passeia por zonas livres (nunca em cima do texto
+     nem dos botões). Sem desfoque falso; aviso de miopia/astigmatismo/multifocal; não substitui o oftalmologista. */
   (function(){
     var T=function(x){return LFI.tr(x)},ES=LFI.lang==='es',RM=matchMedia('(prefers-reduced-motion: reduce)');
-    var Z={el:null,st:null,tm:0,d:0,dd:[],ok:false,g:0,G:0,longe:false,idade:0,fa:null,cv:null,v:null};
-    var GS=['+0.75','+1.00','+1.25','+1.50','+1.75','+2.00','+2.25','+2.50','+2.75','+3.00','+3.25','+3.50','+3.75','+4.00'];
+    var Z={el:null,st:null,tm:0,v:null,cv:null,fa:null,d:0,rosto:0,fase:''};
     var gf=function(x){return '+'+(+x).toFixed(2)},gn=function(s){return parseFloat(String(s).replace(',','.'))||0};
     var gfala=function(x){return (ES?'más ':'mais ')+(+x).toFixed(2).replace('.',',')};
     function meu(){try{return localStorage.getItem('lf_meugr')||''}catch(_){return ''}}
     function mudo(){try{return localStorage.getItem('lf_gzmudo')==='1'}catch(_){return false}}
-    var MIC='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>';
     var SPK='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
     var MUT='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
     var BK='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
-    /* voz: (S45, opção 2 aprovada) usa os áudios gravados com voz neural quando estiverem no site (media/voz/<pt|es>/lista.json: frase → arquivo);
-       enquanto não houver, usa a voz mais natural do celular */
+    var MOCHI=(function(){
+/* Mochi com "esqueleto": cada parte se mexe sozinha (braços giram no ombro, olhos e boca trocam com transição),
+   respira e flutua o tempo todo, pula em arco com antecipação e amortecimento. */
+var MOCHI_SVG=`<svg viewBox="-6 24 132 110" width="100%" height="100%" fill="none" style="overflow:visible"><defs>
+<radialGradient id="lfmb" cx="38%" cy="28%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#fff7fa"/><stop offset=".85" stop-color="#f6dfea"/><stop offset="1" stop-color="#ecc9da"/></radialGradient>
+<radialGradient id="lfmh" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f3d6e4"/></radialGradient>
+<radialGradient id="lfmsh" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#5a2a46" stop-opacity=".22"/><stop offset="1" stop-color="#5a2a46" stop-opacity="0"/></radialGradient>
+<radialGradient id="lfmir" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#e4ecf6"/><stop offset="1" stop-color="#b9c8da"/></radialGradient>
+<linearGradient id="lfmlz" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#e8f0fa" stop-opacity=".04"/></linearGradient>
+<radialGradient id="lfmbl" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff8fb8" stop-opacity=".75"/><stop offset="1" stop-color="#ff8fb8" stop-opacity="0"/></radialGradient>
+</defs>
+<ellipse class="sombra" cx="60" cy="125" rx="34" ry="5.5" fill="url(#lfmsh)"/>
+<g class="sq"><g class="tilt"><g class="resp">
+ <ellipse cx="44" cy="120" rx="10" ry="5.5" fill="url(#lfmh)" stroke="#ecc9da" stroke-width="1.2"/><ellipse cx="76" cy="120" rx="10" ry="5.5" fill="url(#lfmh)" stroke="#ecc9da" stroke-width="1.2"/>
+ <path d="M60 30 C95 30 106 58 106 84 C106 108 88 122 60 122 C32 122 14 108 14 84 C14 58 25 30 60 30Z" fill="url(#lfmb)" stroke="#ecc9da" stroke-width="1.4"/>
+ <path d="M28 64 C30 48 42 38 58 36" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+ <path d="M17 66 Q60 44 103 66" stroke="#8d3a69" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+ <g class="esp" style="transform-origin:60px 58px"><circle cx="60" cy="47" r="12" fill="url(#lfmir)" stroke="#8d3a69" stroke-width="3"/><circle cx="60" cy="47" r="3.2" fill="#8d3a69"/><path d="M53.5 42 q3 -3 7 -3.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></g>
+ <g class="olhos"><g class="pis"><g class="pup">
+  <ellipse cx="45" cy="83" rx="6.6" ry="7.8" fill="#3a2632"/><ellipse cx="45" cy="86.5" rx="4.6" ry="3" fill="#6b3b58" opacity=".55"/><circle cx="42.6" cy="80" r="2.6" fill="#fff"/><circle cx="47.6" cy="85.6" r="1.1" fill="#fff"/>
+  <ellipse cx="75" cy="83" rx="6.6" ry="7.8" fill="#3a2632"/><ellipse cx="75" cy="86.5" rx="4.6" ry="3" fill="#6b3b58" opacity=".55"/><circle cx="72.6" cy="80" r="2.6" fill="#fff"/><circle cx="77.6" cy="85.6" r="1.1" fill="#fff"/>
+ </g></g></g>
+ <g class="olhosF" opacity="0"><path d="M38 86 q7 -8 14 0 M68 86 q7 -8 14 0" stroke="#3a2632" stroke-width="3.4" fill="none" stroke-linecap="round"/></g>
+ <g class="ocl"><g fill="url(#lfmlz)" stroke="#8d3a69" stroke-width="2.6"><circle cx="45" cy="83" r="13"/><circle cx="75" cy="83" r="13"/></g><path d="M58 81 q2 -2.5 4 0" stroke="#8d3a69" stroke-width="2.6" fill="none"/>
+ <path d="M36 76 l4 -2.5 M66 76 l4 -2.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+ <ellipse cx="31" cy="101" rx="9" ry="5.5" fill="url(#lfmbl)"/><ellipse cx="89" cy="101" rx="9" ry="5.5" fill="url(#lfmbl)"/>
+ <g class="bW"><path d="M54.5 101.5 q2.75 3 5.5 0 q2.75 3 5.5 0" stroke="#8d3a69" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>
+ <g class="bO" opacity="0"><ellipse cx="60" cy="103" rx="4" ry="3.4" fill="#8d3a69"/></g>
+ <g class="bF" opacity="0"><path d="M53 101 q7 8 14 0 Z" fill="#8d3a69"/><path d="M56 104 q4 3 8 0" fill="#ff8fb8"/></g>
+ <g class="brE" style="transform-origin:22px 94px"><path d="M22 94 L0 94" stroke="#e8c3d6" stroke-width="12.5" stroke-linecap="round"/><path d="M22 94 L0 94" stroke="url(#lfmh)" stroke-width="9" stroke-linecap="round"/><circle cx="0" cy="94" r="6.5" fill="url(#lfmh)" stroke="#ecc9da" stroke-width="1.2"/></g>
+ <g class="brD" style="transform-origin:98px 94px">
+  <g class="vara" opacity="0"><path class="haste" d="M118 94 L124 94" stroke="#8d3a69" stroke-width="3.4" stroke-linecap="round"/><path class="haste2" d="M118 94 L124 94" stroke="#c46a9c" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>
+   <g class="luva"><rect x="-6" y="-9" width="7" height="18" rx="2.5" fill="#8d3a69"/><rect x="0" y="-8" width="17" height="16" rx="6" fill="#fff" stroke="#8d3a69" stroke-width="1.8"/><rect x="12" y="-7.5" width="20" height="6.5" rx="3.2" fill="#fff" stroke="#8d3a69" stroke-width="1.8"/><ellipse cx="7" cy="-8.5" rx="4.5" ry="3" fill="#fff" stroke="#8d3a69" stroke-width="1.6"/><path d="M4 1.5 h9 M4 5 h8" stroke="#e7c3d6" stroke-width="1.4" stroke-linecap="round"/></g></g>
+
+  <path d="M98 94 L120 94" stroke="#e8c3d6" stroke-width="12.5" stroke-linecap="round"/><path d="M98 94 L120 94" stroke="url(#lfmh)" stroke-width="9" stroke-linecap="round"/><circle class="mao" cx="120" cy="94" r="6.5" fill="url(#lfmh)" stroke="#ecc9da" stroke-width="1.2"/>
+ </g>
+</g></g></g></svg>`;
+var MOCHI_CSS=`
+.mochi{position:absolute;left:0;top:0;will-change:transform;z-index:6}
+.mochi .sq{transform-origin:60px 124px;transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
+.mochi .tilt{transform-origin:60px 124px;transition:transform .5s cubic-bezier(.34,1.5,.55,1)}
+.mochi .esp{transition:transform .5s cubic-bezier(.3,2.2,.5,1)}
+.mochi .ocl{transition:transform .18s ease}
+.mochi .resp{transform-origin:60px 124px;animation:resp 2.6s ease-in-out infinite}
+@keyframes resp{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-2.5px) scale(1.012,.988)}}
+.mochi .sombra{transform-origin:60px 125px;animation:somb 2.6s ease-in-out infinite}
+@keyframes somb{0%,100%{transform:scale(1)}50%{transform:scale(.94)}}
+.mochi .brE,.mochi .brD{transition:transform .45s cubic-bezier(.34,1.45,.55,1)}
+.mochi .pup{transition:transform .35s ease}
+.mochi .pis{transform-origin:60px 83px}
+.mochi .pis.p{animation:pisca .16s ease-in-out}
+@keyframes pisca{50%{transform:scaleY(.08)}}
+.mochi .olhos,.mochi .olhosF,.mochi .bW,.mochi .bO,.mochi .bF,.mochi .vara{transition:opacity .22s ease}
+`;
+function Mochi(host,x,y){const el=document.createElement('div');el.className='mochi';el.innerHTML=MOCHI_SVG;host.appendChild(el);
+ const q=s=>el.querySelector(s);if(!document.getElementById('lfmcss')){const st=document.createElement('style');st.id='lfmcss';st.textContent=MOCHI_CSS;document.head.appendChild(st)}
+ const M={el,x,y,fal:0,exp:'n'};
+ M.pos=function(nx,ny){M.x=nx;M.y=ny;el.style.transform=`translate(${nx}px,${ny}px)`};M.pos(x,y);
+ M.bracos=function(e,d){if(e!=null)q('.brE').style.transform=`rotate(${e}deg)`;if(d!=null)q('.brD').style.transform=`rotate(${d}deg)`};
+ M.olha=function(dx,dy){q('.pup').style.transform=`translate(${(dx||0)*2.4}px,${(dy||0)*1.6}px)`};
+ M.cara=function(e){M.exp=e;const f=e==='f';q('.olhos').style.opacity=f?0:1;q('.olhosF').style.opacity=f?1:0;q('.bF').style.opacity=f?1:0;q('.bW').style.opacity=(f||M.fal)?0:1};
+ M.vara=function(on){q('.vara').style.opacity=on?1:0;if(!on)M.estica(0,0)};
+ /* ponteiro telescópico: estica com 3 "clics" (degraus com mola) */
+ M.len=6;M.estica=function(L,ms){const v=q('.vara'),h=q('.haste'),h2=q('.haste2'),g=q('.luva');const ap=x=>{M.len=x;h.setAttribute('d',`M118 94 L${118+x} 94`);h2.setAttribute('d',`M120 93.2 L${116+x} 93.2`);g.setAttribute('transform',`translate(${118+x} 94)`)};
+  if(!ms){ap(L);return}const a0=M.len,t0=performance.now(),st=3;const f=n=>{let t=Math.min(1,(n-t0)/ms);const k=Math.floor(t*st)/st,fr=(t*st)%1,e=k+(1/st)*(1-Math.pow(1-Math.min(1,fr*1.6),3))*(t<1?1:0)+(t>=1?1/st:0);ap(a0+(L-a0)*Math.min(1,t>=1?1:e));if(t<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+ M.toca=function(){const g=q('.luva');let k=0;const tik=()=>{if(k>=4)return;const base=`translate(${118+M.len} 94)`;g.setAttribute('transform',base+(k%2?'':' translate(3 3)'));k++;setTimeout(tik,110)};tik()};
+ M.inclina=function(d){q('.tilt').style.transform=`rotate(${d||0}deg)`};
+ M.espelho=function(){const e=q('.esp');e.style.transform='rotate(-14deg)';setTimeout(()=>e.style.transform='rotate(9deg)',120);setTimeout(()=>e.style.transform='',260)};
+ M.ajustaOculos=function(volta){M.bracos(154,null);setTimeout(()=>{q('.ocl').style.transform='translateY(-2px)';setTimeout(()=>q('.ocl').style.transform='',200)},380);setTimeout(()=>M.bracos(volta==null?-35:volta,null),700)};
+ M.acena=function(n){const w=[-70,-25];for(let i=0;i<(n||4);i++)setTimeout(()=>M.bracos(null,w[i%2]),i*230);setTimeout(()=>M.bracos(null,40),(n||4)*230+60)};
+ M.sim=function(){M.inclina(6);setTimeout(()=>M.inclina(-3),180);setTimeout(()=>M.inclina(0),360);M.espelho()};
+ M.nao=function(){M.inclina(-10);M.olha(-1,-.6);setTimeout(()=>{M.inclina(0);M.olha(0,0)},1100)};
+ /* vida própria: quando está esperando, faz uma coisa diferente de vez em quando */
+ M.ocioso=false;let ot=0;const IDLE=[()=>{M.olha(-1,0);setTimeout(()=>M.olha(1,0),500);setTimeout(()=>M.olha(0,0),1000)},()=>{M.pisca();setTimeout(()=>M.pisca(),230)},()=>{M.inclina(8);setTimeout(()=>M.inclina(0),900)},()=>M.ajustaOculos(),
+   ()=>{M.amassa(1.05,.95);setTimeout(()=>M.amassa(.97,1.04),160);setTimeout(()=>M.amassa(1,1),320);M.espelho()},()=>{M.olha(0,1);setTimeout(()=>M.olha(0,0),700)}];
+ let ult=-1;const vida=()=>{clearTimeout(ot);if(!el.isConnected&&M._v)return;M._v=1;ot=setTimeout(()=>{if(!el.isConnected)return;if(M.ocioso&&!M.fal){let i;do{i=Math.floor(Math.random()*IDLE.length)}while(i===ult);ult=i;IDLE[i]()}vida()},2200+Math.random()*1800)};vida();
+ /* olha para onde a pessoa toca */
+ M.olhaPara=function(x,y){const r=el.getBoundingClientRect(),cx=r.left+r.width*.45,cy=r.top+r.height*.5,dx=x-cx,dy=y-cy,d=Math.hypot(dx,dy)||1;M.olha(dx/d,dy/d);clearTimeout(M._ol);M._ol=setTimeout(()=>M.olha(0,0),900)};
+ M.pisca=function(){const p=q('.pis');p.classList.remove('p');void p.getBBox;requestAnimationFrame(()=>p.classList.add('p'))};
+ const piv=setInterval(()=>{if(!el.isConnected){clearInterval(piv);return}if(M.exp!=='f')M.pisca()},3200+Math.random()*1200);
+ /* fala: a boca abre e fecha num ritmo de sílabas */
+ let ft=0;M.fala=function(ms){M.fal=1;clearTimeout(ft);const bO=q('.bO'),bW=q('.bW');let k=0;const tik=()=>{if(!M.fal)return;const ab=(k++%3)!==2;bO.style.opacity=ab?1:0;bW.style.opacity=ab||M.exp==='f'?0:1;if(M.exp==='f')bO.style.opacity=0;ft=setTimeout(tik,110+Math.random()*90)};tik();
+  setTimeout(()=>{M.fal=0;bO.style.opacity=0;if(M.exp!=='f')bW.style.opacity=1},ms)};
+ M.amassa=function(sx,sy){q('.sq').style.transform=`scale(${sx},${sy})`};
+ /* pulo em arco: antecipa (agacha), sobe esticado, aterrissa amassando e assenta */
+ M.pula=function(nx,ny,dur,alt,fim){dur=dur||700;alt=alt==null?40:alt;const x0=M.x,y0=M.y;M.amassa(1.12,.86);
+  setTimeout(()=>{M.amassa(.9,1.12);const t0=performance.now();const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+   const f=n=>{let t=Math.min(1,(n-t0)/dur),e=ease(t);M.pos(x0+(nx-x0)*e,y0+(ny-y0)*e-Math.sin(Math.PI*t)*alt);if(t>.45&&t<.6)M.amassa(1,1);
+    if(t<1)requestAnimationFrame(f);else{M.amassa(1.14,.84);setTimeout(()=>M.amassa(.97,1.04),140);setTimeout(()=>M.amassa(1,1),280);fim&&fim()}};requestAnimationFrame(f)},150)};
+ M.desliza=function(nx,ny,dur){const x0=M.x,y0=M.y,t0=performance.now();dur=dur||600;const f=n=>{let t=Math.min(1,(n-t0)/dur),e=1-Math.pow(1-t,3);M.pos(x0+(nx-x0)*e,y0+(ny-y0)*e);if(t<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+ M.mao=function(){const r=q('.mao').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]};
+ M.mao2=function(){const r=q('.luva rect:nth-child(3)').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]};
+ return M}
+
+    return Mochi})();
+
+    /* ---------- voz (áudios gravados quando houver; senão a voz mais natural do celular) ---------- */
     var VZ={m:null,a:null};try{fetch('/media/voz/'+(ES?'es':'pt')+'/lista.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){VZ.m=j}).catch(function(){})}catch(_){}
-    function falaArq(t){if(!VZ.m)return false;var ps=t.split(/(?<=[.!?])\s+/).map(function(x){return x.trim()}).filter(Boolean),fs=[];for(var i=0;i<ps.length;i++){var f=VZ.m[ps[i]];if(!f)return false;fs.push(f)}
+    function falaArq(t){if(!VZ.m)return false;var ps=t.split(/(?<=[.!?…])\s+/).map(function(x){return x.trim()}).filter(Boolean),fs=[];for(var i=0;i<ps.length;i++){var f=VZ.m[ps[i]];if(!f)return false;fs.push(f)}
       var k=0,toca=function(){if(k>=fs.length||!Z.el)return;var a=VZ.a=new Audio('/media/voz/'+(ES?'es':'pt')+'/'+fs[k++]);a.onended=toca;a.play().catch(function(){})};if(VZ.a)try{VZ.a.pause()}catch(_){}toca();return true}
-    function fala(t){var c=Z.el&&Z.el.querySelector('#gzct');if(c)c.textContent=t;if(VZ.a)try{VZ.a.pause()}catch(_){}try{speechSynthesis.cancel();if(mudo()||!t)return;if(falaArq(t))return;var u=new SpeechSynthesisUtterance(t.replace(/\+(\d)[.,](\d\d)/g,function(m,a,b){return gfala(a+'.'+b)}));u.lang=ES?'es-ES':'pt-BR';
-      var vs=speechSynthesis.getVoices().filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(ES?'es':'pt')===0}),nota=function(v){return (/natural|neural|online|premium|enhanced|google/i.test(v.name)?4:0)+(!v.localService?2:0)+((ES?/419|PY|AR|MX|US/:/BR/).test(v.lang)?1:0)};vs.sort(function(a,b){return nota(b)-nota(a)});if(vs.length)u.voice=vs[0];u.rate=1;speechSynthesis.speak(u)}catch(_){}}
-    function pr(n){return '<div class="gzpr">'+[0,1,2].map(function(i){return '<i'+(i<n?' class="on"':'')+'></i>'}).join('')+'</div>'}
-    function tela(h,f){if(!Z.el)return;Z.el.querySelector('.gzc').innerHTML=h;var b=Z.el.querySelector('.gzc');if(!RM.matches&&b.animate)b.animate([{opacity:0,translate:'18px 0'},{opacity:1,translate:'0 0'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});if(f)fala(f)}
+    function fala(h){var b=Z.el&&Z.el.querySelector('#gzbal'),t=String(h).replace(/<[^>]+>/g,'');if(b){b.classList.remove('on');setTimeout(function(){if(!Z.el)return;b.innerHTML=h;b.classList.add('on');if(q('#gzjan').hidden)lay()},120)}
+      if(Z.m)Z.m.fala(Math.min(3600,500+t.length*45));Z.ocup=Date.now()+Math.min(7000,900+t.length*60);
+      if(VZ.a)try{VZ.a.pause()}catch(_){}try{speechSynthesis.cancel();if(mudo()||!t)return;if(falaArq(t))return;var u=new SpeechSynthesisUtterance(t.replace(/\+(\d)[.,](\d\d)/g,function(m,a,b){return gfala(a+'.'+b)}));u.lang=ES?'es-ES':'pt-BR';
+        var vs=speechSynthesis.getVoices().filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(ES?'es':'pt')===0}),nota=function(v){return (/natural|neural|online|premium|enhanced|google/i.test(v.name)?4:0)+(!v.localService?2:0)+((ES?/419|PY|AR|MX|US/:/BR/).test(v.lang)?1:0)};vs.sort(function(a,b){return nota(b)-nota(a)});if(vs.length)u.voice=vs[0];u.rate=1;speechSynthesis.speak(u)}catch(_){}}
+    var DIT={};function diz(k,t,forte){var n=Date.now();if(!forte){if(DIT[k]&&n-DIT[k]<10000)return;if(n<(Z.ocup||0))return}DIT[k]=n;fala(t)}
+    /* ---------- quadro: 9 frases, tamanhos fixos ---------- */
+    var LS=[T('Bom dia!'),T('A casa é azul.'),T('O café está pronto.'),T('Ligue para a farmácia.'),T('O ônibus passa às oito.'),T('Leia a receita com calma.'),T('O jornal fala do tempo.'),T('Tome 1 comprimido ao dia.'),T('Agite antes de usar.')];
+    var FS=[22,19,16.5,14.5,12.6,11,9.6,8.4,7.3];
+    /* quem lê até a frase k (sem óculos, a 40 cm) costuma precisar deste grau; e o tamanho de letra equivalente a cada grau */
+    var GK=[3,2.5,2,1.75,1.5,1.25,1,.75,0],GS=[[0,7.3],[.75,8.4],[1,9.6],[1.25,11],[1.5,12.6],[1.75,14.5],[2,16.5],[2.5,19],[3,22],[3.5,25.5],[4,29.5]];
+    function escala(g){if(!g)return 1;for(var i=1;i<GS.length;i++){if(g<=GS[i][0]){var a=GS[i-1],b=GS[i];return (a[1]+(b[1]-a[1])*(g-a[0])/(b[0]-a[0]))/7.3}}return GS[GS.length-1][1]/7.3}
+    function zoom(){var z=parseFloat(document.body.style.zoom)||1;return z}
+    /* ---------- tela ---------- */
     function cam(){if(Z.tm){clearTimeout(Z.tm);Z.tm=0}if(Z.st){Z.st.getTracks().forEach(function(t){t.stop()});Z.st=null}}
-    function fecha(dePop){if(!Z.el)return;cam();clearTimeout(Z.tc);Z.fase='';try{speechSynthesis.cancel()}catch(_){}var e=Z.el;Z.el=null;document.documentElement.classList.remove('gzon');
-      var fim=function(){e.remove()};if(!RM.matches&&e.animate){var a=e.animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});a.onfinish=fim}else fim();
+    var INERT=[];
+    function trava(on){if(on){INERT=[].slice.call(document.body.children).filter(function(e){return e!==Z.el&&!e.matches('.top,script,style')&&!e.hasAttribute('inert')});INERT.forEach(function(e){e.setAttribute('inert','')})}else{INERT.forEach(function(e){e.removeAttribute('inert')});INERT=[]}}
+    function fecha(dePop){if(!Z.el)return;cam();clearTimeout(Z.tc);Z.fase='';try{speechSynthesis.cancel()}catch(_){}if(VZ.a)try{VZ.a.pause()}catch(_){}var e=Z.el;Z.el=null;Z.m=null;removeEventListener('resize',lay);document.documentElement.classList.remove('gzon');trava(false);
+      var fim=function(){e.remove()};if(!RM.matches&&e.animate){var a=e.animate([{transform:'none'},{transform:'translateX(100%)'}],{duration:260,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'});a.onfinish=fim}else fim();
       if(!dePop&&history.state&&history.state.lfo==='gw'){window.__lfGzBack=1;try{history.back()}catch(_){window.__lfGzBack=0}}}
     window.__lfGzFecha=function(){fecha(true)};
     if(window.__lfPop)window.__lfPop.unshift(function(e){if(window.__lfGzBack){window.__lfGzBack=0;e.__lfStop=1;return}if(Z.el){e.__lfStop=1;fecha(true)}});
-    function abre(de){if(Z.el)return;Z.d=0;Z.dd=[];Z.idade=0;Z.longe=false;
+    function abre(de){if(Z.el)return;DIT={};Z.ocup=0;
       de=de||(window.__lfTela?window.__lfTela():T('Voltar'));try{if(!document.documentElement.classList.contains('ppop'))scrollTo({top:0,left:0,behavior:'instant'})}catch(_){}
-      var e=Z.el=document.createElement('div');e.id='gw';e.setAttribute('role','dialog');e.setAttribute('aria-label',T('Ajuda com o grau'));
-      e.innerHTML='<div class="gzw"><button type="button" class="gzbk" data-gz="x">'+BK+'<span>'+esc(de)+'</span></button><div class="gzc"></div></div><div class="gzcc"><span class="gzmi">'+MIC+'</span><span id="gzct"></span><button type="button" class="gzmu" data-gz="mudo" aria-label="'+T('Som')+'">'+(mudo()?MUT:SPK)+'</button></div>';
-      document.body.appendChild(e);document.documentElement.classList.add('gzon');if(!RM.matches&&e.animate)e.animate([{opacity:0},{opacity:1}],{duration:220});
+      var e=Z.el=document.createElement('div');e.id='gw';e.setAttribute('role','dialog');e.setAttribute('aria-label',T('Descubra o seu grau'));
+      var z=zoom();e.style.zoom=z!==1?String(1/z):'';e.style.setProperty('--gz',z);
+      e.innerHTML='<div class="gzhd"><button type="button" class="gzbk" data-gz="x">'+BK+'<span>'+esc(de)+'</span></button><span class="gzdi" id="gzdi" hidden></span><button type="button" class="gzmu" data-gz="mudo" aria-label="'+T('Som')+'">'+(mudo()?MUT:SPK)+'</button></div>'+
+        '<div class="gzstg" id="gzstg"><div class="gzbal" id="gzbal"></div><div class="gzc" id="gzc"></div>'+
+        '<div class="gzjan" id="gzjan" hidden><div class="gzfita" id="gzfita"></div></div><div class="gzfr" id="gzfr"><i id="gztag"></i></div>'+
+        '<div class="gzbt" id="gzbt" hidden><button type="button" class="gzgo" data-gz="sim">'+T('Consigo ler')+'</button><button type="button" class="gzgo o" data-gz="nao">'+T('Não consigo')+'</button></div></div>';
+      document.body.appendChild(e);document.documentElement.classList.add('gzon');trava(true);
+      /* S56: entra já opaca, deslizando da direita (nunca transparente por cima da página) */
+      if(!RM.matches&&e.animate)e.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});
       try{history.pushState(Object.assign({},history.state||{},{lfo:'gw'}),'',location.href)}catch(_){}
-      passo1()}
-    /* 09/11 S47 + S47b + S47c (aprovados): medida de verdade. Mede o ponto mais perto em que a letra fica nítida (sem óculos), 2 vezes
-       (3 se ficarem diferentes). Só vale a distância onde a pessoa PARA: o vai e vem e o movimento rápido são ignorados. Sem desfoque falso.
-       Aviso no começo (não serve para miopia, astigmatismo e multifocal); um toque só ("Começar"); nítido a menos de 25 cm = tela de miopia.
-       O guia de voz reage ao que a pessoa faz (frases curtas, não repete em menos de 10 s, não fala por cima). */
-    var FRASE=function(){return T('Para ler bem de perto, o olho precisa focar. Depois dos 40 anos esse foco vai ficando mais longe, e o óculos de leitura traz ele de volta.')};
-    var DIT={};
-    function diz(k,t,forte){var n=Date.now();if(!forte){if(DIT[k]&&n-DIT[k]<10000)return;if(n<(Z.ocup||0))return}DIT[k]=n;Z.ocup=n+Math.min(7000,900+t.length*60);fala(t)}
+      Z.m=MOCHI($('gzstg'),0,0);Z.m.el.style.opacity=0;addEventListener('resize',lay);intro()}
+    function q(s){return Z.el&&Z.el.querySelector(s)}
+    /* ---------- posições (recalculadas em qualquer tamanho de tela) ---------- */
+    var L={};
+    function lay(){if(!Z.el)return;var s=q('#gzstg'),W=s.clientWidth,H=Math.max(380,Z.el.clientHeight-q('.gzhd').offsetHeight-4);s.style.height=H+'px';
+      var k=W<350?.74:W<400?.86:.95;L.k=k;var me=Z.m&&Z.m.el;if(me){me.style.width=(132*k)+'px';me.style.height=(110*k)+'px'}
+      var teste=!q('#gzjan').hidden,bal=q('#gzbal');s.style.height=teste?H+'px':'';s.style.minHeight=H+'px';
+      if(teste){bal.style.left='10px';bal.style.right=(120*k+8)+'px'}else{bal.style.left=(124*k)+'px';bal.style.right='10px'}
+      var bh=Math.max(64,bal.offsetHeight);L.top=bh+22;q('#gzc').style.paddingTop=(Math.max(104*k,bh+6)+14)+'px';
+      L.wl=Math.round(140*k+6);L.ww=W-L.wl-18;var bt=q('#gzbt'),bth=bt.offsetHeight||124;L.gap=Math.round((H<520?84:104)*k);
+      L.wh=Math.max(150,Math.min(330,H-L.top-bth-L.gap-14));var j=q('#gzjan');j.style.left=L.wl+'px';j.style.top=L.top+'px';j.style.width=L.ww+'px';j.style.height=L.wh+'px';
+      bt.style.top=(L.top+L.wh+L.gap)+'px';
+      var fr=q('#gzfr');fr.style.left=(L.wl-8)+'px';fr.style.top=(L.top-8)+'px';fr.style.width=(L.ww+16)+'px';fr.style.height=(L.wh+16)+'px';
+      L.mid=L.top+L.wh/2;
+      L.Z={ponto:[L.wl+24-10-166*k,L.mid-70*k],z1:[W-118*k-4,L.top-101*k+5],z3:[Math.max(L.wl,W/2-66*k),L.top+L.wh+L.gap-101*k-6],z4:[L.wl+L.ww*.5,L.top-46*k],intro:[2,6]};
+      centra(true)}
+    function vaiA(z,modo,cb){var m=Z.m,p=L.Z[z];if(!m||!p)return;m.el.style.zIndex=z==='z4'?2:6;
+      if(RM.matches||modo==='ja'){m.pos(p[0],p[1]);cb&&cb();return}
+      if(modo==='puff'){teleporta(p,cb);return}if(modo==='rola'){rola(p,cb);return}
+      m.pula(p[0],p[1],700,Math.max(30,Math.abs(p[1]-m.y)*.3),cb)}
+    function puff(cx,cy){var s=q('#gzstg');if(!s)return;for(var i=0;i<12;i++){var p=document.createElement('div');p.className='gzpuff';var r=12+Math.random()*16,a=i/12*Math.PI*2;p.style.cssText='left:'+(cx-r/2)+'px;top:'+(cy-r/2)+'px;width:'+r+'px;height:'+r+'px';s.appendChild(p);
+      (function(p,a){var an=p.animate([{transform:'translate(0,0) scale(.3)',opacity:.95},{transform:'translate('+Math.cos(a)*52+'px,'+Math.sin(a)*42+'px) scale(1.3)',opacity:0}],{duration:700,easing:'cubic-bezier(.2,.8,.3,1)'});an.onfinish=function(){p.remove()}})(p,a)}}
+    function centro(){var m=Z.m;return [m.x+66*L.k,m.y+60*L.k]}
+    function teleporta(p,cb){var m=Z.m,c=centro();puff(c[0],c[1]);m.el.animate([{opacity:1},{opacity:0}],{duration:150,fill:'forwards'});
+      setTimeout(function(){if(!Z.m)return;m.pos(p[0],p[1]);var d=centro();puff(d[0],d[1]);m.el.animate([{opacity:0},{opacity:1}],{duration:200,fill:'forwards'});m.amassa(.7,1.25);setTimeout(function(){m.amassa(1.12,.88)},130);setTimeout(function(){m.amassa(1,1)},280);cb&&cb()},260)}
+    function rola(p,cb){var m=Z.m,t=m.el.querySelector('.tilt'),x0=m.x,y0=m.y,t0=performance.now(),dir=p[0]>x0?1:-1,dur=850;t.style.transition='none';
+      var f=function(n){if(!Z.m)return;var k=Math.min(1,(n-t0)/dur),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;m.pos(x0+(p[0]-x0)*e,y0+(p[1]-y0)*e-Math.sin(Math.PI*k)*14);t.style.transform='rotate('+(dir*360*e)+'deg)';
+        if(k<1)requestAnimationFrame(f);else{t.style.transform='';setTimeout(function(){t.style.transition=''},30);m.amassa(1.12,.88);setTimeout(function(){m.amassa(1,1)},180);cb&&cb()}};requestAnimationFrame(f)}
+    function cantarola(){var s=q('#gzstg'),c=centro();if(!s)return;['♪','♫','♪'].forEach(function(x,i){setTimeout(function(){if(!Z.el)return;var n=document.createElement('div');n.className='gznota';n.textContent=x;n.style.left=(c[0]+10+i*8)+'px';n.style.top=(c[1]-50*L.k)+'px';s.appendChild(n);
+      var an=n.animate([{transform:'translate(0,0)',opacity:0},{transform:'translate(6px,-14px)',opacity:1,offset:.3},{transform:'translate(-4px,-40px)',opacity:0}],{duration:1400,easing:'ease-out'});an.onfinish=function(){n.remove()}},i*350)});Z.m.inclina(6);setTimeout(function(){Z.m&&Z.m.inclina(-6)},400);setTimeout(function(){Z.m&&Z.m.inclina(0)},800)}
+    /* ---------- quadro ---------- */
+    function monta(){var f=q('#gzfita'),z=zoom();f.innerHTML=LS.map(function(t,i){return '<div class="gzl" id="gzl'+i+'"><b aria-hidden="true">✓</b><span>'+esc(t)+'</span></div>'}).join('');lente(0,true)}
+    function lente(g,ja){Z.g=g;var e=escala(g);LS.forEach(function(t,i){var l=q('#gzl'+i);if(l)l.style.fontSize=(FS[i]*e)+'px'});var fr=q('#gzfr'),tg=q('#gztag');
+      if(g){fr.classList.add('on');tg.textContent=gf(g);if(!ja&&tg.animate)tg.animate([{transform:'translateX(-50%) scale(1.35)'},{transform:'translateX(-50%) scale(1)'}],{duration:320,easing:'cubic-bezier(.3,1.8,.5,1)'})}else fr.classList.remove('on');
+      setTimeout(function(){centra()},ja?0:620)}
+    function centra(ja){var f=q('#gzfita'),l=q('#gzl'+Z.at);if(!f||!l)return;if(ja)f.style.transition='none';f.style.top=(L.wh/2-(l.offsetTop+l.offsetHeight/2))+'px';if(ja){void f.offsetTop;f.style.transition=''}
+      for(var i=0;i<LS.length;i++){var x=q('#gzl'+i);if(x)x.classList.toggle('hl',i===Z.at)}}
+    function aponta(){var m=Z.m;if(!m)return;m.vara(1);m.bracos(-35,0);m.estica(10,RM.matches?0:350);setTimeout(function(){Z.m&&Z.m.toca()},420)}
+    function puxa(cb){var m=Z.m;m.vara(0);m.bracos(-120,-40);m.amassa(.94,1.06);setTimeout(function(){if(!Z.m)return;m.amassa(1.05,.95);Z.at++;centra()},180);setTimeout(function(){if(!Z.m)return;m.amassa(1,1);m.bracos(-35,40);cb&&cb()},520)}
+    /* ---------- passos ---------- */
+    function modo(teste){q('#gzc').hidden=teste;q('#gzjan').hidden=!teste;q('#gzbt').hidden=!teste;q('#gzbal').classList.toggle('t',!!teste);if(!teste)q('#gzfr').classList.remove('on');lay()}
+    function conteudo(h){var c=q('#gzc');c.innerHTML=h;if(!RM.matches&&c.animate)c.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'})}
+    function entra(){var m=Z.m;vaiA('intro','ja');m.el.style.opacity=1;var c=centro();if(!RM.matches){puff(c[0],c[1]);m.inclina(-25);m.amassa(.55,1.35);setTimeout(function(){m.inclina(8);m.amassa(1.18,.84)},140);setTimeout(function(){m.inclina(0);m.amassa(1,1)},320)}m.cara('f');m.espelho()}
+    function intro(){Z.fase='intro';cam();modo(false);
+      conteudo('<div class="gzeb">'+T('DESCUBRA O SEU GRAU')+'</div><h2>'+T('Descubra o grau do seu óculos de leitura em 1 minuto')+'</h2>'+
+        '<div class="gzav"><p>'+T('Serve só para ler de perto.')+'</p><p><b>'+T('Não funciona')+'</b> '+T('para miopia, astigmatismo ou multifocal — nesses casos o certo é a receita do oftalmologista.')+'</p><p class="mu">'+T('Não substitui a consulta.')+'</p></div>'+
+        '<button type="button" class="gzgo" data-gz="comeca">'+T('Começar')+'</button>');
+      setTimeout(function(){if(!Z.m)return;entra();Z.m.acena(6);fala(T('Oi! Eu sou o Mochi. Este teste é para óculos de leitura. Se você tem miopia, astigmatismo ou usa multifocal, ele não vai servir para você.'))},360)}
+    function prep(){Z.fase='prep';medir();var m=Z.m;m.cara('n');
+      conteudo('<div class="gzeb">'+T('PREPARANDO')+'</div><h2>'+T('Tire os óculos e segure o celular a 40 cm')+'</h2><p class="gzp">'+T('Um palmo e meio do rosto. Lente de contato pode ficar.')+'</p>');
+      fala(T('Faz como eu: tire os óculos…'));m.bracos(154,40);var o=m.el.querySelector('.ocl');
+      setTimeout(function(){if(!Z.m)return;o.style.transition='transform .45s cubic-bezier(.3,1.4,.5,1),opacity .3s';o.style.transform='translateY(-26px) rotate(-8deg)';o.style.opacity=.15},400);
+      setTimeout(function(){if(!Z.m)return;o.style.transform='';o.style.opacity=1;m.bracos(-35,40);m.pisca();fala(T('…e segure o celular a 40 centímetros, um palmo e meio.'))},1700);
+      Z.tc=setTimeout(teste,4200)}
+    function teste(){if(!Z.el)return;Z.fase='teste';Z.at=0;Z.g=0;Z.falhou={};Z.okLente=0;Z.conf=0;modo(true);monta();
+      vaiA('ponto','pula',function(){aponta();pergunta(true)})}
+    function pergunta(primeira){var m=Z.m;if(!m)return;m.ocioso=true;m.olha(1,.2);var t=Z.at;
+      if(primeira)fala(T('Consegue ler a frase aqui na minha frente, sem esforço?'));
+      else if(Z.g&&t===LS.length-1)fala(T('Com a lente')+' '+gf(Z.g)+'. '+T('Consegue ler a última frase?'));
+      else if(t>=6)diz('miuda',T('E esta, mais miudinha?'),true);else diz('e'+t,T('E esta?'),true)}
+    /* às vezes, entre uma frase e outra, ele dá um passeio (nunca enquanto espera o toque) */
+    function passeio(cb){if(RM.matches||Math.random()<.55){cb();return}var zs=L.gap>=100*L.k?['z1','z3','z4']:['z1','z4'],z=zs[Math.floor(Math.random()*zs.length)],m=Z.m;m.vara(0);
+      vaiA(z,z==='z4'?'puff':z==='z3'?'rola':'pula',function(){if(!Z.m)return;if(z==='z3')cantarola();else if(z==='z4')m.olha(-1,.8);else{m.inclina(8);setTimeout(function(){Z.m&&Z.m.inclina(0)},700)}
+        setTimeout(function(){if(!Z.m)return;m.el.style.zIndex=6;m.olha(-1,.4);vaiA('ponto','pula',cb)},1300)})}
+    function responde(sim){var m=Z.m;if(!m||Z.fase!=='teste'||Z.ocupado)return;Z.ocupado=true;m.ocioso=false;var t=Z.at,ult=t===LS.length-1;setTimeout(function(){Z.ocupado=false},700);
+      if(sim){var l=q('#gzl'+t);if(l)l.classList.add('ok');m.cara('f');m.sim();setTimeout(function(){Z.m&&Z.m.cara('n')},500);
+        if(ult){if(!Z.g){semNecessidade();return}
+          /* leu a bula com esta lente: confere uma mais fraca se ainda não testou */
+          var mf=Math.round((Z.g-.25)*4)/4;if(mf>=.75&&!Z.falhou[mf]&&!Z.conf){Z.conf=1;Z.okLente=Z.g;setTimeout(function(){if(!Z.m)return;fala(T('Isso! Agora confiro uma um pouco mais fraca, como o médico faz.'));resetLinhas();lente(mf);setTimeout(function(){if(!Z.m)return;aponta();pergunta()},900)},500);return}
+          setTimeout(function(){resultado(Z.g)},600);return}
+        setTimeout(function(){puxa(function(){passeio(function(){aponta();pergunta()})})},300);return}
+      /* não consegue */
+      m.nao();if(Z.conf){setTimeout(function(){resultado(Z.okLente)},900);return}
+      if(Z.g)Z.falhou[Z.g]=1;
+      var g;if(!Z.g){var k=t-1;g=k>=0?Math.max(.75,GK[k]-.5):3}else g=Math.round((Z.g+.25)*4)/4;
+      if(g>4){setTimeout(consulte,900);return}
+      fala(Z.g?T('Vou trocar por uma mais forte…'):T('Hmm… tudo bem! É aqui que a lente entra.'));m.vara(0);
+      setTimeout(function(){buscaLente(g,function(){aponta();pergunta()})},Z.g?600:1300)}
+    function resetLinhas(){for(var i=0;i<LS.length;i++){var l=q('#gzl'+i);if(l)l.classList.remove('ok')}Z.at=LS.length-1;centra()}
+    function buscaLente(g,cb){var m=Z.m;if(RM.matches||Z.g){lente(g);m.espelho();setTimeout(cb,700);return}
+      var fr=q('#gzfr'),W=q('#gzstg').clientWidth;rola([W+20,m.y],function(){if(!Z.m)return;fr.classList.add('voa');var sg=true,loop=function(){if(!Z.m||!sg)return;var h=m.mao(),s=q('#gzstg').getBoundingClientRect(),z=zoom()*(1/zoom());fr.style.transform='translate('+(h[0]-s.left-(L.wl-8)+6)+'px,'+(h[1]-s.top-(L.top-8)-40)+'px) scale(.28) rotate(-6deg)';requestAnimationFrame(loop)};loop();
+        m.bracos(-35,-30);rola([L.Z.ponto[0]+10,L.Z.ponto[1]-70*L.k],function(){sg=false;if(!Z.m)return;m.bracos(-35,10);fr.classList.remove('voa');fr.style.transform='';lente(g);m.cara('f');m.espelho();m.amassa(1.08,.92);setTimeout(function(){if(!Z.m)return;m.amassa(1,1);m.cara('n');vaiA('ponto','pula',cb)},700)})})}
+    /* ---------- resultados ---------- */
+    function fimTeste(){cam();Z.fase='res';var dc=q('#gzdi');if(dc)dc.hidden=true;var m=Z.m;m.vara(0);modo(false);vaiA('intro',RM.matches?'ja':'pula')}
     function avisos(){return '<div class="gzav"><p><b>'+T('Serve para:')+'</b> '+T('ler de perto — livro, celular, cardápio, costura.')+'</p><p><b>'+T('Não serve para:')+'</b> '+T('ver de longe ou dirigir.')+'</p>'+
       '<p><b>'+T('Miopia:')+'</b> '+T('óculos de leitura não corrigem. Se lê bem de perto sem óculos, não precisa deles.')+'</p><p><b>'+T('Astigmatismo:')+'</b> '+T('o óculos de leitura pronto não corrige. Pode até ajudar, mas o ideal é um óculos feito com a sua receita.')+'</p>'+
       '<p><b>'+T('Multifocal:')+'</b> '+T('é feito sob medida numa ótica, com receita. Este teste não consegue medir.')+'</p><p class="mu"><b>'+T('Não substitui o oftalmologista.')+'</b> '+T('Procure um se tiver dor de cabeça ao ler, visão dupla, um olho bem pior que o outro ou se a visão mudou de repente.')+'</p></div>'}
-    function passo1(){cam();DIT={};Z.ocup=0;Z.fase='intro';
-      tela('<div class="gzeb">'+T('DESCUBRA O SEU GRAU')+'</div><h2>'+T('Descubra o grau do seu óculos de leitura em 1 minuto')+'</h2>'+
-        '<div class="gzav"><p>'+T('Serve só para ler de perto.')+'</p><p><b>'+T('Não funciona')+'</b> '+T('para miopia, astigmatismo ou multifocal — nesses casos o certo é a receita do oftalmologista.')+'</p><p class="mu">'+T('Não substitui a consulta.')+'</p></div>'+
-        '<button type="button" class="gzgo" data-gz="comeca">'+T('Começar')+'</button>',
-        T('Este teste é para óculos de leitura. Se você tem miopia, astigmatismo ou usa multifocal, ele não vai servir para você.'))}
-    function prep(){cam();Z.fase='prep';Z.hist=[];Z.b0=null;Z.ms=[];Z.k=1;Z.semcam=false;Z.rosto=0;Z.sr=0;Z.d=0;Z.dir=0;Z.rev=[];
-      tela('<div class="gzeb">'+T('PREPARANDO')+'</div><h2>'+T('Se usa óculos, tire agora')+'</h2><p class="gzp">'+T('Lente de contato pode ficar. Depois, segure o celular bem perto do rosto, a um palmo.')+'</p>'+
-        '<div class="gzrg" id="gzrg" style="--p:0"><b id="gzrn">5</b></div><p class="gzp" style="text-align:center">'+T('Começa sozinho quando encontrar o seu rosto.')+'</p><div class="gzst" id="gzst"><i></i><span>'+T('Procurando o seu rosto…')+'</span></div>',
-        T('Se usa óculos, tire agora. Lente pode ficar. Segure o celular bem perto do rosto.'));
-      Z.ocup=Date.now()+5000;Z.t0=Date.now();medir();conta()}
-    function conta(){if(!Z.el||Z.fase!=='prep')return;var s=(Date.now()-Z.t0)/1000,r=Z.el.querySelector('#gzrg'),n=Z.el.querySelector('#gzrn'),f=Math.max(0,Math.ceil(5-s));
-      if(n)n.textContent=f?String(f):'✓';if(r)r.style.setProperty('--p',Math.min(1,s/5).toFixed(3));
-      if(s>=5&&(Z.semcam||(Z.rosto&&Date.now()-Z.rosto<800))){if(Z.semcam)manual();else mede(1);return}
-      if(s>=10&&!Z.rosto&&!Z.semcam)diz('rosto',T('Não estou vendo o seu rosto. Deixe a câmera de cima livre e olhe para a tela.'));
-      Z.tc=setTimeout(conta,150)}
-    function semCam(){Z.semcam=true;if(Z.fase==='med'||Z.fase==='anal')manual()}
-    function medir(){Z.semcam=false;
-      if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){semCam();return}
-      var v=Z.v=document.createElement('video');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');
-      navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}}).then(function(s){if(!Z.el){s.getTracks().forEach(function(t){t.stop()});return}Z.st=s;v.srcObject=s;var p=v.play();if(p&&p.catch)p.catch(function(){});
-        (window.__lfFakeFa?Promise.resolve(window.__lfFakeFa):faLoad()).then(function(fa){Z.fa=fa;laco()},function(){semCam()})},function(){semCam()})}
-    var med=function(a){var s=a.slice().sort(function(x,y){return x-y});return s[Math.floor(s.length/2)]};
-    function laco(){if(!Z.el||!Z.st)return;var v=Z.v,fa=Z.fa;if(!v.videoWidth){Z.tm=setTimeout(laco,200);return}
-      var W=480,H=Math.round(W*v.videoHeight/v.videoWidth),cv=Z.cv||(Z.cv=document.createElement('canvas'));cv.width=W;cv.height=H;cv.getContext('2d').drawImage(v,0,0,W,H);
-      fa.detectSingleFace(cv,new fa.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.4})).withFaceLandmarks(!FA.full).then(function(r){if(!Z.el||!Z.st)return;var n=Date.now();
-        if(r&&r.landmarks){var P=r.landmarks.positions,dd=function(a,b){return Math.hypot(P[a].x-P[b].x,P[a].y-P[b].y)},c=function(a,b){var x=0,y=0;for(var i=a;i<=b;i++){x+=P[i].x;y+=P[i].y}return [x/(b-a+1),y/(b-a+1)]},e1=c(36,41),e2=c(42,47),ipd=Math.hypot(e1[0]-e2[0],e1[1]-e2[1]);
-          var f=(W/2)/Math.tan(31*Math.PI/180),d=f*6.3/ipd;
-          var ear=((dd(37,41)+dd(38,40))/(2*dd(36,39))+(dd(43,47)+dd(44,46))/(2*dd(42,45)))/2,brow=((P[19].y-P[37].y)*-1+(P[24].y-P[44].y)*-1)/2/ipd;
-          Z.rosto=n;Z.sr=0;Z.hist.push({t:n,d:d,ear:ear,brow:brow});Z.hist=Z.hist.filter(function(h){return n-h.t<4000})}
-        else if(!Z.sr)Z.sr=n;
-        try{analisa()}catch(_){}
-        Z.tm=setTimeout(laco,120)},function(){Z.tm=setTimeout(laco,400)})}
-    /* o que a pessoa está fazendo com o celular */
-    function leitura(){var n=Date.now(),H=Z.hist,o={d:Z.d,v:0,par:false,dpar:0,vv:false,aperta:false,rosto:!!Z.rosto&&n-Z.rosto<900};if(!H.length)return o;
-      var u=H[H.length-1];o.d=Z.d=med(H.slice(-3).map(function(h){return h.d}));
-      var a=null;for(var i=H.length-1;i>=0;i--){if(u.t-H[i].t>=450){a=H[i];break}}o.v=a?(o.d-a.d)/((u.t-a.t)/1000):0;
-      if(Math.abs(o.v)>6){var s=o.v>0?1:-1;if(Z.dir&&s!==Z.dir)Z.rev.push(n);Z.dir=s}Z.rev=Z.rev.filter(function(t){return n-t<3000});o.vv=Z.rev.length>=2;
-      var j=H.filter(function(h){return n-h.t<=1500}),ds=j.map(function(h){return h.d});o.par=o.rosto&&j.length>=5&&n-j[0].t>1100&&(Math.max.apply(0,ds)-Math.min.apply(0,ds))<3.5;o.dpar=o.par?med(ds):0;
-      if(!Z.b0&&H.length>=8)Z.b0={ear:med(H.map(function(h){return h.ear})),brow:med(H.map(function(h){return h.brow}))};
-      if(Z.b0){var k=H.slice(-5);o.aperta=med(k.map(function(h){return h.ear}))<Z.b0.ear*.82||med(k.map(function(h){return h.brow}))<Z.b0.brow*.88}
-      return o}
-    function tags(L){var sg=Z.el&&Z.el.querySelector('#gzsig');if(!sg)return;var h=L.map(function(x){return '<span'+(x[1]?' class="w"':'')+'>'+esc(x[0])+'</span>'}).join('');if(sg._h!==h){sg.innerHTML=h;sg._h=h}}
-    function barra(d){var b=Z.el&&Z.el.querySelector('#gzbi'),c=Z.el&&Z.el.querySelector('#gzcmv');if(b)b.style.width=Math.max(3,Math.min(100,(d-15)/(80-15)*100)).toFixed(1)+'%';if(c)c.textContent=d?Math.round(d)+' cm':'—'}
-    function analisa(){if(!Z.el)return;var n=Date.now(),dt=n-(Z.la||n),o=leitura();Z.la=n;
-      if(Z.fase==='prep'){var s=Z.el.querySelector('#gzst');if(s&&o.rosto){s.classList.add('ok');s.querySelector('span').textContent=T('Rosto encontrado')+' · '+Math.round(o.d)+' cm'}return}
-      if(Z.fase!=='med'&&Z.fase!=='anal')return;
-      if(!o.rosto){if(Z.fase==='anal')Z.ta+=dt;if(Z.sr&&n-Z.sr>2000){tags([[T('Não estou vendo o seu rosto'),1]]);diz('rosto',T('Não estou vendo o seu rosto. Deixe a câmera de cima livre.'))}return}
-      barra(o.d);
-      if(Z.fase==='anal'){Z.am.push(o.d);var p=Math.min(1,(n-Z.ta)/2000),r=Z.el.querySelector('#gzrg'),q=Z.el.querySelector('#gzrn');
-        if(Math.abs(o.d-Z.da)>6&&!o.par){mede(Z.k,true);diz('cont',T('Pode continuar afastando até ficar nítido.'),true);return}
-        if(r)r.style.setProperty('--p',p.toFixed(3));if(q)q.textContent=String(Math.max(1,Math.ceil(2-(n-Z.ta)/1000)));
-        var ck=Z.el.querySelector('#gzck');if(ck){var h='<div class="ok"><b>✓</b>'+T('Distância firme')+' · '+Math.round(o.d)+' cm</div>'+(o.aperta?'<div class="w"><b>!</b>'+T('Tente relaxar os olhos')+'</div>':'<div class="ok"><b>✓</b>'+T('Olhos relaxados')+'</div>');if(ck._h!==h){ck.innerHTML=h;ck._h=h}}
-        if(p>=1)registra(med(Z.am));return}
-      /* medindo */
-      if(Z.sub==='perto'){var lim=Z.k>1&&Z.ms.length?Math.min(35,Math.max(22,Z.ms[Z.ms.length-1]-10)):35;
-        if(o.d<=lim){Z.sub='afasta';Z.dmin=o.d;Z.pd=0;var h2=Z.el.querySelector('h2');if(h2)h2.textContent=T('Afaste devagar até as letras ficarem nítidas');diz('afasta',T('Isso. Agora afaste devagar. Quando as letras ficarem nítidas, toque em “Ficou nítido”.'),true)}
-        else if(n-Z.ts>2500)diz('aprox',Z.k>1?T('Aproxime o celular do rosto primeiro.'):T('Aproxime o celular do rosto, a um palmo.'));
-        tags([[T('Aproxime do rosto')]]);return}
-      Z.dmin=Math.min(Z.dmin,o.d);var L=[];
-      if(o.vv){Z.uvv=n;L.push([T('Vai e vem percebido — esperando parar'),1]);diz('vaivem',T('Sem pressa. Esse vai e vem é normal. Pare onde ficou mais fácil de ler.'))}
-      else if(o.v>15){L.push([T('Mais devagar'),1]);diz('rapido',T('Um pouquinho mais devagar.'))}
-      else if(o.v>1.5&&o.v<=7){if(!Z.dv0)Z.dv0=n;if(!Z.devagar&&n-Z.dv0>1000){Z.devagar=true;diz('devagar',T('Isso, devagar…'))}L.push([T('Afastando devagar — ótimo')])}
-      else Z.dv0=0;
-      if(o.aperta){L.push([T('Olhos apertados'),1]);diz('olhos',T('Tente não apertar os olhos. Deixe o rosto relaxado e a letra aparecer sozinha.'))}
-      tags(L);
-      if(o.par){if(!Z.pd)Z.pd=n;
-        if(Z.espera){analisar(o.dpar);return}
-        /* no fim do braço: pode ser nítido ou "não dá mais"; pergunta e, sem resposta, começa forte */
-        if(o.dpar>=62){if(n-Z.pd>3000)diz('braco1',T('Ficou nítido aí? Se ficou, toque em “Ficou nítido”.'));if(n-Z.pd>8000){longe(true);return}return}
-        if(n-Z.pd>2500&&o.dpar>=Z.dmin+8&&n-(Z.uvv||0)>1500&&!o.aperta){analisar(o.dpar);return}
-        if(n-Z.pd>8000)diz('toque',T('Se as letras já estão nítidas, é só tocar em “Ficou nítido”.'))}
-      else Z.pd=0;
-      if(Z.espera&&n-Z.espera>3000)analisar(o.d)}
-    function cab(k){var t=Math.max(2,Z.ms.length+1,k);return '<div class="gzeb">'+T('MEDIDA')+' '+k+' '+T('DE')+' '+t+'</div>'}
-    function mede(k,volta){Z.fase='med';Z.k=k;Z.sub=volta?'afasta':'perto';Z.ts=Date.now();Z.devagar=volta?true:false;Z.dv0=0;Z.pd=0;Z.espera=0;Z.dmin=volta?Z.d:1e9;Z.rev=[];Z.dir=0;
-      if(!volta&&k===1&&Z.d&&Z.d<=35){Z.sub='afasta';Z.dmin=Z.d}
-      tela(cab(k)+'<h2>'+(Z.sub==='perto'?T('Aproxime o celular do rosto'):T('Afaste devagar até as letras ficarem nítidas'))+'</h2>'+
-        '<div class="gzbx"><div class="gztx pq">'+esc(FRASE())+'</div></div>'+
-        '<div class="gzbar"><i id="gzbi"></i></div><div class="gzcm"><span>15 cm</span><b id="gzcmv">—</b><span>80 cm</span></div><div class="gzsig" id="gzsig"></div>'+
-        '<button type="button" class="gzgo" data-gz="nitido">'+T('Ficou nítido')+'</button><button type="button" class="gzgo o gzsm" data-gz="longe">'+T('Mesmo longe não consigo ler')+'</button>');
-      if(volta)return;
-      if(k===1){if(Z.sub==='afasta')diz('afasta',T('Agora afaste o celular devagar. Quando as letras ficarem nítidas, toque em “Ficou nítido”.'),true);else diz('aprox',T('Aproxime o celular do rosto, a um palmo.'),true)}
-      else if(k===2)diz('m2',T('Agora mais uma vez, para ter certeza. Aproxime o celular do rosto e afaste de novo até ficar nítido.'),true);
-      else diz('m3',T('As duas medidas ficaram diferentes. Vamos fazer mais uma: aproxime e afaste de novo.'),true)}
-    function analisar(d){Z.fase='anal';Z.ta=Date.now();Z.da=d||Z.d;Z.am=[];Z.espera=0;
-      tela('<div class="gzeb">'+T('ANALISANDO')+'</div><h2>'+T('Segure parado onde está')+'</h2><div class="gzrg" id="gzrg" style="--p:0"><b id="gzrn">2</b><small>'+T('segundos')+'</small></div><div class="gzck" id="gzck"></div>'+
-        (Z.ms.length?'':'<p class="gzp" style="text-align:center;margin-top:12px">'+T('Depois, mais uma vez para confirmar.')+'</p>'),'');
-      diz('segura',T('Segure parado…'),true)}
-    function registra(d){Z.ms.push(d);
-      if(d<25){miopia(d);return}
-      if(Z.ms.length<2){mede(2);return}
-      var gs=Z.ms.map(grauDe),best=null;for(var i=0;i<gs.length;i++)for(var j=i+1;j<gs.length;j++){var z=Math.abs(gs[i]-gs[j]);if(!best||z<best.z-1e-9)best={z:z,i:i,j:j}}
-      if(best.z<=.5+1e-9){var G=Math.floor(((gs[best.i]+gs[best.j])/2)*4+1e-9)/4;resultado(Math.max(.25,G),[Z.ms[best.i],Z.ms[best.j]]);return}
-      if(Z.ms.length<3){mede(3);return}
-      instavel()}
-    function grauDe(dcm){/* ponto próximo: o olho foca 1/d; para ler a 40 cm com folga, guarda metade disso */var A=100/Math.max(15,dcm),g=2.5-A/2;g=Math.round(g*4)/4;return Math.max(.25,Math.min(4,g))}
-    function resultado(G,ds,aprox,man,voz){cam();Z.fase='res';Z.G=G;Z.g=G;Z.man=false;var lo=gf(Math.max(.25,G-.25)),hi=gf(Math.min(4,G+.25));
-      var por=aprox?T('Mesmo com o braço esticado ficou difícil. Comece com este grau e, se ainda estiver fraco, prove um mais forte.'):man?T('Pela distância que você escolheu.'):T('Medido')+' '+ds.length+' '+T('vezes')+': '+ds.map(function(x){return Math.round(x)}).join(T(' e '))+' cm';
-      tela('<div class="gzeb">'+T('SEU GRAU PARA COMEÇAR')+'</div><div class="gzrs"><div class="gzres">'+gf(G)+'</div><p class="gzp">'+por+'<br>'+T('Faixa provável:')+' '+lo+' '+T('a')+' '+hi+'</p></div>'+
+    function confete(){if(RM.matches)return;var s=q('#gzstg'),C=['#8d3a69','#f3d6e4','#f2b24c','#7fc4a4'];for(var i=0;i<40;i++){var c=document.createElement('div');c.className='gzcf';c.style.left=(30+Math.random()*(s.clientWidth-60))+'px';c.style.top='120px';c.style.background=C[i%4];s.appendChild(c);
+      (function(c){var an=c.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:'translate('+((Math.random()-.5)*170)+'px,'+(260+Math.random()*220)+'px) rotate('+(Math.random()*720)+'deg)',opacity:0}],{duration:1800+Math.random()*900,easing:'cubic-bezier(.2,.6,.4,1)'});an.onfinish=function(){c.remove()}})(c)}}
+    function resultado(G){fimTeste();Z.G=G;Z.g=G;var m=Z.m,lo=gf(Math.max(.75,G-.25)),hi=gf(Math.min(4,G+.25));
+      conteudo('<div class="gzeb">'+T('SEU GRAU PARA COMEÇAR')+'</div><div class="gzrs"><div class="gzres">'+gf(G)+'</div><p class="gzp">'+T('Com a lente')+' '+gf(G)+' '+T('você leu até a última frase.')+'<br>'+T('Faixa provável:')+' '+lo+' '+T('a')+' '+hi+'</p></div>'+
         '<p class="gzp" style="text-align:center;margin-top:14px">'+T('Quer escolher outro?')+'</p>'+
         '<div class="gzaj"><button type="button" class="gzpm" data-gz="menos" aria-label="'+T('Menos grau')+'">−</button><div><b id="gzgv">'+gf(G)+'</b><small id="gzgl">'+T('sugerido')+'</small></div><button type="button" class="gzpm" data-gz="mais" aria-label="'+T('Mais grau')+'">+</button></div>'+
-        '<p class="gzp" style="text-align:center;font-size:13.5px;margin-top:6px">'+T('A tela não consegue mostrar como você vai enxergar com o óculos. Na dúvida entre dois graus, fique com o menor.')+'</p>'+
-        '<button type="button" class="gzgo" data-gz="ver" id="gzver">'+T('Ver óculos de leitura')+' '+gf(G)+'</button><button type="button" class="gzgo o" data-gz="guarda">'+T('Guardar meu grau')+'</button>'+avisos(),
-        voz||T('Pronto. Para começar, o grau que mais combina com você é ')+gf(G)+'.')}
-    function longe(braco){resultado(2.5,[],true,false,braco?T('Parece que precisou esticar o braço todo. Para começar, o grau que mais combina com você é ')+gf(2.5)+'.':'')}
-    function miopia(d){cam();Z.fase='res';
-      tela('<div class="gzeb">'+T('RESULTADO')+'</div><h2>'+T('Você lê bem de perto sem óculos')+'</h2><p class="gzp">'+T('As letras ficaram nítidas a')+' '+Math.round(d)+' cm'+T(' — típico de miopia.')+'</p>'+
-        '<div class="gzav"><p>'+T('Óculos de leitura não vão ajudar você. Para ler, o mais simples é tirar os seus óculos.')+'</p><p>'+T('Para ver longe e perto com um óculos só, o certo é um multifocal, feito numa ótica com a receita do oftalmologista.')+'</p></div>'+
-        '<button type="button" class="gzgo o" data-gz="inicio">'+T('Voltar ao início')+'</button>',
-        T('Boa notícia: você lê bem de perto sem óculos. Óculos de leitura não são para você.'))}
-    function instavel(){cam();Z.fase='res';
-      tela('<div class="gzeb">'+T('RESULTADO')+'</div><h2>'+T('O resultado não ficou firme')+'</h2><p class="gzp">'+T('As três medidas ficaram bem diferentes entre si, então não vamos chutar um grau. Vale consultar um oftalmologista.')+'</p>'+
-        '<button type="button" class="gzgo" data-gz="comeca">'+T('Tentar de novo')+'</button><button type="button" class="gzgo o" data-gz="inicio">'+T('Voltar ao início')+'</button>',
-        T('As medidas ficaram bem diferentes entre si. Para não chutar um grau, vale consultar um oftalmologista.'))}
-    function manual(){cam();Z.fase='man';
-      tela('<div class="gzeb">'+T('SEM CÂMERA')+'</div><h2>'+T('Afaste devagar até as letras ficarem nítidas')+'</h2><div class="gzbx"><div class="gztx pq">'+esc(FRASE())+'</div></div><p class="gzp" style="margin-top:14px">'+T('Onde ficou nítido?')+'</p>'+
-        [[20,'Bem perto do rosto'],[32,'Um palmo e meio'],[42,'Dois palmos'],[55,'Braço quase esticado'],[65,'Braço esticado']].map(function(x){return '<button type="button" class="gzgo o gzsm" data-gzd="'+x[0]+'">'+T(x[1])+'</button>'}).join('')+
-        '<button type="button" class="gzgo o gzsm" data-gz="longe">'+T('Mesmo longe não consigo ler')+'</button>',
-        T('A câmera não abriu, sem problema. Afaste o celular devagar e me diga onde as letras ficaram nítidas.'))}
+        '<p class="gzp" style="text-align:center;font-size:13.5px;margin-top:6px">'+T('Na dúvida entre dois graus, fique com o menor.')+'</p>'+
+        '<button type="button" class="gzgo" data-gz="ver" id="gzver">'+T('Ver óculos de leitura')+' '+gf(G)+'</button><button type="button" class="gzgo o" data-gz="guarda">'+T('Guardar meu grau')+'</button>'+avisos());
+      setTimeout(function(){if(!Z.m)return;confete();m.cara('f');m.bracos(-130,-50);m.espelho();fala(T('Pronto! O grau que mais combina com você é')+' '+gf(G)+'.');setTimeout(function(){Z.m&&Z.m.acena(6)},800);setTimeout(function(){if(!Z.m)return;m.cara('n');m.ocioso=true},3500)},500)}
+    function semNecessidade(){fimTeste();conteudo('<div class="gzeb">'+T('RESULTADO')+'</div><h2>'+T('Você leu até a letra de bula sem óculos')+'</h2>'+
+        '<div class="gzav"><p>'+T('Por enquanto você não precisa de óculos de leitura.')+'</p><p>'+T('Se você usa óculos para longe (miopia), para ler o mais simples é tirar os seus óculos. Para longe e perto com um óculos só, o certo é um multifocal, feito numa ótica com receita.')+'</p></div>'+
+        '<button type="button" class="gzgo o" data-gz="inicio">'+T('Voltar ao início')+'</button>');
+      setTimeout(function(){if(!Z.m)return;Z.m.cara('f');Z.m.acena(4);fala(T('Boa notícia: você lê bem de perto sem óculos!'));setTimeout(function(){if(Z.m){Z.m.cara('n');Z.m.ocioso=true}},2500)},500)}
+    function consulte(){fimTeste();conteudo('<div class="gzeb">'+T('RESULTADO')+'</div><h2>'+T('Nem com a lente mais forte ficou fácil')+'</h2><p class="gzp">'+T('Os óculos de leitura prontos vão até +4.00. Para não chutar um grau, o melhor é consultar um oftalmologista.')+'</p>'+
+        '<button type="button" class="gzgo" data-gz="comeca">'+T('Tentar de novo')+'</button><button type="button" class="gzgo o" data-gz="inicio">'+T('Voltar ao início')+'</button>');
+      setTimeout(function(){if(!Z.m)return;Z.m.nao();fala(T('Para não chutar um grau, vale consultar um oftalmologista.'))},500)}
+    /* ---------- câmera: só confere a distância de 40 cm (nada é gravado) ---------- */
+    function chip(t,ok){var c=q('#gzdi');if(!c)return;c.hidden=false;c.textContent=t;c.classList.toggle('ok',!!ok)}
+    function medir(){if(Z.st)return;if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){chip(T('Segure a 40 cm'));return}
+      var v=Z.v=document.createElement('video');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');
+      navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}}).then(function(s){if(!Z.el){s.getTracks().forEach(function(t){t.stop()});return}Z.st=s;v.srcObject=s;var p=v.play();if(p&&p.catch)p.catch(function(){});
+        (window.__lfFakeFa?Promise.resolve(window.__lfFakeFa):faLoad()).then(function(fa){Z.fa=fa;laco()},function(){chip(T('Segure a 40 cm'))})},function(){chip(T('Segure a 40 cm'))})}
+    var hist=[],med=function(a){var s=a.slice().sort(function(x,y){return x-y});return s[Math.floor(s.length/2)]};
+    function laco(){if(!Z.el||!Z.st)return;var v=Z.v,fa=Z.fa;if(!v.videoWidth){Z.tm=setTimeout(laco,250);return}
+      var W=320,H=Math.round(W*v.videoHeight/v.videoWidth),cv=Z.cv||(Z.cv=document.createElement('canvas'));cv.width=W;cv.height=H;cv.getContext('2d').drawImage(v,0,0,W,H);
+      fa.detectSingleFace(cv,new fa.TinyFaceDetectorOptions({inputSize:224,scoreThreshold:.4})).withFaceLandmarks(!FA.full).then(function(r){if(!Z.el||!Z.st)return;var n=Date.now();
+        if(r&&r.landmarks){var P=r.landmarks.positions,c=function(a,b){var x=0,y=0;for(var i=a;i<=b;i++){x+=P[i].x;y+=P[i].y}return [x/(b-a+1),y/(b-a+1)]},e1=c(36,41),e2=c(42,47),ipd=Math.hypot(e1[0]-e2[0],e1[1]-e2[1]);
+          var f=(W/2)/Math.tan(31*Math.PI/180),d=f*6.3/ipd;hist.push(d);if(hist.length>5)hist.shift();Z.d=med(hist);Z.rosto=n;
+          if(Z.d>47){chip(T('Chegue um pouco mais perto'));if(Z.fase==='teste')diz('perto',T('Chegue o celular um pouquinho mais perto, a 40 centímetros.'))}
+          else if(Z.d<33){chip(T('Afaste um pouco'));if(Z.fase==='teste')diz('longe',T('Afaste um pouquinho o celular, para uns 40 centímetros.'))}
+          else chip('40 cm ✓',true)}
+        else if(n-(Z.rosto||0)>2000)chip(T('Não vejo o seu rosto'));
+        Z.tm=setTimeout(laco,350)},function(){Z.tm=setTimeout(laco,600)})}
     function perto(g){var G=navGraus(),b='',d=1e9;G.forEach(function(x){var k=Math.abs(gn(x)-g);if(k<d-1e-9){d=k;b=x}});return b}
-    document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-gzopen],[data-gz],[data-gzd]');if(!t)return;
+    document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-gzopen],[data-gz]');if(!t)return;
       if(t.hasAttribute('data-gzopen')){e.preventDefault();e.stopPropagation();var dw=$('drw');
-        /* 09/11 S46: pelo menu, o menu fecha por completo (e o histórico assenta) antes de abrir a ajuda — antes as duas telas se misturavam */
-        if(dw&&dw.classList.contains('on')){var de=window.__lfTela?window.__lfTela():T('Início');var x=document.querySelector('#drw .dsc[data-dclose],#drw [data-dclose]');if(x)x.click();var n=0,esp=function(){if(n++<25&&(dw.classList.contains('on')||(history.state&&history.state.lfo==='drw'))){setTimeout(esp,60);return}setTimeout(function(){abre(de)},120)};setTimeout(esp,60)}else abre();return}
+        /* S56: pelo menu, o menu fecha por completo (e o histórico assenta) antes de a tela do grau entrar */
+        if(dw&&dw.classList.contains('on')){var de=window.__lfTela?window.__lfTela():T('Início');var x=document.querySelector('#drw .dsc[data-dclose],#drw [data-dclose]');if(x)x.click();var n=0,esp=function(){if(n++<25&&(dw.classList.contains('on')||(history.state&&history.state.lfo==='drw'))){setTimeout(esp,60);return}setTimeout(function(){abre(de)},300)};setTimeout(esp,60)}else abre();return}
       if(!Z.el||!Z.el.contains(t))return;e.preventDefault();var k=t.getAttribute('data-gz');
-      if(t.hasAttribute('data-gzd')){var dm=+t.getAttribute('data-gzd');if(dm<25)miopia(dm);else resultado(grauDe(dm),[dm],false,true);return}
+      if(Z.m&&(k==='sim'||k==='nao')){var r=t.getBoundingClientRect();Z.m.olhaPara(r.left+r.width*.6,r.top+r.height/2)}
       if(k==='x'){fecha();return}
-      if(k==='mudo'){try{localStorage.setItem('lf_gzmudo',mudo()?'0':'1')}catch(_){}t.innerHTML=mudo()?MUT:SPK;if(mudo()){try{speechSynthesis.cancel()}catch(_){}}else{var c=$('gzct');if(c)fala(c.textContent)}return}
+      if(k==='mudo'){try{localStorage.setItem('lf_gzmudo',mudo()?'0':'1')}catch(_){}t.innerHTML=mudo()?MUT:SPK;if(mudo()){try{speechSynthesis.cancel()}catch(_){}if(VZ.a)try{VZ.a.pause()}catch(_){}}return}
       if(k==='comeca'){prep();return}
-      if(k==='nitido'){if(Z.fase!=='med')return;if(Z.sub==='perto'){diz('aprox2',T('Primeiro aproxime o celular do rosto, depois afaste devagar.'),true);return}var o=leitura();if(o.par&&o.rosto){analisar(o.dpar)}else{Z.espera=Date.now();diz('segura2',T('Segure aí um instante…'),true)}return}
-      if(k==='longe'){longe(false);return}
-      if(k==='inicio'){fecha();setTimeout(function(){var l=document.querySelector('.top .logo');if(l)l.click()},260);return}
-      if(k==='mais'||k==='menos'){Z.man=true;Z.g=Math.max(.25,Math.min(4,Z.g+(k==='mais'?.25:-.25)));var gv=$('gzgv'),gl=$('gzgl'),vb=$('gzver');if(gv)gv.textContent=gf(Z.g);if(gl)gl.textContent=Z.g===Z.G?T('sugerido'):T('Sugerido: ')+gf(Z.G);if(vb)vb.textContent=T('Ver óculos de leitura')+' '+gf(Z.g);diz('pm',gf(Z.g),true);return}
+      if(k==='sim'){responde(true);return}if(k==='nao'){responde(false);return}
+      if(k==='inicio'){fecha();setTimeout(function(){var l=document.querySelector('.top .logo');if(l)l.click()},300);return}
+      if(k==='mais'||k==='menos'){Z.g=Math.max(.75,Math.min(4,Z.g+(k==='mais'?.25:-.25)));var gv=$('gzgv'),gl=$('gzgl'),vb=$('gzver');if(gv)gv.textContent=gf(Z.g);if(gl)gl.textContent=Z.g===Z.G?T('sugerido'):T('Sugerido: ')+gf(Z.G);if(vb)vb.textContent=T('Ver óculos de leitura')+' '+gf(Z.g);if(Z.m){Z.m.sim()}return}
       if(k==='guarda'){var gg=Z.g;try{localStorage.setItem('lf_meugr',gf(gg))}catch(_){}fecha();toast(T('Grau guardado')+': '+gf(gg));try{if(st.tipo==='grau'&&document.documentElement.classList.contains('ppop')&&!prodOpen){st.fgr=perto(gg);drawGrid()}gzFaixa();}catch(_){}return}
       if(k==='ver'){var g=Z.g;fecha();var go=function(){st.fgr=perto(g);navAbreCat('grau')};if(prodOpen)navApos(go);else go();return}},true);
+    window.__LFGZ={Z:Z,escala:escala,L:L};
     /* faixa na Leitura (topo, antes dos óculos) */
     var EF='';
     function gzFaixa(){var vs=$('vscr'),g=$('grid');if(!vs||!g)return;var f=$('gzf');

@@ -72,8 +72,40 @@ html body .hero .cta .btn{width:100%!important;max-width:none!important;min-widt
 html body .hero h1,html body .hero p{text-align:left!important;max-width:none!important}
 }
 </style>
+<style id="s57">
+/* 09/11 S57 (aprovado): sem colisões com letra grande — regras que valem para o site todo */
+@media (max-width:860px){
+ .wa{transition:opacity .25s,transform .25s}
+ html.warol .wa{opacity:0!important;transform:scale(.6)!important;pointer-events:none!important}
+ html.onprod .wa,html:has(#layer .buyrow) .wa{display:none!important}
+ html.wamin .wa{transform:translateX(38px) scale(.82)!important;opacity:.92}
+ html.wamin .wa svg{transform:translateX(-12px)}
+ body{padding-bottom:84px}
+ #vscr{padding-bottom:96px!important}
+ #vitrine.pop .mobsearch{flex-wrap:wrap;row-gap:2px}
+ .mobsearch .vnav{display:contents}
+ .mobsearch .vnav .vback{margin-right:auto;order:0}
+ .mobsearch .vtit{order:9;flex:1 0 100%;min-width:0}
+ .mobsearch .vtit b{white-space:normal!important;overflow-wrap:anywhere}
+ .pgbar{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+ .pgbar:before{content:'';position:absolute;left:0;right:0;bottom:100%;height:60px;background:var(--bg);pointer-events:none}
+ .pgback{min-width:0;flex:0 1 auto;max-width:52%}
+ .pgback span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+ .vback span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #layer .bb.p.cur small.bt{display:none}
+ #layer .bb.p span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+ .bbwa{flex:none;display:grid;place-items:center;width:50px;height:50px;border-radius:50%;background:var(--wa,#1f9d55);color:#fff;align-self:center}
+ .bbwa svg{width:26px;height:26px}
+ .ph .tg{max-width:calc(100% - 58px);white-space:nowrap;overflow:hidden;text-overflow:clip}
+ .card .stk{white-space:nowrap;max-width:calc(100% - 14px);overflow:hidden;text-overflow:clip}
+ .hgu button{grid-template-columns:minmax(0,36%) minmax(0,1fr)!important}
+ .hgu .gi{overflow:hidden;min-width:0}
+ .hgu .gi img{max-width:100%}
+ .hgu .gt{min-width:0;overflow-wrap:break-word}
+}
+</style>
 </head><body>
-<script>(function(){var B='1794235465';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794194681"><link rel="preload" as="script" href="/js/lf-site.js?v=1794194681">
+<script>(function(){var B='1794251526';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794194681"><link rel="preload" as="script" href="/js/lf-site.js?v=1794194681">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2089,6 +2121,42 @@ html.gzon,html.gzon body{overflow:hidden!important}
 #gw .gzck{font-size:15.5px;margin-top:6px}#gw .gzck div{display:flex;gap:8px;margin:6px 0;justify-content:center}#gw .gzck .ok b{color:#2e7d4f}#gw .gzck .w b{color:#b7791f}
 #gw .gzrs{border:1px solid var(--ln);border-radius:20px;background:var(--pn);padding:16px;text-align:center;margin-top:10px}#gw .gzrs .gzres{margin:0 0 6px;color:var(--ac)}
 html[data-theme=dark] #gw .gzsig span.w{background:#3a2e14;border-color:#5a4720;color:#f3d48a}
+/* 09/11 S54–S64: consulta com o Mochi. #gw anula o "Texto grande" (zoom) e reaplica só nos textos de interface (--gz); o quadro fica com tamanho fixo */
+#gw{transform:none}
+#gw .gzhd{display:flex;align-items:center;gap:8px;padding:6px 14px 2px;max-width:560px;margin:0 auto}
+#gw .gzhd .gzbk{font-size:calc(15px*var(--gz,1));flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#gw .gzhd .gzbk span{overflow:hidden;text-overflow:ellipsis}
+#gw .gzdi{margin-left:auto;font:600 calc(12.5px*var(--gz,1))/1.2 Inter,system-ui,sans-serif;color:var(--mu);background:var(--pn);border:1px solid var(--ln);border-radius:99px;padding:5px 10px;white-space:nowrap}
+#gw .gzdi.ok{color:#2e7d4f;border-color:#cfe8d8}
+#gw .gzdi[hidden]+.gzmu{margin-left:auto}
+#gw .gzhd .gzmu{flex:none;border:1px solid var(--ln);background:var(--pn);color:var(--tx);border-radius:50%;width:38px;height:38px;display:grid;place-items:center;opacity:1;padding:0}
+#gw .gzstg{position:relative;max-width:560px;margin:0 auto}
+#gw .gzbal{position:absolute;top:6px;background:var(--pn);border:1px solid var(--ln);border-radius:18px;padding:10px 13px;font-size:calc(14.5px*var(--gz,1));line-height:1.38;min-height:4.6em;box-shadow:0 6px 18px #8d3a6914;opacity:0;transform:translateY(8px) scale(.95);transform-origin:10% 100%;transition:opacity .28s,transform .38s cubic-bezier(.3,1.5,.5,1);z-index:7;color:var(--tx)}
+#gw .gzbal.on{opacity:1;transform:none}
+#gw .gzc{padding:0 18px 48px}
+#gw .gzc h2{font-size:calc(24px*var(--gz,1));line-height:1.2;margin:6px 0 10px}
+#gw .gzc .gzeb{font-size:calc(11px*var(--gz,1))}
+#gw .gzc .gzp{font-size:calc(16px*var(--gz,1))}
+#gw .gzc .gzav{font-size:calc(15px*var(--gz,1))}
+#gw .gzgo{font-size:calc(17px*var(--gz,1))}
+#gw .gzjan{position:absolute;background:#fff;border:1px solid var(--ln);border-radius:20px;overflow:hidden;z-index:3;box-shadow:0 10px 30px #8d3a6914}
+#gw .gzjan:before,#gw .gzjan:after{content:'';position:absolute;left:0;right:0;height:56px;z-index:2;pointer-events:none}
+#gw .gzjan:before{top:0;background:linear-gradient(#fff,#fff0)}#gw .gzjan:after{bottom:0;background:linear-gradient(#fff0,#fff)}
+#gw .gzfita{position:absolute;left:24px;right:8px;transition:top .65s cubic-bezier(.3,1.35,.5,1)}
+#gw .gzl{display:flex;align-items:center;padding:9px 0;font-family:Georgia,'Times New Roman',serif;line-height:1.25;color:#2a1f27;transition:font-size .6s cubic-bezier(.3,1.2,.4,1);-webkit-text-size-adjust:none;text-size-adjust:none}
+#gw .gzl span{border-radius:6px;padding:0 4px;margin-left:-4px;transition:background .3s,color .3s}
+#gw .gzl.hl span{background:#fdeaf3}
+#gw .gzl b{font:700 10px Inter,system-ui,sans-serif;color:#2e7d4f;opacity:0;transform:scale(.3);transition:opacity .3s,transform .35s cubic-bezier(.3,1.8,.5,1);flex:none;width:14px;margin-left:-18px}
+#gw .gzl.ok b{opacity:1;transform:none}#gw .gzl.ok span{color:#a99aa4}
+#gw .gzfr{position:absolute;z-index:4;pointer-events:none;border:9px solid #8d3a69;border-radius:70px;opacity:0;transform-origin:0 0;transition:opacity .3s;background:linear-gradient(135deg,#ffffff55,#fff0 50%,#ffffff33)}
+#gw .gzfr.on,#gw .gzfr.voa{opacity:1}
+#gw .gzfr i{position:absolute;left:50%;top:-16px;transform:translateX(-50%);background:#8d3a69;color:#fff;font:700 14px Inter,system-ui,sans-serif;font-style:normal;padding:4px 13px;border-radius:20px;white-space:nowrap}
+#gw .gzbt{position:absolute;left:12px;right:12px;z-index:5}
+#gw .gzbt .gzgo{margin-top:10px}
+#gw .gzpuff{position:absolute;border-radius:50%;background:#f3d6e4;pointer-events:none;z-index:7}
+#gw .gznota{position:absolute;color:#c46a9c;font-size:16px;z-index:8;pointer-events:none}
+#gw .gzcf{position:absolute;width:8px;height:12px;border-radius:2px;z-index:9;pointer-events:none}
+
 
 
 /* 09/11 S46: "‹" nas telas abertas pelo menu (Atacado, Como comprar…) */
