@@ -3003,7 +3003,10 @@
   /* 08/11 (aprovado): aparece na PRÓXIMA visita (mesmo dia ou outro) — visita nova = abrir o site de novo ou voltar após 30 min sem usar;
      se passar 2 dias sem ver nenhuma peça, não aparece mais. Some ao tocar, se esgotar ou sair do site. */
   var NAV_ST=null;try{var _l4=JSON.parse(localStorage.getItem('lf_lastv')||'null'),_ua=+localStorage.getItem('lf_uact')||0,_nv=!sessionStorage.getItem('lf_vis2')||Date.now()-_ua>18e5;
-    if(_l4&&_l4.r&&_nv&&Date.now()-_l4.t<2*864e5)NAV_ST=_l4.r;sessionStorage.setItem('lf_vis2','1')}catch(_){}
+    if(_l4&&_l4.r&&_nv&&Date.now()-_l4.t<2*864e5)NAV_ST=_l4.r;
+    /* 09/11 S36 (aprovado): a peça escolhida no começo da visita fica guardada; atualizar a página não apaga o aviso */
+    if(_nv){if(NAV_ST)sessionStorage.setItem('lf_lvv',NAV_ST);else sessionStorage.removeItem('lf_lvv')}else{var _vv=sessionStorage.getItem('lf_lvv');if(_vv)NAV_ST=_vv}
+    sessionStorage.setItem('lf_vis2','1')}catch(_){}
   (function(){var u=0,f=function(){var n=Date.now();if(n-u<6e4)return;u=n;try{localStorage.setItem('lf_uact',String(n))}catch(_){}};f();['pointerdown','keydown','scroll'].forEach(function(t){addEventListener(t,f,{passive:true,capture:true})})})();
   var _homeHtmlNv=homeHtml;homeHtml=function(){var h=_homeHtmlNv.apply(this,arguments),p=NAV_ST&&find(NAV_ST);
     if(!p||!vis5(p)||p.aviso==='Esgotado')return h;
@@ -3013,7 +3016,7 @@
   document.addEventListener('click',function(e){var o=e.target.closest&&e.target.closest('[data-open]');if(!o||prodOpen||o.closest('#sov,#fvs,#layer'))return;
     var H=document.documentElement,vs=H.classList.contains('ppop')?$('vscr'):null;NAV_CK={el:o,ref:o.getAttribute('data-open'),top:o.getBoundingClientRect().top,vs:vs,ts:Date.now()}},true);
   var _productNv=product;product=function(ref,pop){var q=find(ref);
-    if(!prodOpen&&!pop){NAV_AN=NAV_CK&&NAV_CK.ref===ref&&Date.now()-NAV_CK.ts<2500?NAV_CK:null;if(NAV_ST===ref){NAV_ST=null;setTimeout(function(){document.querySelectorAll('#home .hlv').forEach(function(x){x.remove()})},350)}}
+    if(!prodOpen&&!pop){NAV_AN=NAV_CK&&NAV_CK.ref===ref&&Date.now()-NAV_CK.ts<2500?NAV_CK:null;if(NAV_ST===ref){NAV_ST=null;try{sessionStorage.removeItem('lf_lvv')}catch(_){}setTimeout(function(){document.querySelectorAll('#home .hlv').forEach(function(x){x.remove()})},350)}}
     if(q&&st.tipo==='grau'&&st.fgr&&q.gr){var gi=q.gr.indexOf(st.fgr);if(gi>=0)st.gr[ref]=gi}
     if(q)navVistoPoe(ref);
     return _productNv.apply(this,arguments)};
