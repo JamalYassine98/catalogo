@@ -3272,7 +3272,7 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
  /* S91: vira de lado (mola: o corpo afina, passa pelo meio e abre do outro lado, com um balancinho) */
  M.vira=function(f){f=f<0?-1:1;if(MOL.fx.t===f)return;MOL.fx.t=f;M.empurra(f*-2.2);M.oculosPulo(-1)};M.virado=function(){return MOL.fx.t<0};
  /* desliza com um tiquinho de passada e volta (S88) */
- M.flutua=function(nx,ny,dur,fim){const x0=M.x,y0=M.y,t1=performance.now();dur=dur||520;if(RM.matches){M.pos(nx,ny);fim&&fim();return}M.amassa(.96,1.05);const f=n=>{let t=Math.min(1,(n-t1)/dur),c=1.5,e=1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2);M.pos(x0+(nx-x0)*e,y0+(ny-y0)*e);if(t>.5)M.amassa(1,1);if(t<1)requestAnimationFrame(f);else fim&&fim()};requestAnimationFrame(f)};M.empurra=function(v){MOL.ti.w+=v};
+ M.mv=0;M.para=function(){M.mv++};M.flutua=function(nx,ny,dur,fim){const tk=++M.mv,x0=M.x,y0=M.y,t1=performance.now();dur=dur||520;if(RM.matches){M.pos(nx,ny);fim&&fim();return}M.amassa(.96,1.05);const f=n=>{if(tk!==M.mv)return;let t=Math.min(1,(n-t1)/dur),c=1.5,e=1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2);M.pos(x0+(nx-x0)*e,y0+(ny-y0)*e);if(t>.5)M.amassa(1,1);if(t<1)requestAnimationFrame(f);else fim&&fim()};requestAnimationFrame(f)};M.empurra=function(v){MOL.ti.w+=v};
  /* espelho: um toque de velocidade e a mola faz o balanço amortecido */
  M.espelho=function(f){MOL.es.w+=(f||1)*-7};M.oculosPulo=function(v){MOL.ob.w+=v};
  M.ajustaOculos=function(){M.gesto('ajusta')};
@@ -3293,9 +3293,9 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
   M._ff=setTimeout(()=>M.calou(),ms)};
  M.calou=function(){M.fal=0;clearTimeout(ft);clearTimeout(M._ff);q('.bO').style.opacity=0;if(M.exp!=='f'&&!face0)q('.bW').style.opacity=1};
  M.amassa=function(sx,sy){MOL.sx.t=sx;MOL.sy.t=sy};M.amassaJa=function(sx,sy){MOL.sx.v=MOL.sx.t=sx;MOL.sy.v=MOL.sy.t=sy;MOL.sx.w=MOL.sy.w=0};
- M.pula=function(nx,ny,dur,alt,fim){dur=dur||700;alt=alt==null?40:alt;const x0=M.x,y0=M.y;M.amassa(1.12,.86);
-  setTimeout(()=>{M.amassa(.9,1.12);const t1=performance.now();const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-   const f=n=>{let t=Math.min(1,(n-t1)/dur),e=ease(t);M.pos(x0+(nx-x0)*e,y0+(ny-y0)*e-Math.sin(Math.PI*t)*alt);if(t>.45&&t<.6)M.amassa(1,1);
+ M.pula=function(nx,ny,dur,alt,fim){dur=dur||700;alt=alt==null?40:alt;const tk=++M.mv,x0=M.x,y0=M.y;M.amassa(1.12,.86);
+  setTimeout(()=>{if(tk!==M.mv)return;M.amassa(.9,1.12);const t1=performance.now();const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+   const f=n=>{if(tk!==M.mv)return;let t=Math.min(1,(n-t1)/dur),e=ease(t);M.pos(x0+(nx-x0)*e,y0+(ny-y0)*e-Math.sin(Math.PI*t)*alt);if(t>.45&&t<.6)M.amassa(1,1);
     if(t<1)requestAnimationFrame(f);else{M.amassa(1.14,.84);setTimeout(()=>M.amassa(.97,1.04),140);setTimeout(()=>M.amassa(1,1),280);fim&&fim()}};requestAnimationFrame(f)},150)};
  M.desliza=function(nx,ny,dur){const x0=M.x,y0=M.y,t1=performance.now();dur=dur||600;const f=n=>{let t=Math.min(1,(n-t1)/dur),e=1-Math.pow(1-t,3);M.pos(x0+(nx-x0)*e,y0+(ny-y0)*e);if(t<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
  M.mao=function(){const r=q('.mao').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]};
@@ -3308,14 +3308,18 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
     var VZ={m:null,a:null};try{fetch('/media/voz/'+(ES?'es':'pt')+'/lista.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){VZ.m=j}).catch(function(){})}catch(_){}
     /* cada frase do texto vira um ou mais arquivos (frases com grau = começo da frase + o grau) */
     function falaArq(t,fim){if(!VZ.m)return false;var ps=t.split(/(?<=[.!?…])\s+/).map(function(x){return x.trim()}).filter(Boolean),fs=[];for(var i=0;i<ps.length;i++){var f=VZ.m[ps[i]];if(!f)return false;fs=fs.concat(f)}
-      var k=0,toca=function(){if(!Z.el)return;if(k>=fs.length){fim();return}var a=VZ.a=new Audio('/media/voz/'+(ES?'es':'pt')+'/'+fs[k++]);a.onended=toca;a.onerror=toca;var p=a.play();if(p&&p.catch)p.catch(function(){fim()})};if(VZ.a)try{VZ.a.pause()}catch(_){}toca();return true}
+      var k=0,my=FID,toca=function(){if(!Z.el||my!==FID)return;if(k>=fs.length){fim();return}var a=VZ.a=new Audio('/media/voz/'+(ES?'es':'pt')+'/'+fs[k++]);a.onended=toca;a.onerror=toca;var p=a.play();if(p&&p.catch)p.catch(function(){fim()})};if(VZ.a)try{VZ.a.pause()}catch(_){}toca();return true}
     var FID=0;
     /* S90: menu, busca ou carrinho por cima da consulta = tudo pausado (a fala para e retoma de onde estava; nada novo começa) */
     var PZ={on:0,desde:0,tot:0,fila:[],a:null};function vt(){return Date.now()-PZ.tot-(PZ.on?Date.now()-PZ.desde:0)}
     function pausa(on){if(!!on===!!PZ.on)return;if(on){PZ.on=1;PZ.desde=Date.now();PZ.a=null;if(VZ.a&&!VZ.a.paused&&!VZ.a.ended){PZ.a=VZ.a;try{VZ.a.pause()}catch(_){}}try{speechSynthesis.pause()}catch(_){}return}
       PZ.on=0;PZ.tot+=Date.now()-PZ.desde;if(!Z.el)return;if(PZ.a&&PZ.a===VZ.a){try{var pp=PZ.a.play();if(pp&&pp.catch)pp.catch(function(){})}catch(_){}}PZ.a=null;try{speechSynthesis.resume()}catch(_){}
       var f=PZ.fila;PZ.fila=[];f.forEach(function(x){x()});if(Z.fase==='teste'&&!Z.falando&&!Z.ocupado)espera()}
-    /* toque enquanto ele fala: vale assim que ele terminar a frase (a fala nunca é cortada) */
+    /* S92: só o toque do cliente corta a fala — a voz some em 0,15 s e o que ele ia fazer depois da frase é esquecido */
+    function corta(){Z.depoisFala=null;Z.pend=null;if(!Z.falando)return;FID++;Z.falando=false;Z.ocup=0;var a=VZ.a;VZ.a=null;/* a próxima fala não pausa de supetão a que está sumindo */
+      if(a&&!a.paused){var v0=a.volume,t0=performance.now();(function f(){var k=Math.min(1,(performance.now()-t0)/150);try{a.volume=v0*(1-k)}catch(_){}if(k<1)requestAnimationFrame(f);else try{a.pause()}catch(_){}})()}
+      try{speechSynthesis.cancel()}catch(_){}if(Z.m)Z.m.calou();var bt=q('#gzbt');if(bt)bt.classList.remove('esp')}
+    /* toque enquanto ele fala: vale assim que ele terminar a frase (só no teste de leitura) */
     function apos(fn,bt){if(Z.falando){Z.depoisFala=fn;if(bt){bt.classList.add('gd');setTimeout(function(){bt.classList.remove('gd')},900)}return}fn()}
     /* fala(h,cb,pergunta,dizer): cb roda quando ele TERMINA de falar. Se for pergunta, os botões ficam clarinhos até ele terminar. dizer = o que ele fala (se for diferente do balão) */
     function fala(h,cb,perg,dz){if(PZ.on){PZ.fila.push(function(){fala(h,cb,perg,dz)});return}
@@ -3476,9 +3480,9 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
         fala(T('Quando quiser, é só tocar em Começar.'),function(){setTimeout(function(){if(!naIntro())return;m.estica(0,300,true);setTimeout(function(){if(!naIntro())return;m.vara(0);m.bracos(-35,40);m.modo='livre';m.ocioso=true},320)},600)})};
       m.bracos(null,AB);m.estica(0,250,true);m.flutua(m.x,br.top-S.top-p[1]-3,520,fim)}
     /* Começar: ele termina a frase (se estiver falando), desvira, guarda o ponteiro e segue para a câmera */
-    function comeca(bt){if(Z.fase==='intro'){if(Z.vaiCom)return;Z.vaiCom=1;clearTimeout(Z.ti);apos(camera,bt);return}camera()}
+    function comeca(bt){if(Z.fase==='intro'){if(Z.vaiCom)return;Z.vaiCom=1;clearTimeout(Z.ti)}corta();camera()}
     /* ---------- S90: câmera só com a resposta da pessoa ---------- */
-    function camera(){clearTimeout(Z.ti);var m=Z.m;if(!m)return;Z.fase='cam';Z.dir=0;Z.semCam=0;Z.escolheu=0;m.paraGesto();m.ocioso=false;m.estica(0,0);m.vara(0);m.bracos(-35,40);m.vira(1);m.cara('n');m.modo='livre';regra(-1);
+    function camera(){clearTimeout(Z.ti);var m=Z.m;if(!m)return;Z.fase='cam';Z.dir=0;Z.semCam=0;Z.escolheu=0;m.paraGesto();m.ocioso=false;m.para();if(m.ponOn&&!RM.matches){m.estica(0,180,true);setTimeout(function(){Z.m&&Z.fase!=='intro'&&Z.m.vara(0)},200)}else m.vara(0);m.bracos(-35,40);m.vira(1);m.cara('n');m.modo='livre';regra(-1);
       var c=q('#gzc');c.style.paddingBottom='';try{Z.el.scrollTo({top:0,behavior:RM.matches?'auto':'smooth'})}catch(_){Z.el.scrollTop=0}
       vaiA('intro',RM.matches?'ja':'pula');lay();
       if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){semCam();return}
@@ -3489,8 +3493,8 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
         fala(T('Posso usar a câmera?')+' '+T('É só para medir a distância do celular até o seu rosto.')+' '+T('Nada é gravado.')+' '+T('Se preferir, a gente faz sem.'),function(){if(Z.m&&Z.fase==='cam'&&!Z.escolheu)Z.m.ocioso=true})})}
     /* a janelinha do celular só aparece aqui; enquanto ela está aberta ele espera, calado */
     function camSim(){if(Z.fase!=='cam')return;Z.fase='camw';var m=Z.m;m.ocioso=false;m.paraGesto();fala(T('É só tocar em "Permitir" na janelinha.'));
-      abreCam().then(function(st){if(!Z.el||Z.fase!=='camw'){st.getTracks().forEach(function(t){t.stop()});return}liga(st);apos(function(){prep(T('Obrigado!'))})},
-        function(){if(!Z.el||Z.fase!=='camw')return;apos(semCam)})}
+      abreCam().then(function(st){if(!Z.el||Z.fase!=='camw'){st.getTracks().forEach(function(t){t.stop()});return}liga(st);corta();prep(T('Obrigado!'))},
+        function(){if(!Z.el||Z.fase!=='camw')return;corta();semCam()})}
     function semCam(){if(!Z.el)return;Z.semCam=1;cam();chip(T('Segure a 30 cm'));prep(T('Tudo bem, sem problema!')+' '+T('Vamos sem a câmera: segure o celular a uns 30 centímetros, um palmo.'))}
     function prep(pre){clearTimeout(Z.ti);Z.fase='prep';Z.dir=0;try{Z.el.scrollTo({top:0,behavior:RM.matches?'auto':'smooth'})}catch(_){Z.el.scrollTop=0}medir();var m=Z.m;m.paraGesto();m.ocioso=false;m.cara('n');q('#gzc').style.paddingBottom='';
       conteudo('<div class="gzeb">'+T('PREPARANDO')+'</div><h2>'+T('Tire os óculos e segure o celular a 30 cm')+'</h2><p class="gzp">'+T('Um palmo do rosto. Lente de contato pode ficar.')+'</p>');
@@ -3505,10 +3509,10 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
     /* ---------- S89 D: luz (antes do quadro; durante o teste só a etiqueta muda) ---------- */
     var LUZ=45;function escuro(){return Z.lum!=null&&Z.lum<LUZ}
     function luz(cb){var t0=Date.now();Z.luzCb=cb;(function w(){if(!Z.m||Z.fase!=='teste')return;if(Z.semCam||!Z.st){cb();return}if(Z.lum==null&&Date.now()-t0<1800){setTimeout(w,200);return}
-      if(!escuro()){cb();return}Z.luzP=1;botoes('luz');chip(T('Pouca luz'));fala(T('Está um pouquinho escuro.')+' '+T('Vá para um lugar mais iluminado: com pouca luz a gente lê pior.'),null,true)})()}
+      if(!escuro()){cb();return}Z.luzP=1;botoes('luz');chip(T('Pouca luz'));fala(T('Está um pouquinho escuro.')+' '+T('Vá para um lugar mais iluminado: com pouca luz a gente lê pior.'))})()}
     function luzFim(){Z.luzP=0;botoes('t');var cb=Z.luzCb;Z.luzCb=null;cb&&cb()}
     function luzOk(){if(!Z.luzP)return;Z.lum=null;var t0=Date.now();(function w(){if(!Z.m||Z.fase!=='teste'||!Z.luzP)return;if(Z.lum==null&&Date.now()-t0<2500){setTimeout(w,200);return}
-      if(!escuro()){luzFim();return}fala(T('Está um pouquinho escuro.')+' '+T('Vá para um lugar mais iluminado: com pouca luz a gente lê pior.'),null,true)})()}
+      if(!escuro()){luzFim();return}fala(T('Está um pouquinho escuro.')+' '+T('Vá para um lugar mais iluminado: com pouca luz a gente lê pior.'))})()}
     /* S66: trabalhando = fica no lugar de apontar e só faz gestos no próprio corpo; >8 s sem resposta = livre */
     function espera(){clearTimeout(Z.tq);Z.tq=setTimeout(function(){if(!Z.m||Z.fase!=='teste'||Z.ocupado)return;diz('demora',sorteia('demora'),true);livre()},8000)}
     function livre(){var m=Z.m;if(!m)return;m.modo='livre';if(RM.matches||Math.random()<.5)return;
@@ -3585,7 +3589,7 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       q('#gzfita').innerHTML='<div class="gzl hl" id="gzl3"><span>'+esc(LS[3])+'</span></div><div class="gzpph">'+T('aproxime devagar')+' ↓</div>';q('#gzl3').style.fontSize=FS[3]+'px';botoes('pp');centra(true);
       if(Z.longe)volta();else{m.modo='trab';aponta()}
       var f=T('Agora uma última coisa: aproxime o celular devagar e toque quando as letras começarem a embaçar.');if(rep===1)f=T('Ficou um pouco diferente.')+' '+T('Vamos repetir uma vez.')+' '+f;
-      setTimeout(function(){Z.m&&Z.fase==='pp'&&fala(f,null,true)},500)}
+      setTimeout(function(){Z.m&&Z.fase==='pp'&&fala(f)},500)}
     /* só vale com o celular parado: a distância do último 1,5 s varia menos de 2,5 cm */
     function ppMede(cb){var t0=Date.now(),disse=0;(function w(){if(!Z.m||Z.fase!=='pp')return;var n=Date.now(),a=(Z.hd||[]).filter(function(x){return n-x[0]<1500}).map(function(x){return x[1]});
       if(a.length>=2&&n-(Z.rosto||0)<900&&Math.max.apply(null,a)-Math.min.apply(null,a)<=2.5){cb(med(a));return}
@@ -3653,9 +3657,9 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       if(k==='x'){fecha();return}
       if(k==='mudo'){try{localStorage.setItem('lf_gzmudo',mudo()?'0':'1')}catch(_){}t.innerHTML=mudo()?MUT:SPK;if(mudo()){try{speechSynthesis.cancel()}catch(_){}if(VZ.a)try{VZ.a.pause()}catch(_){}}return}
       if(k==='comeca'){comeca(t);return}
-      if(k==='camsim'||k==='camnao'){if(Z.fase!=='cam'||Z.escolheu)return;Z.escolheu=1;t.classList.add('gd');apos(k==='camsim'?camSim:semCam);return}
-      if(k==='luzok'||k==='luzseg'){if(!Z.luzP||Z.fase!=='teste')return;apos(k==='luzok'?luzOk:function(){Z.escuro=1;luzFim()},t);return}
-      if(k==='emb'||k==='nemb'){if(Z.fase!=='pp'||Z.ppOc)return;Z.ppOc=1;setTimeout(function(){Z.ppOc=0},800);apos(function(){if(Z.fase!=='pp')return;if(k==='nemb'){ppRes(0);return}ppMede(function(d){ppRes(ppConta(d))})},t);return}
+      if(k==='camsim'||k==='camnao'){if(Z.fase!=='cam'||Z.escolheu)return;Z.escolheu=1;t.classList.add('gd');corta();(k==='camsim'?camSim:semCam)();return}
+      if(k==='luzok'||k==='luzseg'){if(!Z.luzP||Z.fase!=='teste')return;corta();(k==='luzok'?luzOk:function(){Z.escuro=1;luzFim()})();return}
+      if(k==='emb'||k==='nemb'){if(Z.fase!=='pp'||Z.ppOc)return;Z.ppOc=1;setTimeout(function(){Z.ppOc=0},800);corta();(function(){if(Z.fase!=='pp')return;if(k==='nemb'){ppRes(0);return}ppMede(function(d){ppRes(ppConta(d))})})();return}
       if(k==='sim'){responde(true);return}if(k==='nao'){responde(false);return}
       if(k==='inicio'){fecha();setTimeout(function(){var l=document.querySelector('.top .logo');if(l)l.click()},300);return}
       if(k==='mais'||k==='menos'){Z.g=Math.max(.75,Math.min(4,Z.g+(k==='mais'?.25:-.25)));var gv=$('gzgv'),gl=$('gzgl'),vb=$('gzver');if(gv)gv.textContent=gf(Z.g);if(gl)gl.textContent=Z.g===Z.G?T('sugerido'):T('Sugerido: ')+gf(Z.G);if(vb)vb.textContent=T('Ver óculos de leitura')+' '+gf(Z.g);if(Z.m){Z.m.sim()}return}
