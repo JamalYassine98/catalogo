@@ -962,15 +962,15 @@
     if(MOV5()){var k=0;[].slice.call(w.children).forEach(function(e){e.animate([{transform:'translateY(12px)',opacity:0},{transform:'none',opacity:1}],{duration:380,delay:k++*50,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'})})}
     if(AJ.pg==='contato'){var c=(typeof getConta==='function'&&getConta())||null;if(c){if(c.nome)$('ctn').value=c.nome;if(c.email)$('cte').value=c.email;if(c.tel)$('ctt').value=c.tel}}}
   function MOV5(){return Element.prototype.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches}
-  var _opAj5=openPanel;openPanel=function(id,q){var r=_opAj5.apply(this,arguments);if(id==='como'||id==='duvidas'){ajPinta(id==='duvidas'?'duvidas':'',false)}return r};
+  var _opAj5=openPanel;openPanel=function(id,q){var r=_opAj5.apply(this,arguments);if(id==='como'||id==='duvidas'){AJ.raiz=id==='duvidas'?'duvidas':'';ajPinta(AJ.raiz,false)}return r};
   document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-ajp],[data-ajv]');if(!t)return;e.preventDefault();e.stopPropagation();
     var pg=t.hasAttribute('data-ajv')?t.getAttribute('data-ajv'):t.getAttribute('data-ajp');
     if(t.hasAttribute('data-ajv')){try{history.back()}catch(_){ajPinta(pg,false)}return}
     var aberto=$('como')&&$('como').classList.contains('pop');
-    if(!aberto){try{if(typeof drwSet==='function')drwSet(false)}catch(_){}goTo('como');setTimeout(function(){ajPinta(pg,true)},40)}else ajPinta(pg,true)},true);
+    /* 11/11: aberta direto numa página (menu/rodapé), essa página é a raiz: um voltar só fecha a Ajuda */if(!aberto){try{if(typeof drwSet==='function')drwSet(false)}catch(_){}goTo('como');setTimeout(function(){AJ.raiz=pg;ajPinta(pg,false)},40)}else ajPinta(pg,true)},true);
   window.__lfPop.push(function(e){var c=$('como');if(!c||!c.classList.contains('pop'))return;var st0=e.state||{};
     if(st0.lfaj!=null){ajPinta(st0.lfaj,false);e.__lfStop=1;return}
-    if(AJ.pg){ajPinta('',false);e.__lfStop=1}});
+    if(AJ.pg!==(AJ.raiz||'')){ajPinta(AJ.raiz||'',false);e.__lfStop=1}});
   document.addEventListener('submit',function(e){var f=e.target.closest&&e.target.closest('#como .ajf');if(!f)return;e.preventDefault();
     var v=function(i){return ($(i)||{value:''}).value.trim()},er=$('cterr'),bt=$('ctok'),fal=function(m,i){er.textContent=LFI.tr(m);er.hidden=false;if(i)try{$(i).focus()}catch(_){}};er.hidden=true;
     var nome=v('ctn').replace(/\s+/g,' ');if(nome.length<3||nome.indexOf(' ')<0)return fal('Digite seu nome e sobrenome.','ctn');
