@@ -70,7 +70,7 @@
     ['quadrado', 'quadrada', 'cuadrado', 'cuadrada'],
     ['retangular', 'rectangular'],
     ['gatinho', 'gatito', 'gato', 'cateye'],
-    ['aviador', 'aviadores'],
+    ['aviador', 'aviadores', 'piloto', 'pilotos', 'aviator'],
     ['hexagonal', 'hexagono'],
     ['feminino', 'feminina', 'femenino', 'mujer', 'dama'],
     ['masculino', 'hombre', 'caballero'],
@@ -171,6 +171,17 @@
       return !BTOL_VAZIAS[t];
     });
     if (sv.length) tks = sv;
+    /* S173: "lectura 2" / "2,5" / "+1" viram o grau da régua (+2.00, +2.50, +1.00) */
+    var gq = [];
+    tks = tks.map(function (t) {
+      var m = /^\+?(\d)(?:\.(\d{1,2}))?$/.exec(t);
+      if (!m) return t;
+      var v = +(m[1] + '.' + (m[2] || '0'));
+      if (v < 0.5 || v > 6 || Math.round(v * 4) !== v * 4) return t;
+      var g = '+' + v.toFixed(2);
+      gq.push(g);
+      return g;
+    });
     var f = function (txt) {
       var ft = btolFold(txt),
         pal = ft.split(/[^a-z0-9.+,]+/).filter(Boolean),
@@ -180,7 +191,7 @@
         var pt = btolTok(tks[i], pal, junto);
         if (!pt) {
           var sem = tks[i].replace(/[^a-z0-9]/g, '');
-          if (sem.length >= 3 && junto.indexOf(sem) >= 0) pt = 2;
+          if (tks[i].charAt(0) !== '+' && sem.length >= 3 && junto.indexOf(sem) >= 0) pt = 2;
           else return 0;
         }
         tot += pt;
@@ -188,6 +199,7 @@
       return tot;
     };
     f.toks = tks;
+    f.gq = gq;
     return f;
   }
   // "Você quis dizer…": a palavra conhecida mais parecida com o que foi digitado
@@ -219,7 +231,21 @@
   }
 
   /* texto de busca de uma peça (nome, código, coleção, material, tipo em PT e ES) */
-  function btolTxt(p){var t=p.tipo==='solar'?'óculos solar sol lentes de sol':p.tipo==='grau'?'óculos de grau leitura lectura receta':'armação armazón';return [p.nome,p.ref,p.col||'',p.mat||'',p.tag||'',t].join(' ')}
+  function btolTxt(p){var t=p.tipo==='solar'?'óculos solar sol lentes de sol':p.tipo==='grau'?'óculos de grau leitura lectura receta':'armação armazón';return [p.nome,p.ref,p.col||'',p.mat||'',p.tag||'',t,p.tipo==='grau'&&p.gr?p.gr.map(function(g,i){return p.gq&&p.gq[i]===0?'':String(g).replace(',','.')}).join(' '):''].join(' ')}
+  /* S173: o que a busca entendeu (sinônimo ou grau), para mostrar ao cliente */
+  var BTOL_OR=(function(){var m={};BTOL_SIN.forEach(function(g){g.forEach(function(w){m[btolFold(w)]=w})});return m})();
+  function btolEntende(q,l){var bq=btol(q);if(!bq)return '';if(bq.gq.length)return !l.length?'':LFI.tr('Entendido')+': '+LFI.tr('leitura')+' '+bq.gq.map(function(g){return g.replace('.',',')}).join(' · ');if(!l.length)return '';var pal=btolFold(btolTxt(l[0])).split(/[^a-z0-9.+,]+/);for(var i=0;i<bq.toks.length;i++){var tk=bq.toks[i],al=BTOL_IX[tk];if(!al||pal.some(function(w){return w.indexOf(tk)===0}))continue;for(var j=0;j<al.length;j++){var a=al[j];if(pal.some(function(w){return w.indexOf(a)===0})){var vis=String(btolTxt(l[0])).split(/\s+/).filter(function(w){return btolFold(w).indexOf(a)===0})[0]||BTOL_OR[a];return LFI.tr('Mostrando')+' '+vis.charAt(0).toUpperCase()+vis.slice(1).toLowerCase()+' ('+LFI.tr('é o mesmo que')+' '+(BTOL_OR[tk]||tk)+')'}}}return ''}
+  /* S173-3A: "Avisarme cuando vuelva" na peça esgotada (1 e-mail só, pela função volta) */
+  function voltaSec(p){var fe=lsG('lf_voltas',{});if(fe[p.ref])return '<section class="dsec dvolta"><div class="vok">✓ '+LFI.tr('Vamos te avisar por e-mail quando voltar.')+'</div></section>';var ca=getConta()||{},em=ca.email||lsG('lf_vemail','')||'';
+    return '<section class="dsec dvolta" data-vref="'+esc(p.ref)+'"><span class="dsl">'+LFI.tr('Esgotado no momento')+'</span><input type="email" class="vem" placeholder="'+LFI.tr('seu@email.com')+'" value="'+esc(em)+'" autocomplete="email" inputmode="email" aria-label="E-mail"><input type="text" class="vhp" tabindex="-1" autocomplete="off" aria-hidden="true"><button type="button" class="vbt" data-volta="'+esc(p.ref)+'">'+LFI.tr('Avisar-me quando voltar')+'</button><small class="vmu">'+LFI.tr('1 e-mail só, quando voltar ao estoque.')+'</small></section>'}
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-volta]');if(!b||b.disabled)return;var sc=b.closest('.dvolta'),ref=b.getAttribute('data-volta'),inp=sc.querySelector('.vem'),em=String(inp.value||'').trim();
+    if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(em)){inp.focus();toast(LFI.tr('Confira o e-mail.'));return}b.disabled=true;
+    fetch('https://southamerica-east1-'+FB.p+'.cloudfunctions.net/volta',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'pedir',ref:ref,email:em,lang:LFI.lang,site:sc.querySelector('.vhp').value})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.ok)throw j;var fe=lsG('lf_voltas',{});fe[ref]=Date.now();lsS('lf_voltas',fe);lsS('lf_vemail',em);sc.innerHTML='<div class="vok">✓ '+LFI.tr('Vamos te avisar por e-mail quando voltar.')+'</div>'},function(){throw 0}).catch(function(j){b.disabled=false;toast(LFI.tr(j&&j.motivo==='muitas'?'Você já tem muitos avisos pendentes.':'Não deu para enviar agora. Tente de novo.'))})});
+  /* S173-3B: "Voltou um favorito" na próxima visita (favoritos ficam no aparelho; sem e-mail) */
+  function favVolta(){try{var ant=lsG('lf_favesg',null),agora={},volt=[];Object.keys(st.fav).forEach(function(r){var p=find(r);if(!p)return;var es=p.aviso==='Esgotado'&&!p.esgRes;if(es)agora[r]=1;else if(ant&&ant[r])volt.push(p)});lsS('lf_favesg',agora);
+    if(!volt.length||document.getElementById('fvolta'))return;var p=volt[0],d=document.createElement('div');d.id='fvolta';d.className='fvolta';d.setAttribute('role','status');
+    d.innerHTML='<span>❤️ <b>'+LFI.tr('Voltou um favorito')+':</b> '+esc(p.nome)+' '+LFI.tr('está de novo no estoque.')+(volt.length>1?' (+'+(volt.length-1)+')':'')+'</span><button type="button" class="fvv">'+LFI.tr('Ver')+'</button><button type="button" class="fvx" aria-label="'+LFI.tr('Fechar')+'">×</button>';
+    d.addEventListener('click',function(e){if(e.target.closest('.fvv')){d.remove();product(p.ref)}else if(e.target.closest('.fvx'))d.remove()});document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.remove()},12000)}catch(_){}}
   /* vitrine */
   function isNovo(p){return p.cad>0&&Date.now()-p.cad<6048e5}
   function lista(){
@@ -892,6 +918,7 @@
     '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+(p.ds!=null&&p.mat&&lfnMat(p.mat).toUpperCase()!==String(p.tag).toUpperCase()?' · '+esc(lfnMat(p.mat).toUpperCase()):'')+'</span>'+edb(p)+'<span class="dmi">'+pgActs(p)+'</span></div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
     '<div class="chips">'+(pubL?'<span class="pub1">'+pubL+'</span>':'')+(p.mat?'<span class="bd">'+MATI+esc(p.mat)+'</span>':'')+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     (p.desc?'<div class="pdesc"><p>'+esc(p.desc)+'</p><button type="button" data-pdm>Ver mais</button></div>':'')+
+    (esg?voltaSec(p):'')+
     (p.gr&&p.gr.length?grauSec(p):'')+
     (p.med&&p.med.length>2?'<section class="dsec"><span class="dsl">Medidas</span><div class="meds"><div class="med"><b>'+p.med[0]+'<i>mm</i></b><span>Lente</span></div><div class="med"><b>'+p.med[1]+'<i>mm</i></b><span>Ponte</span></div><div class="med"><b>'+p.med[2]+'<i>mm</i></b><span>Haste</span></div></div></section>':'')+
     (sw?'<section class="dsec'+(dots?' dcor':'')+'"><div class="dl"><span>Cor</span> · <b id="cn">'+esc(corNome(p,st.cor[p.ref]||0))+'</b></div><div class="sw" aria-label="Cores">'+p.cores.map(function(c,i){var xo=p.qs&&p.qs[i]===0;return dots?'<button type="button" class="dt'+(i?'':' on')+(xo?' x':'')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="'+esc(corNome(p,i))+(xo?' (esgotada)':'')+'"><span style="background:'+c+'"></span></button>':'<button type="button" class="'+(i?'':'on')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="Cor '+(i+1)+'">'+glasses(c,p.raio,6)+'</button>'}).join('')+'</div>'+(dots?thumbsD:'')+'</section>':(one?'<section class="dsec dcor dcor1"><div class="dl"><span>Cor</span> · <b>'+esc(corNome(p,0))+'</b></div>'+thumbsD.replace(/<div class="cthl">.*?<\/div>/,'')+'</section>':''))+
@@ -2049,10 +2076,11 @@
     /* nada achado: "Você quis dizer…" + os mais parecidos (qualquer palavra que bata) */
     function parecidos(q){var tk=btolFold(q).split(/[^a-z0-9]+/).filter(function(t){return t.length>=3});var m={};tk.forEach(function(t){var f=btol(t);cat5().forEach(function(p){var v=f(btolTxt(p));if(v)m[p.ref]=[p,(m[p.ref]?m[p.ref][1]:0)+v]})});return Object.keys(m).map(function(k){return m[k]}).sort(function(a,b){return b[1]-a[1]}).map(function(x){return x[0]}).slice(0,4)}
     function icone(){var ic=$('soic'),on=!!inp.value;if(ic._on===on)return;ic._on=on;ic.innerHTML=on?SETA5:LUPA5;ic.setAttribute('aria-label',on?LFI.tr('Fechar a busca'):LFI.tr('Buscar'));ic.tabIndex=on?0:-1}
+    function socats(){return '<div class="socat"><small>'+LFI.tr('OU VEJA POR CATEGORIA')+'</small>'+[['solar','Solar'],['grau','Leitura'],['armacao','Armações'],['of','Ofertas']].map(function(x){return '<button type="button" data-socat="'+x[0]+'"'+(x[0]==='of'?' class="of"':'')+'>'+LFI.tr(x[1])+'<i>›</i></button>'}).join('')+'<button type="button" data-socat="atacado" class="at">'+LFI.tr('Atacado')+'<i>›</i></button></div>'}
     function pinta(){icone();var q=inp.value,l=achados(q);
-      if(!q.trim()){res.innerHTML=srVistos()+'<div class="sohint">'+LFI.tr('Busque pelo nome ou pelo código da peça.')+'</div><div class="socat"><small>'+LFI.tr('OU VEJA POR CATEGORIA')+'</small>'+[['solar','Solar'],['grau','Leitura'],['armacao','Armações'],['of','Ofertas']].map(function(x){return '<button type="button" data-socat="'+x[0]+'"'+(x[0]==='of'?' class="of"':'')+'>'+LFI.tr(x[1])+'<i>›</i></button>'}).join('')+'<button type="button" data-socat="atacado" class="at">'+LFI.tr('Atacado')+'<i>›</i></button></div>';return}
-      if(!l.length){var sg=btolSugere(q,cat5().map(btolTxt)),pr=parecidos(q);res.innerHTML='<div class="sohint">'+LFI.tr('Nada encontrado para')+' “'+esc(q)+'”.'+(sg?' '+LFI.tr('Você quis dizer')+' <button type="button" class="sosug" data-sq="'+esc(sg)+'">'+esc(sg)+'</button>?':'')+'</div>'+(pr.length?'<div class="sohint" style="margin-top:6px">'+LFI.tr('Parecidos')+':</div>'+pr.map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join(''):'');return}
-      res.innerHTML=l.slice(0,6).map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join('')+(l.length>6?'<button type="button" class="soall" data-soall>'+LFI.tr('Ver todos os')+' '+l.length+' '+LFI.tr('resultados')+'</button>':'')}
+      if(!q.trim()){res.innerHTML=srVistos()+'<div class="sohint">'+LFI.tr('Busque pelo nome ou pelo código da peça.')+'</div>'+socats();return}
+      if(!l.length){var sg=btolSugere(q,cat5().map(btolTxt)),pr=parecidos(q);res.innerHTML='<div class="sohint">'+LFI.tr('Nada encontrado para')+' “'+esc(q)+'”.'+(sg?' '+LFI.tr('Você quis dizer')+' <button type="button" class="sosug" data-sq="'+esc(sg)+'">'+esc(sg)+'</button>?':'')+'</div>'+(pr.length?'<div class="sohint" style="margin-top:6px">'+LFI.tr('Parecidos')+':</div>'+pr.map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join(''):'')+socats();return}
+      var en=btolEntende(q,l);res.innerHTML=(en?'<div class="sohint soent">'+esc(en)+'</div>':'')+l.slice(0,6).map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join('')+(l.length>6?'<button type="button" class="soall" data-soall>'+LFI.tr('Ver todos os')+' '+l.length+' '+LFI.tr('resultados')+'</button>':'')}
     function noCat(){var v=$('vitrine');return !!(v&&v.classList.contains('pop'))}
     var hst=false;addEventListener('popstate',function(){if(hst&&o.classList.contains('on')){hst=false;fecha(true)}});
     /* 10/11 S110-1: a lista termina acima do teclado (visualViewport), nunca escondida atrás dele */
@@ -3182,7 +3210,7 @@
   function syncRun(){
     var pp=fbg('produtos?pageSize=300');pp.catch(function(){});
     fbg('config/site').then(function(d){CFG=Object.assign({ativo:true},fbd(d),{_f:1});try{localStorage.setItem('lf_cfg',JSON.stringify(CFG))}catch(_){}manut();applyCot();setHero()},function(){}).then(function(){
-      return pp}).then(function(j){if(j&&j.documents){try{prodVivo.ult=JSON.stringify(j.documents);localStorage.setItem('lf_pdocs',prodVivo.ult)}catch(_){}syncProds(j.documents)}}).catch(function(){}).then(function(){var l=document.getElementById('prevld');if(l)l.remove();syncEstoque().then(estLoop);prodVivoLiga()})}
+      return pp}).then(function(j){if(j&&j.documents){try{prodVivo.ult=JSON.stringify(j.documents);localStorage.setItem('lf_pdocs',prodVivo.ult)}catch(_){}syncProds(j.documents)}}).catch(function(){}).then(function(){var l=document.getElementById('prevld');if(l)l.remove();syncEstoque().then(function(){estLoop();if(prodVivo.ult)favVolta()});prodVivoLiga()})}
   (ADM||(ADM=isAdm())).then(function(a){if(a&&!LF_ADM&&window.parent!==window){LF_ADM=true;document.documentElement.classList.add('adm');redraw()}});
   manut();try{var qv=new URLSearchParams(location.search).get('video');if(qv)setTimeout(function(){var st=$('stage');st.hidden=false;st.setAttribute('data-sig','q');applyVideo(qv)},300)}catch(_){}
   if(!/[?&]nosync/.test(location.search))setTimeout(syncRun,50);
