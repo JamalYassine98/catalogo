@@ -910,10 +910,10 @@
     if(re){var sc=document.querySelector('#layer .scrim'),top=sc?sc.scrollTop:0}
     prodNext=true;
     var TR='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg>';
-    var items=ks.map(function(k){var p=find(k);return '<div class="ci"><div class="cimg">'+vis(p,7)+'</div><div class="cit"><small>'+p.ref+'</small><b>'+esc(p.nome)+'</b><div class="pu"><span>'+fmtL(p,1)+'</span> <span>'+LFI.tr('por unidade')+'</span></div></div><div class="cif"><div class="cia"><div class="qty"><button data-dec="'+k+'" aria-label="Menos">−</button><span>'+st.cart[k]+'</span><button data-inc="'+k+'" aria-label="Mais">+</button></div><button type="button" class="crl" data-rm="'+k+'">'+LFI.tr('Remover')+'</button></div><div class="cis"><small>'+LFI.tr('Subtotal')+'</small><div class="pr">'+fmtL(p,st.cart[k])+'</div></div></div><button class="crm" data-rm="'+k+'" aria-label="Remover"><span class="crx">×</span></button></div>'}).join('');
+    var items=ks.map(function(k){var p=find(k);return '<div class="ci"><div class="cimg">'+vis(p,7)+'</div><div class="cit"><small>'+p.ref+'</small><b>'+esc(p.nome)+'</b><div class="pu"><span>'+fmtL(p,1)+'</span> <span>'+LFI.tr('por unidade')+'</span></div></div><div class="cif"><div class="cia"><div class="qty"><button data-dec="'+k+'" aria-label="Menos"'+(st.cart[k]<=1?' disabled aria-disabled="true"':'')+'>−</button><span>'+st.cart[k]+'</span><button data-inc="'+k+'" aria-label="Mais">+</button></div><button type="button" class="crl" data-rm="'+k+'">'+LFI.tr('Remover')+'</button></div><div class="cis"><small>'+LFI.tr('Subtotal')+'</small><div class="pr">'+fmtL(p,st.cart[k])+'</div></div></div><button class="crm" data-rm="'+k+'" aria-label="Remover"><span class="crx">×</span></button></div>'}).join('');
     var es=window.LFI&&LFI.lang==='es',cnt=nq+(es?(nq===1?' artículo':' artículos'):(nq===1?' item':' itens'));
     var ste=ks.length>0&&lg?(st.step==='ent'||st.step==='pag'?st.step:''):'',dd=!!ste,cnow=dd?contaNorm(getConta()):null,entD=st.ent==='delivery';
-    var sum='<div class="cs"><h3 class="cs-h">'+(dd?'Seu pedido':'Resumo')+'</h3>'+
+    var sum='<div class="cs"><h3 class="cs-h">'+LFI.tr(dd?'Seu pedido':'Resumo')+'</h3>'+
       '<div class="cs-r cs-h"><span>'+LFI.tr('Subtotal')+' · '+cnt+'</span><span>'+LFI.fmtD(totalD())+'</span></div><div class="cs-r cs-h"><span>'+LFI.tr('Entrega')+'</span><span>'+(dd&&entD?LFI.tr('Delivery · frete na entrega'):LFI.tr('Retirada na loja · grátis'))+'</span></div>'+
       '<div class="cs-t"><span>Total</span><b>'+LFI.fmtD(totalD())+'</b></div>'+
       (ste==='pag'?'<button class="btn w cs-b" data-send'+(st.pag?'':' aria-disabled="true" style="opacity:.55"')+'>Confirmar e pagar</button><span class="cs-n cs-h">As peças ficam reservadas enquanto você paga.</span>'
@@ -946,6 +946,11 @@
     var f={};for(var k in doc)f[k]=fsv(doc[k]);
     var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000);
     return acFetch('https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/pedidos?documentId='+encodeURIComponent(id)+'&key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f}),signal:ct?ct.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw new Error('http '+r.status);return true},function(e){clearTimeout(tm);throw e})}
+  /* B1 (11/11): se a rede falhar ou demorar, tenta de novo sozinho uma vez; guarda o motivo para mostrar o código discreto */
+  function pkEnviar2(doc,id){return pkEnviar(doc,id).catch(function(e){var m=String(e&&e.message||e||''),http=/^http (\d+)/.exec(m);if(http&&+http[1]<500){throw e}
+      return new Promise(function(r){setTimeout(r,1200)}).then(function(){return pkEnviar(doc,id)})})}
+  function pkCodErro(er){var m=String(er&&(er.name==='AbortError'?'tempo':er.message)||er||'?'),h=/^http (\d+)/.exec(m);m=h?h[1]:(/fetch|network|Load failed/i.test(m)?'rede':m.slice(0,24));
+    var d=new Date(),z=function(n){return ('0'+n).slice(-2)};return m+' · '+z(d.getDate())+'/'+z(d.getMonth()+1)+' '+z(d.getHours())+':'+z(d.getMinutes())}
   function pkTela(h){var o=$('pkok');if(!o){o=document.createElement('div');o.id='pkok';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');document.body.appendChild(o);document.documentElement.classList.add('lock')}o.innerHTML=h;return o}
   /* WhatsApp: só aceita celular no formato de Brasil, Paraguai ou Argentina */
   var FONE_EX={py:'0981 123 456',br:'(11) 91234-5678',ar:'9 11 1234-5678'},FONE_MSG={py:'Número do Paraguai inválido. Use o celular, ex.: 0981 123 456.',br:'Número do Brasil inválido. Use DDD + 9 + 8 dígitos, ex.: (11) 91234-5678.',ar:'Número da Argentina inválido. Use o celular com DDD, ex.: 9 11 1234-5678.'};
@@ -1298,7 +1303,7 @@
   document.addEventListener('focusout',function(e){var t=e.target;if(!t||t.id!=='fa2')return;var v=t.value.trim();if(v.length<6)return;endConf(v).then(function(r){if($('fa2')!==t||t.value.trim()!==v)return;var h=$('fa2h');if(r.fora)endAviso(r.cc);else{t.classList.remove('bad');if(h)h.hidden=true}})});
   function endsSalvos(c){var o=[],add=function(x){x=String(x||'').trim();if(x.length>=6&&o.indexOf(x)<0)o.push(x)};add(c&&c.end);lsG('lf_ends',[]).forEach(add);return o.slice(0,4)}
   function endBloco(c){var sv=endsSalvos(c),man=st.endMode==='manual'||!sv.length,i=Math.min(st.endIdx|0,Math.max(sv.length-1,0));
-    if(!man)return '<label class="cfl">Endereço de entrega</label>'+sv.map(function(a,k){return '<button type="button" class="cfo'+(k===i?' on':'')+'" data-cta="endsel" data-i="'+k+'" aria-pressed="'+(k===i)+'"><span>📍</span><b>'+esc(a)+'</b><small>Endereço salvo</small></button>'}).join('')+'<button type="button" class="cfx" data-cta="endman">+ Adicionar endereço manualmente</button>';
+    if(!man)return '<label class="cfl">Endereço de entrega</label>'+sv.map(function(a,k){return '<button type="button" class="cfo'+(k===i?' on':'')+'" data-cta="endsel" data-i="'+k+'" aria-pressed="'+(k===i)+'">'+cki('pin')+'<b>'+esc(a)+'</b><small>Endereço salvo</small></button>'}).join('')+'<button type="button" class="cfx" data-cta="endman">+ Adicionar endereço manualmente</button>';
     return '<label class="cfl" for="fa2">Endereço de entrega</label><input class="field" id="fa2" autocomplete="street-address" placeholder="Rua, número, bairro, cidade" value="'+esc(st.endE||'')+'">'+(sv.length?'<button type="button" class="cfx" data-cta="endsav">Usar um endereço salvo</button>':'')}
   var EMAIL_ENVIA=false; /* ligar (true) quando o envio de e-mail do pedido estiver funcionando */
   function gdGet(){if(!st.gd)st.gd=lsG('lf_guest',null)||{};return st.gd}
@@ -1328,8 +1333,8 @@
       '<label class="cfl" for="gd">'+nacInfo(pais).d+' <span style="font-weight:500">(opcional, para a nota)</span></label><input class="field" id="gd" inputmode="'+(NAC[pais]?'numeric':'text')+'" autocomplete="off" placeholder="'+nacInfo(pais).ph+'" value="'+esc(d.doc||'')+'"></div>'}
     return top+
       '<div class="note"><b style="color:var(--tx)">Como você recebe?</b></div>'+
-      '<button type="button" class="cfo'+(ent==='loja'?' on':'')+'" data-ent="loja" aria-pressed="'+(ent==='loja')+'"><span>🏬</span><b>Retirar na loja</b><small>Venha quando quiser, seg a sáb, 7h30 às 15h</small></button>'+
-      (py?'<button type="button" class="cfo'+(ent==='delivery'?' on':'')+'" data-ent="delivery" aria-pressed="'+(ent==='delivery')+'"><span>🚚</span><b>Delivery</b><small>Entrega pela transportadora. O frete é pago à transportadora na entrega.</small></button>':'<div class="note" style="margin:4px 0 0">'+esc(semDelivery(c.cpais))+' '+(lgS()==='es'?'Para tu ciudad, el pedido es con retiro en la tienda.':'Para a sua cidade, o pedido é com retirada na loja.')+'</div>')+
+      '<button type="button" class="cfo'+(ent==='loja'?' on':'')+'" data-ent="loja" aria-pressed="'+(ent==='loja')+'">'+cki('loja')+'<b>Retirar na loja</b><small>Venha quando quiser, seg a sáb, 7h30 às 15h</small></button>'+
+      (py?'<button type="button" class="cfo'+(ent==='delivery'?' on':'')+'" data-ent="delivery" aria-pressed="'+(ent==='delivery')+'">'+cki('delivery')+'<b>Delivery</b><small>Entrega pela transportadora. O frete é pago à transportadora na entrega.</small></button>':'<div class="note" style="margin:4px 0 0">'+esc(semDelivery(c.cpais))+' '+(lgS()==='es'?'Para tu ciudad, el pedido es con retiro en la tienda.':'Para a sua cidade, o pedido é com retirada na loja.')+'</div>')+
       (ent==='delivery'?endBloco(c):'')}
   /* PIX: código "copia e cola" e QR */
   function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return ('000'+c.toString(16).toUpperCase()).slice(-4)}
@@ -1471,14 +1476,14 @@
     (CFG.reserva===true?resCall('reservar',id,resItens(doc.itens)):Promise.resolve(null)).then(function(rr){
       if(rr&&rr.ok===false&&rr.motivo==='esgotado'){var err=new Error('esgotado');err.falta=rr.falta||[];throw err}
       if(rr&&rr.ok&&!rr.off&&rr.exp)rxo={rx:rr.exp,rd:(rr.agora||Date.now())-Date.now()};
-      return pkEnviar(doc,id)}).then(function(){
+      return pkEnviar2(doc,id)}).then(function(){
       if(ent==='delivery'&&endE){var le=lsG('lf_ends',[]).filter(function(x){return x!==endE});le.unshift(endE);lsS('lf_ends',le.slice(0,4))}
       var L=lsG('lf_ped',[]);if(!L.some(function(e){return e.id===id}))L.push({id:id,cod:cod,ts:doc.ts,total:doc.total,brl:vb,ent:ent,pag:pag,est:'pagar',teste:!!TESTE,rx:rxo?rxo.rx:0,rd:rxo?rxo.rd:0,itens:doc.itens.map(function(i){return {ref:i.ref,nome:i.nome,q:i.q,cor:i.cor}})});lsS('lf_ped',L.slice(-30));
       st.cart={};st.pkid='';st.pkdoc=null;st.step='cart';try{drawBag()}catch(_){}
       closeLayer();pkPagar(id)
     },function(er){
       if(er&&er.message==='esgotado'){resEsgotou(er.falta,doc);return}
-      pkTela('<div class="pkl"></div><h2 style="animation-delay:0s">Quase lá!</h2><div class="pkt" style="animation-delay:.1s"><span>Não deu para enviar o pedido agora. Tente de novo ou fale com a loja pelo WhatsApp.</span></div><div class="pkb" style="animation-delay:.2s"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Enviar pelo WhatsApp</a><button type="button" data-pkretry>Tentar de novo</button></div>')})}
+      pkTela('<div class="pkl"></div><h2 style="animation-delay:0s">Quase lá!</h2><div class="pkt" style="animation-delay:.1s"><span>Não deu para enviar o pedido agora. Tente de novo ou fale com a loja pelo WhatsApp.</span></div><div class="pkb" style="animation-delay:.2s"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Enviar pelo WhatsApp</a><button type="button" data-pkretry>Tentar de novo</button></div><div class="pkcod">'+LFI.tr('código do erro')+': '+esc(pkCodErro(er))+'</div>')})}
 
   /* ===== Conta nova (07/11/2026): cadastro só nome/e-mail/senha + código no e-mail; Minha conta em abas ===== */
   function codUrl(){return 'https://southamerica-east1-'+FB.p+'.cloudfunctions.net/codigo'}
@@ -1603,9 +1608,30 @@
   var PEDAT=0;
   function pedAtualiza(){if(Date.now()-PEDAT<8000)return;PEDAT=Date.now();var L=lsG('lf_ped',[]).filter(function(e){return e.est==='pagar'||e.est==='comp'||e.est==='recusado'});if(!L.length)return;
     Promise.all(L.map(function(e){return fbg('reservas/'+encodeURIComponent(e.id)).then(function(d){var o=fbd(d)||{},n=null;if(o.cancelado)n={est:'cancelado'};else if(o.pago)n={est:'pago',tok:o.tok||e.tok||''};if(n){pedSet(e.id,n);return 1}return 0},function(){return 0})})).then(function(r){if(r.some(Boolean)&&st.mcAba==='peds'&&document.querySelector('#layer .mct'))minhaConta('peds')})}
+  /* B1 (11/11): animações suaves da compra — abrir o carrinho (PC; o celular já desliza), trocar de passo deslizando,
+     remover item deslizando, entrar em Minha conta. Tudo desligado com "reduzir movimento". */
+  addEventListener('keydown',function(e){if(e.key==='Tab')document.documentElement.classList.add('kbd')});addEventListener('pointerdown',function(){document.documentElement.classList.remove('kbd')});
+  var MOV=function(){return Element.prototype.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches},EZ='cubic-bezier(.2,.8,.2,1)';
+  function stepN(){return st.step==='pag'?2:st.step==='ent'?1:0}
+  var _bag0=bag,_ultP=-1;
+  bag=function(re,pop){var antes=document.querySelector('#layer .cartp')?_ultP:-1;_bag0(re,pop);var n=stepN(),cl=document.querySelector('#layer .cartp .cl');
+    if(MOV()&&cl){
+      if(antes<0&&!matchMedia('(max-width:699px)').matches){var k=0;document.querySelectorAll('#layer .cartp > *, #layer .cartp .cl > *, #layer .cartp .cs').forEach(function(e){if(e.classList.contains('cgr')||e.classList.contains('cl'))return;e.animate([{transform:'translateY(14px)',opacity:0},{transform:'none',opacity:1}],{duration:420,delay:k++*60,easing:EZ,fill:'backwards'})})}
+      else if(antes>=0&&n!==antes){var d=n>antes?1:-1;cl.animate([{transform:'translateX('+(d*28)+'px)',opacity:0},{transform:'none',opacity:1}],{duration:300,easing:EZ});
+        var b=document.querySelectorAll('#layer .cartp .stp span b')[n];if(b)b.animate([{transform:'scale(.75)'},{transform:'scale(1.15)'},{transform:'none'}],{duration:380,easing:'ease-out'})}}
+    _ultP=document.querySelector('#layer .cartp')?n:-1};
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('#layer .cartp [data-rm]');if(!t||t.__lfok||!MOV())return;var ci=t.closest('.ci');if(!ci)return;
+    e.preventDefault();e.stopImmediatePropagation();var h=ci.offsetHeight;
+    var a=ci.animate([{opacity:1,transform:'none',height:h+'px'},{opacity:0,transform:'translateX(18px)',height:h+'px',offset:.45},{opacity:0,transform:'translateX(18px)',height:'0px',marginTop:'0px',marginBottom:'0px',paddingTop:'0px',paddingBottom:'0px'}],{duration:340,easing:'ease',fill:'forwards'});
+    a.onfinish=function(){t.__lfok=1;t.click()}},true);
+  var _mc0=minhaConta,_mcAba='';
+  minhaConta=function(aba,edita){var aberto=!!document.querySelector('#layer [aria-label="Minha conta"]');_mc0(aba,edita);if(!MOV())return;
+    var pn=document.querySelector('#layer [aria-label="Minha conta"]');if(!pn)return;var A=st.mcAba;
+    var alvo=aberto?(A!==_mcAba?[].slice.call(pn.children).filter(function(e){return !/^(H2|DIV)$/.test(e.tagName)||!e.querySelector('h2')}).slice(1):[]):[].slice.call(pn.children);
+    alvo.forEach(function(e,k){e.animate([{transform:'translateY(12px)',opacity:0},{transform:'none',opacity:1}],{duration:380,delay:k*55,easing:EZ,fill:'backwards'})});_mcAba=A};
   function mcSalvar(){var c=contaNorm(getConta())||{};document.querySelectorAll('#layer .field.bad').forEach(function(e){e.classList.remove('bad')});
     var nome=($('mn')||{value:''}).value.trim().replace(/\s+/g,' ');if(nome.length<3||nome.indexOf(' ')<0)return cfErro('Digite seu nome e sobrenome.','mn');
-    var o=perfilLer(c,'mp',false);if(!o)return;Object.assign(c,o,{nome:nome});delete c.nasc;contaGrava(c).then(function(){toast('Dados salvos.')})}
+    var o=perfilLer(c,'mp',false);if(!o)return;Object.assign(c,o,{nome:nome});delete c.nasc;contaGrava(c).then(function(){toast('Dados salvos.');if(st.voltaPag){st.voltaPag=0;st.step='pag';bag()}})}
 
   /* ===== Endereço do Paraguai com as 3 travas: país fixo, cidade/departamento do Paraguai, endereço conferido ===== */
   var FLPY=FLG.py||'';
@@ -1651,20 +1677,33 @@
       contaGrava(c).then(function(){toast('Endereço salvo.');minhaConta('ends')})})}
 
   /* ===== Pedido: Carrinho → (conta) → Entrega → Pagamento (07/11/2026) ===== */
+  /* B1 (11/11): ícones oficiais — Pix (marca oficial, simple-icons CC0) e Lucide (ISC) em cinza; nada desenhado à mão */
+  var LU=function(d){return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>'};
+  var CKI={loja:LU('<path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/>'),
+    delivery:LU('<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/>'),
+    alias:LU('<path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/>'),
+    pin:LU('<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'),
+    pix:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="#32BCAD" d="M5.283 18.36a3.505 3.505 0 0 0 2.493-1.032l3.6-3.6a.684.684 0 0 1 .946 0l3.613 3.613a3.504 3.504 0 0 0 2.493 1.032h.71l-4.56 4.56a3.647 3.647 0 0 1-5.156 0L4.85 18.36ZM18.428 5.627a3.505 3.505 0 0 0-2.493 1.032l-3.613 3.614a.67.67 0 0 1-.946 0l-3.6-3.6A3.505 3.505 0 0 0 5.283 5.64h-.434l4.573-4.572a3.646 3.646 0 0 1 5.156 0l4.559 4.559ZM1.068 9.422 3.79 6.699h1.492a2.483 2.483 0 0 1 1.744.722l3.6 3.6a1.73 1.73 0 0 0 2.443 0l3.614-3.613a2.482 2.482 0 0 1 1.744-.723h1.767l2.737 2.737a3.646 3.646 0 0 1 0 5.156l-2.736 2.736h-1.768a2.482 2.482 0 0 1-1.744-.722l-3.613-3.613a1.77 1.77 0 0 0-2.444 0l-3.6 3.6a2.483 2.483 0 0 1-1.744.722H3.791l-2.723-2.723a3.646 3.646 0 0 1 0-5.156"/></svg>'};
+  function cki(k){return '<span class="cki">'+CKI[k]+'</span>'}
   function entCampos(){var c=$('ec');if(c)st.endD={cidade:c.value,dep:($('edp')||{value:''}).value,end:($('ea')||{value:''}).value,ref:($('er')||{value:''}).value,ok:c.getAttribute('data-ok')}}
   function entHtml(c){var ent=st.ent==='delivery'?'delivery':'loja',E=(c&&c.ends)||[],i=Math.min(st.endIdx|0,Math.max(E.length-1,0)),h;
     h='<div class="note"><b style="color:var(--tx)">Como você recebe?</b></div>'+
-      '<button type="button" class="cfo'+(ent==='loja'?' on':'')+'" data-ent="loja" aria-pressed="'+(ent==='loja')+'"><span>🏬</span><b>Retirar na loja</b><small>Venha quando quiser, seg a sáb, 7h30 às 15h</small></button>'+
-      '<button type="button" class="cfo'+(ent==='delivery'?' on':'')+'" data-ent="delivery" aria-pressed="'+(ent==='delivery')+'"><span>🚚</span><b>Delivery</b><small>Só no Paraguai. O frete é pago à transportadora na entrega.</small></button>';
+      '<button type="button" class="cfo'+(ent==='loja'?' on':'')+'" data-ent="loja" aria-pressed="'+(ent==='loja')+'">'+cki('loja')+'<b>Retirar na loja</b><small>Venha quando quiser, seg a sáb, 7h30 às 15h</small></button>'+
+      '<button type="button" class="cfo'+(ent==='delivery'?' on':'')+'" data-ent="delivery" aria-pressed="'+(ent==='delivery')+'">'+cki('delivery')+'<b>Delivery</b><small>Só no Paraguai. O frete é pago à transportadora na entrega.</small></button>';
     if(ent!=='delivery')return h;
-    if(E.length&&st.endMode!=='novo')return h+'<label class="cfl">Endereço de entrega</label>'+E.map(function(a,k){return '<button type="button" class="cfo'+(k===i?' on':'')+'" data-cta="endpick" data-i="'+k+'" aria-pressed="'+(k===i)+'"><span>📍</span><b>'+esc(a.nome||'Endereço')+'</b><small>'+endLinha(a)+'</small></button>'}).join('')+'<button type="button" class="cfx" data-cta="endnovo" style="width:100%;text-align:center">+ Outro endereço</button>';
+    if(E.length&&st.endMode!=='novo')return h+'<label class="cfl">Endereço de entrega</label>'+E.map(function(a,k){return '<button type="button" class="cfo'+(k===i?' on':'')+'" data-cta="endpick" data-i="'+k+'" aria-pressed="'+(k===i)+'">'+cki('pin')+'<b>'+esc(a.nome||'Endereço')+'</b><small>'+endLinha(a)+'</small></button>'}).join('')+'<button type="button" class="cfx" data-cta="endnovo" style="width:100%;text-align:center">+ Outro endereço</button>';
     var d=st.endD||{};
     return h+'<div class="cfc">'+endForm('e',{cidade:d.cidade,dep:d.dep,end:d.end,ref:d.ref})+
       '<label class="rem" style="margin-top:10px"><input type="checkbox" id="esv" checked><i></i><span>Salvar em Meus endereços</span></label>'+
       (E.length?'<button type="button" class="cfx" data-cta="endsalvo">Usar um endereço salvo</button>':'')+'</div>'}
-  function pagHtml(c){var pg=st.pag,h='<div class="note"><b style="color:var(--tx)">Forma de pagamento</b></div>'+
-      '<button type="button" class="cfo'+(pg==='pix'?' on':'')+'" data-cta="pg" data-v="pix" aria-pressed="'+(pg==='pix')+'"><span>⚡</span><b>PIX</b><small>Em reais, pelo app do banco. Confirmação automática.</small></button>'+
-      '<button type="button" class="cfo'+(pg==='alias'?' on':'')+'" data-cta="pg" data-v="alias" aria-pressed="'+(pg==='alias')+'"><span>🏦</span><b>Transferência Itaú Paraguai</b><small>Em guaranis, pelo alias.</small></button>';
+  function confHtml(c){if(!c)return '';var ed=c.email||(sessG()||{}).email||'',ct=[esc(ed),esc(c.tel||'')].filter(Boolean).join(' · '),
+      en=st.ent==='delivery'&&st.entD?'<b>'+LFI.tr('Delivery')+'</b><span>'+endLinha(st.entD)+'</span>':'<b>'+LFI.tr('Retirar na loja')+'</b><span>'+LFI.tr('Galeria Jebai Center, 3º piso · seg a sáb, 7h30 às 15h')+'</span>';
+    return '<div class="cfa"><h3>'+LFI.tr('Confira antes de pagar')+'</h3>'+
+      '<div class="cfr"><small>'+LFI.tr('Seus dados')+'</small><div class="cfv"><b>'+esc(c.nome||'')+'</b><span>'+ct+'</span></div><button type="button" class="cfe" data-cta="cfedados">'+LFI.tr('Editar')+' <i>›</i></button></div>'+
+      '<div class="cfr"><small>'+LFI.tr('Entrega')+'</small><div class="cfv">'+en+'</div><button type="button" class="cfe" data-cta="voltarent">'+LFI.tr('Editar')+' <i>›</i></button></div></div>'}
+  function pagHtml(c){var pg=st.pag,h=confHtml(c)+'<div class="note"><b style="color:var(--tx)">Forma de pagamento</b></div>'+
+      '<button type="button" class="cfo'+(pg==='pix'?' on':'')+'" data-cta="pg" data-v="pix" aria-pressed="'+(pg==='pix')+'">'+cki('pix')+'<b>PIX</b><small>Em reais, pelo app do banco.</small></button>'+
+      '<button type="button" class="cfo'+(pg==='alias'?' on':'')+'" data-cta="pg" data-v="alias" aria-pressed="'+(pg==='alias')+'">'+cki('alias')+'<b>Transferência Itaú Paraguai</b><small>Em guaranis, pelo alias.</small></button>';
     if(pg&&(!c.tel||!c.doc))h+='<div class="cfc">'+perfilCampos(c,'pp','falta')+'<small class="cfh" style="display:block">Pedimos uma vez só; fica salvo no seu Perfil.</small></div>';
     return h}
   function irPag(){var c=contaNorm(getConta());if(!c){AUTH_VOLTA=true;cadastrarTela();return}
@@ -1707,7 +1746,7 @@
       closeLayer();pkPagar(id)
     },function(er){
       if(er&&er.message==='esgotado'){resEsgotou(er.falta,doc);return}
-      pkTela('<div class="pkl"></div><h2 style="animation-delay:0s">Quase lá!</h2><div class="pkt" style="animation-delay:.1s"><span>Não deu para enviar o pedido agora. Tente de novo ou fale com a loja pelo WhatsApp.</span></div><div class="pkb" style="animation-delay:.2s"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Enviar pelo WhatsApp</a><button type="button" data-pkretry>Tentar de novo</button></div>')})};
+      pkTela('<div class="pkl"></div><h2 style="animation-delay:0s">Quase lá!</h2><div class="pkt" style="animation-delay:.1s"><span>Não deu para enviar o pedido agora. Tente de novo ou fale com a loja pelo WhatsApp.</span></div><div class="pkb" style="animation-delay:.2s"><a class="pkw" target="_blank" rel="noopener" href="'+wa+'">'+PK_WA+'Enviar pelo WhatsApp</a><button type="button" data-pkretry>Tentar de novo</button></div><div class="pkcod">'+LFI.tr('código do erro')+': '+esc(pkCodErro(er))+'</div>')})};
   /* tela de pagar: PIX (automático) ou Itaú (alias + comprovante) */
   pkPagar=function(id){
     var e=pedGet(id);if(!e){return}window.__pgid=id;
@@ -2199,7 +2238,7 @@
     var a=t.getAttribute('data-cta');
     if(a==='conta')minhaConta('perfil');
     else if(a==='endpick'){st.endIdx=+t.getAttribute('data-i')||0;bag(true)}else if(a==='endnovo'){st.endMode='novo';st.endD=null;bag(true)}else if(a==='endsalvo'){entCampos();st.endMode='';bag(true)}
-    else if(a==='irpag')irPag();else if(a==='voltarent'){st.step='ent';bag()}else if(a==='pg'){st.pag=t.getAttribute('data-v');bag(true)}
+    else if(a==='irpag')irPag();else if(a==='cfedados'){st.voltaPag=1;minhaConta('perfil')}else if(a==='voltarent'){st.step='ent';bag()}else if(a==='pg'){st.pag=t.getAttribute('data-v');bag(true)}
     else if(a==='mcaba')minhaConta(t.getAttribute('data-a'));else if(a==='mcsalvar')mcSalvar();else if(a==='mcended')minhaConta('ends',t.getAttribute('data-i'));else if(a==='mcendok')mcEndSalvar(t.getAttribute('data-i'));
     else if(a==='mcendrm'){var ri=+t.getAttribute('data-i');dlgAbre('<h3>Remover este endereço?</h3><p>'+endLinha((contaNorm(getConta()).ends||[])[ri]||{})+'</p><div class="dlga"><button type="button" class="dc" data-dlgx>Cancelar</button><button type="button" class="dk dr" data-cta="mcendrm2" data-i="'+ri+'">Remover</button></div>')}
     else if(a==='mcendrm2'){var c9=contaNorm(getConta());c9.ends.splice(+t.getAttribute('data-i'),1);dlgFecha();contaGrava(c9).then(function(){minhaConta('ends')})}
@@ -2279,7 +2318,7 @@
     else if(d.add){add(d.add,t.closest('.card').querySelector('.ph'))}
     else if(d.addm){var qp=find(d.addm),qi=st.cor[d.addm]||0;if(qp&&qp.lib&&qp.qs&&qp.qs[qi]===0){toast('Essa cor está esgotada. Escolha outra cor.');return}var ph=t.closest('.modal').querySelector('.big');var p=find(d.addm);if(p.aviso==='Esgotado'){closeLayer();add(d.addm,ph);try{var ca=getConta();if(ca&&ca.tel&&ca.nome)pkEnviar({tipo:'avise',ref:p.ref,nome:ca.nome,tel:ca.tel,pais:ca.pais||'',ts:Date.now()},'av'+p.ref+'-'+String(ca.tel).replace(/\D/g,'')).then(function(){toast('Vamos te avisar quando chegar')},function(){})}catch(e){}}else{var bq=t.closest('.modal').querySelector('.buy');addDlg(p,ph,bq?+bq.getAttribute('data-q'):1)}}
     else if(d.inc){st.cart[d.inc]++;drawBag();bag(1)}
-    else if(d.dec){st.cart[d.dec]--;if(st.cart[d.dec]<=0)delete st.cart[d.dec];drawBag();bag(1)}
+    else if(d.dec){if(st.cart[d.dec]<=1)return;st.cart[d.dec]--;drawBag();bag(1)}
     else if(d.rm){delete st.cart[d.rm];drawBag();bag(1)}
     else if(t.hasAttribute('data-send')){enviarPedido()}
     else if(t.hasAttribute('data-pkretry')){enviarPedido(true)}
