@@ -477,7 +477,7 @@
     a.onfinish=function(){f.remove();pop()}}
   /* graus: régua compacta; o grau marcado vai junto no pedido; grau sem estoque fica riscado */
   function grauSec(p){var i0=st.gr[p.ref];if(i0==null){i0=0;if(p.gq)for(var k=0;k<p.gq.length;k++){if(p.gq[k]>0){i0=k;break}}st.gr[p.ref]=i0}
-    return '<section class="dsec dgr"><div class="dl">Grau · <b id="gn">'+esc(p.gr[i0])+'</b>'+(p.gq&&p.gq[i0]>0&&p.gq[i0]<4?' <i class="gqn">'+p.gq[i0]+' un.</i>':'')+'</div><div class="grr" role="group" aria-label="Grau">'+p.gr.map(function(g,i){var xo=p.gq&&p.gq[i]===0;return '<button type="button" class="gb'+(i===i0?' on':'')+(xo?' x':'')+'" data-gr="'+i+'" data-ref="'+p.ref+'"'+(xo?' aria-label="'+esc(g)+' (esgotado)"':'')+'>'+esc(g)+'</button>'}).join('')+'</div></section>'}
+    return '<section class="dsec dgr"><div class="dl"><span>Grau</span> · <b id="gn">'+esc(p.gr[i0])+'</b>'+(p.gq&&p.gq[i0]>0&&p.gq[i0]<4?' <i class="gqn">'+p.gq[i0]+' un.</i>':'')+'</div><div class="grr" role="group" aria-label="Grau">'+p.gr.map(function(g,i){var xo=p.gq&&p.gq[i]===0;return '<button type="button" class="gb'+(i===i0?' on':'')+(xo?' x':'')+'" data-gr="'+i+'" data-ref="'+p.ref+'"'+(xo?' aria-label="'+esc(g)+' (esgotado)"':'')+'>'+esc(g)+'</button>'}).join('')+'</div></section>'}
   function addDlg(p,fromEl,q){
     q=Math.max(1,Math.min(99,q|0||1));st.cart[p.ref]=(st.cart[p.ref]||0)+q;drawBag();if(fromEl&&fromEl.getBoundingClientRect)fly(fromEl,p.ref);else pop();
     var o=$('cad');if(o)o.remove();
@@ -884,17 +884,17 @@
     var q1=function(){return fmt(p.n)},offer=isOf(p),pct=offer?Math.round((1-p.n/p.de)*100):0;
     var buyH='<div class="buy" data-q="1">'+(esg?'':'<div class="tot"><span>Total</span><b data-ptot>'+q1()+'</b></div>')+'<div class="buyrow">'+(esg?'':'<div class="mq" role="group" aria-label="Quantidade"><button type="button" data-pq="-1" aria-label="Diminuir">−</button><b data-pqn>1</b><button type="button" data-pq="1" aria-label="Aumentar">+</button></div>')+'<button type="button" class="bb p" data-addm="'+p.ref+'"><i class="shn"></i><span>'+(esg?'Avise-me':'Comprar')+(esg?'':'<small class="bt" data-ptot> · '+q1()+'</small>')+'</span><em>'+CARTI+'</em></button></div></div>',thumbs=dots?'<div class="dl cthl">'+LFI.tr('Cor')+' · <b class="cthn">'+esc(corNome(p,st.cor[p.ref]||0))+'</b></div><div class="cth cthm" role="group" aria-label="Cores">'+p.cores.map(function(c,i){return '<button type="button" class="'+(i?'':'on')+'" data-cth="'+i+'" aria-label="'+esc(corNome(p,i))+'"><span class="cim"></span><i style="background:'+c+'"></i></button>'}).join('')+'</div>':'';
     var one=!sw;
-    if(one){var th1='<button type="button" class="on" aria-label="'+esc(corNome(p,0))+'"><span class="cim"'+(p.foto?' style="background-image:url(&quot;'+p.foto+'&quot;)"':'')+'>'+(p.foto?'':glasses(p.cores[0],p.raio,3))+'</span><i style="background:'+p.cores[0]+'"></i></button>';thumbs='<div class="cthl">Cor · <b>'+esc(corNome(p,0))+'</b></div><div class="cth cthm one" role="group" aria-label="Cores">'+th1+'</div>'}
+    if(one){var th1='<button type="button" class="on" aria-label="'+esc(corNome(p,0))+'"><span class="cim"'+(p.foto?' style="background-image:url(&quot;'+p.foto+'&quot;)"':'')+'>'+(p.foto?'':glasses(p.cores[0],p.raio,3))+'</span><i style="background:'+p.cores[0]+'"></i></button>';thumbs='<div class="cthl"><span>Cor</span> · <b>'+esc(corNome(p,0))+'</b></div><div class="cth cthm one" role="group" aria-label="Cores">'+th1+'</div>'}
     var thumbsD=thumbs.replace('cth cthm','cth cthd');
     var pubL={m:'Masculino',f:'Feminino',u:'Unissex'}[p.gen];
     prodNext=true;
     layer(pgBar(p)+'<div class="modal pgm" role="dialog" aria-modal="true" aria-label="'+esc(p.nome)+'"><div class="xw"><button class="x" data-close aria-label="Fechar">×</button></div><div class="pgl"><div class="big" data-zoom>'+(p.gv?'<button type="button" class="g360" data-g360="'+esc(p.ref)+'" aria-label="Ver a peça girando em 360°"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 4 0 1 1-4.5-3.5"/><path d="M17 5l-.5 3.5L20 9"/></svg><span>360°</span></button>':'')+((offer||p.tag)?'<div class="pgtags">'+(offer?'<span class="ofpill">OFERTA</span>':'')+(p.tag?'<span class="pgtag">'+esc(p.tag)+'</span>':'')+'</div>':'')+(esg&&p.esgRes?'<span class="stk e pgstk">Reservada agora</span>':'')+(!esg&&/Últim/.test(p.aviso||'')?'<span class="stk u pgstk">'+esc(p.aviso)+'</span>':(!esg&&p.aviso==='Chegou esta semana'?'<span class="stk n pgstk">'+esc(p.aviso)+'</span>':''))+'<button type="button" class="fav dfav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button>'+vis(p,4.5)+'<span class="zh"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>Toque para ampliar</span><span class="shine" style="position:absolute;top:0;bottom:0;left:0;width:18%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);animation:shine 4.5s ease-in-out infinite"></span></div>'+thumbs+'</div>'+
-    '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+(p.ds!=null&&p.mat?' · '+esc(lfnMat(p.mat).toUpperCase()):'')+'</span>'+edb(p)+'<span class="dmi">'+pgActs(p)+'</span></div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
+    '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+(p.ds!=null&&p.mat&&lfnMat(p.mat).toUpperCase()!==String(p.tag).toUpperCase()?' · '+esc(lfnMat(p.mat).toUpperCase()):'')+'</span>'+edb(p)+'<span class="dmi">'+pgActs(p)+'</span></div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
     '<div class="chips">'+(pubL?'<span class="pub1">'+pubL+'</span>':'')+(p.mat?'<span class="bd">'+MATI+esc(p.mat)+'</span>':'')+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     (p.desc?'<div class="pdesc"><p>'+esc(p.desc)+'</p><button type="button" data-pdm>Ver mais</button></div>':'')+
     (p.gr&&p.gr.length?grauSec(p):'')+
     (p.med&&p.med.length>2?'<section class="dsec"><span class="dsl">Medidas</span><div class="meds"><div class="med"><b>'+p.med[0]+'<i>mm</i></b><span>Lente</span></div><div class="med"><b>'+p.med[1]+'<i>mm</i></b><span>Ponte</span></div><div class="med"><b>'+p.med[2]+'<i>mm</i></b><span>Haste</span></div></div></section>':'')+
-    (sw?'<section class="dsec'+(dots?' dcor':'')+'"><div class="dl">Cor · <b id="cn">'+esc(corNome(p,st.cor[p.ref]||0))+'</b></div><div class="sw" aria-label="Cores">'+p.cores.map(function(c,i){var xo=p.qs&&p.qs[i]===0;return dots?'<button type="button" class="dt'+(i?'':' on')+(xo?' x':'')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="'+esc(corNome(p,i))+(xo?' (esgotada)':'')+'"><span style="background:'+c+'"></span></button>':'<button type="button" class="'+(i?'':'on')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="Cor '+(i+1)+'">'+glasses(c,p.raio,6)+'</button>'}).join('')+'</div>'+(dots?thumbsD:'')+'</section>':(one?'<section class="dsec dcor dcor1"><div class="dl">Cor · <b>'+esc(corNome(p,0))+'</b></div>'+thumbsD.replace(/<div class="cthl">.*?<\/div>/,'')+'</section>':''))+
+    (sw?'<section class="dsec'+(dots?' dcor':'')+'"><div class="dl"><span>Cor</span> · <b id="cn">'+esc(corNome(p,st.cor[p.ref]||0))+'</b></div><div class="sw" aria-label="Cores">'+p.cores.map(function(c,i){var xo=p.qs&&p.qs[i]===0;return dots?'<button type="button" class="dt'+(i?'':' on')+(xo?' x':'')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="'+esc(corNome(p,i))+(xo?' (esgotada)':'')+'"><span style="background:'+c+'"></span></button>':'<button type="button" class="'+(i?'':'on')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="Cor '+(i+1)+'">'+glasses(c,p.raio,6)+'</button>'}).join('')+'</div>'+(dots?thumbsD:'')+'</section>':(one?'<section class="dsec dcor dcor1"><div class="dl"><span>Cor</span> · <b>'+esc(corNome(p,0))+'</b></div>'+thumbsD.replace(/<div class="cthl">.*?<\/div>/,'')+'</section>':''))+
     buyH+
     '</div>'+relHtml(p)+'</div>','pg');pgInit(p,pop)}
   /* celular: a reserva abre igual ao menu (painel desliza, fundo escurece, itens entram em sequência), vindo da direita */
@@ -4180,4 +4180,43 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')anEnvia()});
   addEventListener('pagehide',anEnvia);
 
+})();
+/* 11/11 S176-2: altura da barra Comprar (posiciona o WhatsApp logo acima dela) */
+(function(){function u(){var b=document.querySelector('.buy');if(b&&b.offsetHeight)document.documentElement.style.setProperty('--buyh',b.offsetHeight+'px')}try{new MutationObserver(function(){setTimeout(u,60)}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});addEventListener('resize',u)}catch(_){}})();
+/* S170 (aprovado e implementado 11/11/2026): animação leve do tema no destaque, selo do tema nos 4 primeiros cards (no lugar da etiqueta), faixa do tema no catálogo, sem etiqueta NUEVO */
+(function(){
+  var SELO={natal:'Presente ideal',anonovo:'Ano novo',maes:'Para a mamãe',pais:'Para o papai',bf:'Black Friday',halloween:'Halloween'};
+  function T(s){try{return window.LFI&&LFI.lang==='es'?LFI.tr(s):s}catch(_){return s}}
+  var MO='<svg viewBox="0 0 34 16"><path d="M17 5c1-2 2-2 3 0 3-3 8-4 14-1-3 0-5 2-5 5-2-2-5-2-7 1-1-1-3-1-5 0-2-3-5-3-7-1 0-3-2-5-5-5 6-3 11-2 14 1 1-2 2-2 3 0z"/></svg>';
+  function r(a,b){return a+Math.random()*(b-a)}
+  function fx(){
+    var ev=(document.documentElement.getAttribute('data-ev')||'').replace(/-[nd]$/,'');
+    var hd=document.querySelector('#home .hd');if(!ev||!hd||hd.querySelector('.evfx'))return;
+    var c=document.createElement('div');c.className='evfx';var W=hd.offsetWidth,H=hd.offsetHeight,h='',i;
+    function cai(cls,n,t0,t1){for(i=0;i<n;i++)h+='<i class="'+cls+'" style="left:'+r(0,98)+'%;--t:'+r(t0,t1)+'px;--d:'+r(7,12)+'s;--a:-'+r(0,10)+'s;--dx:'+r(-30,30)+'px;--h:'+(H+40)+'px;--r:'+r(-180,180)+'deg"></i>'}
+    function pis(n,cor,t0,t1){for(i=0;i<n;i++)h+='<i class="br" style="left:'+r(3,95)+'%;top:'+r(4,90)+'%;--t:'+r(t0,t1)+'px;--d:'+r(1.8,3.2)+'s;--a:'+r(0,3)+'s;--c:'+cor+'"></i>'}
+    if(ev==='natal')cai('fl',14,3,6);
+    if(ev==='maes')cai('pt',10,7,11);
+    if(ev==='anonovo')pis(10,document.documentElement.getAttribute('data-ev')==='anonovo-n'?'#f1dcae':'#c9a86a',8,14);
+    if(ev==='pais')pis(6,'#e0b878',7,11);
+    if(ev==='bf')h='<i class="sh"></i>';
+    if(ev==='halloween'){h+='<i class="mo" style="--w:'+W+'px;--y0:'+H*.12+'px;--y1:'+H*.30+'px;--s:1;--d:5.5s;--a:.4s">'+MO+'</i>';h+='<i class="mo" style="--w:'+W+'px;--y0:'+H*.30+'px;--y1:'+H*.14+'px;--s:.7;--d:6.5s;--a:1.6s">'+MO+'</i>'}
+    c.innerHTML=h;hd.insertBefore(c,hd.firstChild);
+    setTimeout(function(){c.classList.add('fim')},window.__evfxFim||10000);
+  }
+  function selo(){
+    var ev=(document.documentElement.getAttribute('data-ev')||'').replace(/-[nd]$/,'');if(!SELO[ev])return;
+    document.querySelectorAll('#home .hc .hci').forEach(function(x,k){if(k>3||x.querySelector('.evse'))return;if(getComputedStyle(x).position==='static')x.style.position='relative';var s=document.createElement('span');s.className='evse';s.textContent=T(SELO[ev]);x.appendChild(s)});
+  }
+  var FX={natal:'🎄 Presentes de Natal · retirada no mesmo dia',anonovo:'✨ Ano novo, novo olhar',maes:'🌷 Presentes para a mamãe · retirada no mesmo dia',pais:'Presentes para o papai · retirada no mesmo dia',bf:'⚡ Black Friday · ofertas em toda a loja',halloween:'🎃 Semana de Halloween'};
+  function cat(){
+    var ev=(document.documentElement.getAttribute('data-ev')||'').replace(/-[nd]$/,''),g=document.getElementById('grid');if(!g)return;if(!FX[ev]){[].forEach.call(document.querySelectorAll('.evlf,#grid .evse'),function(x){x.remove()});return}
+    if(!g.parentNode.querySelector('.evlf')){var f=document.createElement('div');f.className='evlf';f.textContent=T(FX[ev]);g.parentNode.insertBefore(f,g)}
+    g.querySelectorAll('.card').forEach(function(cd,k){var x=cd.querySelector('.ph');if(!x)return;var o=x.querySelector('.evse');if(k>3){if(o)o.remove();return}if(o)return;var tg=x.querySelector('.tg');if(tg)tg.style.display='none';var s=document.createElement('span');s.className='evse';s.textContent=T(SELO[ev]);x.appendChild(s)});
+  }
+  function novo(){document.querySelectorAll('#grid .card .tg,#home .hc .tg').forEach(function(t){if(/^(NUEVO|NOVO)$/i.test(t.textContent.trim()))t.style.display='none'})}
+  function vai(){fx();selo();cat();novo()}
+  if(document.readyState==='complete')setTimeout(vai,800);else addEventListener('load',function(){setTimeout(vai,800)});
+  new MutationObserver(function(){setTimeout(vai,300)}).observe(document.documentElement,{attributes:true,attributeFilter:['data-ev']});
+  setInterval(function(){if(!document.hidden){cat();novo()}},1000);
 })();

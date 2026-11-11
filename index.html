@@ -227,7 +227,7 @@ html.bootgz body>*:not(#gw):not(#ptr5):not(script):not(style){visibility:hidden!
 #ptr5{z-index:9100}
 </style>
 </head><body>
-<script>(function(){var B='1794405794';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{if(/[?&]r=(descubra-o-grau|descubri-tu-graduacion)(&|$)/.test(location.search)){document.documentElement.classList.add('bootgz');setTimeout(function(){document.documentElement.classList.remove('bootgz')},5000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794405794"><link rel="preload" as="script" href="/js/lf-site.js?v=1794405794">
+<script>(function(){var B='1794424438';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{if(/[?&]r=(descubra-o-grau|descubri-tu-graduacion)(&|$)/.test(location.search)){document.documentElement.classList.add('bootgz');setTimeout(function(){document.documentElement.classList.remove('bootgz')},5000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794424438"><link rel="preload" as="script" href="/js/lf-site.js?v=1794424438">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2335,6 +2335,78 @@ html.gzon #drw{z-index:10040}html.gzon #layer .scrim,html.gzon #layer .scrim.pg{
 /* 09/11 S46: "‹" nas telas abertas pelo menu (Atacado, Como comprar…) */
 .sec.pop>.pnbk{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--ac);font:600 15px Inter,system-ui,sans-serif;padding:6px 0;margin:2px 0 10px;cursor:pointer}
 @media (min-width:861px){.sec.pop>.pnbk,.sec>.pnbk{display:none!important}}
+
+/* S170 (aprovado e implementado 11/11/2026) — temáticas no mesmo padrão: catálogo claro; cor forte só na faixa, destaque e rodapé */
+/* Halloween: página clara (lilás), roxo e laranja só na faixa, destaque e rodapé */
+html[data-ev=halloween]{--bg:#f7f2f9;--pn:#fff;--tx:#2a1530;--mu:#6e5a76;--ln:#e9dfee;--ln2:#dccfe3;--ac:#d9651a;--logo:url("/media/i/926f9307ba28.png");color-scheme:light}
+html[data-ev=halloween] body,html[data-ev=halloween] .top{background:radial-gradient(circle,#4a2a5e12 1.5px,transparent 2px) 0 0/34px 34px,#f7f2f9}
+html[data-ev=halloween] .hnews{background:transparent}
+html[data-ev=halloween] #home h2.h2,html[data-ev=halloween] .htabs button.on,html[data-ev=halloween] .htr b{color:#4a2a5e}
+html[data-ev=halloween] .lfft{background:#2a1530;color:#d9cbe0}
+/* Dia das Mães: rosa-claro, vinho rosado e dourado suave */
+html[data-ev=maes]{--bg:#fcf5f7;--pn:#fff;--tx:#3a1a28;--mu:#7a5a68;--ln:#f0dfe6;--ln2:#e6cdd8;--ac:#b8436f;color-scheme:light}
+html[data-ev=maes] body,html[data-ev=maes] .top{background:radial-gradient(circle,#b8436f12 1.5px,transparent 2px) 0 0/34px 34px,#fcf5f7}
+html[data-ev=maes] #evbar{background:#8e2f55;color:#fff}
+html[data-ev=maes] #home .hd{background:radial-gradient(circle at 85% 15%,#ffd1df33,transparent 40%),linear-gradient(135deg,#9c3a63,#6e2245);color:#fff}
+html[data-ev=maes] #home .hd .hlb,html[data-ev=maes] #home .hd h1 em{color:#ffd1df}html[data-ev=maes] #home .hd .hsub{color:#fffc}html[data-ev=maes] #home .hd .hpr s{color:#fff9}
+html[data-ev=maes] #home h2.h2,html[data-ev=maes] .htabs button.on,html[data-ev=maes] .htr b{color:#8e2f55}
+/* Dia dos Pais: cinza-azulado claro, azul-marinho e caramelo */
+html[data-ev=pais]{--bg:#f3f5f8;--pn:#fff;--tx:#14233d;--mu:#5c6a80;--ln:#dfe5ee;--ln2:#cfd8e4;--ac:#b07a3a;color-scheme:light}
+html[data-ev=pais] body,html[data-ev=pais] .top{background:radial-gradient(circle,#1e2f4d12 1.5px,transparent 2px) 0 0/34px 34px,#f3f5f8}
+html[data-ev=pais] #evbar{background:#1e2f4d;color:#fff}
+html[data-ev=pais] #home .hd{background:radial-gradient(circle at 85% 15%,#e0b87833,transparent 40%),linear-gradient(135deg,#22385c,#14233d);color:#fff}
+html[data-ev=pais] #home .hd .hlb,html[data-ev=pais] #home .hd h1 em{color:#e0b878}html[data-ev=pais] #home .hd .hsub{color:#fffc}html[data-ev=pais] #home .hd .hpr s{color:#fff9}
+html[data-ev=pais] #home h2.h2,html[data-ev=pais] .htabs button.on,html[data-ev=pais] .htr b{color:#1e2f4d}
+/* rodapé escuro em todos (mesmo padrão) */
+html[data-ev=maes] .lfft,html[data-ev=pais] .lfft,html[data-ev=halloween] .lfft{border:0}
+html[data-ev=maes] .lfft{background:#6e2245;color:#f3dbe5}html[data-ev=pais] .lfft{background:#14233d;color:#c9d3e2}
+html[data-ev=maes] .lfft b,html[data-ev=pais] .lfft b,html[data-ev=halloween] .lfft b,html[data-ev=maes] .lfft .fbr,html[data-ev=pais] .lfft .fbr{color:#fff}
+html[data-ev=maes] .lfft .flg,html[data-ev=pais] .lfft .flg,html[data-ev=halloween] .lfft .flg{filter:brightness(0) invert(1)}
+html[data-ev=maes] .lfft .fbt,html[data-ev=pais] .lfft .fbt,html[data-ev=halloween] .lfft .fbt{border-color:#ffffff22}
+html[data-ev=maes] .lfft .pay span,html[data-ev=maes] .lfft .lng{background:#8e2f55;border-color:#ffffff33;color:#fff}
+html[data-ev=pais] .lfft .pay span,html[data-ev=pais] .lfft .lng{background:#1e2f4d;border-color:#ffffff33;color:#fff}
+html[data-ev=halloween] .lfft .pay span,html[data-ev=halloween] .lfft .lng{background:#3a2149;border-color:#ffffff33;color:#fff}
+html[data-ev=maes] .lfft .lng button,html[data-ev=pais] .lfft .lng button,html[data-ev=halloween] .lfft .lng button{color:#fff}
+/* selo do tema nos cards */
+.evse{position:absolute;left:10px;top:10px;z-index:3;font:700 9.5px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:999px;color:#fff;background:var(--ac);box-shadow:0 2px 6px #0002;pointer-events:none}
+html[data-ev=natal] .evse{background:#1f5c3a}html[data-ev^=anonovo] .evse{background:linear-gradient(135deg,#9c7a3c,#d9bd84 45%,#a8854a);color:#1f1d1a}
+html[data-ev=bf] .evse{background:#e11d48}html[data-ev=halloween] .evse{background:#2a1530;color:#ffb15c}
+html[data-ev=maes] .evse{background:#8e2f55}html[data-ev=pais] .evse{background:#1e2f4d;color:#e0b878}
+/* animações leves só no destaque: param sozinhas (~10 s) e somem para quem pede menos movimento */
+#home .hd{position:relative;overflow:hidden}
+.evfx{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;transition:opacity 1.2s}
+.evfx.fim{opacity:0}
+.evfx i{position:absolute;display:block}
+@keyframes evcai{from{transform:translate3d(0,-30px,0) rotate(0)}to{transform:translate3d(var(--dx),var(--h),0) rotate(var(--r))}}
+@keyframes evpis{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+@keyframes evvoa{0%{transform:translate3d(-60px,var(--y0),0) scale(var(--s))}50%{transform:translate3d(calc(var(--w)/2),var(--y1),0) scale(var(--s))}100%{transform:translate3d(calc(var(--w) + 60px),var(--y0),0) scale(var(--s))}}
+@keyframes evasa{50%{transform:scaleY(.35)}}
+@keyframes evbri{0%{transform:translateX(-120%) skewX(-18deg)}60%,100%{transform:translateX(420%) skewX(-18deg)}}
+.evfx .fl{width:var(--t);height:var(--t);border-radius:50%;background:#fff;opacity:.85;box-shadow:0 0 4px #fff8;animation:evcai var(--d) linear var(--a) infinite}
+.evfx .pt{width:var(--t);height:calc(var(--t)*.62);border-radius:60% 0 60% 0;background:linear-gradient(135deg,#ffd1df,#f39ab8);opacity:.9;animation:evcai var(--d) linear var(--a) infinite}
+.evfx .br{width:var(--t);height:var(--t);opacity:0;animation:evpis var(--d) ease-in-out var(--a) infinite;background:var(--c);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
+.evfx .mo{left:0;top:0;width:34px;height:16px;animation:evvoa var(--d) ease-in-out var(--a) 1 both}
+.evfx .mo svg{width:100%;height:100%;fill:#1a0d20;animation:evasa .28s ease-in-out infinite;transform-origin:50% 60%}
+.evfx .sh{top:0;bottom:0;width:22%;background:linear-gradient(90deg,transparent,#ffffff2e,transparent);animation:evbri 3.2s ease-in-out .6s 3}
+@media (prefers-reduced-motion:reduce){.evfx{display:none}}
+/* contornos leves na cor do tema (cards de Novidades e Categoria); BF fica com os cards pretos */
+html[data-ev=natal]{--evb:#1f5c3a}html[data-ev^=anonovo]{--evb:#a8854a}html[data-ev=maes]{--evb:#b8436f}html[data-ev=pais]{--evb:#1e2f4d}html[data-ev=halloween]{--evb:#5a2f72}
+html[data-ev]:not([data-ev=bf]) .hc,html[data-ev]:not([data-ev=bf]) .hcat a{border-color:color-mix(in srgb,var(--evb) 24%,transparent);transition:border-color .2s,box-shadow .2s}
+@media (hover:hover){html[data-ev]:not([data-ev=bf]) .hc:hover,html[data-ev]:not([data-ev=bf]) .hcat a:hover{border-color:color-mix(in srgb,var(--evb) 60%,transparent);box-shadow:0 6px 18px color-mix(in srgb,var(--evb) 14%,transparent)}}
+html[data-ev]:not([data-ev=bf]) .hc:active,html[data-ev]:not([data-ev=bf]) .hcat a:active{border-color:color-mix(in srgb,var(--evb) 60%,transparent)}
+/* catálogo: mesmo contorno leve, faixa fina do tema no topo da lista, filtro escolhido na cor do tema (já usa --ac) */
+html[data-ev]:not([data-ev=bf]) #grid .card{border-color:color-mix(in srgb,var(--evb) 24%,transparent)}
+@media (hover:hover){html[data-ev]:not([data-ev=bf]) #grid .card:hover{border-color:color-mix(in srgb,var(--evb) 60%,transparent);box-shadow:0 8px 22px color-mix(in srgb,var(--evb) 14%,transparent)}}
+html[data-ev=bf]{--evb:#111}
+.evlf{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 14px;padding:9px 14px;border-radius:12px;font:600 13px var(--body);color:#fff;background:var(--evb);grid-column:1/-1}
+html[data-ev^=anonovo] .evlf{background:linear-gradient(135deg,#9c7a3c,#d9bd84 45%,#a8854a);color:#1f1d1a}
+html[data-ev=pais] .evlf{color:#e0b878}html[data-ev=halloween] .evlf{background:#2a1530;color:#ffb15c}html[data-ev=bf] .evlf{background:#000}
+#grid .card .ph{position:relative}#grid .card .evse{left:12px;top:12px;font-size:10.5px;padding:6px 10px}
+/* v2 contorno: mais visível (1,5 px a 42% + sombra leve na cor do tema) */
+html[data-ev]:not([data-ev=bf]) .hc,html[data-ev]:not([data-ev=bf]) .hcat a,html[data-ev]:not([data-ev=bf]) #grid .card{border:2px solid color-mix(in srgb,var(--evb) 72%,transparent);box-shadow:0 4px 14px color-mix(in srgb,var(--evb) 10%,transparent)}
+
+/* S170: sem etiquetas pretas (tipo/NUEVO) nos cards do catálogo — o material já aparece no texto, o tipo nos filtros */
+#grid .card .ph .tg{display:none!important}
 </style>
 
 <div class="top"><div class="wrap">
@@ -2469,12 +2541,12 @@ html.gzon #drw{z-index:10040}html.gzon #layer .scrim,html.gzon #layer .scrim.pg{
 <div id="cmpbar" role="region" aria-label="Comparar modelos"><span id="cmpn"></span><button class="go" data-cmpopen>Comparar</button><button class="cl" data-cmpclear aria-label="Limpar comparação">Limpar</button></div>
 <div id="layer"></div>
 
-<script src="/js/lf-i18n.js?v=1794405794"></script>
-<script src="/js/lf-site.js?v=1794405794"></script>
+<script src="/js/lf-i18n.js?v=1794424438"></script>
+<script src="/js/lf-site.js?v=1794424438"></script>
 
 <script>/* a entrada só começa depois do primeiro quadro pintado: o trabalho pesado do carregamento não come o começo da animação */(function(){var d=document.documentElement,i=!!document.getElementById('intro'),on=0,g=function(){if(!on){on=1;d.classList.add('go')}};
 /* espera as fontes (sem troca de letra no meio da animação) e, na primeira visita, a abertura terminar de sair; só então o conteúdo sobe */
 function arm(){var f=document.fonts&&document.fonts.ready||Promise.resolve();Promise.race([f,new Promise(function(r){setTimeout(r,1200)})]).then(function(){requestAnimationFrame(function(){requestAnimationFrame(g)})})}
 if(i)setTimeout(arm,3300);else arm();setTimeout(g,i?5000:1800)})()</script>
 <script>/*LINKS-LEGAIS*/document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="/termos.html"],a[href^="/privacidade.html"]');if(!a)return;var l=(window.LFI&&LFI.lang)||'';if(l!=='es')l='pt';a.setAttribute('href',a.getAttribute('href').split('#')[0]+'#'+l)},true)</script>
-</body></html>
+<style id="s176wa">/* 11/11 S176-2 (aprovado): na página da peça o WhatsApp fica logo acima da barra Comprar, menor e encostado à direita (não cobre preço nem chips) */html.onprod body a.wa{bottom:calc(var(--buyh,77px) + 10px + env(safe-area-inset-bottom,0px))!important;right:8px!important}html.onprod:not(.warol) body a.wa{scale:.78;transform-origin:100% 100%}</style></body></html>
