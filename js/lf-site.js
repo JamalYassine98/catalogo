@@ -444,7 +444,7 @@
           cd.remove();$('count').textContent=rest.length+' modelo'+(rest.length===1?'':'s');
           if(Element.prototype.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)rest.forEach(function(c,i){var n=c.getBoundingClientRect(),dx=old[i].left-n.left,dy=old[i].top-n.top;if(dx||dy)c.animate([{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'})})},330)}
       else drawGrid()}
-    if(on)toast('Salvo nos favoritos')}
+    if(on){toast(LFI.tr('Salvo nos favoritos'),LFI.tr('Ver no carrinho ›'));var tb=document.querySelectorAll('.toast button[data-bag]');if(tb.length)tb[tb.length-1].setAttribute('data-bagfav','1')}}
   function drawCmp(){
     var b=$('cmpbar'),n=st.cmp.length;b.classList.toggle('show',n>0);
     $('cmpn').textContent='Comparar: '+n+' de 3';b.querySelector('.go').disabled=n<2;document.documentElement.classList.toggle('lfcmp',n>0);lfBh()}
@@ -547,7 +547,7 @@
     if(!skip&&n>0){try{history.go(-n)}catch(_){}}
     if(rf)setTimeout(function(){prodMark(rf)},60)}
   function prodMark(rf){if(!rf||rf==='#cart')return;var b=document.querySelector('#grid [data-open="'+rf+'"]'),c=b&&b.closest('.card');if(!c)return;var r=c.getBoundingClientRect(),h=innerHeight||600;if(r.height&&(r.bottom<0||r.top>h)){try{c.scrollIntoView({block:'center'})}catch(_){}}c.classList.add('lastv');setTimeout(function(){c.classList.remove('lastv')},2600)}
-  function pgBar(p){return '<div class="pgbar"><button type="button" class="pgback navb" data-pgback><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>'+esc(navTxt(p))+'</span></button><span class="pgcr">Catálogo<i>›</i>'+esc((TIPOS.filter(function(t){return t[0]===p.tipo})[0]||[0,''])[1])+'<i>›</i>'+p.ref+'</span><span class="pgacts">'+pgFavBtn()+pgActs(p)+'</span></div>'}
+  function pgBar(p){return '<div class="pgbar"><button type="button" class="pgback navb" data-pgback><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>'+esc(navTxt(p))+'</span></button><span class="pgcr"><button type="button" data-crumb="todos">'+LFI.tr('Catálogo')+'</button><i>›</i><button type="button" data-crumb="'+esc(p.tipo)+'">'+esc((TIPOS.filter(function(t){return t[0]===p.tipo})[0]||[0,''])[1])+'</button><i>›</i><span>'+p.ref+'</span></span></div>'}
   /* v453: botão de favoritos também na página da peça (o coração voa para ele, igual ao catálogo) */
   /* 08/11 (aprovado): comparar e compartilhar no topo, ao lado do coração de cima (mesmo botão redondo) */
   function pgActs(p){return '<button type="button" class="ib fbtn pgact'+(st.cmp.indexOf(p.ref)>=0?' on':'')+'" data-cmp="'+p.ref+'" aria-label="'+LFI.tr('Comparar')+'">'+CMPI+'</button><button type="button" class="ib fbtn pgact" data-share="'+p.ref+'" aria-label="'+LFI.tr('Compartilhar')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.7l6.8-4M8.6 13.3l6.8 4"/></svg></button>'}
@@ -888,7 +888,7 @@
     var pubL={m:'Masculino',f:'Feminino',u:'Unissex'}[p.gen];
     prodNext=true;
     layer(pgBar(p)+'<div class="modal pgm" role="dialog" aria-modal="true" aria-label="'+esc(p.nome)+'"><div class="xw"><button class="x" data-close aria-label="Fechar">×</button></div><div class="pgl"><div class="big" data-zoom>'+(p.gv?'<button type="button" class="g360" data-g360="'+esc(p.ref)+'" aria-label="Ver a peça girando em 360°"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 4 0 1 1-4.5-3.5"/><path d="M17 5l-.5 3.5L20 9"/></svg><span>360°</span></button>':'')+((offer||p.tag)?'<div class="pgtags">'+(offer?'<span class="ofpill">OFERTA</span>':'')+(p.tag?'<span class="pgtag">'+esc(p.tag)+'</span>':'')+'</div>':'')+(esg&&p.esgRes?'<span class="stk e pgstk">Reservada agora</span>':'')+(!esg&&/Últim/.test(p.aviso||'')?'<span class="stk u pgstk">'+esc(p.aviso)+'</span>':(!esg&&p.aviso==='Chegou esta semana'?'<span class="stk n pgstk">'+esc(p.aviso)+'</span>':''))+'<button type="button" class="fav dfav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button>'+vis(p,4.5)+'<span class="zh"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>Toque para ampliar</span><span class="shine" style="position:absolute;top:0;bottom:0;left:0;width:18%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);animation:shine 4.5s ease-in-out infinite"></span></div>'+thumbs+'</div>'+
-    '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+(p.ds!=null&&p.mat?' · '+esc(lfnMat(p.mat).toUpperCase()):'')+'</span>'+edb(p)+'</div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
+    '<div class="det"><header class="dh"><div class="dm"><span class="ref">'+p.ref+'</span><i></i><span class="ref">'+esc(p.tag)+(p.ds!=null&&p.mat?' · '+esc(lfnMat(p.mat).toUpperCase()):'')+'</span>'+edb(p)+'<span class="dmi">'+pgActs(p)+'</span></div><h2>'+esc(p.nome)+'</h2><div class="dp'+(offer?' dof':'')+'">'+(offer?'<span class="pof"><s>'+fmt(p.de)+'</s><b>'+fmt(p.n)+'</b><em>−'+pct+'%</em></span>':'')+(offer?'':'<span class="pr">'+prx(p)+'</span>')+(esg?'<span class="dav e">'+esc(p.aviso)+'</span>':'')+'</div>'+(offer?'<div class="pec">Você economiza '+fmt(p.de-p.n)+'</div>':'')+'</header>'+
     '<div class="chips">'+(pubL?'<span class="pub1">'+pubL+'</span>':'')+(p.mat?'<span class="bd">'+MATI+esc(p.mat)+'</span>':'')+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     (p.desc?'<div class="pdesc"><p>'+esc(p.desc)+'</p><button type="button" data-pdm>Ver mais</button></div>':'')+
     (p.gr&&p.gr.length?grauSec(p):'')+
@@ -926,6 +926,33 @@
       (ks.length?(dd?'<div class="cgr"><div class="cl">'+(ste==='pag'?pagHtml(cnow):entHtml(cnow))+'</div>'+sum+'</div>':'<div class="cgr"><div class="cl">'+items+'</div>'+sum+'</div>')
       :'<div class="note" style="margin-top:20px">Seu carrinho está vazio. Volte ao catálogo e escolha um produto.</div><button type="button" class="cs-c" data-cc style="margin-top:14px;padding:0 20px">Continuar comprando</button>')+'</aside>','pg'+(re?' still':''));pgCart(re,pop);if(re){var pn=document.querySelector('#layer .scrim');if(pn)pn.scrollTop=top}}
   function mensagem(modo,ref){return LFI.tr(mensagem0(modo,ref))}
+  /* B3 (11/11, S156): catálogo sem bolinhas — linha de gênero só em texto + "Filtros ›" na mesma linha (abre a caixa de filtros de sempre) */
+  function genRow(){var ms=document.querySelector('#vscr .mobsearch');if(!ms)return;var o=$('lfgen');
+    if(!o){o=document.createElement('div');o.id='lfgen';o.className='lfgen';o.setAttribute('role','group');o.setAttribute('aria-label',LFI.tr('Gênero'));ms.insertAdjacentElement('afterend',o)}
+    o.innerHTML=[['','Todos'],['f','Feminino'],['m','Masculino'],['u','Unissex']].map(function(g){return '<button type="button" data-gen="'+g[0]+'" aria-pressed="'+(st.gen===g[0])+'" class="'+(st.gen===g[0]?'on':'')+'">'+LFI.tr(g[1])+'</button>'}).join('')+'<a href="#" class="lfgf" data-lffil>'+LFI.tr('Filtros')+' <i>›</i></a>'}
+  var _dg3=drawGrid;drawGrid=function(){var r=_dg3.apply(this,arguments);try{genRow()}catch(_){}return r};
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-lffil]');if(!t)return;e.preventDefault();e.stopPropagation();var f=$('fbtn');if(f)f.click()},true);
+
+  /* B2 (11/11): Favoritos dentro do carrinho — abas "Carrinho n | Favoritos n" no passo 1; trilha da peça clicável */
+  st.cartTab='cart';
+  function favRows(){var ks=Object.keys(st.fav).filter(function(k){return find(k)});if(!ks.length)return '<div class="note" style="margin-top:6px">'+LFI.tr('Você ainda não salvou nenhum favorito. Toque no coração da foto para guardar.')+'</div>';
+    return ks.map(function(k){var p=find(k),esg=p.aviso==='Esgotado';return '<div class="ci fvi"><button type="button" class="cimg" data-open="'+k+'" aria-label="'+esc(p.nome)+'">'+vis(p,7)+'</button><div class="cit"><small>'+p.ref+'</small><b>'+esc(p.nome)+'</b><div class="pu"><span>'+fmtL(p,1)+'</span></div></div>'+
+      '<div class="fva">'+(esg?'<span class="fvx">'+LFI.tr('Esgotado')+'</span>':'<button type="button" class="fvb" data-favcart="'+k+'">'+LFI.tr('Colocar no carrinho')+'</button>')+'<button type="button" class="crl" data-fav="'+k+'">'+LFI.tr('Remover')+'</button></div></div>'}).join('')}
+  var _bag2=bag;
+  bag=function(re,pop){_bag2(re,pop);var pn=document.querySelector('#layer .cartp');if(!pn||pn.querySelector('[data-cta="irpag"],[data-send]'))return;
+    var nc=qtd(),nf=Object.keys(st.fav).filter(function(k){return find(k)}).length;if(!nf&&st.cartTab!=='fav')return;
+    var h=pn.querySelector('.cph');if(!h)return;var tb=document.createElement('div');tb.className='ctb';tb.setAttribute('role','tablist');
+    tb.innerHTML='<button type="button" role="tab" data-ctab="cart" aria-selected="'+(st.cartTab!=='fav')+'" class="'+(st.cartTab!=='fav'?'on':'')+'">'+LFI.tr('Carrinho')+' <small>'+nc+'</small></button><button type="button" role="tab" data-ctab="fav" aria-selected="'+(st.cartTab==='fav')+'" class="'+(st.cartTab==='fav'?'on':'')+'">'+LFI.tr('Favoritos')+' <small>'+nf+'</small></button>';
+    h.insertAdjacentElement('afterend',tb);
+    if(st.cartTab==='fav'){[].slice.call(pn.children).forEach(function(e){if(e!==h&&e!==tb)e.remove()});var w=document.createElement('div');w.className='fvl';w.innerHTML=favRows();pn.appendChild(w);var t2=h.querySelector('h2');if(t2)t2.innerHTML=LFI.tr('Favoritos')}};
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-ctab],[data-favcart],[data-bagfav],[data-crumb],#layer .fvi [data-fav]');if(!t)return;
+    if(t.hasAttribute('data-bagfav')){st.cartTab='fav';st.step='cart';return}
+    if(t.hasAttribute('data-ctab')){e.preventDefault();e.stopPropagation();st.cartTab=t.getAttribute('data-ctab');bag(1);return}
+    if(t.hasAttribute('data-favcart')){e.preventDefault();e.stopPropagation();var r=t.getAttribute('data-favcart');st.cart[r]=(st.cart[r]||0)+1;drawBag();pop();st.cartTab='cart';bag(1);toast(LFI.tr('Adicionado ao carrinho'));return}
+    if(t.hasAttribute('data-crumb')){e.preventDefault();e.stopPropagation();var v=t.getAttribute('data-crumb');closeLayer();setTimeout(function(){st.tipo=v||'todos';st.gen='';st.col='';st.rosto='';try{drawGen();drawChips()}catch(_){}openPanel('vitrine',true);drawGrid()},80);return}
+    if(t.closest('.fvi')&&t.hasAttribute('data-fav')){setTimeout(function(){bag(1)},0)}},true);
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-bag]');if(t&&!t.hasAttribute('data-bagfav')&&!document.querySelector('#layer .cartp'))st.cartTab='cart'},true);
+
   function mensagem0(modo,ref){
     if(modo==='lojista'){var g=function(i){var e=$(i);return e?e.value.trim():''},m='Olá! Sou lojista e vim pelo catálogo da La Fouch. Quero saber sobre os preços e as quantidades de atacado.';if(g('an'))m+='\nÓtica: '+g('an');if(g('ac'))m+='\nCidade: '+g('ac');if(g('aq'))m+='\nQuantidade aproximada: '+g('aq');return m}
     if(modo==='avise'){var p=find(ref);return 'Olá! Me avise quando chegar: '+p.nome+' ('+p.ref+').\nVer o modelo: https://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html'}
@@ -1792,7 +1819,7 @@
 
   /* ---- eventos ---- */
   var EVD={
-    natal:{bar:'🎄 Natal La Fouch · todo óculos vai com estojo e flanela de presente',lab:'NATAL',h:'Presenteie estilo neste <em>Natal</em>',sub:'Ideias de presente · retirada no mesmo dia em Ciudad del Este',deco:'🎄',b2:'Ver presentes'},
+    natal:{bar:'🎄 Natal La Fouch · presentes com retirada no mesmo dia',lab:'NATAL',h:'Presenteie estilo neste <em>Natal</em>',sub:'Ideias de presente · retirada no mesmo dia em Ciudad del Este',deco:'🎄',b2:'Ver presentes'},
     halloween:{bar:'🎃 Semana de Halloween na La Fouch',lab:'HALLOWEEN',h:'Olhar <em>misterioso</em>',sub:'Solares escuros e armações gatinho',deco:'🦇',b2:'Ver a seleção'},
     bf:{bar:'⚡ BLACK FRIDAY · ofertas em toda a loja',lab:'SÓ ESTA SEMANA',h:'BLACK <em>FRIDAY</em>',sub:'Estoque limitado: quando acaba, acabou',deco:'',b2:'Ver ofertas',cd:1},
     anonovo:{bar:'✨ Ano Novo · comece o ano com um novo olhar',lab:'ANO NOVO',h:'Ano novo, <em>novo olhar</em>',sub:'Dourados e clássicos para receber o ano com estilo',deco:'🥂',b2:'Ver catálogo'}
@@ -2057,7 +2084,6 @@
     if(ro&&dp&&(p.rosto||[]).indexOf(ro)>=0)dp.insertAdjacentHTML('afterend','<div class="pidl">✓ '+LFI.tr('Ideal para o seu rosto')+' '+esc(rostoNome(ro))+'</div>');
     if(dp&&isOf(p)&&+p.ofAte>Date.now()){var sx=Math.floor((+p.ofAte-Date.now())/1000),dx=Math.floor(sx/86400),hx=Math.floor(sx%86400/3600),mx=Math.floor(sx%3600/60);dp.insertAdjacentHTML('afterend','<div class="pofa">⏱ '+LFI.tr('A oferta termina em')+' '+(dx?dx+' d '+hx+' h':hx?hx+' h '+mx+' min':mx+' min')+'</div>')}
     var buy=det.querySelector('.buy'),ex='';
-    if(p.tipo!=='acessorio'&&CFG.brinde!==false)ex+='<div class="pbr"><i>🎁</i><div><b>'+LFI.tr('Inclui estojo e flanela')+'</b><small>'+LFI.tr('Todo óculos vai com estojo e flanela de limpeza, de presente.')+'</small></div></div>';
     var A=p.tipo==='acessorio'?[]:accs();if(A.length)ex+='<div class="pcb"><h3>'+LFI.tr('Combina com')+'</h3>'+A.map(accItem).join('')+'</div>';
     if(ex&&buy)buy.insertAdjacentHTML('afterend',ex);
     if(p.tipo!=='acessorio'){m.insertAdjacentHTML('beforeend','<section class="prv" id="prv" data-ref="'+esc(ref)+'"><div class="rv0">'+LFI.tr('Carregando avaliações…')+'</div></section>');avalCarrega(ref)}}

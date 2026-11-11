@@ -123,8 +123,38 @@ html body .hero h1,html body .hero p{text-align:left!important;max-width:none!im
 @media (prefers-reduced-motion:no-preference){.cartp .btn{transition:transform .12s,background .25s,color .25s}.cartp .btn:active{transform:scale(.97)}.cartp .cs-c,.cartp .crl{transition:color .2s}}
 .cartp .cs-c:hover,.cartp .crl:hover{color:var(--ac)}
 .cartp .qty button[disabled]{opacity:.3;cursor:default}
+</style><style id="b2-peca">/* B2 11/11: peça e favoritos */
+#ftog,#ftogp,.pgfav,.pgacts{display:none!important}
+.pgbar{align-items:center}.pgbar .pgcr{display:inline-flex;align-items:center;gap:6px;line-height:1}
+.pgcr button{border:0;background:none;padding:4px 0;font:inherit;color:inherit;cursor:pointer;transition:color .2s}.pgcr button:hover{color:var(--ac)}
+.dh .dm{display:flex;align-items:center;flex-wrap:wrap}.dh .dm .dmi{margin-left:auto;display:inline-flex;gap:2px}
+.dh .dm .dmi .pgact{width:36px;height:36px;min-width:0;padding:0;border:0!important;background:none!important;box-shadow:none!important;color:#8a7782;border-radius:99px;display:grid;place-items:center;position:relative;transition:color .2s,background .2s}
+.dh .dm .dmi .pgact svg{width:19px;height:19px;stroke-width:1.6}
+.dh .dm .dmi .pgact:hover,.dh .dm .dmi .pgact.on{color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,transparent)!important}
+@media (hover:hover){.dh .dm .dmi .pgact:hover:after{content:attr(aria-label);position:absolute;top:40px;right:0;white-space:nowrap;background:#2a1f27;color:#fff;font:500 12px var(--body);padding:5px 10px;border-radius:8px;z-index:5}}
+.cartp .ctb{display:flex;gap:26px;border-bottom:1px solid var(--ln);margin:2px 0 16px}
+.cartp .ctb button{position:relative;border:0;background:none;padding:10px 0;font:500 15px var(--body);color:var(--mu);cursor:pointer}
+.cartp .ctb button.on{color:var(--tx)}.cartp .ctb button.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1.5px;background:var(--ac)}
+.cartp .ctb small{font:600 12px var(--body);color:var(--ac);margin-left:4px}
+.cartp .fvl{display:grid;gap:12px}
+.cartp .fvi{display:grid;grid-template-columns:84px 1fr;column-gap:14px;row-gap:10px;align-items:center}
+.cartp .fvi .cimg{border:0;background:none;padding:0;cursor:pointer}
+.cartp .fva{grid-column:2;display:flex;align-items:center;gap:16px}
+.cartp .fvb{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--ac);background:none;color:var(--ac);font:500 13.5px var(--body);white-space:nowrap;cursor:pointer;transition:background .25s,color .25s}
+.cartp .fva .crl{display:inline-block!important}.cartp .fvb:hover{background:var(--ac);color:#fff}.cartp .fvx{color:var(--mu);font-size:13px}
+@media (min-width:700px){.cartp .fvi{grid-template-columns:96px 1fr auto}.cartp .fva{grid-column:3;flex-direction:column;align-items:center;gap:8px}}
+</style><style id="b3-catalogo">/* B3 11/11 S156: catálogo */
+#vscr #fbtn,#vscr #vtog,#vscr #ftog{display:none!important}
+.lfgen{display:flex;align-items:center;gap:22px;margin:4px 0 14px;overflow-x:auto;scrollbar-width:none;white-space:nowrap}.lfgen::-webkit-scrollbar{display:none}
+.lfgen button{flex:none;position:relative;height:32px;padding:0;border:0;background:none;color:var(--mu);font:500 15px var(--body);cursor:pointer;transition:color .2s}
+.lfgen button:after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1.5px;background:var(--ac);transform:scaleX(0);transition:transform .25s}
+.lfgen button.on{color:var(--tx)}.lfgen button.on:after{transform:scaleX(1)}
+@media (hover:hover){.lfgen button:hover{color:var(--ac)}}
+.lfgen .lfgf{flex:none;margin-left:auto;color:var(--ac);font:500 14px var(--body);text-decoration:none}
+.lfgen .lfgf i{font-style:normal;display:inline-block;transition:transform .25s}@media (hover:hover){.lfgen .lfgf:hover i{transform:translateX(4px)}}
+@media (max-width:699px){.lfgen{gap:17px}.lfgen button{font-size:14.5px}}
 </style></head><body>
-<script>(function(){var B='1794388226';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794388226"><link rel="preload" as="script" href="/js/lf-site.js?v=1794388226">
+<script>(function(){var B='1794388729';try{if(/[?&](ref|carrinho|conta)=/.test(location.search)||/^\/(p|modelo)\//.test(location.pathname)){document.documentElement.classList.add('bootprod');setTimeout(function(){document.documentElement.classList.remove('bootprod')},4000)}}catch(e){}try{var hh=location.hash.slice(1);if((/^(vitrine|rosto|atacado|como|duvidas)$/.test(hh)||/[?&]r=(?!oculos(&|$)|lentes(&|$))[a-z0-9-]+/.test(location.search))&&matchMedia('all').matches){document.documentElement.classList.add('bootp');setTimeout(function(){document.documentElement.classList.remove('bootp')},2500)}}catch(e){}try{var fb=sessionStorage.getItem('lf_fade');if(fb){sessionStorage.removeItem('lf_fade');var o=document.createElement('div');o.id='lfv';o.style.cssText='position:fixed;inset:0;z-index:99999;background:'+fb+';opacity:1;transition:opacity .5s ease;pointer-events:none';document.body.appendChild(o);var go=function(){setTimeout(function(){o.style.opacity='0';setTimeout(function(){o.remove()},560)},120)};if(document.readyState==='complete')go();else window.addEventListener('load',go)}}catch(e){}window.LF_BUILD=B;try{var uv=new URL(location.href);if(uv.searchParams.has('v')){uv.searchParams.delete('v');history.replaceState(history.state,'',uv.pathname+uv.search+uv.hash)}}catch(e){}function ck(){fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||String(j.v)===B)return;var k='lf_rl_'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){return}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.href)}).catch(function(){})}ck();document.addEventListener('visibilitychange',function(){if(!document.hidden)ck()})})();</script><title>Catálogo La Fouch</title><link rel="preload" as="script" href="/js/lf-i18n.js?v=1794388729"><link rel="preload" as="script" href="/js/lf-site.js?v=1794388729">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2365,8 +2395,8 @@ html.gzon #drw{z-index:10040}html.gzon #layer .scrim,html.gzon #layer .scrim.pg{
 <div id="cmpbar" role="region" aria-label="Comparar modelos"><span id="cmpn"></span><button class="go" data-cmpopen>Comparar</button><button class="cl" data-cmpclear aria-label="Limpar comparação">Limpar</button></div>
 <div id="layer"></div>
 
-<script src="/js/lf-i18n.js?v=1794388226"></script>
-<script src="/js/lf-site.js?v=1794388226"></script>
+<script src="/js/lf-i18n.js?v=1794388729"></script>
+<script src="/js/lf-site.js?v=1794388729"></script>
 
 <script>/* a entrada só começa depois do primeiro quadro pintado: o trabalho pesado do carregamento não come o começo da animação */(function(){var d=document.documentElement,i=!!document.getElementById('intro'),on=0,g=function(){if(!on){on=1;d.classList.add('go')}};
 /* espera as fontes (sem troca de letra no meio da animação) e, na primeira visita, a abertura terminar de sair; só então o conteúdo sobe */
