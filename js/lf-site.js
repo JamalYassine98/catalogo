@@ -225,7 +225,7 @@
   function lista(){
     var q=st.q.trim().toLowerCase(),bq=btol(q);
     var fl=function(face){return P.filter(function(p){
-      if(p.tipo==='acessorio')return false;if(st.col&&String(p.col||'').trim()!==st.col)return false;if(st.tipo==='fav'){if(!st.fav[p.ref])return false}else if(st.tipo==='of'){if(!isOf(p))return false}else if(st.tipo==='nov'||st.tipo==='mv'){if(!secSet(st.tipo)[p.ref])return false}else if(st.tipo!=='todos'&&p.tipo!==st.tipo)return false;
+      if(p.tipo==='acessorio')return false;if(st.col&&String(p.col||'').trim()!==st.col)return false;if(st.tipo==='fav'){if(!st.fav[p.ref])return false}else if(st.tipo==='of'){if(!isOf(p))return false}else if(st.tipo==='nov'||st.tipo==='mv'){if(!secSet(st.tipo)[p.ref])return false}else if(st.tipo==='la'){if(p.tipo!=='grau'&&p.tipo!=='armacao')return false}else if(st.tipo!=='todos'&&p.tipo!==st.tipo)return false;
       if(face&&st.rosto&&p.rosto.indexOf(st.rosto)<0)return false;
       if(!genOk(p,st.gen))return false
       if(bq&&!bq(btolTxt(p)))return false;
@@ -594,7 +594,7 @@
   try{var _lv=JSON.parse(localStorage.getItem('lf_lastv')||'null');if(_lv&&Date.now()-_lv.t<864e5&&!sessionStorage.getItem('lf_sess'))NAV_LV=_lv.r;sessionStorage.setItem('lf_sess','1')}catch(_){}
   /* 08/11 (aprovado): Ver todos de Novidades/Mais vendidos abre só essas peças, com esse título */
   function secSet(k){var m={};try{abas5().forEach(function(a){if(a[0]===k)a[2].forEach(function(p,i){m[p.ref]=i+1})})}catch(_){}return m}
-  function navCat(t,g){if(t==='nov')return 'Novidades';if(t==='mv')return 'Mais vendidos';if(t==='fav')return 'Favoritos';if(t==='armacao')return 'Armações';if(t==='grau')return 'Leitura';if(t==='solar')return 'Solar';if(t==='of')return 'Ofertas';
+  function navCat(t,g){if(t==='nov')return 'Novidades';if(t==='mv')return 'Mais vendidos';if(t==='fav')return 'Favoritos';if(t==='armacao')return 'Armações';if(t==='grau')return 'Leitura';if(t==='solar')return 'Solar';if(t==='of')return 'Ofertas';if(t==='la')return 'Leitura e armações';
     if(g==='f')return 'Feminino';if(g==='m')return 'Masculino';if(g==='u')return 'Unissex';return 'Catálogo'}
   function navTxt(p){var k=NAVO.k;return LFI.tr(k==='home'?'Início':k==='busca'?'Busca':k==='fav'?'Favoritos':k==='link'?navCat(p&&p.tipo):navCat(NAVO.t,NAVO.g))}
   /* de onde o cliente abriu a peça */
@@ -926,6 +926,64 @@
       (ks.length?(dd?'<div class="cgr"><div class="cl">'+(ste==='pag'?pagHtml(cnow):entHtml(cnow))+'</div>'+sum+'</div>':'<div class="cgr"><div class="cl">'+items+'</div>'+sum+'</div>')
       :'<div class="note" style="margin-top:20px">Seu carrinho está vazio. Volte ao catálogo e escolha um produto.</div><button type="button" class="cs-c" data-cc style="margin-top:14px;padding:0 20px">Continuar comprando</button>')+'</aside>','pg'+(re?' still':''));pgCart(re,pop);if(re){var pn=document.querySelector('#layer .scrim');if(pn)pn.scrollTop=top}}
   function mensagem(modo,ref){return LFI.tr(mensagem0(modo,ref))}
+  /* B5 (11/11, S124–S127 aprovados): Ajuda em páginas próprias (sem sanfona) — Como comprar · Dúvidas frequentes · Dicas e cuidados · Entre em contato.
+     Cada página entra no histórico: o voltar do celular volta para a página anterior. */
+  var AJ={pg:''};
+  function ajCard(at,f,tag,t,sub){return '<button type="button" '+at+'><span class="gi">'+(f&&f.foto?'<img src="'+f.foto+'" alt="" loading="lazy">':'')+'</span><span class="gt"><small>'+LFI.tr(tag)+'</small><b>'+LFI.tr(t)+'</b>'+(sub?'<em class="gsub">'+LFI.tr(sub)+'</em>':'')+'</span></button>'}
+  function ajPeca(re,n){var vi=0;return cat5().filter(function(p){return p.aviso!=='Esgotado'&&re(p)&&vi++<n}).map(function(p){return card5(p,0)}).join('')}
+  function ajHtml(pg){var T=LFI.tr,vt=function(v,t){return '<a href="#" class="ajbk" data-ajv="'+v+'">‹ '+T(t)+'</a>'},vc=function(t){return '<a href="#vitrine" class="ajvc" data-mf="tipo:'+t+'">'+T('Ver catálogo')+' <i>›</i></a>'};
+    if(pg==='comprar')return vt('','Ajuda')+'<h2>'+T('Como comprar')+'</h2><div class="ajtx">'+
+      [['Escolha','Coloque no carrinho os modelos que gostou.'],['Entre ou crie sua conta','É rápido: nome, e-mail e senha, ou com o Google.'],['Entrega','Retire na loja em Ciudad del Este ou receba por delivery no Paraguai.'],['Pagamento','PIX (em reais) ou transferência Itaú Paraguai (em guaranis). As peças ficam reservadas enquanto você paga.']].map(function(x,k){return '<p><b><span class="ajn">'+(k+1)+'</span>'+T(x[0])+'</b>'+T(x[1])+'</p>'}).join('')+'</div>';
+    if(pg==='duvidas')return vt('','Ajuda')+'<h2>'+T('Dúvidas frequentes')+'</h2><div class="ajtx">'+
+      [['Como pago o pedido?','PIX (em reais) ou transferência Itaú Paraguai (em guaranis), na hora do pedido.'],['Até quando fica reservado?','Até a entrega ou a retirada, depois do pagamento.'],['Fazem lentes com a minha receita?','Não. Só vendemos óculos de leitura prontos. Com receita, escolha uma armação e leve a uma ótica.'],['Posso trocar se não gostar?','Na retirada, sim, por outro modelo (pode haver ajuste de preço).'],['Moro fora do Paraguai. Posso comprar?','Sim. O delivery é só no Paraguai; de outros países, você retira na loja em Ciudad del Este.']].map(function(x){return '<p><b>'+T(x[0])+'</b>'+T(x[1])+'</p>'}).join('')+
+      '<p><b>'+T('Não sei qual grau de leitura usar')+'</b>'+T('Faça o teste de leitura com o Mochi: leva 1 minuto.')+' <a href="#" class="ajl" data-gzopen>'+T('Fazer o teste')+' <i>›</i></a></p></div>';
+    if(pg==='dicas'){var GF=guiaFotos(),f=function(id){var x=GF.filter(function(y){return y.g.id===id})[0];return x?x.f:null};
+      return vt('','Ajuda')+'<h2>'+T('Dicas e cuidados')+'</h2><div class="hgu ajg">'+ajCard('data-gpan="rosto"',f('formato'),'SEU ROSTO','Qual óculos combina com o meu rosto?','Leva menos de 1 minuto')+ajCard('data-ajp="art-tipos"',f('tipos'),'ESCOLHA CERTA','Leitura, armação ou solar: qual é a diferença?','Entenda antes de comprar')+ajCard('data-ajp="art-uv"',f('uv'),'SOL','UV400 e polarizado: qual é a diferença?','')+ajCard('data-ajp="art-limpar"',f('limpar'),'CUIDADOS','Como limpar seus óculos sem riscar','')+'</div>'}
+    if(pg==='art-tipos')return vt('dicas','Dicas e cuidados')+'<h2>'+T('Leitura, armação ou solar?')+'</h2><div class="art"><span class="ey">'+T('ESCOLHA CERTA · 2 min de leitura')+'</span>'+
+      [['LEITURA','Para ler de perto','Lentes prontas, de +0.25 a +4.00. Você escolhe o grau e leva na hora.','grau'],['ARMAÇÃO','Para a sua receita','Só a armação, sem grau. Leve a uma ótica e coloque as suas lentes.','armacao'],['SOLAR','Para o sol do dia a dia','Proteção UV400, que bloqueia praticamente todo o UV.','solar']].map(function(x){return '<div class="bl"><span class="ey">'+T(x[0])+'</span><h3>'+T(x[1])+'</h3><p class="tx">'+T(x[2])+'</p><div class="hg ajp">'+ajPeca(function(p){return p.tipo===x[3]},2)+'</div>'+vc(x[3])+'</div>'}).join('')+'</div>';
+    if(pg==='art-limpar')return vt('dicas','Dicas e cuidados')+'<h2>'+T('Como limpar seus óculos sem riscar')+'</h2><div class="art"><span class="ey">'+T('CUIDADOS · 1 min de leitura')+'</span><div class="cu">'+
+      [['Enxágue','Em água corrente, para tirar a poeira antes de esfregar.'],['Lave','Com uma gota de detergente neutro, dos dois lados da lente.'],['Seque','Com a flanela de microfibra, nunca com papel ou roupa.']].map(function(x){return '<p><b>'+T(x[0])+'</b>'+T(x[1])+'</p>'}).join('')+'</div>'+
+      '<div class="bl"><span class="ey">'+T('HORA DE TROCAR?')+'</span><h3>'+T('Lente riscada ou armação gasta?')+'</h3><div class="hg ajp">'+ajPeca(function(p){return p.tipo==='grau'},2)+ajPeca(function(p){return p.tipo==='armacao'},2)+'</div>'+vc('la')+'</div></div>';
+    if(pg==='art-uv'){var g0=$('layer').innerHTML;guiaAbre('uv');var d=document.querySelector('#layer .modal.guia .det'),h=d?d.innerHTML:'';$('layer').innerHTML=g0;if(!g0)document.documentElement.classList.remove('lock');
+      var tmp=document.createElement('div');tmp.innerHTML=h;tmp.querySelectorAll('.x,h1').forEach(function(e){e.remove()});return vt('dicas','Dicas e cuidados')+'<h2>'+T('UV400 e polarizado: qual é a diferença?')+'</h2><div class="art guia">'+tmp.innerHTML+'</div>'}
+    if(pg==='contato')return vt('','Ajuda')+'<h2>'+T('Entre em contato')+'</h2><p class="ajsub">'+T('Escreva para a gente. Respondemos por e-mail.')+'</p><form class="ajf" novalidate>'+
+      '<label class="cfl" for="ctn">'+T('Nome completo')+'</label><input class="field" id="ctn" autocomplete="name">'+
+      '<label class="cfl" for="cte">'+T('E-mail')+'</label><input class="field" id="cte" type="email" inputmode="email" autocomplete="email">'+
+      '<label class="cfl" for="ctt">'+T('Telefone')+'</label><input class="field" id="ctt" type="tel" inputmode="tel" autocomplete="tel">'+
+      '<label class="cfl" for="ctm">'+T('Mensagem')+'</label><textarea class="field" id="ctm" rows="5"></textarea>'+
+      '<input type="text" id="ctsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">'+
+      '<div class="fze" id="cterr" role="alert" hidden></div><button type="submit" class="btn w" id="ctok">'+T('Enviar')+'</button></form>';
+    var c=(typeof getConta==='function'&&getConta())||null;
+    return '<a href="#" class="ajbk" data-vback>‹ '+T('Início')+'</a><h2>'+T('Ajuda')+'</h2><div class="ajm">'+
+      [['comprar','Como comprar'],['duvidas','Dúvidas frequentes'],['dicas','Dicas e cuidados'],['contato','Entre em contato']].map(function(x){return '<a href="#" data-ajp="'+x[0]+'">'+T(x[1])+'<i>›</i></a>'}).join('')+'</div>'}
+  function ajPinta(pg,hist){var w=document.querySelector('#como .ajw');if(!w)return;AJ.pg=pg||'';w.innerHTML=ajHtml(AJ.pg);w.setAttribute('data-ajpg',AJ.pg||'menu');
+    var sc=$('como');if(sc)sc.scrollTop=0;try{window.scrollTo(0,0)}catch(_){}
+    if(hist){try{history.pushState({lfaj:AJ.pg},'',location.href)}catch(_){}}
+    if(MOV5()){var k=0;[].slice.call(w.children).forEach(function(e){e.animate([{transform:'translateY(12px)',opacity:0},{transform:'none',opacity:1}],{duration:380,delay:k++*50,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'})})}
+    if(AJ.pg==='contato'){var c=(typeof getConta==='function'&&getConta())||null;if(c){if(c.nome)$('ctn').value=c.nome;if(c.email)$('cte').value=c.email;if(c.tel)$('ctt').value=c.tel}}}
+  function MOV5(){return Element.prototype.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches}
+  var _opAj5=openPanel;openPanel=function(id,q){var r=_opAj5.apply(this,arguments);if(id==='como'||id==='duvidas'){ajPinta(id==='duvidas'?'duvidas':'',false)}return r};
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-ajp],[data-ajv]');if(!t)return;e.preventDefault();e.stopPropagation();
+    var pg=t.hasAttribute('data-ajv')?t.getAttribute('data-ajv'):t.getAttribute('data-ajp');
+    if(t.hasAttribute('data-ajv')){try{history.back()}catch(_){ajPinta(pg,false)}return}
+    var aberto=$('como')&&$('como').classList.contains('pop');
+    if(!aberto){try{if(typeof drwSet==='function')drwSet(false)}catch(_){}goTo('como');setTimeout(function(){ajPinta(pg,true)},40)}else ajPinta(pg,true)},true);
+  window.__lfPop.push(function(e){var c=$('como');if(!c||!c.classList.contains('pop'))return;var st0=e.state||{};
+    if(st0.lfaj!=null){ajPinta(st0.lfaj,false);e.__lfStop=1;return}
+    if(AJ.pg){ajPinta('',false);e.__lfStop=1}});
+  document.addEventListener('submit',function(e){var f=e.target.closest&&e.target.closest('#como .ajf');if(!f)return;e.preventDefault();
+    var v=function(i){return ($(i)||{value:''}).value.trim()},er=$('cterr'),bt=$('ctok'),fal=function(m,i){er.textContent=LFI.tr(m);er.hidden=false;if(i)try{$(i).focus()}catch(_){}};er.hidden=true;
+    var nome=v('ctn').replace(/\s+/g,' ');if(nome.length<3||nome.indexOf(' ')<0)return fal('Digite seu nome e sobrenome.','ctn');
+    if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v('cte')))return fal('Confira o e-mail.','cte');
+    if(v('ctt').replace(/\D/g,'').length<7)return fal('Confira o telefone.','ctt');
+    if(v('ctm').length<5)return fal('Escreva a sua mensagem.','ctm');
+    bt.disabled=true;bt.textContent=LFI.tr('Enviando…');
+    var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},10000);
+    fetch(fnUrl('mensagem'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'enviar',tipo:'contato',nome:nome,email:v('cte'),tel:v('ctt'),msg:v('ctm'),site:v('ctsite'),lang:LFI.lang}),signal:ct?ct.signal:undefined})
+      .then(function(r){clearTimeout(tm);return r.json().catch(function(){return {ok:false}})}).then(function(j){if(!j||!j.ok)throw new Error(j&&j.motivo||'erro');
+        AJ.pg='';try{closePanels()}catch(_){}try{window.scrollTo({top:0,behavior:'smooth'})}catch(_){}setTimeout(function(){toast(LFI.tr('Mensagem enviada. Respondemos por e-mail em breve.'))},250)})
+      .catch(function(x){clearTimeout(tm);bt.disabled=false;bt.textContent=LFI.tr('Enviar');fal(String(x&&x.message)==='muitas'?'Muitas mensagens em pouco tempo. Tente mais tarde.':'Não deu para enviar agora. Tente de novo ou fale com a loja pelo WhatsApp.')})},true);
+
   /* B3 (11/11, S156): catálogo sem bolinhas — linha de gênero só em texto + "Filtros ›" na mesma linha (abre a caixa de filtros de sempre) */
   function genRow(){var ms=document.querySelector('#vscr .mobsearch');if(!ms)return;var o=$('lfgen');
     if(!o){o=document.createElement('div');o.id='lfgen';o.className='lfgen';o.setAttribute('role','group');o.setAttribute('aria-label',LFI.tr('Gênero'));ms.insertAdjacentElement('afterend',o)}
@@ -1926,8 +1984,8 @@
   function rodape5(){var es=LFI.lang==='es',ig=(typeof SOCIAL!=='undefined'&&SOCIAL.ig)||'';
     return '<div class="lfft"><div class="in"><div><p class="fbr">La Fouch</p><p>'+LFI.tr('Tudo em óculos')+' · Ciudad del Este</p><p>Galeria Jebai Center, 3° piso, torre A, n°2242</p><p>'+LFI.tr('Segunda a sábado, das 7h30 às 15h')+'</p><p><a class="mp" href="https://maps.app.goo.gl/zy6c1ZFq4gQhxWXC8" target="_blank" rel="noopener" style="color:var(--ac);font-weight:700">'+LFI.tr('Como chegar')+' ›</a></p></div>'+
       '<div><b>'+LFI.tr('Comprar')+'</b><p><a href="#vitrine" data-mf="tipo:solar">'+LFI.tr('Solar')+'</a></p><p><a href="#vitrine" data-mf="tipo:grau">'+LFI.tr('Leitura')+'</a></p><p><a href="#vitrine" data-mf="tipo:armacao">'+LFI.tr('Armações')+'</a></p><p><a href="#vitrine" data-mf="tipo:of">'+LFI.tr('Ofertas')+'</a></p><p><a href="#atacado">'+LFI.tr('Atacado')+'</a></p></div>'+
-      '<div><b>'+LFI.tr('Ajuda')+'</b><p><a href="#como">'+LFI.tr('Como comprar, dúvidas e guia')+'</a></p></div>'+
-      '<div><b>'+LFI.tr('Contato')+'</b><p><a class="wct" href="https://wa.me/'+NUM5()+'" target="_blank" rel="noopener" aria-label="WhatsApp +595 983 642 241"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>+595 983 642 241</a></p>'+(ig?'<p><a href="'+esc(ig)+'" target="_blank" rel="noopener">Instagram</a></p>':'')+'</div></div>'+
+      '<div><b>'+LFI.tr('Ajuda')+'</b><p><a href="#como" data-ajp="comprar">'+LFI.tr('Como comprar')+'</a></p><p><a href="#como" data-ajp="duvidas">'+LFI.tr('Dúvidas frequentes')+'</a></p><p><a href="#como" data-ajp="dicas">'+LFI.tr('Dicas e cuidados')+'</a></p><p><a href="#como" data-ajp="contato">'+LFI.tr('Entre em contato')+'</a></p></div>'+
+
       '<div class="fbt" style="justify-content:center;text-align:center"><div><a href="/termos.html">'+LFI.tr('Termos')+'</a> · <a href="/privacidade.html">'+LFI.tr('Privacidade')+'</a> · © '+new Date().getFullYear()+' La Fouch</div><div class="frc">'+LFI.tr('Protegido pelo reCAPTCHA do Google')+' · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">'+LFI.tr('Privacidade')+'</a> · <a href="https://policies.google.com/terms" target="_blank" rel="noopener">'+LFI.tr('Termos')+'</a></div></div></div>'}
   function homeDraw(){
     var H=$('home');if(!H){H=document.createElement('div');H.id='home';var hero=document.querySelector('.hero');hero.style.setProperty('display','none','important');hero.parentNode.insertBefore(H,hero.nextSibling)}
@@ -2022,7 +2080,7 @@
       '<div class="dch">'+A('#vitrine','gen:f','Feminino')+A('#vitrine','gen:m','Masculino')+A('#vitrine','gen:u','Unissex')+'</div>'+
       /* 09/11 S44 A (aprovado): grupo Ferramentas */'<small class="dgl">'+LFI.tr('Ferramentas')+'</small>'+A('#rosto','','Descubra o seu formato')+'<a href="#" data-gzopen>'+LFI.tr('Descubra o seu grau')+'</a>'+
        '<small class="dgl">Para lojistas</small>'+A('#atacado','','Atacado')+
-      '<small class="dgl">Ajuda</small>'+A('#como','','Como comprar, dúvidas e guia');
+      '<small class="dgl">Ajuda</small>'+'<a href="#como" data-ajp="comprar">'+LFI.tr('Como comprar')+'</a><a href="#como" data-ajp="duvidas">'+LFI.tr('Dúvidas frequentes')+'</a><a href="#como" data-ajp="dicas">'+LFI.tr('Dicas e cuidados')+'</a>';
     var dl=document.querySelector('#drw .dleg');if(dl)dl.style.display='';
     function conta(){var c=null;try{c=logado()?getConta():null}catch(_){}var n=c&&c.nome?String(c.nome).split(' ')[0]:'';
       $('dacn').textContent=n?LFI.tr('Olá')+', '+n:LFI.tr('Entrar ou criar conta');$('dav').innerHTML=n?esc(n.charAt(0).toUpperCase()):'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>'}
