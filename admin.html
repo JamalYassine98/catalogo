@@ -574,7 +574,7 @@ S.ad=7;S.an=null;
 function anlLoad(){var e=$('anlb');if(!e||!S.tok)return;e.innerHTML='<section class="card"><div class="mu sm">Carregando…</div></section>';S.anErr=0;
   if(S.msgs===null)msgLoad();
   if(S.nwN===undefined){S.nwN=null;fnPost(NOVI,{acao:'lista'}).then(function(j){S.nwN=j&&j.ok?(j.itens||[]).length:null;if(S.v==='anl'&&S.an)anlDraw()}).catch(function(){})}
-  var d=S.ad;fnPost(ANLF,{acao:'resumo',dias:d}).then(function(j){if(!j||!j.ok)throw 0;if(d!==S.ad)return;S.an=j;anlDraw()}).catch(function(){S.an=null;S.anErr=1;anlDraw()})}
+  var d=S.ad;fnPost(ANLF,{acao:'resumo',dias:d}).then(function(j){if(!j||!j.ok)throw 0;if(d!==S.ad)return;S.an=j;if(d===7){S.an7=j;pnlResumo()}anlDraw()}).catch(function(){S.an=null;S.anErr=1;anlDraw()})}
 function anMsgs(){var ini=Date.now()-S.ad*864e5;return (S.msgs||[]).filter(function(m){return m.tipo==='atacado'&&(+m.ts||0)>=ini})}
 function anAvisos(a){var L=[],v=a.vistasSemCarrinho[0],s=a.semResultado[0];
   if(v&&v[1]>=5)L.push(pNome(v[0])+' foi vista '+nf(v[1])+' vezes e ninguém colocou no carrinho. Confira a foto e o preço.');
@@ -620,6 +620,15 @@ $('anlb').onclick=function(ev){var t=ev.target.closest('[data-anver],[data-anre]
 setInterval(function(){if(!document.hidden&&!$('shell').hidden&&S.tok)msgLoad()},120000);
 
 var _draw8=draw;draw=function(){_draw8();try{if(S.v==='tem')temDraw()}catch(_){}};
+/* dentro do app: os atalhos do Início abrem a aba certa (lfGo / ?aba=) e o painel manda um resumo para os botões (novas, avisos, próximo evento) */
+function pnlAba(aba,mf){if(['vit','prod','msg','tem','anl','cfg'].indexOf(aba)<0)return;if(mf)S.mf=mf;go(aba)}
+function pnlResumo(){if(!IN_APP)return;var cp=calProx(Date.now()),px=temProx(cp),ms=S.msgs||[];
+  try{window.parent.postMessage({lfResumo:{msg:ms.filter(function(m){return (m.est||'novo')==='novo'}).length,ata:ms.filter(function(m){return m.tipo==='atacado'&&(m.est||'novo')==='novo'}).length,av:S.an7?anAvisos(S.an7).length:0,prox:px?{nm:px.nm,ini:px.ini,fim:px.fim}:null}},'*')}catch(_){}}
+window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||!e.data.lfGo)return;if($('shell').hidden){S.abaPend=[e.data.lfGo,e.data.mf];return}pnlAba(e.data.lfGo,e.data.mf)});
+var _msgBadge9=msgBadge;msgBadge=function(){_msgBadge9();pnlResumo()};
+var _calSalva9=calSalva;calSalva=function(){return _calSalva9.apply(this,arguments).then(pnlResumo)};
+var _start9=start;start=function(){_start9();var q=new URLSearchParams(location.search),ab=q.get('aba');if(S.abaPend){pnlAba(S.abaPend[0],S.abaPend[1]);S.abaPend=null}else if(ab)pnlAba(ab,q.get('mf'));
+  if(IN_APP){try{window.parent.postMessage({lfPronto:1},'*')}catch(_){}setTimeout(function(){fnPost(ANLF,{acao:'resumo',dias:7}).then(function(j){if(j&&j.ok){S.an7=j;pnlResumo()}}).catch(function(){})},1500)}};
 $('lf').onsubmit=function(e){e.preventDefault();signIn()};
 $('out').onclick=function(){try{localStorage.removeItem('lf_rt')}catch(_){}location.reload()};
 /* recolher o painel (lembra neste computador) */
