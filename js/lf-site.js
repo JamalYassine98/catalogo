@@ -679,10 +679,15 @@
      (cada passo tem um número, posto no começo do index.html). */
   (function(){var RM=matchMedia('(prefers-reduced-motion: reduce)'),VEU=null;
     if(window.__lfPop)window.__lfPop.unshift(function(e){if(window.__lfLogo===2){window.__lfLogo=0;e.__lfStop=1;setTimeout(function(){try{urlSync()}catch(_){}},0)}});
-    function aberto(){var H=document.documentElement,ly=$('layer');if(ly&&ly.innerHTML.trim())return true;if(H.classList.contains('ppop'))return true;
+    /* 10/11 S111: REGISTRO ÚNICO DE CAMADAS. Toda tela que abre por cima do site (consulta do Mochi, e as próximas) se registra aqui com
+       {id, aberta(), fecha()}. O logo, o voltar e o Esc perguntam a este registro — uma tela nova já nasce funcionando com eles. */
+    var CAM=window.__lfCam=window.__lfCam||[];window.__lfCamReg=function(c){for(var i=0;i<CAM.length;i++)if(CAM[i].id===c.id){CAM[i]=c;return}CAM.push(c)};
+    function camAberta(){for(var i=0;i<CAM.length;i++)try{if(CAM[i].aberta())return CAM[i]}catch(_){}return null}
+    function aberto(){var H=document.documentElement,ly=$('layer');if(ly&&ly.innerHTML.trim())return true;if(H.classList.contains('ppop'))return true;if(camAberta())return true;
       return ['drw','fsh','fvs','dsh','sov','vcs'].some(function(id){var d=$(id);return !!d&&d.classList.contains('on')})}
     function topo(){try{scrollTo({top:0,left:0,behavior:'instant'})}catch(_){try{scrollTo(0,0)}catch(__){}}}
     function fechaTudo(){
+      CAM.forEach(function(c){try{if(c.aberta())c.fecha()}catch(_){}});
       try{var d=$('drw');if(d&&d.classList.contains('on')){var x=document.querySelector('#drw [data-dclose]');if(x)x.click()}}catch(_){}
       ['fsh','fvs','dsh','vcs'].forEach(function(id){var d=$(id);if(d&&d.classList.contains('on')){d.classList.remove('on');d.setAttribute('aria-hidden','true');if(id==='fvs')d.innerHTML=''}});
       try{if($('sov').classList.contains('on')&&V5.sfecha)V5.sfecha('todos')}catch(_){}
@@ -1905,15 +1910,23 @@
     function pinta(){icone();var q=inp.value,l=achados(q);
       if(!q.trim()){res.innerHTML=srVistos()+'<div class="sohint">'+LFI.tr('Busque pelo nome ou pelo código da peça.')+'</div><div class="sochips"><button type="button" data-sq="solar">'+LFI.tr('Solar')+'</button><button type="button" data-sq="gatinho">'+LFI.tr('Gatinho')+'</button><button type="button" data-sq="redondo">'+LFI.tr('Redondo')+'</button><button type="button" data-sq="dourado">'+LFI.tr('Dourado')+'</button></div>';return}
       if(!l.length){var sg=btolSugere(q,cat5().map(btolTxt)),pr=parecidos(q);res.innerHTML='<div class="sohint">'+LFI.tr('Nada encontrado para')+' “'+esc(q)+'”.'+(sg?' '+LFI.tr('Você quis dizer')+' <button type="button" class="sosug" data-sq="'+esc(sg)+'">'+esc(sg)+'</button>?':'')+'</div>'+(pr.length?'<div class="sohint" style="margin-top:6px">'+LFI.tr('Parecidos')+':</div>'+pr.map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join(''):'');return}
-      res.innerHTML=srSug(q)+l.slice(0,6).map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join('')+(l.length>6?'<button type="button" class="soall" data-soall>'+LFI.tr('Ver todos os')+' '+l.length+' '+LFI.tr('resultados')+'</button>':'')}
+      res.innerHTML=l.slice(0,6).map(function(p){return '<button type="button" class="sor" data-open="'+p.ref+'"><span class="sim">'+img5(p)+'</span><span><b>'+esc(p.nome)+'</b><small>'+p.ref+'</small></span><span class="spr">'+prc5(p)+'</span></button>'}).join('')+(l.length>6?'<button type="button" class="soall" data-soall>'+LFI.tr('Ver todos os')+' '+l.length+' '+LFI.tr('resultados')+'</button>':'')}
     function noCat(){var v=$('vitrine');return !!(v&&v.classList.contains('pop'))}
     var hst=false;addEventListener('popstate',function(){if(hst&&o.classList.contains('on')){hst=false;fecha(true)}});
-    function abre(){if(noCat())inp.value=st.q||'';try{history.pushState({sov:1},'');hst=true}catch(_){}o.classList.add('on');o.setAttribute('aria-hidden','false');document.documentElement.classList.add('lock');pinta();setTimeout(function(){inp.focus()},40)}
+    /* 10/11 S110-1: a lista termina acima do teclado (visualViewport), nunca escondida atrás dele */
+    function altura(){if(!o.classList.contains('on'))return;var vv=window.visualViewport,h=vv?vv.height+vv.offsetTop:innerHeight,t=res.getBoundingClientRect().top;res.style.maxHeight=Math.max(120,Math.min(520,h-t-12))+'px'}
+    if(window.visualViewport){visualViewport.addEventListener('resize',altura);visualViewport.addEventListener('scroll',altura)}addEventListener('resize',altura);
+    function abre(){if(noCat())inp.value=st.q||'';try{history.pushState({sov:1},'');hst=true}catch(_){}o.classList.add('on');o.setAttribute('aria-hidden','false');document.documentElement.classList.add('lock');pinta();altura();setTimeout(function(){inp.focus();altura()},40);setTimeout(altura,450)}
     function fecha(dePop){if(hst&&dePop!==true&&dePop!=='todos'){hst=false;try{history.back()}catch(_){}}if(dePop==='todos')hst=false;o.classList.remove('on');o.setAttribute('aria-hidden','true');if(!$('layer').innerHTML.trim()&&!$('drw').classList.contains('on'))document.documentElement.classList.remove('lock')}
     V5.sfecha=fecha;V5.sabre=abre;
     b.addEventListener('click',abre);inp.addEventListener('input',function(){pinta();if(noCat())setQ(inp.value)});
     inp.addEventListener('keydown',function(e){if(e.key==='Escape')fecha();if(e.key==='Enter'){e.preventDefault();todos()}});
-    function todos(){var q=inp.value;fecha('todos');setQ(q);goTo('vitrine')}
+    /* 10/11 S110-2 (opção A): confirmar a busca procura no catálogo INTEIRO (antes ficava na seção aberta: em Solar, "Óculos de leitura…" dava 0).
+       Se só um produto tem exatamente esse nome (ou esse código), ele abre direto. */
+    function todos(){var q=inp.value,f=btolFold(q).trim();
+      var um=f?cat5().filter(function(p){return btolFold(p.nome||'').trim()===f||btolFold(p.ref||'').trim()===f}):[];
+      if(um.length===1){var r=um[0].ref;inp.value='';if(noCat())setQ('');if(hst){hst=false;fecha(true);var go=function(){removeEventListener('popstate',go);setTimeout(function(){product(r)},0)};addEventListener('popstate',go);try{history.back()}catch(_){removeEventListener('popstate',go);product(r)}}else{fecha();product(r)}return}
+      fecha('todos');st.fgr='';st.col='';st.rosto='';st.gen='';st.tipo='todos';try{drawGen();drawChips();drawFaces()}catch(_){}setQ(q);goTo('vitrine')}
     o.addEventListener('click',function(e){var ic=e.target.closest('#soic');if(ic){if(inp.value)fecha();else inp.focus();return}var t=e.target.closest('[data-sox],[data-soall],[data-ssg],[data-sq],[data-open]');if(!t)return;
       if(t.hasAttribute('data-sox'))fecha();else if(t.hasAttribute('data-soall'))todos();else if(t.hasAttribute('data-ssg')){var g=SRG[+t.getAttribute('data-ssg')];if(!g)return;
         if(g.a==='q'){inp.value=g.v;todos()}else{fecha('todos');setQ('');st.fgr=g.a==='g'?g.v:'';navAbreCat(g.a==='g'?'grau':g.v)}}else if(t.hasAttribute('data-sq')){inp.value=t.getAttribute('data-sq');pinta();inp.focus()}
@@ -2273,8 +2286,13 @@
     else if(t.hasAttribute('data-copymsg')){var m=$('layer').dataset.msg||'';navigator.clipboard&&navigator.clipboard.writeText(m).then(function(){toast('Mensagem copiada')},function(){toast('Selecione e copie o texto')})}
     else if(t.hasAttribute('data-newsim')){st.cart={};st.nome='';st.zap='';drawBag();closeLayer()}
   });
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(document.querySelector('#layer .scrim'))e.__lfc=1;closeLayer()}});
-  document.addEventListener('touchmove',function(e){if(document.documentElement.classList.contains('lock')&&!e.target.closest('.modal,.panel,.dpn,.fpn'))e.preventDefault()},{passive:false});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var sc=document.querySelector('#layer .scrim');if(sc)e.__lfc=1;
+    /* S111: sem nada por cima, o Esc fecha a camada registrada (ex.: consulta) */
+    if(!sc&&!$('drw').classList.contains('on')&&!$('sov').classList.contains('on')){var C=window.__lfCam||[];for(var i=C.length-1;i>=0;i--){try{if(C[i].aberta()&&C[i].esc){C[i].esc();return}}catch(_){}}}
+    closeLayer()}});
+  /* 10/11 S110-1: com o site travado (painel aberto), o dedo ainda rola qualquer área que rola de verdade (antes só .modal/.panel/.dpn/.fpn; a busca ficava presa) */
+  function rolaY(t){for(var x=t;x&&x.nodeType===1&&x!==document.body;x=x.parentElement){if(x.scrollHeight>x.clientHeight+1){var oy=getComputedStyle(x).overflowY;if(oy==='auto'||oy==='scroll')return true}}return false}
+  document.addEventListener('touchmove',function(e){if(document.documentElement.classList.contains('lock')&&!e.target.closest('.modal,.panel,.dpn,.fpn')&&!rolaY(e.target))e.preventDefault()},{passive:false});
   function setQ(v){st.q=v;$('q').value=v;$('q2').value=v;drawGrid()}
   $('q').addEventListener('input',function(e){setQ(e.target.value)});
   $('q2').addEventListener('input',function(e){setQ(e.target.value)});
@@ -3384,6 +3402,8 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       var fim=function(){e.remove()};if(!RM.matches&&e.animate){var a=e.animate([{transform:'none'},{transform:'translateX(100%)'}],{duration:260,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'});a.onfinish=fim}else fim();
       if(!dePop&&history.state&&history.state.lfo==='gw'){window.__lfGzBack=1;try{history.back()}catch(_){window.__lfGzBack=0}}}
     window.__lfGzFecha=function(){fecha(true)};
+    /* S111: a consulta entra no registro de camadas (logo = sai direto para o início, opção A) */
+    (window.__lfCamReg||function(c){(window.__lfCam=window.__lfCam||[]).push(c)})({id:'consulta',aberta:function(){return !!Z.el},fecha:function(){fecha(true)},esc:function(){fecha()}});
     if(window.__lfPop)window.__lfPop.unshift(function(e){if(window.__lfGzBack){window.__lfGzBack=0;e.__lfStop=1;return}var st=e&&e.state;
       if(Z.el){if(st&&st.lfo==='gw')return;e.__lfStop=1;fecha(true);return}
       if(Z.velha&&st&&st.lfo==='gw'){Z.velha=0;e.__lfStop=1;try{history.back()}catch(_){}}});
