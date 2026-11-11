@@ -38,8 +38,13 @@
   function glasses(c,r,w){return '<svg viewBox="0 0 200 200" fill="none" stroke="'+c+'" stroke-width="'+(w||5)+'" stroke-linecap="round" aria-hidden="true"><ellipse cx="100" cy="150" rx="62" ry="6" fill="#000" stroke="none" opacity=".08"/><rect x="22" y="76" width="68" height="52" rx="'+r+'" fill="#e6f1fb"/><rect x="110" y="76" width="68" height="52" rx="'+r+'" fill="#e6f1fb"/><path d="M90 96c6-6 14-6 20 0M22 88L8 82M178 88l14-6"/></svg>'}
   function colorFoto(p,i,cb){if(!i){cb(p.foto);return}p.fc=p.fc||[];if(p.fc[i]){cb(p.fc[i]);return}fbg('fotos/'+p.ref+'~'+i).then(function(d){var o=fbd(d);if(o.d){p.fc[i]=o.d;cb(o.d)}}).catch(function(){})}
   function find(ref){return P.filter(function(p){return p.ref===ref})[0]}
-  function total(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*find(k).n},0)}
-  function totalD(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*LFI.pv(find(k).n)},0)}
+  function bruto(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*find(k).n},0)}
+  function brutoD(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*LFI.pv(find(k).n)},0)}
+  /* Leve 2 (aprovado 11/11/2026): 30% na 2ª peça de cada par (a mais barata); só leitura e solar que o app liberou (l2: o piso não é furado) */
+  function l2Info(){var u=[];Object.keys(st.cart).forEach(function(k){var p=find(k);if(p&&p.l2===true&&p.aviso!=='Esgotado'&&(p.tipo==='grau'||p.tipo==='solar'))for(var i=0;i<st.cart[k];i++)u.push({k:k,n:p.n})});
+    u.sort(function(a,b){return b.n-a.n});var r={n:u.length,d:0,dD:0,por:{}};for(var i=1;i<u.length;i+=2){var x=u[i],v=Math.ceil(x.n*0.7/1000)*1000,dd=Math.max(0,x.n-v);r.d+=dd;r.dD+=Math.max(0,LFI.pv(x.n)-LFI.pv(v));r.por[x.k]=(r.por[x.k]||0)+dd}return r}
+  function total(){return bruto()-l2Info().d}
+  function totalD(){return brutoD()-l2Info().dD}
   function qtd(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]},0)}
   function toast(t,act){var e=document.createElement('div');e.className='toast';e.appendChild(document.createTextNode(t));if(act){var b=document.createElement('button');b.type='button';b.textContent=act;b.setAttribute('data-bag','1');e.appendChild(b)}document.body.appendChild(e);setTimeout(function(){e.remove()},act?4200:2200)}
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -942,7 +947,7 @@
     var es=window.LFI&&LFI.lang==='es',cnt=nq+(es?(nq===1?' artículo':' artículos'):(nq===1?' item':' itens'));
     var ste=ks.length>0&&lg?(st.step==='ent'||st.step==='pag'?st.step:''):'',dd=!!ste,cnow=dd?contaNorm(getConta()):null,entD=st.ent==='delivery';
     var sum='<div class="cs"><h3 class="cs-h">'+LFI.tr(dd?'Seu pedido':'Resumo')+'</h3>'+
-      '<div class="cs-r cs-h"><span>'+LFI.tr('Subtotal')+' · '+cnt+'</span><span>'+LFI.fmtD(totalD())+'</span></div><div class="cs-r cs-h"><span>'+LFI.tr('Entrega')+'</span><span>'+(dd&&entD?LFI.tr('Delivery · frete na entrega'):LFI.tr('Retirada na loja · grátis'))+'</span></div>'+
+      '<div class="cs-r cs-h"><span>'+LFI.tr('Subtotal')+' · '+cnt+'</span><span>'+LFI.fmtD(brutoD())+'</span></div>'+(function(){var l=l2Info();return l.d>0?'<div class="cs-r cs-l2"><span>'+LFI.tr('Leve 2 · 30% na 2ª peça')+'</span><span>−'+LFI.fmtD(l.dD)+'</span></div>':l.n===1?'<div class="cs-l2n">'+LFI.tr('Leve 2: leve mais um óculos de leitura ou de sol e a 2ª peça sai com 30% de desconto.')+'</div>':''})()+'<div class="cs-r cs-h"><span>'+LFI.tr('Entrega')+'</span><span>'+(dd&&entD?LFI.tr('Delivery · frete na entrega'):LFI.tr('Retirada na loja · grátis'))+'</span></div>'+
       '<div class="cs-t"><span>Total</span><b>'+LFI.fmtD(totalD())+'</b></div>'+
       (ste==='pag'?'<button class="btn w cs-b" data-send'+(st.pag?'':' aria-disabled="true" style="opacity:.55"')+'>Confirmar e pagar</button><span class="cs-n cs-h">As peças ficam reservadas enquanto você paga.</span>'
         :ste==='ent'?'<button class="btn w cs-b" data-cta="irpag">Forma de pagamento</button>'
@@ -1045,7 +1050,7 @@
       /* 11/11 (aprovado): o país vem do idioma/moeda; sem cidade e sem favoritos na mensagem (esses vão só para o painel) */
       return 'ATACADO · '+st.atCod+'\n'+(es?'País: Paraguay':'País: Brasil')+(q?'\n'+(es?'Cantidad: ':'Quantidade: ')+q:'')+(pr.length?'\n'+(es?'Busca: ':'Procura: ')+pr.map(function(x){return LFI.tr(x)}).join(', '):'')+'\n'+(es?'¡Hola! Quiero un presupuesto mayorista.':'Olá! Quero um orçamento de atacado.')}
     if(modo==='avise'){var p=find(ref);return 'Olá! Me avise quando chegar: '+p.nome+' ('+p.ref+').\nVer o modelo: https://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html'}
-    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.ref+' · '+p.nome+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
+    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.ref+' · '+p.nome+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+(l2Info().d>0?'\n'+LFI.tr('Leve 2 · 30% na 2ª peça')+': −'+LFI.fmtD(l2Info().dD):'')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
     if(st.rosto){var ff=FACES.filter(function(x){return x.id===st.rosto})[0];if(ff)t+='\nFormato do meu rosto: '+ff.nome}if(st.nome)t+='\nNome: '+st.nome;if(st.zap)t+='\nWhatsApp: '+st.zap;return t}
   /* pedido do site: grava na nuvem (o app da loja recebe sozinho) e mostra a tela de pedido recebido */
   var PK_SVG='<svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="#3ddc8c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M4.5 12.8l4.8 4.9L19.5 7"/></svg>';
@@ -1456,7 +1461,7 @@
   function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return ('000'+c.toString(16).toUpperCase()).slice(-4)}
   function pixCode(v,txid){var f=function(i,x){return i+('0'+x.length).slice(-2)+x};
     var p=f('00','01')+f('01','11')+f('26',f('00','br.gov.bcb.pix')+f('01',PIXD.key))+f('52','0000')+f('53','986')+f('54',v.toFixed(2))+f('58','BR')+f('59',PIXD.nome)+f('60',PIXD.cid)+f('62',f('05',txid))+'6304';return p+crc16(p)}
-  function valorBRL(){var r=window.LF_RATE?window.LF_RATE():1400;return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*Math.max(5,Math.round(find(k).n/r/5)*5)},0)}
+  function valorBRL(){var r=window.LF_RATE?window.LF_RATE():1400;return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*Math.max(5,Math.round(find(k).n/r/5)*5)},0)-Math.round(l2Info().d/r/5)*5}
   function loadQr(){return new Promise(function(ok,no){if(window.LFqr)return ok();var s=document.createElement('script');s.src='lfx/qr.js?v='+(window.LF_BUILD||'1');s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
   /* pedidos deste aparelho */
   function pedGet(id){return lsG('lf_ped',[]).filter(function(e){return e.id===id})[0]}
@@ -1844,12 +1849,12 @@
     var cod=id.slice(-4).toUpperCase(),pag=st.pag==='pix'?'pix':'alias';
     var txt='PEDIDO '+cod+'\n'+mensagem('reserva'),wa='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(txt);
     var ff=st.rosto?FACES.filter(function(x){return x.id===st.rosto})[0]:null;
-    var doc=st.pkdoc&&retry?st.pkdoc:(function(){var uq=uqGera(),base=Math.round(total()),vb0=TESTE?1:valorBRL();
+    var L2=l2Info(),doc=st.pkdoc&&retry?st.pkdoc:(function(){var uq=uqGera(),base=Math.round(total()),vb0=TESTE?1:valorBRL();
       return {ts:Date.now(),nome:c.nome,tel:c.tel,pais:c.pais||'',cod:cod,lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:base,rosto:ff?ff.nome:'',
       nac:c.nac||'',doc:c.doc||'',nasc:'',email:c.email||'',obsC:'',cidade:E?E.cidade:'',end:'',ent:ent,
       endE:ent==='delivery'&&E?E.end+', '+E.cidade+(E.dep?' · '+E.dep:''):'',refE:ent==='delivery'&&E?E.ref||'':'',depE:ent==='delivery'&&E?E.dep||'':'',
       pag:pag,uq:uq,brl:pag==='pix'?Math.round((vb0+uq/100)*100)/100:vb0,pagar:pag==='alias'?base+uq:0,teste:!!TESTE,
-      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n)}})}})();
+      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n-(L2.por[k]||0)/st.cart[k])}}),l2:L2.d}})();
     st.pkdoc=doc;
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
     var rxo=null;
