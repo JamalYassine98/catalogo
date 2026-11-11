@@ -1919,8 +1919,8 @@
   function dstHtml(){
     var e=evAtivo(),ed=e?EVD[e.tema]:null,L=dstItens(),i=Math.min(V5.di,Math.max(0,L.length-1)),p=L[i],vid=(CFG.dmodo==='video'&&CFG.video)?CFG.video:'';
     if(!p&&!vid)return '';
-    var lab=ed?(ed.lab+(e.tema==='natal'?' '+new Date().getFullYear():e.tema==='anonovo'?' '+(new Date().getFullYear()+(new Date().getMonth()===0?0:1)):'')):'DESTAQUE DA SEMANA';
-    var tit=e&&e.tit?esc(e.tit):(ed?ed.h:nomeEm(p?p.nome:'')),sub=e&&e.sub?esc(e.sub):(ed?ed.sub:'');
+    var lab=ed?(((e&&e.lab)||ed.lab)+(e.tema==='natal'?' '+new Date().getFullYear():e.tema==='anonovo'?' '+(new Date().getFullYear()+(new Date().getMonth()===0?0:1)):'')):'DESTAQUE DA SEMANA';
+    var tit=e&&e.th?e.th:e&&e.tit?esc(e.tit):(ed?ed.h:nomeEm(p?p.nome:'')),sub=e&&e.sub?esc(e.sub):(ed?ed.sub:'');
     var gv=p&&p.gv&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'/'+String(p.gv).replace(/^\/+/,''):'';
     var imgA=vid?'<video src="'+esc(vid)+'" autoplay muted loop playsinline></video>':gv?img5(p)+'<video class="hgv" src="'+esc(gv)+'" autoplay muted loop playsinline disablepictureinpicture onerror="this.remove()"></video>':img5(p);
     return '<section class="hd" id="hdst"><button type="button" class="hdi" '+(p?'data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'"':'')+'>'+imgA+(p&&p.gv?'<span class="h360">↻ 360°</span>':'')+(ed&&ed.deco?'<span class="hdeco">'+ed.deco+'</span>':'')+'</button>'+
@@ -4104,5 +4104,60 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
     var L=sh.getTotalLength();a.setAttribute('textLength',L-1);b.setAttribute('textLength',L-1);b.setAttribute('startOffset',-L);
     if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
     var off=0;(function tick(){off=(off+.22)%L;a.setAttribute('startOffset',off);b.setAttribute('startOffset',off-L);requestAnimationFrame(tick)})()})();
+
+  /* ===== bloco 8 (11/11/2026): Temática automática (calendário) + contagem anônima do Analisador ===== */
+  /* calendário automático da Temática (11/11/2026, S134): datas do comércio; o painel guarda só o estado (config/site.cal) */
+  function calOc(y){
+    function d(Y,M,D,f){return new Date(Y,M-1,D,f?23:0,f?59:0,f?59:0,f?999:0).getTime()}
+    var n1=new Date(y,10,1),bf=1+(4-n1.getDay()+7)%7+21+1,cy=new Date(y,10,bf+3),j1=new Date(y,5,1),p2=1+(7-j1.getDay())%7+7,BC={2026:[19,22]},L=[];
+    if(BC[y])L.push({id:'bfcde',nm:'Black Friday CDE',tema:'bf',ini:d(y,11,BC[y][0]),fim:d(y,11,BC[y][1],1),org:'Câmara de Comércio de CDE',fonte:'Câmara de Comércio e Serviços de CDE',nova:1,y:y});
+    L.push({id:'bf',nm:'Black Friday',tema:'bf',ini:d(y,11,bf),fim:d(y,11,bf,1),org:'Data internacional'});
+    L.push({id:'cyber',nm:'Cyber Monday',tema:'bf',ini:cy.getTime(),fim:d(cy.getFullYear(),cy.getMonth()+1,cy.getDate(),1),org:'Data internacional',bar:'⚡ CYBER MONDAY · ofertas em toda a loja',th:'CYBER <em>MONDAY</em>',lab:'SÓ HOJE'});
+    L.push({id:'natal',nm:'Natal',tema:'natal',ini:d(y,12,1),fim:d(y,12,25,1),org:'Data fixa'});
+    L.push({id:'anonovo',nm:'Ano Novo',tema:'anonovo',ini:d(y,12,26),fim:d(y+1,1,1,1),org:'Data fixa'});
+    L.push({id:'maes',nm:'Dia das Mães',tema:'maes',ini:d(y,5,1),fim:d(y,5,15,1),org:'Data fixa no Paraguai',nv:1});
+    L.push({id:'pais',nm:'Dia dos Pais',tema:'pais',ini:d(y,6,1),fim:d(y,6,p2,1),org:'2º domingo de junho no Paraguai',nv:1});
+    L.push({id:'halloween',nm:'Halloween',tema:'halloween',ini:d(y,10,24),fim:d(y,10,31,1),org:'Data fixa',pad:'off'});
+    return L}
+  var CAL_IDS=['bfcde','bf','cyber','natal','anonovo','maes','pais','halloween','crazy'];
+  /* a próxima vez de cada data (o que já passou sai e volta com a data do ano que vem); sem data = "Data a confirmar" */
+  function calProx(ag){var out=[],sem=[],y=new Date(ag).getFullYear(),T={};
+    for(var k=y-1;k<=y+2;k++)calOc(k).forEach(function(x){if(x.fim>=ag&&(!T[x.id]||x.ini<T[x.id].ini))T[x.id]=x});
+    CAL_IDS.forEach(function(id){if(T[id])out.push(T[id]);else if(id==='crazy')sem.push({id:'crazy',nm:'Crazy Week CDE',org:'Câmara de Comércio de CDE',sd:1});else if(id==='bfcde')sem.push({id:'bfcde',nm:'Black Friday CDE',org:'Câmara de Comércio de CDE',sd:1})});
+    out.sort(function(a,b){return a.ini-b.ini});return {L:out,sem:sem}}
+  function calSt(cfg,x){if(x.sd)return 'wait';var c=((cfg&&cfg.cal)||{})[x.id];return c==='auto'||c==='off'?c:(x.pad||'auto')}
+  /* o evento manual do painel (config/site.evento) continua valendo e tem prioridade; sem ele, liga sozinho o que estiver "Automático" no calendário */
+  var _evAtivo8=evAtivo;
+  evAtivo=function(){var pv=/[?&]evp=([a-z]+)/.exec(location.search);
+    if(pv){var k=pv[1],o=null;calProx(Date.now()).L.forEach(function(x){if(!o&&(x.id===k||x.tema===k))o=x});if(o||EVD[k]){var a=Date.now();o=o||{tema:k};return {tema:o.tema,ini:a-1,fim:a+864e5,bar:o.bar||'',th:o.th||'',lab:o.lab||'',cal:o.id||k}}}
+    var e=_evAtivo8();if(e)return e;
+    var ag=Date.now(),r=null;try{calProx(ag).L.forEach(function(x){if(!r&&x.ini<=ag&&ag<=x.fim&&EVD[x.tema]&&calSt(CFG,x)==='auto')r={tema:x.tema,ini:x.ini,fim:x.fim,bar:x.bar||'',th:x.th||'',lab:x.lab||'',cal:x.id}})}catch(_){}
+    return r};
+  try{evAplica()}catch(_){}
+
+  /* Analisador: cada visita junta contagens SEM dados pessoais (modelos vistos, carrinho, favoritos, buscas, ferramentas) e manda um resumo ao sair */
+  var AN=(function(){var o=null;try{o=JSON.parse(sessionStorage.getItem('lf_an')||'null')}catch(_){}return o&&typeof o==='object'?o:{c:{},f:{},b:[]}})(),AN_OFF=/[?&](cliente=1|evp=)/.test(location.search)||(function(){try{return window.parent!==window}catch(_){return true}})();
+  function anGrava(){try{sessionStorage.setItem('lf_an',JSON.stringify(AN));sessionStorage.setItem('lf_an_n','1')}catch(_){}}
+  function anMarca(k){if(AN_OFF||AN[k])return;AN[k]=1;anGrava()}
+  function anCart(ref,n){if(AN_OFF||!(n>0))return;AN.c[ref]=Math.min(20,(AN.c[ref]||0)+n);anGrava()}
+  var anCart0=JSON.parse(JSON.stringify(st.cart||{})),_drawBag8=drawBag;
+  drawBag=function(){var r=_drawBag8.apply(this,arguments);try{Object.keys(st.cart).forEach(function(k){var d=(st.cart[k]||0)-(anCart0[k]||0);if(d>0)anCart(k,d)});anCart0=JSON.parse(JSON.stringify(st.cart));if(st.step==='ent'||st.step==='pag')anMarca('ck')}catch(_){}return r};
+  var _toggleFav8=toggleFav;toggleFav=function(ref){var r=_toggleFav8.apply(this,arguments);try{if(st.fav[ref]&&!AN_OFF){AN.f[ref]=1;anGrava()}}catch(_){}return r};
+  var _pkPagar8=pkPagar;pkPagar=function(){anMarca('pe');return _pkPagar8.apply(this,arguments)};
+  var _openPanel8=openPanel;openPanel=function(id){if(id==='rosto')anMarca('ro');return _openPanel8.apply(this,arguments)};
+  var _drawGrid8=drawGrid,anBT=0;drawGrid=function(){var r=_drawGrid8.apply(this,arguments);clearTimeout(anBT);var q=String(st.q||'').trim();
+    if(q.length>=2&&!AN_OFF)anBT=setTimeout(function(){if(String(st.q||'').trim()!==q)return;var t=q.toLowerCase().slice(0,40),n=0;try{n=lista().length}catch(_){}
+      if(!AN.b.some(function(x){return x.t===t})){AN.b.push({t:t,n:n});AN.b=AN.b.slice(-12);anGrava()}},1500);return r};
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-gzopen],#lojista');if(!t)return;anMarca(t.id==='lojista'?'at':'mo')},true);
+  function anEnvia(){if(AN_OFF)return;var id,v={};try{if(sessionStorage.getItem('lf_an_n')!=='1'&&sessionStorage.getItem('lf_vc_n0')!=='1')return;
+      id=sessionStorage.getItem('lf_an_id');if(!id){id='v'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem('lf_an_id',id)}
+      v=JSON.parse(sessionStorage.getItem('lf_vc')||'{}');sessionStorage.setItem('lf_an_n','0');sessionStorage.setItem('lf_vc_n0','0')}catch(_){return}
+    var e=null;try{e=evAtivo()}catch(_){}
+    var b={id:id,v:v,c:AN.c,f:AN.f,b:AN.b,mo:AN.mo,ro:AN.ro,at:AN.at,pe:AN.pe,ck:AN.ck,lang:LFI.lang==='es'?'es':'pt',dev:matchMedia('(min-width:1100px)').matches?'pc':'cel',ev:e?(e.tema||''):''};
+    try{fetch(fnUrl('analise'),{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(b),keepalive:true}).catch(function(){})}catch(_){}}
+  /* as peças vistas já são contadas por vistaConta (lf_vc): marca que há algo novo para mandar */
+  var _vistaConta8=vistaConta;vistaConta=function(){var r=_vistaConta8.apply(this,arguments);try{sessionStorage.setItem('lf_vc_n0','1')}catch(_){}return r};
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')anEnvia()});
+  addEventListener('pagehide',anEnvia);
 
 })();
