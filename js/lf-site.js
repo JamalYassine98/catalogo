@@ -535,7 +535,8 @@
      No topo, puxa para baixo → círculo girando → a página recarrega no mesmo lugar (mesmo produto). */
   (function(){var pu=null,sp=null,arc=null,H=document.documentElement;function el(){if(!sp){sp=document.createElement('div');sp.id='ptr5';sp.setAttribute('aria-hidden','true');sp.innerHTML='<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="14" fill="none" stroke="rgba(141,58,105,.15)" stroke-width="3.5"/><circle class="arc" cx="20" cy="20" r="14" fill="none" stroke="#8d3a69" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="88" transform="rotate(-90 20 20)"/></svg>';document.body.appendChild(sp);arc=sp.querySelector('.arc')}return sp}
     /* um só "puxar para atualizar" no site todo (inicial, vitrine e produto); o do navegador fica desligado (overscroll-behavior) */
-    function alvo(e){var c=e.target.closest&&e.target.closest('#layer .scrim.pg,#vscr');if(c)return c.scrollTop>0?null:c;
+    function alvo(e){var g=document.getElementById('gw');if(g){if(!g.contains(e.target)||g.scrollTop>0||(window.__lfGzPtr&&!window.__lfGzPtr()))return null;return g}
+      var c=e.target.closest&&e.target.closest('#layer .scrim.pg,#vscr');if(c)return c.scrollTop>0?null:c;
       if(H.classList.contains('ppop')||H.classList.contains('lock')||(window.scrollY||H.scrollTop)>0)return null;
       if(e.target.closest&&e.target.closest('#drw,.modal,.panel,.dpn,.fpn,.dsp,#layer'))return null;return document.scrollingElement||H}
     addEventListener('touchstart',function(e){if(e.touches.length!==1)return;if(e.target.closest&&e.target.closest('input,textarea,select,.zoom,.zm,[data-zoom]'))return;var c=alvo(e);if(!c)return;pu={c:c,y0:e.touches[0].clientY,x0:e.touches[0].clientX,dy:0,on:false}},{passive:true});
@@ -2308,7 +2309,7 @@
   document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-pgfav]');if(!b)return;e.preventDefault();e.stopPropagation();fshAbre()},true);
   function rtEntra(){RTOK=true;var qs=new URLSearchParams(location.search),sl=(qs.get('r')||'').toLowerCase().replace(/[^a-z0-9-]/g,''),m=sl&&rtMapa()[sl],bq=qs.get('busca');
     /* 09/11: página própria da consulta do grau (atualizar reabre a consulta) */
-    if(sl==='descubra-o-grau'||sl==='descubri-tu-graduacion'){try{history.replaceState(null,'','/')}catch(_){}document.documentElement.classList.remove('bootp');var tg=0,ab=function(){if(window.__lfGzAbre){window.__lfGzAbre()}else if(tg++<40)setTimeout(ab,100)};setTimeout(ab,300);return}
+    if(sl==='descubra-o-grau'||sl==='descubri-tu-graduacion'){try{history.replaceState(null,'','/')}catch(_){}document.documentElement.classList.remove('bootp');/* S163: o Início não aparece antes; a consulta entra subindo, como as outras abas ao atualizar */document.documentElement.classList.add('bootgz');setTimeout(function(){document.documentElement.classList.remove('bootgz')},5000);var tg=0,ab=function(){if(window.__lfGzAbre){window.__lfGzAbre()}else if(tg++<40)setTimeout(ab,100);else document.documentElement.classList.remove('bootgz')};setTimeout(ab,60);return}
     if(m&&m.pan){if(m.pan==='vitrine'){st.tipo=m.tipo||'todos';st.gen=m.gen||'';st.col='';st.rosto='';if(bq){st.q=bq;try{$('q').value=bq;$('q2').value=bq}catch(_){}}try{drawGen();drawChips();drawFaces()}catch(_){}}window.__lfQuiet=1;try{openPanel(m.pan,true)}finally{window.__lfQuiet=0}if(m.pan==='vitrine')drawGrid()}
     document.documentElement.classList.remove('bootp');setTimeout(function(){try{urlSync()}catch(_){}},0)}
 
@@ -3489,7 +3490,7 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
     return Mochi})();
 
     /* ---------- voz (S66: a fala nunca é cortada; áudios gravados da voz do Mochi; senão a voz mais natural do celular) ---------- */
-    var VZ={m:null,a:null};try{fetch('/media/voz/'+(ES?'es':'pt')+'/lista.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){VZ.m=j;vcNavega()}).catch(function(){})}catch(_){}
+    var VZ={m:null,a:null,st:'carr',esp:[]};/* S163: st = carr (baixando a lista) · ok · sem (sem voz gravada) */function vzPronta(st){VZ.st=st;var f=VZ.esp;VZ.esp=[];f.forEach(function(x){x()})}try{fetch('/media/voz/'+(ES?'es':'pt')+'/lista.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){VZ.m=j;vzPronta(j?'ok':'sem');vcNavega()}).catch(function(){vzPronta('sem')})}catch(_){vzPronta('sem')}
     /* 10/11 S108-1 (aprovado): a voz do Mochi fica PRONTA ANTES, sem baixar a qualidade (MP3 128k, como gravado).
        - navegando na loja com Wi-Fi (celular parado): baixa tudo em silêncio, uma por vez; no 4G/economia de dados não baixa (iPhone não diz se é Wi-Fi → só na consulta)
        - consulta abre: o que faltar baixa na hora, na ordem das falas (entrada, câmera e preparo primeiro), 2 por vez
@@ -3520,9 +3521,12 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       var k=0,my=FID,toca=function(){if(!Z.el||my!==FID)return;if(k>=fs.length){fim();return}var f=fs[k++],a=VZ.a=new Audio(VC.tem[f]||vcU(f));a.onended=toca;a.onerror=toca;
           /* S108-1: a boca só mexe quando o som realmente sai (e para se o som parar) */
           a.onplaying=function(){if(my===FID&&Z.m&&!PZ.on)Z.m.fala(Math.max(1500,((a.duration||8)-(a.currentTime||0))*1000+600))};a.onpause=a.onwaiting=function(){if(Z.m)Z.m.calou()};
-          var p=a.play();if(p&&p.catch)p.catch(function(){fim()})};if(VZ.a)try{VZ.a.pause()}catch(_){}
+          var p=a.play();if(p&&p.catch)p.catch(function(er){if(er&&er.name==='NotAllowedError')somBloq(true);fim()})};if(VZ.a)try{VZ.a.pause()}catch(_){}
       Z.vzEsp=1;vcPronto(fs,function(){Z.vzEsp=0;if(!Z.el||my!==FID)return;if(PZ.on){PZ.fila.push(function(){if(Z.el&&my===FID)toca()});return}toca()});return true}
     var FID=0;
+    /* S163: o navegador bloqueou o som (abriu sem toque): o botão de som pisca com "Toque para ouvir o Mochi"; o 1º toque repete a frase atual */
+    function somBloq(on){var b=q('.gzmu');Z.bloq=on?1:0;if(!b)return;b.classList.toggle('gzpis',!!on);var d=q('#gzouv');if(on&&!d){d=document.createElement('span');d.id='gzouv';d.className='gzouv';d.textContent=T('Toque para ouvir o Mochi');b.parentNode.insertBefore(d,b)}if(d)d.hidden=!on}
+    function somLibera(){if(!Z.bloq)return;somBloq(false);if(!Z.ultT||Z.falando||Z.vm!=='arq')return;Z.falando=true;var my=FID;falaArq(Z.ultT,function(){if(my===FID){Z.falando=false;if(Z.m)Z.m.calou()}})}
     /* S90: menu, busca ou carrinho por cima da consulta = tudo pausado (a fala para e retoma de onde estava; nada novo começa) */
     var PZ={on:0,desde:0,tot:0,fila:[],a:null};function vt(){return Date.now()-PZ.tot-(PZ.on?Date.now()-PZ.desde:0)}
     function pausa(on){if(!!on===!!PZ.on)return;if(on){PZ.on=1;PZ.desde=Date.now();PZ.a=null;if(Z.m)Z.m.calou();if(VZ.a&&!VZ.a.paused&&!VZ.a.ended){PZ.a=VZ.a;try{VZ.a.pause()}catch(_){}}try{speechSynthesis.pause()}catch(_){}return}
@@ -3536,6 +3540,9 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
     function apos(fn,bt){if(Z.falando){Z.depoisFala=fn;if(bt){bt.classList.add('gd');setTimeout(function(){bt.classList.remove('gd')},900)}return}fn()}
     /* fala(h,cb,pergunta,dizer): cb roda quando ele TERMINA de falar. Se for pergunta, os botões ficam clarinhos até ele terminar. dizer = o que ele fala (se for diferente do balão) */
     function fala(h,cb,perg,dz){if(PZ.on){PZ.fila.push(function(){fala(h,cb,perg,dz)});return}
+      /* S163: antes da 1ª fala, espera a lista das vozes (até 8 s, com o anel "Preparando a voz"); a consulta inteira fica numa voz só */
+      if(!Z.vm&&!mudo()&&VZ.st==='carr'&&Date.now()-(Z.t0||0)<8000){var my0=FID,an0=setTimeout(function(){vcAnel(true)},350),ja0=0,vai=function(){if(ja0)return;ja0=1;clearTimeout(an0);vcAnel(false);if(!Z.el||my0!==FID)return;Z.vm=VZ.st==='ok'&&VZ.m?'arq':'cel';fala(h,cb,perg,dz)};
+        VZ.esp.push(vai);setTimeout(vai,Math.max(0,8000-(Date.now()-(Z.t0||0))));return}
       var b=Z.el&&Z.el.querySelector('#gzbal'),t=String(dz||h).replace(/<[^>]+>/g,''),id=++FID,est=Math.min(7000,700+t.length*62);
       if(b&&!(dz&&b.classList.contains('on')&&b.innerHTML===h)){b.classList.remove('on');setTimeout(function(){if(!Z.el||id!==FID)return;b.innerHTML=h;b.classList.add('on');if(q('#gzjan').hidden)lay()},120)}
       Z.falando=true;var bt=q('#gzbt');if(bt&&perg)bt.classList.add('esp');Z.ocup=Date.now()+est;var boca=function(){if(Z.m&&id===FID)Z.m.fala(est+4000)};
@@ -3544,7 +3551,9 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       Z.falaT0=vt();var lim=vt()+est+4500,seg=function(){if(feito||id!==FID)return;if(Z.vzEsp){lim=vt()+est+4500}if(vt()<lim){setTimeout(seg,400);return}fim()};setTimeout(seg,est+4500);
       if(VZ.a)try{VZ.a.pause()}catch(_){}try{speechSynthesis.cancel()}catch(_){}
       if(mudo()||!t){boca();setTimeout(fim,Math.min(est,500+t.length*40));return}
-      if(falaArq(t,fim))return;
+      if(!Z.vm)Z.vm=VZ.st==='ok'&&VZ.m?'arq':'cel';
+      Z.ultT=t;
+      if(Z.vm==='arq'){if(falaArq(t,fim))return;boca();setTimeout(fim,est);return}
       try{var u=new SpeechSynthesisUtterance(t.replace(/\+(\d)[.,](\d\d)/g,function(m,a,b){return gfala(a+'.'+b)}));u.lang=ES?'es-ES':'pt-BR';u.onend=fim;u.onerror=fim;u.onstart=boca;
         var vs=speechSynthesis.getVoices().filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(ES?'es':'pt')===0}),nota=function(v){return (/natural|neural|online|premium|enhanced|google/i.test(v.name)?4:0)+(!v.localService?2:0)+((ES?/419|PY|AR|MX|US/:/BR/).test(v.lang)?1:0)};vs.sort(function(a,b){return nota(b)-nota(a)});if(vs.length)u.voice=vs[0];u.rate=1;speechSynthesis.speak(u)}catch(_){boca();setTimeout(fim,est)}}
     var DIT={};function diz(k,t,forte){var n=Date.now();if(Z.falando||PZ.on)return;if(!forte){if(DIT[k]&&n-DIT[k]<10000)return;if(n<(Z.ocup||0))return}DIT[k]=n;fala(t)}
@@ -3598,7 +3607,7 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
     var PIN='',PINa=0;function pinMapa(w,h){var a=(w&&h)?w/h:125/150;if(PIN&&Math.abs(a-PINa)<.02)return PIN;try{var CW=150,CH=Math.max(40,Math.round(150/a)),c=document.createElement('canvas');c.width=CW;c.height=CH;var x=c.getContext('2d'),d=x.createImageData(CW,CH);
       /* S114: o mapa acompanha a forma da lente — o vidro empurra a imagem o mesmo tanto para os lados e para cima/baixo (antes esticava mais na horizontal nas lentes largas) */
       for(var j=0;j<CH;j++)for(var i=0;i<CW;i++){var u=(i/(CW-1))*2-1,v=(j/(CH-1))*2-1,ux=u*a,k=(ux*ux+v*v)/(a*a+1),o=(j*CW+i)*4;d.data[o]=128+(ux/a)*k*127;d.data[o+1]=128+v*k*127;d.data[o+2]=128;d.data[o+3]=255}x.putImageData(d,0,0);PIN=c.toDataURL();PINa=a}catch(_){}return PIN}
-    function abre(de){if(Z.el)return;try{vcConsulta()}catch(_){}DIT={};Z.ocup=0;Z.falando=false;Z.pend=null;
+    function abre(de){if(Z.el)return;try{vcConsulta()}catch(_){}DIT={};Z.ocup=0;Z.falando=false;Z.pend=null;Z.vm='';Z.t0=Date.now();Z.bloq=0;Z.ultT='';
       de=de||(window.__lfTela?window.__lfTela():T('Voltar'));try{if(!document.documentElement.classList.contains('ppop'))scrollTo({top:0,left:0,behavior:'instant'})}catch(_){}
       var e=Z.el=document.createElement('div');e.id='gw';e.setAttribute('role','dialog');e.setAttribute('aria-label',T('Descubra o seu grau'));
       var z=zoom();e.style.zoom=z!==1?String(1/z):'';e.style.setProperty('--gz',z);
@@ -3611,7 +3620,9 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       document.body.appendChild(e);document.documentElement.classList.add('gzon');trava(true);
       var pm=pinMapa();if(pm)$('gzpinm').setAttribute('href',pm);
       /* S56: entra já opaca, deslizando da direita (nunca transparente por cima da página) */
-      if(!RM.matches&&e.animate)e.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});
+      var H5=document.documentElement,boot=H5.classList.contains('bootgz');
+      if(!RM.matches&&e.animate)e.animate(boot?[{translate:'0 26px',filter:'opacity(0)'},{translate:'0 0',filter:'opacity(1)'}]:[{transform:'translateX(100%)'},{transform:'none'}],boot?{duration:440,easing:'cubic-bezier(.2,.8,.2,1)'}:{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});
+      if(boot)requestAnimationFrame(function(){H5.classList.remove('bootgz')});
       try{history.pushState(Object.assign({},history.state||{},{lfo:'gw'}),'','/'+(ES?'descubri-tu-graduacion':'descubra-o-grau'))}catch(_){}
       PZ.on=0;PZ.tot=0;PZ.fila=[];Z.velha=0;vigia();
       Z.m=MOCHI($('gzstg'),0,0);Z.m.el.style.opacity=0;Z.m.onCanta=function(){cantarola()};addEventListener('resize',lay);intro()}
@@ -3936,7 +3947,8 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
         else if(n-(Z.rosto||0)>2000)chip(T('Não vejo o seu rosto'));
         Z.tm=setTimeout(laco,350)},function(){Z.tm=setTimeout(laco,600)})}
     function perto(g){var G=navGraus(),b='',d=1e9;G.forEach(function(x){var k=Math.abs(gn(x)-g);if(k<d-1e-9){d=k;b=x}});return b}
-    document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-gzopen],[data-gz]');if(!t)return;
+    document.addEventListener('pointerdown',function(e){if(Z.el&&Z.bloq&&Z.el.contains(e.target)&&!(e.target.closest&&e.target.closest('[data-gz=mudo]')))somLibera()},true);
+    document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-gzopen],[data-gz]');if(t&&t.getAttribute('data-gz')==='mudo'&&Z.bloq){e.preventDefault();e.stopPropagation();somLibera();return}if(!t)return;
       if(t.hasAttribute('data-gzopen')){e.preventDefault();e.stopPropagation();var dw=$('drw');
         /* S56: pelo menu, o menu fecha por completo (e o histórico assenta) antes de a tela do grau entrar */
         /* S69: no celular o menu pode demorar a fechar — ele é fechado e escondido à força antes de a tela do grau abrir */
@@ -3955,7 +3967,7 @@ function Mochi(host,x,y){const el=document.createElement('div');el.className='mo
       if(k==='mais'||k==='menos'){Z.g=Math.max(.25,Math.min(4,Z.g+(k==='mais'?.25:-.25)));var gv=$('gzgv'),gl=$('gzgl'),vb=$('gzver');if(gv)gv.textContent=gf(Z.g);if(gl)gl.textContent=Z.g===Z.G?T('sugerido'):T('Sugerido: ')+gf(Z.G);if(vb)vb.textContent=T('Ver óculos de leitura')+' '+gf(Z.g);if(Z.m){Z.m.sim()}return}
       if(k==='guarda'){var gg=Z.g;try{localStorage.setItem('lf_meugr',gf(gg))}catch(_){}fecha();toast(T('Grau guardado')+': '+gf(gg));try{if(st.tipo==='grau'&&document.documentElement.classList.contains('ppop')&&!prodOpen){st.fgr=perto(gg);drawGrid()}gzFaixa();}catch(_){}return}
       if(k==='ver'){var g=Z.g;fecha();var go=function(){st.fgr=perto(g);navAbreCat('grau')};if(prodOpen)navApos(go);else go();return}},true);
-    window.__LFGZ={Z:Z,escala:escala,L:L,pp:function(G){ppIni(G,0)}};window.__lfGzAbre=function(){abre()};
+    window.__LFGZ={Z:Z,escala:escala,L:L,pp:function(G){ppIni(G,0)}};window.__lfGzAbre=function(){abre()};window.__lfGzPtr=function(){return Z.fase!=='pp'};
     /* faixa na Leitura (topo, antes dos óculos) */
     var EF='';
     function gzFaixa(){var vs=$('vscr'),g=$('grid');if(!vs||!g)return;var f=$('gzf');
