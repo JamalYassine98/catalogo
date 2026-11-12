@@ -1790,13 +1790,18 @@
     if(so!=='falta'||!c.tel)h+='<label class="cfl" for="'+p+'z">Número de telefone</label><div class="fzr">'+cdd(p+'p','País do telefone',pais,ti,'Buscar país ou código')+'<input class="field" id="'+p+'z" inputmode="tel" autocomplete="tel-national" placeholder="'+esc(fnEx(pais))+'" value="'+esc(c.telTxt||'')+'"></div><div class="cfh" id="'+p+'zh" hidden></div>';
     if(so!=='falta'||!c.doc)h+='<label class="cfl" for="'+p+'a2">Nacionalidade</label>'+cdd(p+'a2','Nacionalidade',nac,nacItems(),'Buscar nacionalidade')+
       '<label class="cfl" for="'+p+'d" id="'+p+'dl">'+nacInfo(nac).d+'</label><input class="field" id="'+p+'d" inputmode="'+(NAC[nac]?'numeric':'text')+'" autocomplete="off" placeholder="'+nacInfo(nac).ph+'" value="'+esc(maskDoc(nac,c.doc||''))+'">';
+    /* Factura (12/11): paraguaio pode pôr o RUC (opcional) para a factura sair com nome; sem RUC = Sin nombre / RUC X */
+    h+='<div id="'+p+'rw"'+(nac==='py'?'':' hidden')+'><label class="cfl" for="'+p+'r">'+LFI.tr('RUC (opcional, para a factura com seu nome)')+'</label><input class="field" id="'+p+'r" inputmode="numeric" autocomplete="off" placeholder="1234567-8" value="'+esc(c.ruc||'')+'"></div>';
     return h}
+  function rucDV(n){var k=2,t=0;for(var i=n.length-1;i>=0;i--){t+=(+n[i])*k;k=k>=11?2:k+1}var r=t%11;return r>1?11-r:0}
+  function rucNorm(v){var m=/^(\d{3,8})-?(\d)$/.exec(String(v||'').replace(/[\s.]/g,''));if(!m)return '';return rucDV(m[1])===+m[2]?m[1]+'-'+m[2]:''}
   /* lê telefone/documento de um bloco perfilCampos; obr = obrigatórios */
   function perfilLer(c,p,obr){var o={},z=$(p+'z'),d=$(p+'d');
     if(z){var pais=$(p+'p').value,tv=z.value.trim();if(tv||obr){var tel=foneNorm(pais,tv);if(!tel){cfErro(fnMsg(pais),p+'z');return null}o.pais=pais;o.tel=tel;o.telTxt=tv}}
     if(d){var nac=$(p+'a2').value,dv=d.value.trim();if(dv||obr){var dn=docNorm(nac,dv);if(!dn){cfErro(nacInfo(nac).d+(NAC[nac]?' inválido. Confira os números.':': digite o número (letras e números, mínimo 4).'),p+'d');return null}o.nac=nac;o.doc=dn}}
+    var r=$(p+'r'),rw=$(p+'rw');if(r&&rw&&!rw.hidden){var rv=r.value.trim();if(rv){var rn=rucNorm(rv);if(!rn){cfErro(LFI.tr('RUC inválido. Confira o número e o dígito depois do traço.'),p+'r');return null}o.ruc=rn}else o.ruc=''}else if(r)o.ruc='';
     return o}
-  document.addEventListener('change',function(e){var t=e.target;if(!t||!t.id)return;var m=/^(mp|pp)a2$/.exec(t.id);if(m){var p=m[1],n=nacInfo(t.value),fd=$(p+'d');if(fd){$(p+'dl').textContent=n.d;fd.placeholder=n.ph;fd.inputMode=NAC[t.value]?'numeric':'text';fd.value=maskDoc(t.value,fd.value)}var pp=$(p+'p'),pz=$(p+'z');if(pp&&pz&&!pz.value&&(!FN||FN[t.value]))cddSet(p+'p',t.value)}
+  document.addEventListener('change',function(e){var t=e.target;if(!t||!t.id)return;var m=/^(mp|pp)a2$/.exec(t.id);if(m){var p=m[1],n=nacInfo(t.value),fd=$(p+'d'),rw0=$(p+'rw');if(rw0)rw0.hidden=t.value!=='py';if(fd){$(p+'dl').textContent=n.d;fd.placeholder=n.ph;fd.inputMode=NAC[t.value]?'numeric':'text';fd.value=maskDoc(t.value,fd.value)}var pp=$(p+'p'),pz=$(p+'z');if(pp&&pz&&!pz.value&&(!FN||FN[t.value]))cddSet(p+'p',t.value)}
     var m2=/^(mp|pp)p$/.exec(t.id);if(m2){var z=$(m2[1]+'z');if(z){z.placeholder=fnEx(t.value);if(z.value&&!/^(\+|00)/.test(z.value.trim()))fnVivo(z,t.id,m2[1]+'zh')}}});
   document.addEventListener('input',function(e){var t=e.target;if(!t||!t.id)return;var m=/^(mp|pp)z$/.exec(t.id);if(m)fnVivo(t,m[1]+'p',m[1]+'zh');var m2=/^(mp|pp)d$/.exec(t.id);if(m2)maskCampo(t,function(v){return maskDoc($(m2[1]+'a2').value,v)})});
   function endLinha(a){return esc(a.end)+(a.cidade?', '+esc(a.cidade):'')+(a.dep?' · '+esc(a.dep):'')}
@@ -1955,7 +1960,7 @@
         if(j&&j.ok){st._cupOk=id;enviarPedido(retry);return}cupTira();toast(cupMsg(j&&j.motivo,j&&j.cupom));bag(true)},function(){if(bt1)bt1.disabled=false;toast(LFI.tr('Não deu para conferir o código agora. Tente de novo.'))});return}
     var L2=l2Info(),CI=cupInfo(),DV=descVale(),doc=st.pkdoc&&retry?st.pkdoc:(function(){var uq=uqGera(),fr=ent==='delivery'?freteG():0,base=Math.round(total())+fr,vb0=TESTE?1:valorBRL()+(fr?Math.max(5,Math.round(fr/(window.LF_RATE?window.LF_RATE():1400)/5)*5):0);
       return Object.assign({ts:Date.now(),nome:c.nome,tel:c.tel,pais:c.pais||'',cod:cod,lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:base,rosto:ff?ff.nome:'',
-      nac:c.nac||'',doc:c.doc||'',nasc:'',email:c.email||'',/* S192: transportadora e frete vão no obsC (as regras atuais do Firestore já aceitam) */obsC:ent==='delivery'&&st.tr?('Transportadora: '+trNome(st.tr)+(fr?' · frete Gs. '+fr.toLocaleString('es-PY'):' · frete na entrega')).slice(0,190):'',cidade:E?E.cidade:'',end:'',ent:ent,
+      nac:c.nac||'',doc:c.doc||'',nasc:'',email:c.email||'',/* S192: transportadora e frete vão no obsC (as regras atuais do Firestore já aceitam) */obsC:[c.nac==='py'&&c.ruc?'RUC '+c.ruc:'',ent==='delivery'&&st.tr?'Transportadora: '+trNome(st.tr)+(fr?' · frete Gs. '+fr.toLocaleString('es-PY'):' · frete na entrega'):''].filter(Boolean).join(' · ').slice(0,190),cidade:E?E.cidade:'',end:'',ent:ent,
       endE:ent==='delivery'&&E?E.end+', '+E.cidade+(E.dep?' · '+E.dep:''):'',refE:ent==='delivery'&&E?E.ref||'':'',depE:ent==='delivery'&&E?E.dep||'':'',
       
       /* S197: o final único sempre DESCONTA (o cliente nunca paga a mais) */pag:pag,uq:uq,brl:pag==='pix'?Math.round((vb0-uq/100)*100)/100:vb0,pagar:pag==='alias'?base-uq:0,teste:!!TESTE,
@@ -1990,13 +1995,15 @@
     if(pix)pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Pague com PIX</h2><div class="pgv">'+brl(e.brl)+'</div><div class="pgsub">Pague o valor exato, com os centavos</div>'+timer+(e.teste?'<div class="pgt">MODO TESTE</div>':'')+
       '<div class="pgq" id="pgq"></div><button type="button" class="pgc" data-pgcopy>Copiar código PIX</button>'+
       '<div class="pgau"><span class="spn"></span><span>Esperando o PIX… confirmamos sozinhos, não precisa mandar nada</span></div>'+
-      '<div class="pgcl">Pagou e não confirmou em 5 min?<br><label for="pgf">Enviar comprovante</label></div>'+fim).className='pgw0';
+      '<div class="pgcl" id="pgcl" hidden>'+LFI.tr('Pagou e ainda não confirmou?')+'<br><label for="pgf">'+LFI.tr('Envie o comprovante')+'</label></div>'+fim).className='pgw0';
     else pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Transferência Itaú</h2><div class="pgv">Gs. '+mil(vg)+'</div><div class="pgsub">Transfira o valor exato</div>'+timer+(e.teste?'<div class="pgt">MODO TESTE</div>':'')+
       '<div class="pgm">'+[['Alias Itaú',ITAU.alias,ITAU.alias],['Valor exato','Gs. '+mil(vg),String(Math.round(vg))]].map(function(r){return '<div class="pgr"><div><small>'+r[0]+'</small><b>'+esc(r[1])+'</b></div><button type="button" data-pgc2="'+esc(r[2])+'">Copiar</button></div>'}).join('')+
       '<div class="pgtit">Titular: '+esc(ITAU.titular)+'</div></div>'+
       '<label class="pgb" for="pgf" id="pgbtn">Enviar comprovante</label><div class="pgsub">Depois do comprovante, sua peça fica reservada por 12 horas enquanto conferimos.</div>'+fim).className='pgw0';
     if(pix){var code=pixCode(e.brl,'LF'+e.cod);e.code=code;loadQr().then(function(){var q=$('pgq');if(q&&window.LFqr)q.innerHTML=LFqr.svg(code,240)}).catch(function(){var q=$('pgq');if(q)q.innerHTML='<div class="pgw">Não consegui desenhar o QR. Use o botão "Copiar código PIX".</div>'})}
     window.__pgcode=pix?pixCode(e.brl,'LF'+e.cod):'';
+    /* S197: o comprovante só aparece depois de 10 min sem a confirmação automática */
+    if(pix){var pgW=Math.max(0,600000-(Date.now()-(+e.ts||Date.now())));clearTimeout(window.__pgclT);window.__pgclT=setTimeout(function(){var x=$('pgcl');if(x)x.hidden=false},pgW)}
     resRelogio(id);
     pkPoll(id,function(o){
       if(o.cancelado){pedSet(id,{est:'cancelado'});pkStop();pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Pedido cancelado pela loja</h2><div class="pkt"><span>Este pedido foi cancelado e as peças voltaram para o site. Dúvidas? Fale com a loja pelo WhatsApp.</span></div><div class="pkb"><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0';return}
