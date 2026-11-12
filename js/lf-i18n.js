@@ -63,7 +63,7 @@
 'Armações':'Armazones','Óculos de grau':'Lentes con receta','Solares':'De sol',
 'Na reserva':'En la reserva','Avise-me quando chegar':'Avísame cuando llegue','Esgotado':'Agotado','Última unidade':'Última unidad','Chegou esta semana':'Llegó esta semana',
 'Favoritar':'Favorito','Nos favoritos':'En favoritos','Salvo nos favoritos':'Guardado en favoritos',
-'NOVO':'NUEVO','GRAU':'RECETA','Proteção UV400':'Protección UV400',
+'NOVO':'NUEVO','GRAU':'RECETA','Proteção UV400':'Protección UV400','Polarizado':'Polarizado',
 'Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.':'Ningún modelo con esos filtros. Quita un filtro o limpia la búsqueda.',
 'Oval':'Ovalado','Quadrado':'Cuadrado','Alongado':'Alargado','Coração':'Corazón',
 'Armações de quase qualquer formato trazem equilíbrio e liberdade de escolha.':'Los armazones de casi cualquier forma traen equilibrio y libertad de elección.',
