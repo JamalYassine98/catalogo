@@ -17,6 +17,7 @@ label{display:grid;gap:6px;font-size:12px;letter-spacing:.08em;text-transform:up
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:99px;background:var(--gl);color:#fff;font-weight:600;font-size:15px}.btn.o{background:transparent;border:1px solid var(--ln);color:var(--tx)}.btn.d{background:transparent;border:1px solid color-mix(in srgb,var(--bad) 50%,transparent);color:var(--bad)}.btn.w{width:100%}.btn.sm{min-height:40px;padding:0 14px;font-size:13px}.btn:disabled{opacity:.5}
 .pill{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 13px;border-radius:99px;font-size:13px;font-weight:600;background:var(--s2);border:1px solid var(--ln)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 20%,transparent)}.off .dot{background:var(--bad);box-shadow:0 0 0 3px color-mix(in srgb,var(--bad) 20%,transparent)}
+.ordm{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ordm .chip{border:1px solid var(--ln);padding:8px 14px;border-radius:99px;background:var(--s2);cursor:pointer;font-weight:600}.ordm .chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}.dvg{display:grid;gap:8px;margin-top:12px}.dvr{display:grid;gap:1px;padding:8px 10px;border:1px solid var(--ln);border-radius:12px}.dvl{font-size:11px;letter-spacing:.12em;font-weight:700;color:var(--ac)}.dnc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.dnc .chip{border:1px solid var(--ln);padding:6px 12px;border-radius:99px;background:var(--s2);cursor:pointer}.dnc .chip.on{background:var(--ac);color:#fff}
 .tg{width:52px;height:30px;border-radius:99px;background:var(--s2);border:1px solid var(--ln);position:relative;flex:0 0 52px;transition:.2s}.tg:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--mu);transition:.2s}.tg.on{background:var(--gl);border-color:transparent}.tg.on:after{left:25px;background:#fff}
 .seg{display:flex;gap:6px;flex-wrap:wrap}.seg button{padding:9px 14px;border-radius:99px;background:var(--s2);border:1px solid var(--ln);font-size:13px;color:var(--mu);white-space:nowrap}.seg button.on{background:var(--gl);border-color:transparent;color:#fff;font-weight:600}
 .chip{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11.5px;font-weight:700}.cw{background:color-mix(in srgb,var(--wn) 16%,transparent);color:var(--wn)}.co{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}.ca{background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}.cx{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
@@ -122,6 +123,7 @@ details summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
  <main class="page" id="v_vit">
   <div><h1 class="serif">Sua vitrine</h1><div class="mu sm" id="vsub"></div></div>
   <section class="card" id="c_dst"><div class="ct">Destaque do site</div><div id="dstb"></div></section>
+  <section class="card" id="c_ord"><div class="ct">Ordem do catálogo</div><div id="ordb"></div></section>
   <section class="card" id="c_att"><div class="ct">Precisa de atenção</div><div id="att"></div></section>
   <section class="card"><div class="ct">Preços e estoque</div><div class="mu sm">Vêm sempre do app (Inventário). Para mudar um preço ou fazer uma oferta, use o app; o site acompanha em até 1 minuto.</div></section>
  </main>
@@ -212,7 +214,7 @@ function visiveis(){return S.prods.filter(function(p){return !p.oculto})}
 function drawVit(){
   var v=visiveis().length,h=S.prods.filter(function(p){return p.oculto}).length;
   $('vsub').textContent=v+' produto'+(v===1?'':'s')+' no ar'+(h?' · '+h+' oculto'+(h===1?'':'s'):'')+' · preços vêm do estoque';
-  drawDst();
+  drawDst();try{drawOrd()}catch(_){}
   var nof=S.prods.filter(function(p){return !(p.fv>0)}),es=visiveis().filter(esg),a='';
   function li(c,cl,t,sub,go){return '<div class="row" style="padding:7px 0"'+(go?' data-go="'+go+'" role="button" tabindex="0"':'')+'><span class="chip '+cl+'">'+c+'</span><div class="g">'+t+(sub?'<div class="mu sm">'+sub+'</div>':'')+'</div>'+(go?'<span class="mu">›</span>':'')+'</div>'}
   if(nof.length)a+=li(nof.length,'cw','Sem foto',esc(nof.slice(0,4).map(function(p){return p.ref}).join(', '))+(nof.length>4?'…':''),'nof');
@@ -236,8 +238,69 @@ function dInfo(){var m=dmodo(),c=S.cfg,p,t='',w='';
   else if(m==='video'){if(c.video){t='Vídeo promocional';w=c.video}else{return {m:m,t:'Sem endereço do vídeo',w:'Cole o endereço do arquivo .mp4. Enquanto isso o site fica sem destaque.',bad:true}}}
   else if(m==='slide'){var l=dSlide(c);if(l.length){t=l.length+' foto'+(l.length===1?'':'s')+' em sequência';w=l.length===1?'Com uma foto só não há passagem automática. Escolha mais.':'Passa sozinho a cada 4 segundos, com '+((SA.filter(function(x){return x[0]===c.sanim})[0]||SA[0])[1].toLowerCase())+'.'}else{var nEsc=String(c.slide||'').split(',').filter(Boolean).length;if(nEsc)return {m:m,t:nEsc+' escolhida'+(nEsc===1?'':'s')+', ainda não publicada'+(nEsc===1?'':'s'),w:'As peças do slide ainda não chegaram ao Firebase ('+visiveis().length+' peças publicadas pelo app). O site mostra o catálogo de exemplo até o app publicar. Veja o diagnóstico em Catálogo › Site no app.',bad:true};return {m:m,t:'Sem fotos',w:'Escolha os modelos do slide. Enquanto isso o site fica sem destaque.',bad:true}}}
   return {m:m,t:t,w:w,bad:m==='nada'}}
+/* S172-A (aprovado 11/11/2026): destaque automático com 4 vagas — o MESMO cálculo do site (js/lf-site.js, dstAuto) */
+var DVN={fixa:'FIXADO',girar:'GIRAR',mv:'MAIS VENDIDO',nov:'NOVIDADE',tema:'TEMA'},DTN={natal:'Natal',maes:'Mães',pais:'Pais',bf:'Black Friday',anonovo:'Ano Novo',halloween:'Halloween'};
+var DST_TEMAP={natal:function(p){return p.tipo==='grau'},maes:function(p){return p.gen==='f'},pais:function(p){return p.gen==='m'},bf:function(p){return p.de>p.n},anonovo:function(p){return p.tipo==='solar'},halloween:function(p){return p.tipo==='solar'}};
+function dTemaP(){var c=S.cfg,e=c.evento,ag=Date.now();if(e&&typeof e==='object'&&DTN[e.tema]&&!(+e.ini>0&&ag<+e.ini)&&!(+e.fim>0&&ag>+e.fim))return {tema:e.tema,ini:+e.ini||0,ja:1};
+  var r=null;try{calProx(ag).L.forEach(function(x){if(r)return;var st=calSt(c,x)==='auto';if(st&&x.ini<=ag&&ag<=x.fim)r={tema:x.tema,ini:x.ini,ja:1};else if(st&&x.ini>ag&&x.ini-ag<=20*864e5)r={tema:x.tema,ini:x.ini}})}catch(_){}return r}
+function dstAutoP(){var R=S.cfg.dreg||{},nun={},us={},out=[],ag=Date.now(),P=S.prods,find=function(r){return P.filter(function(x){return x.ref===r})[0]};String(R.nunca||'').split(',').forEach(function(r){r=r.trim();if(r)nun[r]=1});
+  var ok=function(p){return p&&!p.oculto&&p.tipo!=='acessorio'&&!esg(p)&&!nun[p.ref]&&!us[p.ref]&&(R.foto===false||p.fv>0)};
+  var put=function(p,v,mot){if(ok(p)&&out.length<4){us[p.ref]=1;out.push({p:p,v:v,mot:mot||''})}};
+  var pre=function(l){if(R.foto===false)return l;var g=l.slice(0,3).filter(function(p){return p.gv});return g.length?g.concat(l.filter(function(p){return g.indexOf(p)<0})):l};
+  if(R.fixa&&(!(+R.ate>0)||ag<=+R.ate))put(find(R.fixa),'fixa',+R.ate>0?'até '+new Date(+R.ate).toLocaleDateString('pt-BR'):'');
+  var gir=pre(String(S.cfg.dauto||'').split(',').map(find).filter(ok));put(gir[0],'girar',(S.cfg.dmot||{})[gir[0]&&gir[0].ref]);
+  var C=P.filter(ok);put(C.filter(function(p){return p.mv>0}).sort(function(a,b){return a.mv-b.mv})[0],'mv','');
+  var nv=pre(P.filter(ok).sort(function(a,b){return (b.cad||0)-(a.cad||0)}))[0];put(nv,'nov',nv&&nv.cad?'chegou há '+Math.max(0,Math.round((ag-nv.cad)/864e5))+' dias':'');
+  var t=R.tema===false?null:dTemaP(),tf=t&&DST_TEMAP[t.tema];
+  if(tf){var tl=P.filter(function(p){return ok(p)&&tf(p)}).sort(function(a,b){return (a.mv>0?a.mv:99)-(b.mv>0?b.mv:99)||(est(b)||0)-(est(a)||0)});put(tl[0],'tema',(DTN[t.tema]||t.tema)+(t.ja?'':' — começa '+new Date(t.ini).toLocaleDateString('pt-BR',{day:'numeric',month:'numeric'})))}
+  gir.forEach(function(p){put(p,'girar',(S.cfg.dmot||{})[p.ref])});
+  return out}
+function dVagasHtml(){var L=dstAutoP(),a=S.an7,dv=(a&&a.destaqueVistas)||{},dt=(a&&a.destaqueToques)||{};
+  if(!L.length)return '';
+  var h='<div class="dvg">'+L.map(function(x){var v=dv[x.p.ref]||0,t=dt[x.p.ref]||0;return '<div class="dvr"><span class="dvl">'+DVN[x.v]+(x.v==='tema'&&x.mot?' · '+esc(x.mot.split(' —')[0]).toUpperCase():'')+'</span><b>'+esc(x.p.ref)+'</b><span class="mu sm">'+esc(x.v==='tema'?(x.mot.indexOf('—')>0?x.mot.split('— ')[1]:''):x.mot||'')+'</span><span class="mu sm">'+(a?v+' vistas · '+t+' toques':'vistas e toques: abrindo…')+'</span></div>'}).join('')+'</div>';
+  var g=L.filter(function(x){return x.v==='girar'})[0];
+  if(g&&a&&(dv[g.p.ref]||0)>=30&&(dt[g.p.ref]||0)/(dv[g.p.ref]||1)<0.05)h+='<div class="mu sm" style="margin-top:6px">💡 '+esc(g.p.ref)+' teve poucos toques → o app troca pela próxima peça parada.</div>';
+  return h+'<button class="btn o" id="drg" type="button" style="min-height:40px;margin-top:8px">Regras do automático</button>'}
+function dRegras(){var R=S.cfg.dreg||{},V=visiveis().filter(function(p){return !esg(p)}),nun=String(R.nunca||'').split(',').filter(Boolean);
+  var op=function(sel){return '<option value="">—</option>'+V.map(function(p){return '<option value="'+esc(p.ref)+'"'+(p.ref===sel?' selected':'')+'>'+esc(p.ref+' · '+p.nome)+'</option>'}).join('')};
+  var h='<div class="serif" style="font-size:23px">Regras do automático</div>'+
+    '<div class="pr"><div class="g"><b>Seguir o tema do calendário</b><div class="mu sm">No Natal, Mães, Pais… 1 vaga vira do tema</div></div><button type="button" class="tg'+(R.tema!==false?' on':'')+'" id="rgT" role="switch" aria-checked="'+(R.tema!==false)+'"></button></div>'+
+    '<div class="pr"><div class="g"><b>Só peças com foto boa</b><div class="mu sm">Prefere quem tem 360°</div></div><button type="button" class="tg'+(R.foto!==false?' on':'')+'" id="rgF" role="switch" aria-checked="'+(R.foto!==false)+'"></button></div>'+
+    '<div style="margin-top:12px"><b>Nunca destacar</b><div class="mu sm">Toque para marcar</div><div class="dnc">'+V.map(function(p){return '<button type="button" class="chip'+(nun.indexOf(p.ref)>=0?' on':'')+'" data-nc="'+esc(p.ref)+'">'+esc(p.ref)+'</button>'}).join('')+'</div></div>'+
+    '<div style="margin-top:12px"><b>Fixar uma peça até…</b><div class="mu sm">Depois volta ao automático</div><select class="in" id="rgP" style="margin-top:6px">'+op(R.fixa||'')+'</select><input class="in" type="date" id="rgD" style="margin-top:6px" value="'+(+R.ate>0?new Date(+R.ate).toISOString().slice(0,10):'')+'"></div>'+
+    '<button class="btn w" id="rgS" type="button" style="margin-top:14px">Salvar regras</button><button class="btn o w" id="rgC" type="button">Cancelar</button>';
+  sheet(h);$('rgC').onclick=closeSheet;
+  $('sh').querySelector('.sheet').onclick=function(e){var t=e.target.closest('.tg,[data-nc]');if(!t)return;t.classList.toggle('on');if(t.classList.contains('tg'))t.setAttribute('aria-checked',t.classList.contains('on'))};
+  $('rgS').onclick=function(){var d=$('rgD').value,o={tema:$('rgT').classList.contains('on'),foto:$('rgF').classList.contains('on'),nunca:Array.prototype.map.call(document.querySelectorAll('.sheet [data-nc].on'),function(b){return b.getAttribute('data-nc')}).join(','),fixa:$('rgP').value,ate:d?new Date(d+'T23:59:59').getTime():0};
+    put('config/site',{dreg:o},['dreg']).then(function(){S.cfg.dreg=o;closeSheet();draw();say('Regras salvas.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}}
+function dAn7(){if(S.an7||S.an7p)return;S.an7p=1;fnPost(ANLF,{acao:'resumo',dias:7}).then(function(j){if(j&&j.ok){S.an7=j;drawDst();try{drawOrd()}catch(_){}}}).catch(function(){})}
+/* S172-B (aprovado 11/11/2026): ordem do catálogo — o MESMO cálculo do site (js/lf-site.js, catOrdem) */
+var ORDM=[['eq','Equilibrada','mistura mais vistos, novidades e peças paradas; esgotados vão para o fim'],['par','Vender parados','as peças paradas há mais tempo vêm primeiro'],['nov','Novidades primeiro','as que chegaram por último vêm primeiro']];
+function pNovo(p){return p.cad>0&&Date.now()-p.cad<6048e5}
+function catOrdemP(){var md=S.cfg.cordem||'eq',c=S.cfg,ix=function(s){var m={};String(s||'').split(',').forEach(function(x,i){if(x&&m[x]==null)m[x]=i});return m},PAR=ix(c.cpar),VIS=ix(c.cvis),TO={solar:0,armacao:1,grau:2};
+  var base=visiveis().filter(function(p){return p.tipo!=='acessorio'&&!esg(p)}).sort(function(a,b){return (b.fixo?1:0)-(a.fixo?1:0)||(pNovo(b)?1:0)-(pNovo(a)?1:0)||(TO[a.tipo]||0)-(TO[b.tipo]||0)||(a.ord||0)-(b.ord||0)});
+  var t=dTemaP(),tf=t&&t.ja?DST_TEMAP[t.tema]:null,why={},fx=base.filter(function(p){return p.fixo}),rs=base.filter(function(p){return !p.fixo}),out;
+  fx.forEach(function(p){why[p.ref]='📌 fixado por você'});
+  if(md==='nov')out=rs.slice().sort(function(a,b){return (b.cad||0)-(a.cad||0)});
+  else if(md==='par')out=rs.slice().sort(function(a,b){var x=PAR[a.ref],y=PAR[b.ref];return (x==null?999:x)-(y==null?999:y)});
+  else{var us={},q=[rs.filter(pNovo).sort(function(a,b){return (b.cad||0)-(a.cad||0)}),rs.filter(function(p){return VIS[p.ref]!=null}).sort(function(a,b){return VIS[a.ref]-VIS[b.ref]}),rs.filter(function(p){return PAR[p.ref]!=null}).sort(function(a,b){return PAR[a.ref]-PAR[b.ref]})],W=['novidade','mais visto da semana','parado'];out=[];
+    for(var k=0;k<rs.length*3;k++){var l=q[k%3];while(l.length&&us[l[0].ref])l.shift();if(l.length){var p=l.shift();us[p.ref]=1;why[p.ref]=W[k%3];out.push(p)}}
+    rs.forEach(function(p){if(!us[p.ref])out.push(p)})}
+  out.forEach(function(p){if(!why[p.ref])why[p.ref]=PAR[p.ref]!=null?'parado':pNovo(p)?'novidade':''});
+  if(tf){var t1=out.filter(tf);t1.forEach(function(p){why[p.ref]='tema · '+(DTN[t.tema]||t.tema)});out=t1.concat(out.filter(function(p){return !tf(p)}))}
+  return fx.concat(out).map(function(p){return {p:p,w:why[p.ref]||''}})}
+function drawOrd(){var b=$('ordb');if(!b)return;var md=S.cfg.cordem||'eq',L=catOrdemP().slice(0,6),a=S.an7,sf=visiveis().filter(function(p){return !(p.fv>0)}).length,av=[];
+  if(a&&a.vistasSemCarrinho&&a.vistasSemCarrinho[0])av.push('👀 Muito vista, nenhum carrinho: <b>'+esc(a.vistasSemCarrinho[0][0])+'</b>');
+  if(a&&a.semResultado&&a.semResultado[0])av.push('🔍 Buscado e não achado: <b>“'+esc(a.semResultado[0][0])+'”</b>');
+  if(sf)av.push('📷 Sem foto: <b>'+sf+'</b>');
+  b.innerHTML='<div class="mu sm">Como o site organiza os modelos (você ainda pode fixar no topo):</div><div class="ordm">'+ORDM.map(function(x){return '<button type="button" class="chip'+(x[0]===md?' on':'')+'" data-ordm="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div>'+
+    '<div class="mu sm" style="margin-top:4px">'+(ORDM.filter(function(x){return x[0]===md})[0]||ORDM[0])[1]+' = '+(ORDM.filter(function(x){return x[0]===md})[0]||ORDM[0])[2]+'.</div>'+
+    '<div style="margin-top:10px;font-weight:600">Prévia dos 6 primeiros</div>'+L.map(function(x,i){return '<div class="vrow"><b>'+(i+1)+'</b><div class="g">'+esc(x.p.ref)+' <span class="mu sm">'+esc(x.w)+'</span></div></div>'}).join('')+
+    '<div class="mu sm" style="margin-top:4px">… e no tema, as peças do tema sobem (ex.: Mães → femininas).</div>'+
+    (av.length?'<div style="margin-top:10px;font-weight:600">Precisa de atenção</div>'+av.map(function(t){return '<div class="mu sm" style="margin-top:3px">'+t+'</div>'}).join(''):'');
+  if(!a)dAn7()}
 function drawDst(){var i=dInfo(),nm=DM.filter(function(x){return x[0]===i.m})[0][1];
-  $('dstb').innerHTML='<div class="row" style="gap:12px"><div class="g"><span class="chip '+(i.bad?'cw':'co')+'">'+esc(nm)+'</span><div style="margin-top:6px;font-weight:600">'+esc(i.t)+'</div>'+(i.w?'<div class="mu sm" style="margin-top:2px;word-break:break-word">'+esc(i.w)+'</div>':'')+'</div><div style="display:grid;gap:6px"><button class="btn o" id="dmb" type="button" style="min-height:42px;padding:0 16px">Mudar</button><button class="btn o" id="dfx" type="button" style="min-height:42px;padding:0 16px">Efeitos</button></div></div>'}
+  $('dstb').innerHTML='<div class="row" style="gap:12px"><div class="g"><span class="chip '+(i.bad?'cw':'co')+'">'+esc(nm)+'</span><div style="margin-top:6px;font-weight:600">'+esc(i.t)+'</div>'+(i.w?'<div class="mu sm" style="margin-top:2px;word-break:break-word">'+esc(i.w)+'</div>':'')+'</div><div style="display:grid;gap:6px"><button class="btn o" id="dmb" type="button" style="min-height:42px;padding:0 16px">Mudar</button><button class="btn o" id="dfx" type="button" style="min-height:42px;padding:0 16px">Efeitos</button></div></div>'+(i.m==='auto'?dVagasHtml():'');if(i.m==='auto')dAn7()}
 function fxSheet(){var on=String(S.cfg.efx||'').split(',').filter(Boolean);
   var h='<div class="serif" style="font-size:23px">Efeitos do cartão</div><div class="mu sm" style="margin:-6px 0 6px">Movimentos extras do destaque no site. O selo da loja fica sempre parado.</div>';
   FX.forEach(function(x){h+='<div class="fxr"><div class="g"><b>'+x[1]+'</b><div class="mu sm">'+x[2]+'</div></div><button type="button" class="tg'+(on.indexOf(x[0])>=0?' on':'')+'" role="switch" aria-checked="'+(on.indexOf(x[0])>=0)+'" aria-label="'+x[1]+'" data-fx="'+x[0]+'"></button></div>'});
@@ -248,7 +311,7 @@ function fxSheet(){var on=String(S.cfg.efx||'').split(',').filter(Boolean);
     saveCfg({efx:l}).then(function(){closeSheet();say('Efeitos salvos.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})}}
 function dSheet(){
   var c=S.cfg,m=dmodo(),ok=visiveis().filter(function(p){return p.fv>0&&!esg(p)}),sl=dSlide(c).map(function(p){return p.ref});S.dsl=sl.slice();S.dm=m;S.dsa=SA.some(function(x){return x[0]===c.sanim})?c.sanim:'fade';
-  var info={nada:'O site mostra só o título e os botões.',auto:'O app escolhe o produto que mais precisa girar: mais peças paradas no estoque, com foto.',produto:'Você escolhe um modelo.',video:'Um vídeo seu (.mp4), sem som.',slide:'Fotos dos modelos passando sozinhas, com bolinhas.'};
+  var info={nada:'O site mostra só o título e os botões.',auto:'4 peças trocando sozinhas, cada uma por um motivo: Girar (parada no estoque), Mais vendido, Novidade e Tema do calendário.',produto:'Você escolhe um modelo.',video:'Um vídeo seu (.mp4), sem som.',slide:'Fotos dos modelos passando sozinhas, com bolinhas.'};
   var h='<div class="serif" style="font-size:23px">Destaque do site</div><div class="mu sm" style="margin-top:-6px">É o cartão grande no topo da página do cliente.</div>';
   DM.forEach(function(x){h+='<div class="opt'+(x[0]===m?' on':'')+'" data-m="'+x[0]+'" role="radio" aria-checked="'+(x[0]===m)+'" tabindex="0"><span class="rd"></span><div class="g"><b>'+x[1]+'</b><div class="mu sm">'+info[x[0]]+'</div><div class="ox" data-x="'+x[0]+'"'+(x[0]===m?'':' hidden')+'>'+dExtra(x[0],ok)+'</div></div></div>'});
   h+='<button class="btn w" id="dsv" type="button">Salvar destaque</button><button class="btn o w" id="dcc" type="button">Cancelar</button>';
@@ -383,7 +446,8 @@ function saveCfg(extra){var c=Object.assign({},S.cfg,extra||{});
   return put('config/site',{ativo:c.ativo!==false,aviso:c.aviso||'',video:c.video||'',destaque:c.destaque||'',dmodo:c.dmodo||dmodo(),slide:c.slide||'',sanim:c.sanim||'fade',efx:c.efx||''},['ativo','aviso','video','destaque','dmodo','slide','sanim','efx']).then(function(){S.cfg=c;draw()})}
 $('tgl').onclick=function(){var nv=!isOn();if(!nv&&!confirm('Desligar o site? Os visitantes verão o aviso.'))return;saveCfg({ativo:nv,aviso:$('avs').value.trim()}).then(function(){say(nv?'Site no ar.':'Site desligado.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
 $('svc').onclick=function(){saveCfg({aviso:$('avs').value.trim()}).then(function(){say('Mensagem salva.');reloadCat()}).catch(function(){say('Erro ao salvar.',1)})};
-$('dstb').onclick=function(e){if(e.target.closest('#dmb'))dSheet();else if(e.target.closest('#dfx'))fxSheet()};
+$('ordb').onclick=function(e){var t=e.target.closest('[data-ordm]');if(!t)return;var v=t.getAttribute('data-ordm');put('config/site',{cordem:v},['cordem']).then(function(){S.cfg.cordem=v;drawOrd();say('Ordem salva.');reloadCat()}).catch(function(e){say(e.message==='perm'?'Sem permissão. Entre de novo.':'Erro ao salvar.',1)})};
+$('dstb').onclick=function(e){if(e.target.closest('#dmb'))dSheet();else if(e.target.closest('#dfx'))fxSheet();else if(e.target.closest('#drg'))dRegras()};
 /* editor */
 
 /* arrastar a folha para baixo fecha (alça muda de cor; sem texto) */
