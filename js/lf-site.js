@@ -1867,7 +1867,7 @@
       nac:c.nac||'',doc:c.doc||'',nasc:'',email:c.email||'',obsC:'',cidade:E?E.cidade:'',end:'',ent:ent,
       endE:ent==='delivery'&&E?E.end+', '+E.cidade+(E.dep?' · '+E.dep:''):'',refE:ent==='delivery'&&E?E.ref||'':'',depE:ent==='delivery'&&E?E.dep||'':'',
       pag:pag,uq:uq,brl:pag==='pix'?Math.round((vb0+uq/100)*100)/100:vb0,pagar:pag==='alias'?base+uq:0,teste:!!TESTE,
-      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n-(L2.por[k]||0)/st.cart[k])}}),l2:L2.d}})();
+      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n-(L2.por[k]||0)/st.cart[k]),l2:L2.por[k]||0}})}})();
     st.pkdoc=doc;
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
     var rxo=null;
@@ -2677,7 +2677,10 @@
   function mpLoad(){
     if(MP.lib)return MP.lib;
     var base=new URL(FAB+'mp/',document.baseURI).href;
-    MP.lib=Promise.resolve().then(function(){return (new Function('u','return import(u)'))(base+'vision_bundle.mjs')}).then(function(V){
+    MP.lib=new Promise(function(ok,no){/* 12/11: sem new Function (a política de segurança CSP não deixa): um <script type=module> pequeno importa a biblioteca */
+      var k='__lfMp'+Date.now();window[k]=function(V,e){try{delete window[k]}catch(_){}if(V)ok(V);else no(e||new Error('mp'))};
+      var sc=document.createElement('script');sc.type='module';sc.textContent='import('+JSON.stringify(base+'vision_bundle.mjs')+').then(function(V){window['+JSON.stringify(k)+'](V)},function(e){window['+JSON.stringify(k)+'](null,e)})';
+      sc.onerror=function(){no(new Error('mp'))};document.head.appendChild(sc);setTimeout(function(){sc.remove()},0)}).then(function(V){
       return V.FilesetResolver.forVisionTasks(base.replace(/\/$/,'')).then(function(fs){
         return V.FaceLandmarker.createFromOptions(fs,{baseOptions:{modelAssetPath:base+'face_landmarker.task',delegate:'CPU'},runningMode:'IMAGE',numFaces:1,outputFacialTransformationMatrixes:true})})
     }).catch(function(e){MP.lib=null;throw e});
