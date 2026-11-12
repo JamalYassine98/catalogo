@@ -336,6 +336,18 @@
     return fx.concat(out)}
   /* vitrine */
   function isNovo(p){return p.cad>0&&Date.now()-p.cad<6048e5}
+  /* S186 v3 (aprovado 12/11): UM selo por peça — 1 Oferta "−N%" (no tema "−N% · tema", cartão na cor do tema) · 2 Tema · 3 Nº 1/2/3 da categoria · 4 Chegou esta semana.
+     "Últimas N" não entra na conta: fica sempre dentro da foto. Sem "OFERTA" escrito, sem NOVO, sem selo preto de tipo e sem "Mais vendido" repetido. */
+  var TSEL={natal:['Presente ideal','Regalo ideal'],maes:['Para a mãe','Para mamá'],pais:['Para o pai','Para papá'],bf:['Black Friday','Black Friday'],anonovo:['Ano Novo','Año Nuevo'],halloween:['Halloween','Halloween']};
+  function temaDe(p){try{var e=evAtivo();if(!e||!TSEL[e.tema])return '';var f=DST_TEMA[e.tema];return f&&f(p)?e.tema:''}catch(_){return ''}}
+  function temaNome(t){var x=TSEL[t];return x?x[window.LFI&&LFI.lang==='es'?1:0]:''}
+  var CATN={grau:['Leitura','Lectura'],solar:['Sol','Sol'],armacao:['Armações','Armazones']};
+  function catRank(p){if(!(p.mv>0))return 0;var L=P.filter(function(q){return q.tipo===p.tipo&&q.mv>0&&q.aviso!=='Esgotado'}).sort(function(a,b){return a.mv-b.mv}),k=L.indexOf(p)+1;return k>0&&k<=3?k:0}
+  function selo1(p,cls){var es=window.LFI&&LFI.lang==='es',c=cls||'sel1';if(p.aviso==='Esgotado')return '';var tm=temaDe(p);
+    if(isOf(p))return '<span class="'+c+' of">−'+pct5(p)+'%'+(tm?' · '+esc(temaNome(tm)):'')+'</span>';
+    if(tm)return '<span class="'+c+' tm t-'+tm+'">'+esc(temaNome(tm))+'</span>';
+    var k=catRank(p);if(k)return '<span class="'+c+' rk">Nº '+k+' '+(es?'en ':'em ')+((CATN[p.tipo]||['',''])[es?1:0])+'</span>';
+    if(isNovo(p)||p.aviso==='Chegou esta semana')return '<span class="'+c+' nv">'+LFI.tr('Chegou esta semana')+'</span>';return ''}
   function lista(){
     var q=st.q.trim().toLowerCase(),bq=btol(q);
     var fl=function(face){return P.filter(function(p){
@@ -399,9 +411,11 @@
     $('count').textContent=r.length+' modelo'+(r.length===1?'':'s');
     r=pageOf(r);var HA=r.length?r.map(function(p,i){
       var esg=p.aviso==='Esgotado',n=st.cart[p.ref]||0;
-      var sk=esg?'<span class="stk e">'+(p.esgRes?'Reservada agora':'Esgotado')+'</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':p.aviso==='Chegou esta semana'?'<span class="stk n">'+esc(p.aviso)+'</span>':'');
-      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+'" style="--i:'+i+'">'+ofp(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph"><span class="tg">'+(p.tag==='GRAU'?LFI.tr('LEITURA'):p.tag)+'</span>'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr">'+(p.ds!=null?'<span class="ref lfds">'+esc(p.ds)+'</span>':'<span class="ref">'+p.ref+'</span>')+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm'+(p.ds!=null?' lfcod':'')+'">'+esc(p.ds!=null?p.ref:p.nome)+'</span>'+(p.cores&&p.cores.length?'<span class="esw">'+p.cores.slice(0,6).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span>':'')+'<span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
+      var sk=esg?'<span class="stk e">'+(p.esgRes?'Reservada agora':'Esgotado')+'</span>':(/Últim/.test(p.aviso)?'<span class="stk u">'+esc(p.aviso)+'</span>':''),tm0=isOf(p)?temaDe(p):'';
+      return '<article class="card'+(esg?' esg':'')+(isOf(p)?' of':'')+(tm0?' ot t-'+tm0:'')+'" style="--i:'+i+'">'+selo1(p)+edb(p)+'<button class="fav'+(st.fav[p.ref]?' on':'')+'" data-fav="'+p.ref+'" aria-label="Favoritar '+esc(p.nome)+'" aria-pressed="'+(!!st.fav[p.ref])+'">'+HEART+'</button><button class="open" data-open="'+p.ref+'" aria-label="Ver '+esc(p.nome)+'"><div class="ph">'+sk+ofx(p)+vis(p)+'<span class="shine"></span>'+(p.fotos&&p.fotos[1]?'<span class="alt2"><img src="'+p.fotos[1]+'" alt=""></span>':(!p.foto&&p.cores&&p.cores[1]?'<span class="alt2">'+glasses(p.cores[1],p.raio,5)+'</span>':''))+'</div><div class="info"><span class="rr">'+(p.ds!=null?'<span class="ref lfds">'+esc(p.ds)+'</span>':'<span class="ref">'+p.ref+'</span>')+(p.uv?'<span class="uvc" title="Proteção UV400">UV400</span>':'')+'</span><span class="nm'+(p.ds!=null?' lfcod':'')+'">'+esc(p.ds!=null?p.ref:p.nome)+'</span>'+(p.cores&&p.cores.length?'<span class="esw">'+p.cores.slice(0,6).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span>':'')+'<span class="pr">'+prx(p)+'</span>'+eco(p)+'<span class="av">'+esc(p.aviso)+'</span></div></button></article>'}):null,GH=HA?HA.join(''):'<div class="empty">Nenhum modelo com esses filtros. Tire um filtro ou limpe a busca.</div>';
     var G=$('grid');
+    /* S186: mais da metade dos cartões em oferta (ex.: Black Friday) = versão clara (cartão branco, selo vermelho) */
+    try{if(G&&r){var nOf=r.filter(function(p){return isOf(p)}).length;G.classList.toggle('ofl',r.length>3&&nOf*2>r.length)}}catch(_){}
     if(G._h!==GH){G._h=GH;
       if(!HA){G.innerHTML=GH}
       else{ /* só troca os cards que mudaram: os outros (e suas fotos) ficam como estão, sem piscar */
@@ -2073,17 +2087,17 @@
   var DST_TEMA={natal:function(p){return p.tipo==='grau'},maes:function(p){return p.gen==='f'},pais:function(p){return p.gen==='m'},bf:function(p){return isOf(p)},anonovo:function(p){return p.tipo==='solar'},halloween:function(p){return p.tipo==='solar'}};
   function dstTemaProx(){var e=null;try{e=evAtivo()}catch(_){}if(e)return {tema:e.tema,ini:+e.ini||0,ja:1};var ag=Date.now(),r=null;try{calProx(ag).L.forEach(function(x){if(!r&&x.ini>ag&&x.ini-ag<=20*864e5&&EVD[x.tema]&&calSt(CFG,x)==='auto')r={tema:x.tema,ini:x.ini}})}catch(_){}return r}
   function dstAuto(){var R=CFG.dreg||{},nun={},us={},out=[],ag=Date.now();String(R.nunca||'').split(',').forEach(function(r){r=r.trim();if(r)nun[r]=1});
-    var ok=function(p){return p&&vis5(p)&&p.aviso!=='Esgotado'&&!nun[p.ref]&&!us[p.ref]&&(R.foto===false||!!p.foto)};
+    var ok=function(p){return p&&vis5(p)&&p.aviso!=='Esgotado'&&!nun[p.ref]&&!us[p.ref]&&(R.foto===false||!!p.foto)&&!catRank(p)};
     var put=function(p,v,mot){if(ok(p)&&out.length<4){us[p.ref]=1;out.push({p:p,v:v,mot:mot||''})}};
     var pre=function(l){if(R.foto===false)return l;var g=l.slice(0,3).filter(function(p){return p.gv});return g.length?g.concat(l.filter(function(p){return g.indexOf(p)<0})):l};
     if(R.fixa&&(!(+R.ate>0)||ag<=+R.ate))put(find(R.fixa),'fixa');
     var gir=pre(String(CFG.dauto||'').split(',').map(function(r){return find(r)}).filter(ok));
     put(gir[0],'girar',(CFG.dmot||{})[gir[0]&&gir[0].ref]);
     var C=cat5().filter(ok);
-    put(C.filter(function(p){return p.mv>0}).sort(function(a,b){return a.mv-b.mv})[0],'mv');
+    /* S186: 2ª vaga = Girar de OUTRA categoria (as paradas) */var g0=out[out.length-1];put(gir.filter(function(p){return ok(p)&&(!g0||p.tipo!==g0.p.tipo)})[0]||C.filter(function(p){return !g0||p.tipo!==g0.p.tipo}).sort(function(a,b){return (b.est||0)-(a.est||0)})[0],'girar');
     put(pre(cat5().filter(ok).sort(function(a,b){return (b.cad||0)-(a.cad||0)}))[0],'nov');
     var t=R.tema===false?null:dstTemaProx(),tf=t&&DST_TEMA[t.tema];
-    if(tf){var tl=cat5().filter(function(p){return ok(p)&&tf(p)}).sort(function(a,b){return (a.mv>0?a.mv:99)-(b.mv>0?b.mv:99)||(b.est||0)-(a.est||0)});put(tl[0],'tema',t.tema)}
+    if(tf){/* S186: peça do tema que NÃO vendeu */var tl=cat5().filter(function(p){return ok(p)&&tf(p)}).sort(function(a,b){return (a.mv>0?1:0)-(b.mv>0?1:0)||(b.est||0)-(a.est||0)});put(tl[0],'tema',t.tema)}
     gir.forEach(function(p){put(p,'girar',(CFG.dmot||{})[p.ref])});
     C.sort(function(a,b){return (b.est||0)-(a.est||0)}).forEach(function(p){put(p,'girar')});
     return out}
@@ -2107,8 +2121,8 @@
   function dstVai(k){var h=$('hdst');V5.di=k;if(!h){homeDraw();return}var im=h.querySelector('.hdi');if(im&&!matchMedia('(prefers-reduced-motion: reduce)').matches){im.classList.add('out');setTimeout(function(){var t=document.createElement('div');t.innerHTML=dstHtml();var nv=t.firstElementChild;if(nv){h.replaceWith(nv);var i2=nv.querySelector('.hdi');i2.classList.add('out');requestAnimationFrame(function(){requestAnimationFrame(function(){i2.classList.remove('out')})})}},280)}else{var t=document.createElement('div');t.innerHTML=dstHtml();if(t.firstElementChild)h.replaceWith(t.firstElementChild)}}
 
   /* ---- cards ---- */
-  function selo5(p,sec){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';if(isOf(p))return '<span class="hb of">−'+pct5(p)+'%</span>';if(p.mv>0&&p.mv<=3&&sec!=='mv')return '<span class="hb">'+LFI.tr('Mais vendido')+'</span>';if(isNovo(p)&&sec!=='nov')return '<span class="hb">'+LFI.tr('Novo')+'</span>';return ''}
-  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(isOf(p)&&p.mv>0&&p.mv<=3&&sec!=='mv'?'<span class="hmx">'+LFI.tr('Mais vendido')+'</span>':'')+(p.ds!=null?'<span class="hn lfcod"><small class="hds">'+esc(p.ds)+'</small>'+esc(p.ref)+'</span>':'<span class="hn">'+esc(p.nome)+'</span>')+'<span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
+  function selo5(p,sec){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';var h=selo1(p,'hb');if((sec==='nov'&&/ nv"/.test(h))||(sec==='mv'&&/ rk"/.test(h)))return '';return h}
+  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(/Últim/.test(p.aviso||'')?'<span class="stk u hstk">'+esc(p.aviso)+'</span>':'')+(p.ds!=null?'<span class="hn lfcod"><small class="hds">'+esc(p.ds)+'</small>'+esc(p.ref)+'</span>':'<span class="hn">'+esc(p.nome)+'</span>')+'<span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
   function abas5(){var C=cat5(),ok=function(p){return p.aviso!=='Esgotado'};
     /* 08/11 (aprovado): cada peça aparece em UMA seção só, na de maior hierarquia — Ofertas > Mais vendidos > Novidades.
        Em Ofertas a mais vendida vem primeiro, depois o maior desconto. */
