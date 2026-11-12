@@ -43,8 +43,58 @@
   /* Leve 2 (aprovado 11/11/2026): 30% na 2ª peça de cada par (a mais barata); só leitura e solar que o app liberou (l2: o piso não é furado) */
   function l2Info(){var u=[];Object.keys(st.cart).forEach(function(k){var p=find(k);if(p&&p.l2===true&&p.aviso!=='Esgotado'&&(p.tipo==='grau'||p.tipo==='solar'))for(var i=0;i<st.cart[k];i++)u.push({k:k,n:p.n})});
     u.sort(function(a,b){return b.n-a.n});var r={n:u.length,d:0,dD:0,por:{}};for(var i=1;i<u.length;i+=2){var x=u[i],v=Math.ceil(x.n*0.7/1000)*1000,dd=Math.max(0,x.n-v);r.d+=dd;r.dD+=Math.max(0,LFI.pv(x.n)-LFI.pv(v));r.por[x.k]=(r.por[x.k]||0)+dd}return r}
-  function total(){return bruto()-l2Info().d}
-  function totalD(){return brutoD()-l2Info().dD}
+  /* Cupons (S174, aprovado 11/11/2026): 1 código por compra; não vale em peça em OFERTA ("ya tiene su mejor precio");
+     em cada peça vale no máximo o % que o app liberou (cmx: nunca abaixo do piso); com "Leve 2" vale o maior desconto. */
+  st.cup=lsG('lf_cup',null);
+  function cupPeca(p){if(!st.cup||!p||p.aviso==='Esgotado')return {d:0,pct:0,of:false};if(isOf(p))return {d:0,pct:0,of:true};var pc=Math.min(st.cup.pct||0,+p.cmx||0);return {d:pc>0?Math.floor(p.n*pc/100/1000)*1000:0,pct:pc,lim:pc<(st.cup.pct||0),of:false}}
+  function cupInfo(){var r={d:0,dD:0,por:{},min:false};if(!st.cup)return r;var b=bruto();if(st.cup.min&&b<st.cup.min){r.min=true;return r}
+    Object.keys(st.cart).forEach(function(k){var p=find(k),x=cupPeca(p);if(x.d>0){r.d+=x.d*st.cart[k];r.dD+=Math.max(0,(LFI.pv(p.n)-LFI.pv(p.n-x.d)))*st.cart[k];r.por[k]=x.d*st.cart[k]}});return r}
+  /* qual desconto vale no carrinho: 'l2', 'cup' ou '' */
+  function descVale(){var a=l2Info().d,c=cupInfo().d;return c>0&&c>=a?'cup':a>0?'l2':''}
+  function descD(){var v=descVale();return v==='cup'?cupInfo().d:v==='l2'?l2Info().d:0}
+  function descDD(){var v=descVale();return v==='cup'?cupInfo().dD:v==='l2'?l2Info().dD:0}
+  function cupFn(b){var o={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)};if(b.acao==='meus'){var se=sessG();if(se&&se.idToken)o.headers.Authorization='Bearer '+se.idToken}
+    return fetch('https://southamerica-east1-'+FB.p+'.cloudfunctions.net/cupom',o).then(function(r){return r.json()})}
+  function cupGuarda(c){st._cupErr='';st.cup=c?{cod:c.cod,pct:c.pct,tipo:c.tipo,fim:c.fim||0,min:c.min||0,restam:c.restam}:null;lsS('lf_cup',st.cup)}
+  function cupTira(){cupGuarda(null)}
+  var CUP_TIPO={bv:'Boas-vindas',px:'Próxima compra',am:'Indique uma amiga',vip:'Cliente VIP',ev:'Cupom do evento'};
+  function cupData(t){return t?new Date(t).toLocaleDateString(LFI.lang==='es'?'es-PY':'pt-BR'):''}
+  function cupMsg(m,c){var cod=c&&c.cod?c.cod:'';return {nao:LFI.tr('Código não encontrado. Confira as letras.'),usado:LFI.tr('Este código já foi usado.'),vencido:LFI.tr('Este código venceu.'),cancelado:LFI.tr('Este código foi cancelado.'),
+    ja:LFI.tr('Você já usou')+' '+cod+'. '+LFI.tr('Obrigado! Seu cartão de próxima compra continua valendo.'),esgotado:LFI.tr('Os cupons')+' '+cod+' '+LFI.tr('acabaram.'),outro:LFI.tr('Este código é pessoal, de outro telefone.'),
+    trava:LFI.tr('Este código está travado por 24 h por tentativas erradas.'),proprio:LFI.tr('Seu código de amiga é para compartilhar: você ganha quando ela comprar.'),cliente:LFI.tr('Este código é só para a primeira compra.'),
+    min:LFI.tr('Compra mínima de')+' '+fmt((c&&c.min)||0)+'.',cedo:LFI.tr('Este código ainda não começou a valer.'),pendente:LFI.tr('Este cartão começa a valer quando confirmarmos o pagamento.'),espera:LFI.tr('Muitas tentativas. Tente de novo em 1 hora.'),pausa:LFI.tr('Agora não há códigos novos. Tente no mês que vem.')}[m]||LFI.tr('Não deu para conferir o código agora. Tente de novo.')}
+  function cupAplica(cod,cb){cod=String(cod||'').trim();if(!cod)return;var c=getConta()||{};
+    cupFn({acao:'ver',cod:cod,tel:c.tel||'',email:c.email||(sessG()||{}).email||''}).then(function(j){if(j&&j.ok){cupGuarda(j.cupom);toast(LFI.tr('Código aplicado')+' ✓');}else toast(cupMsg(j&&j.motivo,j&&j.cupom));if(cb)cb(j)},function(){toast(LFI.tr('Não deu para conferir o código agora. Tente de novo.'));if(cb)cb(null)})}
+  /* carrinho: "¿Tenés un código?" + linha do desconto + avisos (vale o maior, peça em oferta, quedan N de 50) */
+  function cupHtml(){var ci=cupInfo(),v=descVale();
+    if(!st.cup)return '<details class="cupf"'+(st._cupOpen?' open':'')+'><summary>'+LFI.tr('Tem um código?')+'</summary><div class="cupr"><input class="field" id="cupin" placeholder="LF-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="'+LFI.tr('Código de desconto')+'"><button type="button" class="btn" data-cupok>'+LFI.tr('Aplicar')+'</button></div>'+(st._cupErr?'<small class="cupn cupe" role="alert">'+esc(st._cupErr)+'</small>':'')+'<small class="cupn">'+LFI.tr('Um código por compra. Não soma com OFERTA nem com "Leve 2": vale o maior desconto.')+'</small></details>';
+    var nome=LFI.tr(CUP_TIPO[st.cup.tipo]||'Código')+' −'+st.cup.pct+'%',ex=st.cup.tipo==='ev'&&st.cup.restam!=null?'<small class="cupn">'+LFI.tr('Restam')+' '+st.cup.restam+'</small>':'';
+    if(ci.min)return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></div><small class="cupn">'+LFI.tr('Compra mínima de')+' '+LFI.fmtD(LFI.pv(st.cup.min))+'. '+LFI.tr('O código continua guardado.')+'</small>';
+    if(v!=='cup')return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></div><small class="cupn">'+(ci.d>0?LFI.tr('O "Leve 2" dá mais desconto nesta compra: vale o maior. O código continua guardado.'):LFI.tr('Nesta compra o código não dá desconto (as peças já têm o melhor preço). Ele continua guardado.'))+'</small>';
+    return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><span class="cupv">−'+LFI.fmtD(ci.dD)+' <button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></span></div>'+ex}
+  /* peça: "Tu código vale aquí ✓ − Gs. 13.000" / "Ya tiene su mejor precio" */
+  function cupPecaHtml(p){if(!st.cup)return '';var x=cupPeca(p);if(x.of)return '<div class="cupp of"><b>'+LFI.tr('Já tem o melhor preço')+'</b> · '+LFI.tr('o código fica para outra compra')+'</div>';
+    if(!(x.d>0))return '<div class="cupp of">'+LFI.tr('O código')+' '+esc(st.cup.cod)+' '+LFI.tr('não vale nesta peça')+'</div>';
+    return '<div class="cupp"><b>'+LFI.tr('Seu código vale aqui')+' ✓</b> · −'+LFI.fmtD(LFI.pv(x.d))+(x.lim?' ('+x.pct+'%)':'')+'</div>'}
+  /* cartão virtual (Próxima compra) na tela de pagar e em Minha conta › Cartões */
+  function pxHtml(c){if(!c)return '';var pend=c.estado==='pendente';return '<div class="pxc" id="pxcard"><small>LA FOUCH</small><b>'+c.pct+'% '+LFI.tr(c.tipo==='bv'?'na primeira compra':c.tipo==='am'?'para sua amiga':'na próxima compra')+'</b><code>'+esc(c.cod)+'</code><i>'+(pend?LFI.tr('Começa a valer quando confirmarmos o pagamento · fica em Minha conta › Cartões'):(c.fim?LFI.tr('Vale até')+' '+cupData(c.fim)+' · ':'')+LFI.tr('em lafouch.com e na loja'))+'</i></div>'}
+  function mtjCarrega(){var b=document.getElementById('mtj');if(!b)return;cupFn({acao:'meus'}).then(function(j){var b2=document.getElementById('mtj');if(!b2)return;if(!j||!j.ok){b2.innerHTML='<div class="note">'+LFI.tr('Não deu para carregar seus cartões agora.')+'</div>';return}
+    var L=j.cupons||[];b2.innerHTML=L.length?L.map(function(c){var est=c.usado||c.estado==='usado'?LFI.tr('Usado'):c.estado==='ok'?LFI.tr('Disponível'):c.estado==='pendente'?LFI.tr('Aguardando pagamento'):c.estado==='vencido'?LFI.tr('Vencido'):c.estado==='cedo'?LFI.tr('Ainda não começou'):LFI.tr('Indisponível');
+      return '<div class="mtc"><div>'+pxHtml(c).replace(' id="pxcard"','')+'</div><div class="mtl"><span>'+LFI.tr('Estado')+': <b>'+est+'</b>'+(c.fim?' · '+LFI.tr('vence')+' '+cupData(c.fim):'')+'</span>'+(c.estado==='ok'&&!c.usado&&c.tipo!=='am'?'<button type="button" class="btn" data-cupusar="'+esc(c.cod)+'">'+LFI.tr('Usar no meu carrinho')+'</button>':c.tipo==='am'?'<button type="button" class="cfx" data-cupcopy="'+esc(c.cod)+'">'+LFI.tr('Copiar para enviar')+'</button>':'')+'</div></div>'}).join(''):'<div class="note">'+LFI.tr('Você ainda não tem cartões. Eles chegam com a sua compra.')+'</div>'},function(){})}
+  /* boas-vindas depois de se inscrever nas novidades */
+  function bvMostra(c){var o=document.createElement('div');o.id='bvov';o.className='bvov';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');
+    o.innerHTML='<div class="bvb"><button type="button" class="x" data-bvx aria-label="'+LFI.tr('Fechar')+'">×</button><small>LA FOUCH</small><h3>'+LFI.tr('Bem-vinda à La Fouch!')+'</h3><p>'+LFI.tr('Obrigado por se inscrever nas novidades. Seu presente:')+'</p>'+pxHtml(c)+'<p class="cupn">'+LFI.tr('Vale 30 dias · em lafouch.com e na loja de CDE · também mandamos por e-mail')+'</p><button type="button" class="btn w" data-cupusar="'+esc(c.cod)+'">'+LFI.tr('Usar agora')+'</button><button type="button" class="cfx" data-cupcopy="'+esc(c.cod)+'">'+LFI.tr('Copiar código')+'</button></div>';
+    document.body.appendChild(o)}
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-cupok],[data-cupx],[data-cupusar],[data-cupcopy],[data-bvx]');if(!t)return;
+    if(t.hasAttribute('data-cupok')){var i=document.getElementById('cupin');t.disabled=true;st._cupOpen=true;cupAplica(i&&i.value,function(j){t.disabled=false;st._cupErr=j&&j.ok?'':j?cupMsg(j.motivo,j.cupom):LFI.tr('Não deu para conferir o código agora. Tente de novo.');bag(true);var i2=document.getElementById('cupin');if(i2&&!(j&&j.ok)){i2.value=i&&i.value||'';i2.focus()}})}
+    else if(t.hasAttribute('data-cupx')){cupTira();bag(true)}
+    else if(t.hasAttribute('data-cupusar')){var bo=document.getElementById('bvov');if(bo)bo.remove();cupAplica(t.getAttribute('data-cupusar'),function(j){if(j&&j.ok){closeLayer();setTimeout(function(){bag()},50)}})}
+    else if(t.hasAttribute('data-cupcopy')){var cd=t.getAttribute('data-cupcopy');try{navigator.clipboard.writeText(cd+' · https://lafouch.com/t/'+cd).then(function(){toast(LFI.tr('Código copiado'))})}catch(_){}}
+    else if(t.hasAttribute('data-bvx')){var bb=document.getElementById('bvov');if(bb)bb.remove()}});
+  /* link do cartão: lafouch.com/t/CÓDIGO (a página 404 manda para ?t=) */
+  try{var qt=new URLSearchParams(location.search).get('t');if(qt)setTimeout(function(){cupAplica(qt);try{var u=new URL(location.href);u.searchParams.delete('t');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}catch(_){}},900)}catch(_){}
+  function total(){return bruto()-descD()}
+  function totalD(){return brutoD()-descDD()}
   function qtd(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]},0)}
   function toast(t,act){var e=document.createElement('div');e.className='toast';e.appendChild(document.createTextNode(t));if(act){var b=document.createElement('button');b.type='button';b.textContent=act;b.setAttribute('data-bag','1');e.appendChild(b)}document.body.appendChild(e);setTimeout(function(){e.remove()},act?4200:2200)}
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -937,6 +987,7 @@
     '<div class="chips">'+(pubL?'<span class="pub1">'+pubL+'</span>':'')+(p.mat?'<span class="bd">'+MATI+esc(p.mat)+'</span>':'')+(p.uv?'<span class="bd">'+UVI+'Proteção UV400</span>':'<span class="bd">'+LENI+'Aceita lentes de grau</span>')+'</div>'+
     (p.desc?'<div class="pdesc"><p>'+esc(p.desc)+'</p><button type="button" data-pdm>Ver mais</button></div>':'')+
     (esg?voltaSec(p):'')+
+    cupPecaHtml(p)+
     (p.gr&&p.gr.length?grauSec(p):'')+
     (p.med&&p.med.length>2?'<section class="dsec"><span class="dsl">Medidas</span><div class="meds"><div class="med"><b>'+p.med[0]+'<i>mm</i></b><span>Lente</span></div><div class="med"><b>'+p.med[1]+'<i>mm</i></b><span>Ponte</span></div><div class="med"><b>'+p.med[2]+'<i>mm</i></b><span>Haste</span></div></div></section>':'')+
     (sw?'<section class="dsec'+(dots?' dcor':'')+'"><div class="dl"><span>Cor</span> · <b id="cn">'+esc(corNome(p,st.cor[p.ref]||0))+'</b></div><div class="sw" aria-label="Cores">'+p.cores.map(function(c,i){var xo=p.qs&&p.qs[i]===0;return dots?'<button type="button" class="dt'+(i?'':' on')+(xo?' x':'')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="'+esc(corNome(p,i))+(xo?' (esgotada)':'')+'"><span style="background:'+c+'"></span></button>':'<button type="button" class="'+(i?'':'on')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="Cor '+(i+1)+'">'+glasses(c,p.raio,6)+'</button>'}).join('')+'</div>'+(dots?thumbsD:'')+'</section>':(one?'<section class="dsec dcor dcor1"><div class="dl"><span>Cor</span> · <b>'+esc(corNome(p,0))+'</b></div>'+thumbsD.replace(/<div class="cthl">.*?<\/div>/,'')+'</section>':''))+
@@ -960,7 +1011,7 @@
     var es=window.LFI&&LFI.lang==='es',cnt=nq+(es?(nq===1?' artículo':' artículos'):(nq===1?' item':' itens'));
     var ste=ks.length>0&&lg?(st.step==='ent'||st.step==='pag'?st.step:''):'',dd=!!ste,cnow=dd?contaNorm(getConta()):null,entD=st.ent==='delivery';
     var sum='<div class="cs"><h3 class="cs-h">'+LFI.tr(dd?'Seu pedido':'Resumo')+'</h3>'+
-      '<div class="cs-r cs-h"><span>'+LFI.tr('Subtotal')+' · '+cnt+'</span><span>'+LFI.fmtD(brutoD())+'</span></div>'+(function(){var l=l2Info();return l.d>0?'<div class="cs-r cs-l2"><span>'+LFI.tr('Leve 2 · 30% na 2ª peça')+'</span><span>−'+LFI.fmtD(l.dD)+'</span></div>':l.n===1?'<div class="cs-l2n">'+LFI.tr('Leve 2: leve mais um óculos de leitura ou de sol e a 2ª peça sai com 30% de desconto.')+'</div>':''})()+'<div class="cs-r cs-h"><span>'+LFI.tr('Entrega')+'</span><span>'+(dd&&entD?LFI.tr('Delivery · frete na entrega'):LFI.tr('Retirada na loja · grátis'))+'</span></div>'+
+      '<div class="cs-r cs-h"><span>'+LFI.tr('Subtotal')+' · '+cnt+'</span><span>'+LFI.fmtD(brutoD())+'</span></div>'+cupHtml()+(function(){var l=l2Info();if(descVale()==='cup')return '';return l.d>0?'<div class="cs-r cs-l2"><span>'+LFI.tr('Leve 2 · 30% na 2ª peça')+'</span><span>−'+LFI.fmtD(l.dD)+'</span></div>':l.n===1?'<div class="cs-l2n">'+LFI.tr('Leve 2: leve mais um óculos de leitura ou de sol e a 2ª peça sai com 30% de desconto.')+'</div>':''})()+'<div class="cs-r cs-h"><span>'+LFI.tr('Entrega')+'</span><span>'+(dd&&entD?LFI.tr('Delivery · frete na entrega'):LFI.tr('Retirada na loja · grátis'))+'</span></div>'+
       '<div class="cs-t"><span>Total</span><b>'+LFI.fmtD(totalD())+'</b></div>'+
       (ste==='pag'?'<button class="btn w cs-b" data-send'+(st.pag?'':' aria-disabled="true" style="opacity:.55"')+'>Confirmar e pagar</button><span class="cs-n cs-h">As peças ficam reservadas enquanto você paga.</span>'
         :ste==='ent'?'<button class="btn w cs-b" data-cta="irpag">Forma de pagamento</button>'
@@ -1063,7 +1114,7 @@
       /* 11/11 (aprovado): o país vem do idioma/moeda; sem cidade e sem favoritos na mensagem (esses vão só para o painel) */
       return 'ATACADO · '+st.atCod+'\n'+(es?'País: Paraguay':'País: Brasil')+(q?'\n'+(es?'Cantidad: ':'Quantidade: ')+q:'')+(pr.length?'\n'+(es?'Busca: ':'Procura: ')+pr.map(function(x){return LFI.tr(x)}).join(', '):'')+'\n'+(es?'¡Hola! Quiero un presupuesto mayorista.':'Olá! Quero um orçamento de atacado.')}
     if(modo==='avise'){var p=find(ref);return 'Olá! Me avise quando chegar: '+p.nome+' ('+p.ref+').\nVer o modelo: https://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html'}
-    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.ref+' · '+p.nome+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+(l2Info().d>0?'\n'+LFI.tr('Leve 2 · 30% na 2ª peça')+': −'+LFI.fmtD(l2Info().dD):'')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
+    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.ref+' · '+p.nome+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+(descVale()==='l2'?'\n'+LFI.tr('Leve 2 · 30% na 2ª peça')+': −'+LFI.fmtD(l2Info().dD):descVale()==='cup'?'\n'+LFI.tr('Código')+' '+st.cup.cod+': −'+LFI.fmtD(cupInfo().dD):'')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
     if(st.rosto){var ff=FACES.filter(function(x){return x.id===st.rosto})[0];if(ff)t+='\nFormato do meu rosto: '+ff.nome}if(st.nome)t+='\nNome: '+st.nome;if(st.zap)t+='\nWhatsApp: '+st.zap;return t}
   /* pedido do site: grava na nuvem (o app da loja recebe sozinho) e mostra a tela de pedido recebido */
   var PK_SVG='<svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="#3ddc8c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M4.5 12.8l4.8 4.9L19.5 7"/></svg>';
@@ -1474,7 +1525,7 @@
   function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return ('000'+c.toString(16).toUpperCase()).slice(-4)}
   function pixCode(v,txid){var f=function(i,x){return i+('0'+x.length).slice(-2)+x};
     var p=f('00','01')+f('01','11')+f('26',f('00','br.gov.bcb.pix')+f('01',PIXD.key))+f('52','0000')+f('53','986')+f('54',v.toFixed(2))+f('58','BR')+f('59',PIXD.nome)+f('60',PIXD.cid)+f('62',f('05',txid))+'6304';return p+crc16(p)}
-  function valorBRL(){var r=window.LF_RATE?window.LF_RATE():1400;return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*Math.max(5,Math.round(find(k).n/r/5)*5)},0)-Math.round(l2Info().d/r/5)*5}
+  function valorBRL(){var r=window.LF_RATE?window.LF_RATE():1400;return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*Math.max(5,Math.round(find(k).n/r/5)*5)},0)-Math.round(descD()/r/5)*5}
   function loadQr(){return new Promise(function(ok,no){if(window.LFqr)return ok();var s=document.createElement('script');s.src='lfx/qr.js?v='+(window.LF_BUILD||'1');s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
   /* pedidos deste aparelho */
   function pedGet(id){return lsG('lf_ped',[]).filter(function(e){return e.id===id})[0]}
@@ -1718,7 +1769,7 @@
   minhaConta=function(aba,edita){
     var c=contaNorm(getConta());if(!sessG()){entrarTela(false);return}if(!c){c=contaMin(sessG())}
     st.mcAba=aba||st.mcAba||'perfil';var A=st.mcAba,h='';
-    var tabs='<div class="mct" role="tablist">'+[['perfil','Perfil'],['ends','Endereços'],['peds','Pedidos']].map(function(x){return '<button type="button" role="tab" aria-selected="'+(A===x[0])+'" class="'+(A===x[0]?'on':'')+'" data-cta="mcaba" data-a="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div>';
+    var tabs='<div class="mct" role="tablist">'+[['perfil','Perfil'],['ends','Endereços'],['peds','Pedidos'],['cart','Cartões']].map(function(x){return '<button type="button" role="tab" aria-selected="'+(A===x[0])+'" class="'+(A===x[0]?'on':'')+'" data-cta="mcaba" data-a="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div>';
     if(A==='perfil'){
       var falta=[!c.tel&&'telefone',!c.doc&&'documento'].filter(Boolean);
       h='<label class="cfl" for="mn">Nome completo</label><input class="field" id="mn" autocomplete="name" value="'+esc(c.nome||'')+'">'+
@@ -1733,11 +1784,12 @@
           '<div class="fze" id="cferr" role="alert" hidden></div><button class="btn w" data-cta="mcendok" data-i="'+esc(String(edita))+'">Salvar endereço</button><button type="button" class="cfx" data-cta="mcaba" data-a="ends" style="width:100%;text-align:center">Cancelar</button>'}
       else h=(c.ends.length?c.ends.map(function(a,i){return '<div class="mca"><span><b>'+esc(a.nome||'Endereço')+'</b><small>'+endLinha(a)+'</small>'+(a.ref?'<small>Ref.: '+esc(a.ref)+'</small>':'')+'</span><button type="button" class="mci" data-cta="mcended" data-i="'+i+'" aria-label="Editar">'+IC_ED+'</button><button type="button" class="mci" data-cta="mcendrm" data-i="'+i+'" aria-label="Remover">'+IC_RM+'</button></div>'}).join(''):'<div class="note">Nenhum endereço salvo ainda.</div>')+
         '<button type="button" class="mcadd" data-cta="mcended" data-i="novo">+ Adicionar endereço</button>'}
+    else if(A==='cart')h='<div id="mtj"><div class="note">'+LFI.tr('Carregando…')+'</div></div>';
     else{var L=lsG('lf_ped',[]).slice().reverse();
       h=L.length?L.map(function(e){return '<button type="button" class="cfp" data-cta="ped" data-id="'+esc(e.id)+'"><span><b>Pedido '+esc(e.cod)+(e.teste?' · teste':'')+'</b><small>'+new Date(e.ts).toLocaleDateString('pt-BR')+' · '+(e.pag==='pix'?'PIX':e.pag==='alias'?'Itaú':'')+' · '+(e.ent==='delivery'?'Delivery':'Retirada')+(e.est==='pago'?' · Código '+esc(e.tok||('LF-'+e.cod)):'')+'</small></span><em class="'+(e.est==='pago'?'ok':e.est==='cancelado'?'er':'')+'">'+estLabel(e)+'</em></button>'}).join(''):'<div class="note">Você ainda não fez nenhum pedido.</div>';
       pedAtualiza()}
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Minha conta"><div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">Minha conta</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'+tabs+h+'</aside>');
-    if(A==='perfil')gCard()};
+    if(A==='perfil')gCard();if(A==='cart')mtjCarrega()};
   /* situação dos pedidos pendentes: pago, recusado ou cancelado pela loja */
   var PEDAT=0;
   function pedAtualiza(){if(Date.now()-PEDAT<8000)return;PEDAT=Date.now();var L=lsG('lf_ped',[]).filter(function(e){return e.est==='pagar'||e.est==='comp'||e.est==='recusado'});if(!L.length)return;
@@ -1862,12 +1914,16 @@
     var cod=id.slice(-4).toUpperCase(),pag=st.pag==='pix'?'pix':'alias';
     var txt='PEDIDO '+cod+'\n'+mensagem('reserva'),wa='https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(txt);
     var ff=st.rosto?FACES.filter(function(x){return x.id===st.rosto})[0]:null;
-    var L2=l2Info(),doc=st.pkdoc&&retry?st.pkdoc:(function(){var uq=uqGera(),base=Math.round(total()),vb0=TESTE?1:valorBRL();
-      return {ts:Date.now(),nome:c.nome,tel:c.tel,pais:c.pais||'',cod:cod,lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:base,rosto:ff?ff.nome:'',
+    /* cupom: antes de mandar o pedido, o Firebase confere e reserva o código (não vale de novo até o app confirmar ou cancelar) */
+    if(!retry&&descVale()==='cup'&&st._cupOk!==id){var bt1=document.querySelector('[data-send]');if(bt1)bt1.disabled=true;
+      cupFn({acao:'usar',cod:st.cup.cod,pid:id,tel:c.tel||'',email:c.email||'',total:Math.round(bruto()),desc:Math.round(cupInfo().d)}).then(function(j){if(bt1)bt1.disabled=false;
+        if(j&&j.ok){st._cupOk=id;enviarPedido(retry);return}cupTira();toast(cupMsg(j&&j.motivo,j&&j.cupom));bag(true)},function(){if(bt1)bt1.disabled=false;toast(LFI.tr('Não deu para conferir o código agora. Tente de novo.'))});return}
+    var L2=l2Info(),CI=cupInfo(),DV=descVale(),doc=st.pkdoc&&retry?st.pkdoc:(function(){var uq=uqGera(),base=Math.round(total()),vb0=TESTE?1:valorBRL();
+      return Object.assign({ts:Date.now(),nome:c.nome,tel:c.tel,pais:c.pais||'',cod:cod,lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:base,rosto:ff?ff.nome:'',
       nac:c.nac||'',doc:c.doc||'',nasc:'',email:c.email||'',obsC:'',cidade:E?E.cidade:'',end:'',ent:ent,
       endE:ent==='delivery'&&E?E.end+', '+E.cidade+(E.dep?' · '+E.dep:''):'',refE:ent==='delivery'&&E?E.ref||'':'',depE:ent==='delivery'&&E?E.dep||'':'',
       pag:pag,uq:uq,brl:pag==='pix'?Math.round((vb0+uq/100)*100)/100:vb0,pagar:pag==='alias'?base+uq:0,teste:!!TESTE,
-      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n-(L2.por[k]||0)/st.cart[k]),l2:L2.por[k]||0}})}})();
+      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n-(DV==='l2'?(L2.por[k]||0):0)/st.cart[k]-(DV==='cup'?(CI.por[k]||0):0)/st.cart[k]),l2:DV==='l2'?L2.por[k]||0:0,cd:DV==='cup'?CI.por[k]||0:0}})},DV==='cup'&&st.cup?{cup:st.cup.cod,cupd:CI.d}:{})})();
     st.pkdoc=doc;
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
     var rxo=null;
@@ -1876,6 +1932,8 @@
       if(rr&&rr.ok&&!rr.off&&rr.exp)rxo={rx:rr.exp,rd:(rr.agora||Date.now())-Date.now()};
       return pkEnviar(doc,id)}).then(function(){
       var L=lsG('lf_ped',[]);if(!L.some(function(e){return e.id===id}))L.push({id:id,cod:cod,ts:doc.ts,total:doc.total,brl:doc.brl,pagar:doc.pagar,uq:doc.uq,ent:ent,pag:pag,est:'pagar',teste:!!TESTE,rx:rxo?rxo.rx:0,rd:rxo?rxo.rd:0,itens:doc.itens.map(function(i){return {ref:i.ref,nome:i.nome,q:i.q,cor:i.cor}})});lsS('lf_ped',L.slice(-30));
+      if(doc.cup)cupTira();
+      cupFn({acao:'proxima',pid:id,tel:c.tel||'',email:c.email||'',lang:LFI.lang}).then(function(j){if(j&&j.ok&&j.cupom){var L3=lsG('lf_ped',[]);L3.forEach(function(e){if(e.id===id)e.px=j.cupom});lsS('lf_ped',L3);var pc=document.getElementById('pxcard');if(pc)pc.outerHTML=pxHtml(j.cupom)}},function(){});
       st.cart={};st.pkid='';st.pkdoc=null;st.step='cart';st.pag='';try{drawBag()}catch(_){}
       closeLayer();pkPagar(id)
     },function(er){
@@ -1888,6 +1946,7 @@
     var timer=resLeft(e)>0&&e.est==='pagar'?'<div class="cdx" id="cdx"><small>Sua peça está reservada por</small><b id="cdxt">--:--</b><i><u id="cdxb"></u></i><small>Depois disso ela volta para o site.</small></div>':'';
     var fim='<input type="file" id="pgf" accept="image/*" hidden>'+
       '<a class="vend" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.lang==='es'?'¡Hola! Tengo una duda sobre el pago de mi pedido '+e.cod:'Olá! Tenho uma dúvida sobre o pagamento do meu pedido '+e.cod)+'"><span>Falar com um vendedor</span></a>'+
+      (e.px?pxHtml(e.px):'<div id="pxcard"></div>')+
       '<button type="button" class="pgs" data-pkconta>Pagar depois (continua em Minha conta)</button>'+
       '<button type="button" class="pgx" data-cta="pkcanc">Cancelar pedido</button>'+
       '<p class="tm">Ao pagar, você confirma a compra e aceita os <a href="/termos.html" target="_blank" rel="noopener">Termos e Condições</a>.</p>';
@@ -2183,7 +2242,7 @@
   function newsEnvia(m){
     if(m==='wa'){var tx=LFI.lang==='es'?'¡Hola! Quiero recibir las novedades y ofertas de La Fouch por WhatsApp.':'Olá! Quero receber as novidades e ofertas da La Fouch pelo WhatsApp.';window.open('https://wa.me/'+NUM5()+'?text='+encodeURIComponent(tx),'_blank','noopener');return}
     var em=($('hnem')||{}).value||'';if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(em.trim())){toast(LFI.tr('Digite um e-mail válido.'));return}
-    fetch(fnUrl('novidades'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'inscrever',email:em.trim(),lang:LFI.lang})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.ok)throw 0;V5.nok='Pronto! Você vai receber as novidades por e-mail.';$('hnf').innerHTML=newsForm()}).catch(function(){toast(LFI.tr('Não consegui inscrever agora. Tente de novo mais tarde.'))})}
+    fetch(fnUrl('novidades'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'inscrever',email:em.trim(),lang:LFI.lang})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.ok)throw 0;V5.nok='Pronto! Você vai receber as novidades por e-mail.';$('hnf').innerHTML=newsForm();cupFn({acao:'bv',email:em.trim(),tel:(getConta()||{}).tel||'',lang:LFI.lang}).then(function(b){if(b&&b.ok&&b.cupom)bvMostra(b.cupom)},function(){})}).catch(function(){toast(LFI.tr('Não consegui inscrever agora. Tente de novo mais tarde.'))})}
 
   /* ---- guia ---- */
   var FX5={oval:'<ellipse cx="27" cy="32" rx="18" ry="26"/>',redondo:'<circle cx="27" cy="32" r="22"/>',quadrado:'<rect x="6" y="8" width="42" height="48" rx="8"/>',coracao:'<path d="M8 12h38l-8 34-11 12-11-12z"/>'};
