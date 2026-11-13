@@ -3397,12 +3397,18 @@
     addEventListener('resize',ajusta);
     /* parado: se o botão ficaria por cima de algum texto ou botão, ele se recolhe para a beirada (aba) — toque nela abre o WhatsApp */
     function naPeca(){return document.documentElement.classList.contains('onprod')||!!document.querySelector('#layer .buyrow')}
-    function cobre(){var w=document.querySelector('a.wa'),H=document.documentElement;if(!w||!matchMedia('(max-width:860px)').matches||naPeca()){H.classList.remove('wamin');return}
-      var era=H.classList.contains('wamin'),tr=w.style.transition;if(era){w.style.transition='none';H.classList.remove('wamin')}var r=w.getBoundingClientRect();if(!r.width){if(era)H.classList.add('wamin');w.style.transition=tr;return}var pe=w.style.pointerEvents;w.style.pointerEvents='none';var hit=false;
-      [[.5,.5],[.15,.5],[.85,.5],[.5,.15],[.5,.85]].forEach(function(f){if(hit)return;var x=r.left+r.width*f[0],y=r.top+r.height*f[1],e=document.elementFromPoint(x,y);if(!e||e===document.body||e===H)return;
-        if(e.closest('a.wa'))return;if(/^(BUTTON|A|IMG|INPUT|SELECT|TEXTAREA|SVG|PATH)$/i.test(e.tagName)||e.closest('button,a,input')){hit=true;return}
-        if([].some.call(e.childNodes,function(n){return n.nodeType===3&&n.textContent.trim()})){hit=true}});
-      w.style.pointerEvents=pe;if(era&&hit){H.classList.add('wamin');void w.offsetWidth;w.style.transition=tr}else{w.style.transition=tr;H.classList.toggle('wamin',hit)}}
+    function cobre(){/* S230 (14/11): vale em qualquer largura; mede a bola SEM animação, em 9 pontos (inclui os cantos); se cobriria algo vira lingueta (html.wamin) */
+      var w=document.querySelector('a.wa'),H=document.documentElement;if(!w||naPeca()){H.classList.remove('wamin');return}
+      var sv=w.querySelector('svg'),tr=w.style.transition,ts=sv?sv.style.transition:'',era=H.classList.contains('wamin'),rol=H.classList.contains('warol');
+      w.style.transition='none';if(sv)sv.style.transition='none';H.classList.remove('wamin','warol');
+      var r=w.getBoundingClientRect(),hit=false;
+      if(r.width){w.style.setProperty('pointer-events','none','important');
+        [.08,.5,.92].forEach(function(fx){[.08,.5,.92].forEach(function(fy){if(hit)return;var e=document.elementFromPoint(r.left+r.width*fx,r.top+r.height*fy);if(!e||e===document.body||e===H||e.closest('a.wa'))return;
+          if(/^(BUTTON|A|IMG|INPUT|SELECT|TEXTAREA|SVG|PATH)$/i.test(e.tagName)||e.closest('button,a,input')){hit=true;return}
+          if([].some.call(e.childNodes,function(n){return n.nodeType===3&&n.textContent.trim()}))hit=true})});
+        w.style.removeProperty('pointer-events')}else hit=era;
+      if(era)H.classList.add('wamin');if(rol)H.classList.add('warol');void w.offsetWidth;
+      w.style.transition=tr;if(sv)sv.style.transition=ts;void w.offsetWidth;H.classList.toggle('wamin',hit)}
     var rt=0;document.addEventListener('scroll',function(){var H=document.documentElement;if(naPeca()){H.classList.remove('warol');return}H.classList.add('warol');clearTimeout(rt);rt=setTimeout(function(){H.classList.remove('warol');cobre()},700)},true);
     setTimeout(cobre,1500);addEventListener('resize',function(){setTimeout(cobre,200)});document.addEventListener('click',function(){setTimeout(cobre,900)},true);
     window.__lfAjusta=ajusta})();
