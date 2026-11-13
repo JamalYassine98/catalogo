@@ -1256,6 +1256,8 @@
   function resItens(its){return (its||[]).map(function(i){return {ref:i.ref,cor:i.cor||'',q:i.q}})}
   function resLeft(e){if(!e||!e.rx)return 0;return Math.max(0,e.rx-(Date.now()+(e.rd||0)))}
   function pkEnviar(doc,id){
+    /* 13/11: corta os textos no limite das regras do Firestore (endereço longo não pode derrubar o pedido) */
+    var LIM={nome:79,tel:29,email:199,doc:29,obsC:199,endE:299,refE:199,depE:79,cidade:79};Object.keys(LIM).forEach(function(k){if(typeof doc[k]==='string'&&doc[k].length>LIM[k])doc[k]=doc[k].slice(0,LIM[k])});
     var f={};for(var k in doc)f[k]=fsv(doc[k]);
     var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000);
     return acFetch('https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/pedidos?documentId='+encodeURIComponent(id)+'&key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f}),signal:ct?ct.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw new Error('http '+r.status);return true},function(e){clearTimeout(tm);throw e})}
