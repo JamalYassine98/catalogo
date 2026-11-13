@@ -392,7 +392,7 @@
   function nomeSC(p){var n=String(p&&p.nome||'');if(!multiC(p))return n;var m=n,k=0;while(CORW.test(m)&&k<2){m=m.replace(CORW,'');k++}return m.trim()||n}
   function melhorCor(p){if(!multiC(p))return 0;var b=-1,bv=-1;for(var i=0;i<p.cores.length;i++){var q=p.qs?+p.qs[i]||0:1;if(p.qs&&q<=0)continue;var v=p.vc&&p.vc[i]!=null?+p.vc[i]*1000+q:q;if(v>bv){bv=v;b=i}}return b<0?0:b}
   var FMTW=['gatinho','redondo','redonda','quadrado','quadrada','hexagonal','retangular','aviador','oval','esportivo','geométrico','borboleta','oversized','clubmaster'];
-  function txtAuto(p){if(p.ds)return String(p.ds);var es=window.LFI&&LFI.lang==='es',nm=String(p.nome||'').toLowerCase(),f='';FMTW.some(function(w){if(nm.indexOf(w)>=0){f=w;return true}});
+  function txtAuto(p){if(p.desc)return '';/* o texto escrito no app já aparece no .pdesc */var es=window.LFI&&LFI.lang==='es',nm=String(p.nome||'').toLowerCase(),f='';FMTW.some(function(w){if(nm.indexOf(w)>=0){f=w;return true}});
     var tp=es?{armacao:'Armazón',solar:'Lentes de sol',grau:'Lentes de lectura'}[p.tipo]:{armacao:'Armação',solar:'Óculos de sol',grau:'Óculos de leitura'}[p.tipo];if(!tp)return '';
     var t=tp+(f?' '+(es?LFI.tn(f):f):''),mt=p.mat?String(lfnMat?lfnMat(p.mat):p.mat).toLowerCase():'';if(mt)t+=(es?' de ':' em ')+(es?LFI.tr(mt):mt);
     var md=p.med&&p.med[0];if(md){var tm=md<=50?(es?'pequeño':'pequeno'):md<=54?(es?'mediano':'médio'):(es?'grande':'grande');t+=(es?', tamaño ':', tamanho ')+tm+' ('+p.med[0]+(p.med[1]?'-'+p.med[1]:'')+')'}t+='.';
