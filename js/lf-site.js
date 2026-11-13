@@ -111,6 +111,13 @@
     else if(t.hasAttribute('data-cupusar')){var bo=document.getElementById('bvov');if(bo)bo.remove();cupAplica(t.getAttribute('data-cupusar'),function(j){if(j&&j.ok){closeLayer();setTimeout(function(){bag()},50)}})}
     else if(t.hasAttribute('data-cupcopy')){var cd=t.getAttribute('data-cupcopy');try{navigator.clipboard.writeText(cd+' · https://lafouch.com/t/'+cd).then(function(){toast(LFI.tr('Código copiado'))})}catch(_){}}
     else if(t.hasAttribute('data-bvx')){var bb=document.getElementById('bvov');if(bb)bb.remove()}});
+  /* S185: "Separado para vos" — lafouch.com/s/REF.REF~Nome (o 404 manda para ?s=&n=); abre por cima do Início com as peças escolhidas */
+  try{(function(){var u=new URLSearchParams(location.search),qs=u.get('s');if(!qs)return;var nm=String(u.get('n')||'').replace(/[<>"&]/g,'').slice(0,30),refs=qs.split(/[.,]/).filter(Boolean).slice(0,12);
+    var abre=function(n){var L=refs.map(find).filter(Boolean);if(!L.length){if(n<20)setTimeout(function(){abre(n+1)},400);return}var es=LFI.lang==='es';
+      var h='<aside class="panel sepp" role="dialog" aria-modal="true" aria-label="'+(es?'Separado para vos':'Separado para você')+'"><div class="xw"><button class="x" data-close aria-label="Fechar">×</button></div><h2 class="sepT">'+(es?'Separado para vos':'Separado para você')+(nm?', '+esc(nm):'')+'</h2><p class="sepS">'+LFI.tr('Toque numa peça para ver. "Quero esta" avisa a loja.')+'</p><div class="sepG">'+L.map(function(p){return card5(p)}).join('')+'</div>'+
+        '<a class="btn w" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent((es?'¡Hola! Me gustaron estas piezas: ':'Olá! Gostei destas peças: ')+L.map(function(p){return p.ref}).join(', '))+'">'+LFI.tr('Quero estas · falar com a loja')+'</a></aside>';
+      layer(h);try{var x=new URL(location.href);x.searchParams.delete('s');x.searchParams.delete('n');history.replaceState(history.state,'',x.pathname+x.search+x.hash)}catch(_){}};
+    setTimeout(function(){abre(0)},700)})()}catch(_){}
   /* link do cartão: lafouch.com/t/CÓDIGO (a página 404 manda para ?t=) */
   try{var qt=new URLSearchParams(location.search).get('t');if(qt)setTimeout(function(){cupAplica(qt);try{var u=new URL(location.href);u.searchParams.delete('t');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}catch(_){}},900)}catch(_){}
   function total(){return bruto()-descD()}
