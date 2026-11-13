@@ -1,5 +1,7 @@
 
 (function(){
+  /* S181 (13/11): dentro do app (modo loja) o site mora em /loja/loja.html — o endereço nunca vira "/" (senão um recarregar abriria o app) */
+  if(/[?&]loja=1/.test(location.search)&&window.parent!==window){(function(){var LJ=location.pathname;['pushState','replaceState'].forEach(function(k){var o=history[k];history[k]=function(s,t,u){try{if(u!=null){var x=new URL(u,location.href);x.pathname=LJ;if(!/[?&]loja=1/.test(x.search))x.search=(x.search?x.search+'&':'?')+'loja=1&nosync';u=x.pathname+x.search+x.hash}}catch(_){}return o.call(history,s,t,u)}})})()}
   var P=[
     {ref:'SL2210',gen:'f',nome:'Solar hexagonal preto',tipo:'solar',n:130000,cor:'#2a2d33',raio:26,aviso:'Chegou esta semana',tag:'NOVO',rosto:['oval', 'quadrado', 'alongado'],mat:'Acetato',med:[54, 17, 145],foto:'/media/i/3c5853357cf4.jpg',cores:['#2a2d33']},
     {ref:'AC1050',gen:'u',nome:'Armação acetato roxa',tipo:'armacao',n:118000,cor:'#4a2a55',raio:14,aviso:'Chegou esta semana',tag:'ACETATO',rosto:['redondo', 'oval', 'diamante'],mat:'Acetato',med:[50, 21, 145],foto:'/media/i/80f4857cb1cf.jpg',cores:['#4a2a55']},
@@ -124,12 +126,14 @@
       document.querySelectorAll('#layer [data-lrm]').forEach(function(b){b.onclick=function(){LP.splice(+b.getAttribute('data-lrm'),1);lojaPosta({t:'pedido',itens:LP});lojaBarra();lojaPed()}})};
     document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-addm]');if(!t)return;e.preventDefault();e.stopImmediatePropagation();
       var ref=t.getAttribute('data-addm'),p=find(ref);if(!p)return;var ci=st.cor[ref]||0,gi=st.gr&&st.gr[ref]||0,bq=t.closest('[data-q]'),q=Math.max(1,+(bq&&bq.getAttribute('data-q'))||1);
-      var it={ref:ref,cor:(p.cores&&p.cores.length>1)?corNome(p,ci):'',grau:(p.gr&&p.gr.length)?String(p.gr[gi]):'',q:q};
-      var ex=LP.filter(function(x){return x.ref===it.ref&&x.cor===it.cor&&x.grau===it.grau})[0];if(ex)ex.q+=q;else LP.push(it);
+      var it={ref:ref,ci:ci,cor:(p.cores&&p.cores.length>1)?corNome(p,ci):'',grau:(p.gr&&p.gr.length)?String(p.gr[gi]):'',q:q};
+      var ex=LP.filter(function(x){return x.ref===it.ref&&x.ci===it.ci&&x.grau===it.grau})[0];if(ex)ex.q+=q;else LP.push(it);
       lojaPosta({t:'pedido',itens:LP});lojaBarra();toast(LFI.tr('No Meu pedido')+' ✓')},true);
     addEventListener('message',function(e){var d=e.data||{};if(!d.lfLoja)return;
       if(d.t==='dados'&&Array.isArray(d.docs)){if(d.cfg)CFG=Object.assign({ativo:true},CFG,d.cfg);syncProds(d.docs);try{redraw()}catch(_){}}
       if(d.t==='limpa'){LP=[];lojaBarra();try{closeLayer()}catch(_){}try{location.hash='';scrollTo(0,0)}catch(_){}}});
+    /* 13/11: toques dentro do site não chegam ao app — avisa que o cliente está usando (o app só limpa depois de 2 min parado) */
+    var lojaAt=0;['pointerdown','scroll','keydown'].forEach(function(n){addEventListener(n,function(){var ag=Date.now();if(ag-lojaAt>5000){lojaAt=ag;lojaPosta({t:'ativo'})}},{passive:true,capture:true})});
     setTimeout(function(){lojaBarra();lojaPosta({t:'pronto'})},300)}
   /* S191 v2 (12/11): Conta Atacadista/Mayorista — lafouch.com/atacado?c=ID. Entra com o e-mail + código de 6 números; o aparelho fica
      guardado (até o limite da conta); os preços da tabela vêm da função "atacado" (nunca do site público); marca d'água com o nome. */
@@ -2071,7 +2075,7 @@
       return pkEnviar(doc,id)}).then(function(){
       var L=lsG('lf_ped',[]);if(!L.some(function(e){return e.id===id}))L.push({id:id,cod:cod,ts:doc.ts,total:doc.total,brl:doc.brl,pagar:doc.pagar,uq:doc.uq,ent:ent,pag:pag,est:'pagar',teste:!!TESTE,rx:rxo?rxo.rx:0,rd:rxo?rxo.rd:0,itens:doc.itens.map(function(i){return {ref:i.ref,nome:i.nome,q:i.q,cor:i.cor}})});lsS('lf_ped',L.slice(-30));
       if(doc.cup)cupTira();
-      cupFn({acao:'proxima',pid:id,tel:c.tel||'',email:c.email||'',lang:LFI.lang}).then(function(j){if(j&&j.ok&&j.cupom){var L3=lsG('lf_ped',[]);L3.forEach(function(e){if(e.id===id)e.px=j.cupom});lsS('lf_ped',L3);var pc=document.getElementById('pxcard');if(pc)pc.outerHTML=pxHtml(j.cupom)}},function(){});
+      cupFn({acao:'proxima',pid:id,tel:c.tel||'',email:c.email||'',lang:LFI.lang}).then(function(j){if(j&&j.ok&&j.cupom){var L3=lsG('lf_ped',[]);L3.forEach(function(e){if(e.id===id){e.px=j.cupom;if(j.amiga)e.am=j.amiga}});lsS('lf_ped',L3);var pc=document.getElementById('pxcard');if(pc)pc.outerHTML=pxHtml(j.cupom)}},function(){});
       st.cart={};st.pkid='';st.pkdoc=null;st.step='cart';st.pag='';try{drawBag()}catch(_){}
       closeLayer();pkPagar(id)
     },function(er){
@@ -3680,7 +3684,7 @@ function temaSvg(s){const ev=(document.documentElement.getAttribute('data-ev')||
  const i=s.indexOf('<ellipse cx="31" cy="101"');if(i>0)s=s.slice(0,i)+'<g class="lfth">'+t.fr+'</g>'+s.slice(i);
  return s}
 window.__lfMochiSvg=function(){if(!document.getElementById('lfmcss')){const st0=document.createElement('style');st0.id='lfmcss';st0.textContent=MOCHI_CSS;document.head.appendChild(st0)}return temaSvg(MOCHI_SVG)};
-window.__lfMochiArms=function(sv){if(!sv)return;[[-1,'e',35],[1,'d',40]].forEach(function(a){const B=sv.querySelector('.aB'+a[1]),F=sv.querySelector('.aF'+a[1]);if(!B||!B.firstChild)return;const p=ARMP(30);B.firstChild.setAttribute('d',p);if(B.lastChild)B.lastChild.setAttribute('d',ARMH(30));B.setAttribute('transform',armT(a[0],a[2]));B.style.display='';if(F)F.style.display='none';const mk=sv.querySelector('.mk'+a[1]);if(mk&&mk.firstChild){mk.firstChild.setAttribute('d',p);mk.setAttribute('transform',armT(a[0],a[2]))}})};
+window.__lfMochiArms=function(sv,o){if(!sv)return;o=o||{};if(o.face==='feliz'){sv.querySelectorAll('.olhos,.bW').forEach(function(e){e.setAttribute('opacity','0')});sv.querySelectorAll('.olhosF,.bF').forEach(function(e){e.setAttribute('opacity','1')})}else if(o.face==='surpresa'){sv.querySelectorAll('.bW').forEach(function(e){e.setAttribute('opacity','0')});sv.querySelectorAll('.bO').forEach(function(e){e.setAttribute('opacity','1')})}if(o.face)sv.querySelectorAll('.esp').forEach(function(e){e.style.display='none'});[[-1,'e',o.e!=null?o.e:35],[1,'d',o.d!=null?o.d:40]].forEach(function(a){const B=sv.querySelector('.aB'+a[1]),F=sv.querySelector('.aF'+a[1]);if(!B||!B.firstChild)return;const p=ARMP(30);B.firstChild.setAttribute('d',p);if(B.lastChild)B.lastChild.setAttribute('d',ARMH(30));B.setAttribute('transform',armT(a[0],a[2]));B.style.display='';if(F)F.style.display='none';const mk=sv.querySelector('.mk'+a[1]);if(mk&&mk.firstChild){mk.firstChild.setAttribute('d',p);mk.setAttribute('transform',armT(a[0],a[2]))}})};
 function Mochi(host,x,y){const el=document.createElement('div');el.className='mochi';el.innerHTML=temaSvg(MOCHI_SVG);host.appendChild(el);
  const q=s=>el.querySelector(s);if(!document.getElementById('lfmcss')){const st=document.createElement('style');st.id='lfmcss';st.textContent=MOCHI_CSS;document.head.appendChild(st)}
  const RM=matchMedia('(prefers-reduced-motion: reduce)');
@@ -4478,6 +4482,43 @@ function filSet(lado,ang,L,vis){const G=q(lado<0?'.filE':'.filD'),body=q('.corpo
   var _vistaConta8=vistaConta;vistaConta=function(){var r=_vistaConta8.apply(this,arguments);try{sessionStorage.setItem('lf_vc_n0','1')}catch(_){}return r};
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')anEnvia()});
   addEventListener('pagehide',anEnvia);
+
+  /* S201 (13/11/2026, aprovado v5): Indique uma amiga com a Mochi — cartão na tela de pagamento confirmado (Mochi feliz entrega
+     o cupom 10%), mensagem pronta no WhatsApp com lafouch.com/t/CÓDIGO, contador em Minha conta › Cartões, e a amiga que abre
+     o link vê a Mochi surpresa "Sua amiga te deu 10%!". Mochi sempre com braços (regras do DESIGN). */
+  var moN=0;
+  function moFig(face,e,d,cls){return '<span class="mofig '+(cls||'')+'" data-mofig="'+face+'|'+e+'|'+d+'" aria-hidden="true"></span>'}
+  function moPoe(n){var f=window.__lfMochiSvg;if(!f){if((n||0)<20)setTimeout(function(){moPoe((n||0)+1)},250);return}
+    document.querySelectorAll('[data-mofig]').forEach(function(el){if(el.firstChild)return;var a=el.getAttribute('data-mofig').split('|'),px='m'+(++moN);
+      el.innerHTML=f().replace(/id="(lf[a-z0-9]+)"/g,'id="'+px+'$1"').replace(/url\(#(lf[a-z0-9]+)\)/g,'url(#'+px+'$1)');
+      if(window.__lfMochiArms)window.__lfMochiArms(el.querySelector('svg'),{face:a[0],e:+a[1],d:+a[2]})})}
+  var TICKET='<span class="amtk"><b>10%</b><i>✓</i></span>';
+  function amMsg(cod){var l='lafouch.com/t/'+cod;return LFI.lang==='es'?'¡Hola! Te regalé 10% de descuento en La Fouch 👓\nSolo abrí: '+l+'\nel descuento entra solo al carrito':'Oi! Te dei 10% de desconto na La Fouch 👓\nÉ só abrir: '+l+'\no desconto já entra sozinho no carrinho'}
+  function amCard(c){return '<div class="amc"><div class="amfig">'+moFig('feliz',20,-10)+TICKET+'<i class="amsp a1">✦</i><i class="amsp a2">✦</i></div>'+
+    '<h3>'+LFI.tr('Presenteie uma amiga com 10%')+'</h3><p>'+LFI.tr('Ela ganha 10% na 1ª compra. Quando ela comprar, você ganha outro cupom de 10%.')+'</p>'+
+    '<code>'+esc(c.cod)+'</code><a class="amwa" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(amMsg(c.cod))+'">'+LFI.tr('Enviar pelo WhatsApp')+'</a></div>'}
+  var _pkOk=pkOk;pkOk=function(id,o){_pkOk(id,o);
+    var poe=function(am){if(!am||!am.cod)return;var b=document.querySelector('.pkb:last-of-type')||[].slice.call(document.querySelectorAll('.pkb')).pop();if(!b||document.querySelector('.amc'))return;
+      var w=document.createElement('div');w.className='amwrap';w.innerHTML=amCard(am);b.parentNode.insertBefore(w,b);moPoe()};
+    var e=pedGet(id)||{};if(e.am)return poe(e.am);
+    var c=getConta()||{};if(!c.tel)return;
+    cupFn({acao:'proxima',pid:id,tel:c.tel,email:c.email||'',lang:LFI.lang}).then(function(j){if(j&&j.ok&&j.amiga){var L=lsG('lf_ped',[]);L.forEach(function(x){if(x.id===id)x.am=j.amiga});lsS('lf_ped',L);poe(j.amiga)}},function(){})};
+  /* Minha conta › Cartões: contador embaixo do cartão da amiga */
+  var _mtj=mtjCarrega;mtjCarrega=function(){_mtj();var k=0,t=setInterval(function(){var b=document.getElementById('mtj');if(!b||++k>40){clearInterval(t);return}
+    var bt=b.querySelector('[data-cupcopy]');if(!bt)return;clearInterval(t);
+    cupFn({acao:'meus'}).then(function(j){var c=((j&&j.cupons)||[]).filter(function(x){return x.tipo==='am'})[0];if(!c)return;
+      var cp=b.querySelector('[data-cupcopy="'+c.cod+'"]');if(!cp||b.querySelector('.amct'))return;
+      var d=document.createElement('div');d.className='amct';d.innerHTML='<div><span>'+LFI.tr('Amigas que compraram')+'</span><b>'+(c.amigas||0)+'</b></div><div><span>'+LFI.tr('Cupons que você ganhou')+'</span><b class="g">'+(c.ganhos||0)+' × 10%</b></div><div><span>'+LFI.tr('Você pode indicar')+'</span><b>'+LFI.tr('até')+' '+(c.porMes||5)+' '+LFI.tr('por mês')+'</b></div>'+
+        '<a class="amwa" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(amMsg(c.cod))+'">'+LFI.tr('Enviar pelo WhatsApp')+'</a>';
+      cp.closest('.mtc').appendChild(d)},function(){})},150)};
+  /* a amiga abre lafouch.com/t/CÓDIGO: Mochi surpresa */
+  function amSurpresa(){if(document.getElementById('amov'))return;var o=document.createElement('div');o.id='amov';o.setAttribute('role','dialog');o.setAttribute('aria-label',LFI.tr('Sua amiga te deu 10%!'));
+    o.innerHTML='<div class="amsc"><button type="button" class="amx" aria-label="'+LFI.tr('Fechar')+'">×</button><div class="amfig s">'+moFig('surpresa',-30,-30)+'<i class="amsp a1">✦</i><i class="amsp a2">✦</i><i class="amsp a3">✦</i></div><h3>'+LFI.tr('Sua amiga te deu 10%!')+'</h3><p>'+LFI.tr('O desconto já está no seu carrinho. Vale na 1ª compra, por 1 ano.')+'</p></div><button type="button" class="amver">'+LFI.tr('Veja as peças que aceitam cupom')+' ↓</button>';
+    document.body.appendChild(o);moPoe();requestAnimationFrame(function(){o.classList.add('on')});
+    var fecha=function(){o.classList.remove('on');setTimeout(function(){o.remove()},320)};
+    o.addEventListener('click',function(e){if(e.target===o||e.target.closest('.amx'))fecha();else if(e.target.closest('.amver')){fecha();var g=document.querySelector('#grid,#home');if(g)g.scrollIntoView({behavior:'smooth'})}})}
+  window.__lfS201={ok:function(id,o){pkOk(id,o||{})},sur:amSurpresa};
+  var _cupA=cupAplica;cupAplica=function(cod,cb){var q=new URLSearchParams(location.search).get('t');_cupA(cod,function(j){if(j&&j.ok&&j.cupom&&j.cupom.tipo==='am'&&q&&String(q).toUpperCase()===String(cod).toUpperCase())amSurpresa();if(cb)cb(j)})};
 
   /* S207 (13/11/2026, aprovado): correções do dono — peça com rodapé e foto que não cobre o resto no PC, "Últimas" no canto da foto,
      código acima do Total, Destaque sem "N cores", opiniões só quando existem, "Hacer la prueba" sem voltar/empilhar, Mi cuenta sem
