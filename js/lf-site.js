@@ -4322,6 +4322,22 @@ function filSet(lado,ang,L,vis){const G=q(lado<0?'.filE':'.filD'),body=q('.corpo
     if(!p||!vis5(p)||p.aviso==='Esgotado')return h;
     return '<button type="button" class="hlv" data-open="'+esc(p.ref)+'"><span class="hlvi">'+img5(p)+'</span><span class="hlvt"><small>'+LFI.tr('Você estava vendo')+'</small><b>'+esc(p.nome)+'</b></span><i aria-hidden="true">›</i></button>'+h};
   /* 5: âncora do cartão tocado; ao voltar, a lista fica exatamente onde estava (mesmo com fotos ainda carregando) */
+  /* S288 abas de Minha conta de luxo (aprovado S252): a pílula desliza até a aba tocada e o conteúdo vem do lado dela; a janela não refaz a entrada */
+  var _minhaContaLx=minhaConta;minhaConta=function(){var m0=document.querySelector('#layer .mct'),o=m0&&m0.querySelector('button.on'),r0=null,de=-1,c0='';
+    if(o){var mr=m0.getBoundingClientRect(),r=o.getBoundingClientRect();r0=[r.left-mr.left,r.width,r.top-mr.top,r.height];de=[].indexOf.call(m0.querySelectorAll('button'),o);c0=getComputedStyle(o).backgroundColor}
+    var res=_minhaContaLx.apply(this,arguments);
+    try{var m=document.querySelector('#layer .mct'),n=m&&m.querySelector('button.on');if(!m||!n||de<0||!m.animate)return res;
+      var bs=m.querySelectorAll('button'),para=[].indexOf.call(bs,n),sc=m.closest('.scrim'),p=m.parentNode;if(sc)sc.classList.add('mcLx');
+      if(para===de||matchMedia('(prefers-reduced-motion: reduce)').matches)return res;
+      [].forEach.call(p.children,function(e){try{e.getAnimations().forEach(function(x){x.cancel()})}catch(_){}});
+      var X='cubic-bezier(.16,1,.3,1)',mr2=m.getBoundingClientRect(),nr=n.getBoundingClientRect(),v=bs[de],cv=getComputedStyle(v).color,cn=getComputedStyle(n).color;
+      var pl=document.createElement('i');pl.className='mcPl';pl.setAttribute('aria-hidden','true');pl.style.cssText='top:'+(nr.top-mr2.top-m.clientTop)+'px;height:'+nr.height+'px;left:'+(nr.left-mr2.left-m.clientLeft)+'px;width:'+nr.width+'px;background:'+c0;
+      m.classList.add('lx');m.insertBefore(pl,m.firstChild);
+      var dx=r0[0]-(nr.left-mr2.left),kf=Math.abs(r0[1]-nr.width)<1.5?[{transform:'translateX('+dx+'px)'},{transform:'none'}]:[{transform:'translateX('+dx+'px)',width:r0[1]+'px'},{transform:'none',width:nr.width+'px'}];
+      var an=pl.animate(kf,{duration:360,easing:X,fill:'both'}),fim=function(){if(pl.parentNode)pl.parentNode.removeChild(pl);m.classList.remove('lx')};an.onfinish=fim;setTimeout(fim,460);
+      n.animate([{color:cv},{color:cn}],{duration:200,delay:60,fill:'backwards'});v.animate([{color:cn},{color:cv}],{duration:160});
+      var s=para>de?1:-1,d=false;[].forEach.call(p.children,function(e){if(e===m){d=true;return}if(d)e.animate([{opacity:0,transform:'translateX('+(22*s)+'px)'},{opacity:1,transform:'none'}],{duration:360,easing:X,fill:'backwards'})})}catch(_){}
+    return res};
   var NAV_AN=null,NAV_CK=null;
   document.addEventListener('click',function(e){var o=e.target.closest&&e.target.closest('[data-open]');if(!o||prodOpen||o.closest('#sov,#fvs,#layer'))return;
     var H=document.documentElement,vs=H.classList.contains('ppop')?$('vscr'):null;NAV_CK={el:o,ref:o.getAttribute('data-open'),top:o.getBoundingClientRect().top,vs:vs,ts:Date.now()}},true);
