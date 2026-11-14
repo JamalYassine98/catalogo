@@ -942,8 +942,9 @@
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-navcat]');if(!a)return;e.preventDefault();e.stopPropagation();var t=a.getAttribute('data-navcat');navApos(function(){navAbreCat(t)})},true);
   /* saída: a peça desliza de volta para a direita (a página já fica livre na hora) */
   var _closeLayer9=closeLayer;closeLayer=function(skip){var L=$('layer'),sc=L&&L.querySelector('.scrim.pg');
-    if(sc&&!NAV_RM.matches&&sc.animate){try{var y=sc.scrollTop,g=document.createElement('div');g.id='lfGhost';document.body.appendChild(g);g.appendChild(sc);sc.scrollTop=y;sc.style.pointerEvents='none';
-      var an=sc.animate([{transform:'translateX(0)',opacity:1},{transform:'translateX(32%)',opacity:0}],{duration:300,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
+    if(sc&&!NAV_RM.matches&&sc.animate){try{var y=sc.scrollTop,tp=sc.querySelector('.cartp')?getComputedStyle(sc).top:'',g=document.createElement('div');if(tp)sc.style.setProperty('top',tp,'important');g.id='lfGhost';document.body.appendChild(g);g.appendChild(sc);sc.scrollTop=y;sc.style.pointerEvents='none';
+      var sac=!!sc.querySelector('.cartp');if(sac){try{sc.getAnimations().forEach(function(a){a.cancel()})}catch(_){}}
+      var an=sc.animate(sac?[{transform:'translateX(0)'},{transform:'translateX(100%)'}]:[{transform:'translateX(0)',opacity:1},{transform:'translateX(32%)',opacity:0}],{duration:300,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
       var fim=function(){if(g.parentNode)g.parentNode.removeChild(g)};an.onfinish=fim;setTimeout(fim,400)}catch(_){}}
     return _closeLayer9.apply(this,arguments)};
   /* vitrine: entrada no histórico (o voltar do celular fecha a vitrine em vez de sair do site) */
@@ -1127,7 +1128,9 @@
       :'<div class="cph"><h2>Seu carrinho'+(ks.length?' <span class="cn">· '+cnt+'</span>':'')+'</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>';
     layer(pgBarCart()+'<aside class="panel cartp" role="dialog" aria-modal="true" aria-label="Seu carrinho">'+cph+stp+
       (ks.length?(dd?'<div class="cgr"><div class="cl">'+(ste==='pag'?pagHtml(cnow):entHtml(cnow))+'</div>'+sum+'</div>':'<div class="cgr"><div class="cl">'+items+'</div>'+sum+'</div>')
-      :'<div class="note" style="margin-top:20px">Seu carrinho está vazio. Volte ao catálogo e escolha um produto.</div><button type="button" class="cs-c" data-cc style="margin-top:14px;padding:0 20px">Continuar comprando</button>')+'</aside>','pg'+(re?' still':''));pgCart(re,pop);if(re){var pn=document.querySelector('#layer .scrim');if(pn)pn.scrollTop=top}}
+      :'<div class="note" style="margin-top:20px">Seu carrinho está vazio. Volte ao catálogo e escolha um produto.</div><button type="button" class="cs-c" data-cc style="margin-top:14px;padding:0 20px">Continuar comprando</button>')+'</aside>','pg'+(re?' still':''));pgCart(re,pop);if(re){var pn=document.querySelector('#layer .scrim');if(pn)pn.scrollTop=top}else bagEntra()}
+  /* S286 sacola de luxo (aprovado S252): entra inteira da direita em 460 ms; a saída está em closeLayer */
+  function bagEntra(){try{var sc=document.querySelector('#layer .scrim.pg');if(!sc||!sc.animate||matchMedia('(prefers-reduced-motion: reduce)').matches)return;sc.classList.add('bgLux');sc.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:460,easing:'cubic-bezier(.16,1,.3,1)',fill:'backwards'})}catch(_){}}
   function mensagem(modo,ref){return LFI.tr(mensagem0(modo,ref))}
   /* B5 (11/11, S124–S127 aprovados): Ajuda em páginas próprias (sem sanfona) — Como comprar · Dúvidas frequentes · Dicas e cuidados · Entre em contato.
      Cada página entra no histórico: o voltar do celular volta para a página anterior. */
