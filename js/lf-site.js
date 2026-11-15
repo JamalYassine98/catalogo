@@ -1539,7 +1539,7 @@
       pkCancelado(id)
     },function(){var d=$('dlgb');if(!d)return;var m=LFI.lang==='es'?'¡Hola! Quiero cancelar mi pedido '+e.cod+'.':'Olá! Quero cancelar o meu pedido '+e.cod+'.';
       d.querySelector('.dlg').innerHTML='<h3>Cancelar este pedido?</h3><p>Não deu para avisar a loja automaticamente. Cancele pelo WhatsApp: a loja recebe o aviso e libera as peças.</p><div class="dlga"><button type="button" class="dc" data-dlgx>Voltar</button><a class="dk dr" target="_blank" rel="noopener" data-cta="pkcanc3" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(m)+'">Cancelar pelo WhatsApp</a></div>'})}
-  function pkCancelado(id){pedSet(id,{est:'cancelado'});pkStop();dlgFecha();var po=$('pkok');if(po)po.remove();document.documentElement.classList.remove('lock');closeLayer();toast('Pedido cancelado.');if(logado())minhaConta()}
+  function pkCancelado(id){pedSet(id,{est:'cancelado'});pkStop();dlgFecha();var po=$('pkok');if(po)po.remove();document.documentElement.classList.remove('lock');closeLayer();toast('Pedido cancelado.');/* S318: volta para a lista de pedidos depois que a janela termina de fechar */if(window.__pgc||logado())setTimeout(function(){minhaConta('peds')},420);window.__pgc=false}
   function dlgFecha(){var d=$('dlgb');if(d)d.remove()}
   function dlgErr(m){var e=$('dlgerr');if(e){e.textContent=m;e.hidden=false}else toast(m)}
   function acErr(e){var m=String(e&&e.message||'');return /CREDENTIAL_TOO_OLD|TOKEN_EXPIRED|SEM_SESSAO|INVALID_ID_TOKEN/.test(m)?'Por segurança, saia da conta, entre de novo e tente outra vez.':(AUTH_MSG[m]||'Não deu certo agora. Tente de novo.')}
@@ -1645,6 +1645,13 @@
   function pkPoll(id,fn){pkStop();var go=function(){if(!$('pkok')){pkStop();return}fbg('reservas/'+encodeURIComponent(id)).then(function(d){var o=fbd(d);if($('pkok'))fn(o||{})}).catch(function(){})};go();PKT=setInterval(go,4000)}
   var PK_LOGO='<div class="pkl"></div>';
   var ITAU={alias:'+595983642241',titular:'Jamal Ali Yassine'},TRF_AUTO=false /* 14/11: Banco Familiar — fica false até o robô ler o aviso do banco; enquanto isso o comprovante aparece na hora */;
+  /* S318: voltar no padrão do site (igual ao "‹ Início" da página da peça); nas telas de pagamento leva a Minha conta › Pedidos */
+  function pzBar(){return '<div class="zb"><button type="button" data-pzvolta><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Minha conta</span></button></div>'}
+  function pzTopo(){var o=$('pkok'),t=document.querySelector('.top');if(!o||!t)return;var bb=o.querySelector('.zb');o.style.setProperty('--pzt',Math.round(t.getBoundingClientRect().bottom)+'px');var zz=parseFloat(getComputedStyle(document.body).zoom)||1;o.style.setProperty('--pzp',Math.round((bb?bb.getBoundingClientRect().bottom:t.getBoundingClientRect().bottom)/zz)+'px')}
+  window.addEventListener('resize',function(){if($('pkok'))pzTopo()});
+  document.addEventListener('click',function(ev){var t=ev.target.closest&&ev.target.closest('[data-pzvolta],[data-pzqr]');if(!t)return;
+    if(t.hasAttribute('data-pzqr')){var q=t.closest('.zQ');if(q)q.classList.toggle('big');return}
+    var po=$('pkok');if(po){pkStop();po.remove()}document.documentElement.classList.remove('lock');closeLayer();minhaConta('peds')});
   function compZap(e){var m=LFI.lang==='es'?'¡Hola! Pagué el pedido '+e.cod+' y el sitio no procesó el comprobante. Te lo envío por aquí.':'Olá! Paguei o pedido '+e.cod+' e o site não processou o comprovante. Estou enviando por aqui.';
     return '<a class="pgwa" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(m)+'"><span>O envio não funcionou? Mande o comprovante pelo WhatsApp</span></a>'}
   function pkPagar(id){
@@ -1676,12 +1683,12 @@
       var c=$('cdx');if(!c||!$('pkok')){clearInterval(RELT);RELT=0;return}
       var ms=resLeft(pedGet(id));
       if(ms<=0){clearInterval(RELT);RELT=0;resExpirou(id);return}
-      var s=Math.ceil(ms/1000),t=$('cdxt'),b=$('cdxb');if(t)t.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');if(b)b.style.width=Math.min(100,ms/tot*100)+'%';c.classList.toggle('lvx',s<=60)};
+      var s=Math.ceil(ms/1000),t=$('cdxt'),b=$('cdxb');if(t)t.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');if(b)b.style.width=Math.min(100,ms/tot*100)+'%';c.classList.toggle('lvx',s<=60);if(b&&b.parentNode)b.parentNode.classList.toggle('lvx',s<=60)};
     tick();RELT=setInterval(tick,1000)}
   function resExpirou(id){
     /* S313: a ação cheia recupera a venda; quem já pagou envia o comprovante aqui mesmo (antes ia para o WhatsApp) */
     pedSet(id,{rx:0,venc:1});window.__pgid=id;
-    pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Reserva encerrada</h2><div class="pkt" style="animation-delay:.1s"><span>Passaram os 30 minutos e a peça voltou para o site. Se ainda estiver disponível, você pode reservar de novo.</span></div><div class="pkb py" style="animation-delay:.3s"><button type="button" class="pyP" data-pkrenova="'+esc(id)+'">Reservar de novo</button><label class="pyL" for="pgf" id="pgbtn">Já paguei · enviar comprovante</label><input type="file" id="pgf" accept="image/*" hidden><button type="button" class="pyL s" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0 py'}
+    pkTela(pzBar()+PK_LOGO+'<h2 style="animation-delay:0s">Reserva encerrada</h2><div class="pkt" style="animation-delay:.1s"><span>Passaram os 30 minutos e a peça voltou para o site. Se ainda estiver disponível, você pode reservar de novo.</span></div><div class="pkb py" style="animation-delay:.3s"><button type="button" class="pyP" data-pkrenova="'+esc(id)+'">Reservar de novo</button><label class="pyL" for="pgf" id="pgbtn">Já paguei · enviar comprovante</label><input type="file" id="pgf" accept="image/*" hidden><button type="button" class="pyL s" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0 py';pzTopo()}
   function resRenova(id){
     var e=pedGet(id);if(!e)return;
     resCall('reservar',id,resItens(e.itens)).then(function(r){
@@ -1692,7 +1699,7 @@
     pedSet(id,{est:'comp'});
     /* S313: final calmo — ✓ parado, número do pedido, uma saída só (o WhatsApp só aparece se o envio falhar, em enviarComp) */
     var pc=pedGet(id)||{};
-    pkTela(PK_LOGO+'<div class="pyk"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.500 4.500L19 7.500"/></svg></div><h2 style="animation-delay:0s">Comprovante enviado</h2>'+(pc.cod?'<p class="pyn"><span>Pedido</span> '+esc(pc.cod)+'</p>':'')+'<div class="pkt" style="animation-delay:.1s"><span>'+(pc.venc?'Vamos conferir o seu pagamento e avisar aqui e em Minha conta. Pode sair desta tela.':'Vamos conferir o seu pagamento e avisar aqui e em Minha conta. Pode sair desta tela: sua peça continua reservada.')+'</span></div><div class="pkb py" style="animation-delay:.3s"><button type="button" class="pyL" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0 py';
+    pkTela(pzBar()+PK_LOGO+'<div class="pyk"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.500 4.500L19 7.500"/></svg></div><h2 style="animation-delay:0s">Comprovante enviado</h2>'+(pc.cod?'<p class="pyn"><span>Pedido</span> '+esc(pc.cod)+'</p>':'')+'<div class="pkt" style="animation-delay:.1s"><span>'+(pc.venc?'Vamos conferir o seu pagamento e avisar aqui e em Minha conta. Pode sair desta tela.':'Vamos conferir o seu pagamento e avisar aqui e em Minha conta. Pode sair desta tela: sua peça continua reservada.')+'</span></div><div class="pkb py" style="animation-delay:.3s"><button type="button" class="pyL" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0 py';pzTopo();
     pkPoll(id,function(o){if(o.pago)pkOk(id,o);else if(o.recusado){pedSet(id,{est:'recusado'});pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Comprovante não aceito</h2><div class="pkt" style="animation-delay:.1s"><span>A loja não encontrou esse pagamento. Confira o valor e envie o comprovante de novo.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-cta="ped" data-id="'+esc(id)+'">Enviar outro comprovante</button></div>');pkStop()}})}
   function pkOk(id,o){
     pkStop();var e=pedGet(id)||{};pedSet(id,{est:'pago',tok:o.tok||''});
@@ -1903,7 +1910,10 @@
         '<button type="button" class="mcadd" data-cta="mcended" data-i="novo">+ Adicionar endereço</button>'}
     else if(A==='cart')h='<div id="mtj"><div class="note">'+LFI.tr('Carregando…')+'</div></div>';
     else{var L=lsG('lf_ped',[]).slice().reverse();
-      h=L.length?L.map(function(e){return '<button type="button" class="cfp" data-cta="ped" data-id="'+esc(e.id)+'"><span><b>Pedido '+esc(e.cod)+(e.teste?' · teste':'')+'</b><small>'+new Date(e.ts).toLocaleDateString('pt-BR')+' · '+(e.pag==='pix'?'PIX':e.pag==='alias'?'Banco Familiar':'')+' · '+(e.ent==='delivery'?'Delivery':'Retirada')+(e.est==='pago'?' · Código '+esc(e.tok||('LF-'+e.cod)):'')+'</small></span><em class="'+(e.est==='pago'?'ok':e.est==='cancelado'?'er':'')+'">'+estLabel(e)+'</em></button>'}).join(''):'<div class="note">Você ainda não fez nenhum pedido.</div>';
+      h=L.length?L.map(function(e){var meta=new Date(e.ts).toLocaleDateString('pt-BR')+' · '+(e.pag==='pix'?'PIX':e.pag==='alias'?'Banco Familiar':'')+' · '+(e.ent==='delivery'?'Delivery':'Retirada');
+        /* S318: quem ainda não pagou toca no pedido para pagar e tem um "Cancelar" pequeno dentro do cartão (fora da área de toque de pagar) */
+        if(e.est==='pagar'||e.est==='recusado')return '<div class="cfw"><button type="button" class="cfp cfq" data-cta="ped" data-id="'+esc(e.id)+'"><span class="cf1"><b>Pedido '+esc(e.cod)+(e.teste?' · teste':'')+'</b><span class="cfe"><em>'+estLabel(e)+'</em><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></span><small>'+meta+'</small></button><button type="button" class="cfk" data-cta="pkcanc" data-id="'+esc(e.id)+'">Cancelar</button></div>';
+        return '<button type="button" class="cfp" data-cta="ped" data-id="'+esc(e.id)+'"><span><b>Pedido '+esc(e.cod)+(e.teste?' · teste':'')+'</b><small>'+meta+(e.est==='pago'?' · Código '+esc(e.tok||('LF-'+e.cod)):'')+'</small></span><em class="'+(e.est==='pago'?'ok':e.est==='cancelado'?'er':'')+'">'+estLabel(e)+'</em></button>'}).join(''):'<div class="note">Você ainda não fez nenhum pedido.</div>';
       pedAtualiza()}
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Minha conta"><div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">Minha conta</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'+tabs+h+'</aside>');
     if(A==='perfil')gCard();if(A==='cart')mtjCarrega()};
@@ -2063,25 +2073,25 @@
   pkPagar=function(id){
     var e=pedGet(id);if(!e){return}window.__pgid=id;
     var pix=e.pag==='pix',vg=e.pagar||e.total;
-    /* S313 (14/11/2026, esboço aprovado): topo só com o logo; uma ação cheia; contagem numa linha; comprovante com 1 min; o resto em "Mais opções" */
-    var timer=resLeft(e)>0&&e.est==='pagar'?'<div class="cdx" id="cdx"><small>Reservada para você por</small><b id="cdxt">--:--</b><i><u id="cdxb"></u></i></div>':'';
-    var jap='<div class="pgcl" id="pgcl" hidden><label class="pyL" for="pgf" id="pgbtn">Já paguei · enviar comprovante</label></div>';
+    /* S318 (14/11/2026 23:00, esboços work/s316 aprovados): linhas de recibo (rótulo à esquerda, valor à direita) no lugar do total gigante; uma ação cheia;
+       o fio dourado é a reserva; voltar "‹ Minha conta" no padrão do site; comprovante e ajuda em linhas; cancelar foi para Minha conta › Pedidos */
+    var L=function(r,v,cp){return '<div class="zr"><span>'+r+'</span><span class="zk"><b>'+esc(v)+'</b>'+(cp!=null?'<button type="button" data-pgc2="'+esc(cp)+'">Copiar</button>':'')+'</span></div>'};
+    var timer=resLeft(e)>0&&e.est==='pagar'?'<div class="zr" id="cdx"><span>Reservada para você por</span><span class="zk"><b id="cdxt">--:--</b></span></div><div class="zf"><i id="cdxb"></i></div>':'';
+    var SETA='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+    var jap='<div id="pgcl" hidden><label class="zA" for="pgf" id="pgbtn"><span>Já paguei, enviar comprovante</span>'+SETA+'</label></div>';
     var fim='<input type="file" id="pgf" accept="image/*" hidden>'+
+      '<a class="zA" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.lang==='es'?'¡Hola! Tengo una duda sobre el pago de mi pedido '+e.cod:'Olá! Tenho uma dúvida sobre o pagamento do meu pedido '+e.cod)+'"><span>Precisa de ajuda? Fale com a loja</span>'+SETA+'</a></div>'+
       (e.px?pxHtml(e.px):'<div id="pxcard"></div>')+
-      '<div class="pyX"><button type="button" class="pyXh" data-pymais aria-expanded="false"><span>Mais opções</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="pyXb" id="pyXb" hidden>'+
-      '<button type="button" class="pgs" data-pkconta>Pagar depois</button>'+
-      '<a class="vend" target="_blank" rel="noopener" href="https://wa.me/'+NUM_LOJA+'?text='+encodeURIComponent(LFI.lang==='es'?'¡Hola! Tengo una duda sobre el pago de mi pedido '+e.cod:'Olá! Tenho uma dúvida sobre o pagamento do meu pedido '+e.cod)+'"><span>Falar com um vendedor</span></a>'+
-      '<button type="button" class="pgx" data-cta="pkcanc">Cancelar pedido</button></div></div>'+
-      '<p class="tm">Ao pagar, você confirma a compra e aceita os <a href="/termos.html" target="_blank" rel="noopener">Termos e Condições</a>.</p>';
-    if(pix)pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Pague com PIX</h2><div class="pgv">'+brl(e.brl)+'</div><div class="pgsub">Pague o valor exato, com os centavos</div>'+timer+(e.teste?'<div class="pgt">MODO TESTE</div>':'')+
-      '<div class="pyc"><button type="button" class="pyP" data-pgcopy>Copiar código PIX</button><p class="pyh m">Cole no app do seu banco, em “Pix copia e cola”.</p><p class="pyh d">Ou copie o código e cole no app do seu banco.</p>'+
-      '<div class="pyq"><p class="pyh m">Pagando por outro aparelho? Leia o QR:</p><p class="pyh d">Abra o app do seu banco e leia o QR:</p><div class="pgq" id="pgq"></div></div></div>'+
-      '<div class="pgau"><span class="spn"></span><span>Confirmamos sozinhos assim que o PIX chegar</span></div>'+jap+fim).className='pgw0 py';
-    else pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Transferência Banco Familiar</h2><div class="pgv">Gs. '+mil(vg)+'</div><div class="pgsub">Transfira o valor exato</div>'+timer+(e.teste?'<div class="pgt">MODO TESTE</div>':'')+
-      '<div class="pgm">'+[['Alias (celular)',ITAU.alias,ITAU.alias],['Valor exato','Gs. '+mil(vg),String(Math.round(vg))]].map(function(r){return '<div class="pgr"><div><small>'+r[0]+'</small><b>'+esc(r[1])+'</b></div><button type="button" data-pgc2="'+esc(r[2])+'">Copiar</button></div>'}).join('')+
-      '<div class="pgtit">Titular: '+esc(ITAU.titular)+'</div></div>'+
-      '<div class="pgau"><span class="spn"></span><span>'+LFI.tr(TRF_AUTO?'Esperando a transferência… confirmamos sozinhos, não precisa mandar nada':'Depois de transferir, envie o comprovante para confirmarmos')+'</span></div>'+
-      jap+fim).className='pgw0 py';
+      '<p class="tm">Ao pagar, você confirma a compra e aceita os <a href="/termos.html" target="_blank" rel="noopener">Termos e Condições</a>.</p></div>';
+    var cab=pzBar()+'<div class="zw"><h2 style="animation-delay:0s">'+(pix?'Pague com PIX':'Transferência Banco Familiar')+'</h2><p class="zn"><span>Pedido</span> '+esc(e.cod||'')+'</p>'+(e.teste?'<div class="pgt">MODO TESTE</div>':'');
+    if(pix)pkTela(cab+'<div class="zc"><div class="zG"><div class="zE">'+L('Valor',brl(e.brl))+timer+
+      '<div class="zm"><p class="zl d">Prefere copiar? Cole no app do banco, em “Pix copia e cola”.</p><button type="button" class="zP" data-pgcopy>Copiar código PIX</button><p class="zl m">Cole no app do seu banco, em “Pix copia e cola”. O valor já vai no código.</p></div></div>'+
+      '<div class="zQ"><span class="zqt m">Vai pagar por outro aparelho? Leia o QR com o app do banco.</span><button type="button" class="zqb" data-pzqr aria-label="Ampliar o QR"><span class="pgq" id="pgq"></span></button><span class="zqt d">Abra o app do seu banco no celular e leia o QR.</span></div></div></div>'+
+      '<div class="zs"><span class="spn"></span><span>Confirmamos sozinhos assim que o PIX chegar.</span></div><div class="za">'+jap+fim).className='pgw0 py pz';
+    else pkTela(cab+'<div class="zc">'+L('Valor exato','Gs. '+mil(vg),String(Math.round(vg)))+L('Alias (celular)',ITAU.alias,ITAU.alias)+L('Titular',ITAU.titular)+timer+
+      (TRF_AUTO?'':'<div class="zm"><label class="zP" for="pgf" id="pgbtn">Já transferi, enviar comprovante</label><p class="zl m" style="display:block">Transfira o valor exato pelo app do seu banco e envie o comprovante aqui.</p></div>')+'</div>'+
+      (TRF_AUTO?'<div class="zs"><span class="spn"></span><span>Confirmamos sozinhos assim que a transferência chegar.</span></div><div class="za">'+jap.replace('Já paguei, enviar comprovante','Já transferi, enviar comprovante'):'<div class="zs"><span>Confirmamos o pedido assim que conferirmos o comprovante.</span></div><div class="za">')+fim).className='pgw0 py pz';
+    pzTopo();
     if(pix){var code=pixCode(e.brl,'LF'+e.cod);e.code=code;loadQr().then(function(){var q=$('pgq');if(q&&window.LFqr)q.innerHTML=LFqr.svg(code,240)}).catch(function(){var q=$('pgq');if(q)q.innerHTML='<div class="pgw">Não consegui desenhar o QR. Use o botão "Copiar código PIX".</div>'})}
     window.__pgcode=pix?pixCode(e.brl,'LF'+e.cod):'';
     /* S313 (dono, 14/11): "Já paguei · enviar comprovante" aparece 1 min depois do pedido (antes 10 min); na transferência sem robô, na hora */
@@ -2617,7 +2627,7 @@
     else if(a==='mcendrm'){var ri=+t.getAttribute('data-i');dlgAbre('<h3>Remover este endereço?</h3><p>'+endLinha((contaNorm(getConta()).ends||[])[ri]||{})+'</p><div class="dlga"><button type="button" class="dc" data-dlgx>Cancelar</button><button type="button" class="dk dr" data-cta="mcendrm2" data-i="'+ri+'">Remover</button></div>')}
     else if(a==='mcendrm2'){var c9=contaNorm(getConta());c9.ends.splice(+t.getAttribute('data-i'),1);dlgFecha();contaGrava(c9).then(function(){minhaConta('ends')})}
     else if(a==='codok')codConfere();else if(a==='codre')codigoTela();else if(a==='codtroca'){authSair();AUTH_VOLTA=AUTH_VOLTA&&Object.keys(st.cart).length>0;cadastrarTela()}else if(a==='codlink'){var s8=sessG();if(s8){s8.exp=0;lsS('lf_auth',s8)}emailOk().then(function(ok){if(ok)emailFeito();else toast('Ainda não confirmado. Toque no link do e-mail.')})}
-    else if(a==='endsel'){st.endMode='saved';st.endIdx=+t.getAttribute('data-i')||0;bag(true)}else if(a==='endman'){st.endMode='manual';st.endE='';bag(true);var fe=$('fa2');if(fe)fe.focus()}else if(a==='endsav'){st.endMode='saved';bag(true)}else if(a==='pkcanc'){dlgAbre('<h3>Cancelar este pedido?</h3><p>As peças reservadas voltam para a loja. Se você já pagou, não cancele: fale com um vendedor.</p><p class="dlgerr" id="dlgerr" hidden></p><div class="dlga"><button type="button" class="dc" data-dlgx>Voltar</button><button type="button" class="dk dr" data-cta="pkcanc2">Cancelar pedido</button></div>')}else if(a==='pkcanc2'){pkCancela()}else if(a==='pkcanc3'){pkCancelado(window.__pgid)}else if(a==='prosseguir'){if(Object.keys(st.cart).length){if(!logado()){AUTH_VOLTA=true;cadastrarTela()}else emailOk().then(function(ok){AUTH_VOLTA=true;if(ok){st.step='ent';bag()}else codigoTela()})}}else if(a==='voltarcart'){gdSave();st.step='cart';bag()}else if(a==='entrar')entrarTela(t.getAttribute('data-volta')==='1'||AUTH_VOLTA);
+    else if(a==='endsel'){st.endMode='saved';st.endIdx=+t.getAttribute('data-i')||0;bag(true)}else if(a==='endman'){st.endMode='manual';st.endE='';bag(true);var fe=$('fa2');if(fe)fe.focus()}else if(a==='endsav'){st.endMode='saved';bag(true)}else if(a==='pkcanc'){var pci=t.getAttribute('data-id');window.__pgc=!!pci;if(pci)window.__pgid=pci;dlgAbre('<h3>Cancelar este pedido?</h3><p>As peças reservadas voltam para a loja. Se você já pagou, não cancele: fale com um vendedor.</p><p class="dlgerr" id="dlgerr" hidden></p><div class="dlga"><button type="button" class="dc" data-dlgx>Voltar</button><button type="button" class="dk dr" data-cta="pkcanc2">Cancelar pedido</button></div>')}else if(a==='pkcanc2'){pkCancela()}else if(a==='pkcanc3'){pkCancelado(window.__pgid)}else if(a==='prosseguir'){if(Object.keys(st.cart).length){if(!logado()){AUTH_VOLTA=true;cadastrarTela()}else emailOk().then(function(ok){AUTH_VOLTA=true;if(ok){st.step='ent';bag()}else codigoTela()})}}else if(a==='voltarcart'){gdSave();st.step='cart';bag()}else if(a==='entrar')entrarTela(t.getAttribute('data-volta')==='1'||AUTH_VOLTA);
     else if(a==='cadastrar')cadastrarTela();
     else if(a==='esqueci')esqueciTela();
     else if(a==='login')authEntrar();
