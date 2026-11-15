@@ -1229,7 +1229,7 @@
   var PK_SVG='<svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="#3ddc8c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M4.5 12.8l4.8 4.9L19.5 7"/></svg>';
   var PK_WA='<svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>';
   function fsv(v){if(v===null||v===undefined)return {nullValue:null};if(typeof v==='number')return Math.floor(v)===v?{integerValue:String(v)}:{doubleValue:v};if(typeof v==='boolean')return {booleanValue:v};if(Array.isArray(v))return {arrayValue:{values:v.map(fsv)}};if(typeof v==='object'){var f={};for(var k in v)f[k]=fsv(v[k]);return {mapValue:{fields:f}}}return {stringValue:String(v)}}
-  /* reserva de 10 min: o servidor decide a hora e quantas peças sobram; se a função estiver desligada ou fora do ar, o pedido segue como antes */
+  /* reserva de 30 min (14/11; o prazo real vem do servidor): o servidor decide a hora e quantas peças sobram; se a função estiver desligada ou fora do ar, o pedido segue como antes */
   var RES_URL='https://southamerica-east1-lafouch-2f6bd.cloudfunctions.net/reserva';
   function resCall(acao,pedido,itens,refs,extra){
     var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000),b={acao:acao,pedido:pedido};if(itens)b.itens=itens;if(refs)b.refs=refs;if(extra)for(var xk in extra)b[xk]=extra[xk];
@@ -1681,7 +1681,7 @@
   function resExpirou(id){
     var e=pedGet(id)||{};pedSet(id,{rx:0});
     var w=NUM_LOJA,m=encodeURIComponent('Olá! Meu pedido '+(e.cod||'')+' venceu o prazo de reserva, mas eu já paguei. Posso enviar o comprovante?');
-    pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Reserva encerrada</h2><div class="pkt" style="animation-delay:.1s"><span>Passaram os 10 minutos e a peça voltou para o site. Se ainda estiver disponível, você pode reservar de novo.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-pkrenova="'+esc(id)+'">Reservar de novo</button><a class="pkw" target="_blank" rel="noopener" href="https://wa.me/'+w+'?text='+m+'">'+PK_WA+'Já paguei · falar com a loja</a><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0'}
+    pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Reserva encerrada</h2><div class="pkt" style="animation-delay:.1s"><span>Passaram os 30 minutos e a peça voltou para o site. Se ainda estiver disponível, você pode reservar de novo.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-pkrenova="'+esc(id)+'">Reservar de novo</button><a class="pkw" target="_blank" rel="noopener" href="https://wa.me/'+w+'?text='+m+'">'+PK_WA+'Já paguei · falar com a loja</a><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0'}
   function resRenova(id){
     var e=pedGet(id);if(!e)return;
     resCall('reservar',id,resItens(e.itens)).then(function(r){
@@ -1747,7 +1747,7 @@
     if(meu){pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Você já reservou esta peça</h2><div class="pkt" style="animation-delay:.1s"><span>Ela está guardada no seu pedido '+esc(meu.cod||'')+', esperando o pagamento. Nenhum pedido novo foi criado.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-cta="ped" data-id="'+esc(meu.id)+'">Ver meu pedido</button><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0';try{syncEstoque()}catch(_){}return}
     var soEsg=(falta||[]).every(function(f){return !f.motivo||f.motivo==='esgotado'});
     if(!soEsg){pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Peça indisponível</h2><div class="pkt" style="animation-delay:.1s"><span>Esta peça não está disponível no site no momento. Nenhum pedido foi criado. Fale com a loja pelo WhatsApp se quiser.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0';try{syncEstoque()}catch(_){}return}
-    pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Acabou de esgotar</h2><div class="pkt" style="animation-delay:.1s"><span>Alguém reservou esta peça agora. Se ela não for paga em 10 minutos, volta para o site. Nenhum pedido foi criado.</span></div>'+L+'<div class="pkb" style="animation-delay:.3s"><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0';
+    pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Acabou de esgotar</h2><div class="pkt" style="animation-delay:.1s"><span>Alguém reservou esta peça agora. Se ela não for paga em 30 minutos, volta para o site. Nenhum pedido foi criado.</span></div>'+L+'<div class="pkb" style="animation-delay:.3s"><button type="button" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0';
     try{syncEstoque()}catch(_){}}
   function enviarPedido(retry){
     var c=logado()?getConta():($('gn')?gLer():gConta(true));if(!c){if(!$('gn')){toast('Preencha seus dados para continuar.');st.step='dados';bag()}return}st.nome=c.nome;st.zap=c.tel;
