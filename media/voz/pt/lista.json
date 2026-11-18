@@ -193,5 +193,12 @@
 "Chegue um pouquinho mais perto da tela.": "pt8_007.mp3",
 "Afaste-se um pouquinho da tela.": "pt8_008.mp3",
 "No computador este resultado é uma estimativa.": "pt8_009.mp3",
-"Para confirmar, faça o teste no celular.": "pt8_010.mp3"
+"Para confirmar, faça o teste no celular.": "pt8_010.mp3",
+"Agora vou ver de quão perto você consegue ler.": "pt10_000.mp3",
+"Aproxime o celular do rosto bem devagar, sem parar de ler as letras.": "pt10_001.mp3",
+"Quando as letras começarem a embaçar, pare o celular ali, ou me avise apertando o botão Embaçou.": "pt10_002.mp3",
+"Pronto, medi!": "pt10_003.mp3",
+"Pode afastar o celular.": "pt10_004.mp3",
+"Não embaçou?": "pt10_005.mp3",
+"Tudo bem, já medi.": "pt10_006.mp3"
 }

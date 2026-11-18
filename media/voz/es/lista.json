@@ -179,5 +179,12 @@
 "Acercate un poquito a la pantalla.": "es9_007.mp3",
 "Alejate un poquito de la pantalla.": "es9_008.mp3",
 "En la computadora este resultado es una estimación.": "es9_009.mp3",
-"Para confirmar, hacé el test en el celular.": "es9_010.mp3"
+"Para confirmar, hacé el test en el celular.": "es9_010.mp3",
+"Ahora voy a ver de qué tan cerca podés leer.": "es10_000.mp3",
+"Acercá el celular a la cara bien despacio, sin dejar de leer las letras.": "es10_001.mp3",
+"Cuando las letras empiecen a verse borrosas, dejá el celular quieto ahí, o avisame tocando el botón Se ve borroso.": "es10_002.mp3",
+"¡Listo, medí!": "es10_003.mp3",
+"Podés alejar el celular.": "es10_004.mp3",
+"¿No se puso borroso?": "es10_005.mp3",
+"Todo bien, ya medí.": "es10_006.mp3"
 }
