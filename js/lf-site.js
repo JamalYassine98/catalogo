@@ -1582,17 +1582,7 @@
      Pelo ícone do topo, se a tela pedida já é a que está aberta, ela fica como está. Pelo menu, o item passa pelo "menu = recomeçar" (ver S48 A, mais abaixo). */
   function contaJaAberta(t){return !!(t&&t.id==='contabtn')&&contaNaTela()}
   function contaNaTela(){try{var p=$('layer').querySelector('.scrim[data-accn]'),lb=p&&p.getAttribute('data-accn');if(!lb)return false;return !sessG()?lb==='Iniciar sessão':(getConta()?lb==='Minha conta':false)}catch(_){return false}}
-  function minhaConta(){
-    var c=getConta();if(!sessG()){entrarTela(false);return}if(!c){contaForm(false);return}
-    var L=lsG('lf_ped',[]).slice().reverse(),ln=function(k,v){return v?'<div class="pfl"><small>'+k+'</small><span>'+esc(v)+'</span></div>':''};
-    layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Minha conta"><div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">Minha conta</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'+
-      '<div class="cfc"><div class="pfh"><span class="pfa">'+esc(c.nome.charAt(0).toUpperCase())+'</span><span><b>'+esc(c.nome)+'</b>'+(c.user?'<small>@'+esc(c.user)+'</small>':'')+'</span></div>'+
-      ln('E-mail',c.email)+ln(nacInfo(c.nac).d,c.doc)+ln('Nascimento',c.nasc)+ln('WhatsApp',c.tel)+ln('Cidade',c.cidade)+ln('Endereço',c.end)+
-      '<button type="button" class="cfx" data-cta="conta" style="margin-top:8px">Editar dados</button></div>'+
-      '<div class="cfc gcd" id="gcard"><div class="gl">'+G_BADGE+'<span><b>Conta do Google</b><small>Verificando…</small></span></div></div>'+
-      '<div class="note"><b style="color:var(--tx)">Minhas reservas</b></div>'+
-      (L.length?L.map(function(e){return '<button type="button" class="cfp" data-cta="ped" data-id="'+esc(e.id)+'"><span><b>Pedido '+esc(e.cod)+(e.teste?' · teste':'')+'</b><small>'+new Date(e.ts).toLocaleDateString('pt-BR')+' · '+(e.ent==='delivery'?'Delivery':'Retirada na loja')+(e.est==='pago'?' · Código '+esc(e.tok||('LF-'+e.cod)):'')+'</small></span><em class="'+(e.est==='pago'?'ok':'')+'">'+estLabel(e)+'</em></button>'}).join(''):'<div class="note">Você ainda não fez nenhuma reserva.</div>')+
-      '<div class="sesv"><button type="button" class="bsair" data-cta="sair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>'+LFI.tr('Sair da conta')+'</button><div class="zc"><p>'+LFI.tr('Quer apagar sua conta? Seus dados e endereços são apagados. Não dá para desfazer.')+'</p><button type="button" class="bexc" data-cta="exc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>'+LFI.tr('Excluir minha conta')+'</button></div></div></aside>');gCard()}
+  var minhaConta;/* S422: a tela da conta é desenhada por mcTela() e aberta pela minhaConta() única (bloco S420/S422 do trilho) */
   /* endereço de entrega fora do Paraguai: avisa e não deixa seguir com delivery (sem internet/não achado: deixa seguir) */
   var ENDC={};
   function endConf(txt){var k=cdN(txt);if(ENDC[k])return Promise.resolve(ENDC[k]);
@@ -1894,7 +1884,7 @@
     var m2=/^(mp|pp)p$/.exec(t.id);if(m2){var z=$(m2[1]+'z');if(z){z.placeholder=fnEx(t.value);if(z.value&&!/^(\+|00)/.test(z.value.trim()))fnVivo(z,t.id,m2[1]+'zh')}}});
   document.addEventListener('input',function(e){var t=e.target;if(!t||!t.id)return;var m=/^(mp|pp)z$/.exec(t.id);if(m){fnVivo(t,m[1]+'p',m[1]+'zh');pfG(m[1],'z',t.value)}var m2=/^(mp|pp)d$/.exec(t.id);if(m2){maskCampo(t,function(v){return maskDoc($(m2[1]+'a2').value,v,docTipo(m2[1],contaNorm(getConta())||{}))});pfG(m2[1],'d',t.value)}});
   function endLinha(a){return esc(a.end)+(a.cidade?', '+esc(a.cidade):'')+(a.dep?' · '+esc(a.dep):'')}
-  minhaConta=function(aba,edita){
+  var mcTela=function(aba,edita){
     var c=contaNorm(getConta());if(!sessG()){entrarTela(false);return}if(!c){c=contaMin(sessG())}
     st.mcAba=aba||st.mcAba||'perfil';var A=st.mcAba,h='';
     var tabs='<div class="mct" role="tablist">'+[['perfil','Perfil'],['ends','Endereços'],['peds','Pedidos'],['cart','Cartões']].map(function(x){return '<button type="button" role="tab" aria-selected="'+(A===x[0])+'" class="'+(A===x[0]?'on':'')+'" data-cta="mcaba" data-a="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div>';
@@ -1942,11 +1932,12 @@
     e.preventDefault();e.stopImmediatePropagation();var h=ci.offsetHeight;
     var a=ci.animate([{opacity:1,transform:'none',height:h+'px'},{opacity:0,transform:'translateX(18px)',height:h+'px',offset:.45},{opacity:0,transform:'translateX(18px)',height:'0px',marginTop:'0px',marginBottom:'0px',paddingTop:'0px',paddingBottom:'0px'}],{duration:340,easing:'ease',fill:'forwards'});
     a.onfinish=function(){t.__lfok=1;t.click()}},true);
-  var _mc0=minhaConta,_mcAba='';
-  minhaConta=function(aba,edita){var aberto=!!document.querySelector('#layer [aria-label="Minha conta"]');_mc0(aba,edita);if(window.__lfTk2){_mcAba=st.mcAba;return}if(!MOV())return;
+  var _mcAba='';
+  /* B1 (11/11): entrada suave da Minha conta; na troca de aba quem anima é o trilho (S420) */
+  function mcEntra(aberto){if(window.__lfTk2){_mcAba=st.mcAba;return}if(!MOV())return;
     var pn=document.querySelector('#layer [aria-label="Minha conta"]');if(!pn)return;var A=st.mcAba;
     var alvo=aberto?(A!==_mcAba?[].slice.call(pn.children).filter(function(e){return !/^(H2|DIV)$/.test(e.tagName)||!e.querySelector('h2')}).slice(1):[]):[].slice.call(pn.children);
-    alvo.forEach(function(e,k){e.animate([{transform:'translateY(12px)',opacity:0},{transform:'none',opacity:1}],{duration:380,delay:k*55,easing:EZ,fill:'backwards'})});_mcAba=A};
+    alvo.forEach(function(e,k){e.animate([{transform:'translateY(12px)',opacity:0},{transform:'none',opacity:1}],{duration:380,delay:k*55,easing:EZ,fill:'backwards'})});_mcAba=A}
   function mcSalvar(){var c=contaNorm(getConta())||{};document.querySelectorAll('#layer .field.bad').forEach(function(e){e.classList.remove('bad')});
     var nome=($('mn')||{value:''}).value.trim().replace(/\s+/g,' ');if(nome.length<3||nome.indexOf(' ')<0)return cfErro('Digite seu nome e sobrenome.','mn');
     var o=perfilLer(c,'mp',false);if(!o)return;Object.assign(c,o,{nome:nome});delete c.nasc;contaGrava(c).then(function(){toast('Dados salvos.');if(st.voltaPag){st.voltaPag=0;st.step='pag';bag()}})}
@@ -2738,7 +2729,6 @@
   /* S370 (aprovado 15/11): tocar o botão da página que já está aberta (sacola, Minha conta) não recria nem anima nada: só volta ao topo */
   var _ly370=layer;layer=function(){st._ab='';return _ly370.apply(this,arguments)};
   var _bag370=bag;bag=function(){var r=_bag370.apply(this,arguments);if($('layer').firstChild)st._ab='bag';return r};
-  var _mc370=minhaConta;minhaConta=function(){if(!arguments.length&&st._ab==='conta'&&$('layer').firstChild&&$('layer').querySelector('[aria-label="Minha conta"],.mct')){ab370Topo();return}var r=_mc370.apply(this,arguments);if($('layer').firstChild&&$('layer').querySelector('[aria-label="Minha conta"],.mct'))st._ab='conta';return r};
   var _cl370=closeLayer;closeLayer=function(){st._ab='';return _cl370.apply(this,arguments)};
   function ab370Topo(){var sc=document.querySelector('#layer .scrim')||document.querySelector('#layer .panel');try{if(sc)sc.scrollTo({top:0,behavior:'smooth'})}catch(_){if(sc)sc.scrollTop=0}}
   $('bagbtn').addEventListener('click',function(){if(st._ab==='bag'&&st.step==='cart'&&$('layer').firstChild){ab370Topo();return}st.step='cart';bag()});
@@ -4487,10 +4477,12 @@ function filSet(lado,ang,L,vis,bd){bd=bd||0;const G=lado<0?(N._fE||(N._fE=q('.fi
   window.__lfTrilho=lfTrilho;
   /* (os trilhos .seg do menu antigo estão escondidos desde o menu novo com listas ✓: hoje o único trilho visível do site é o da Minha conta) */
   /* Minha conta: trocar de aba NÃO redesenha o trilho (a mesma pílula segue), o conteúdo antigo sai em 0,12 s e o novo entra do lado da aba tocada */
-  var _mcTk=minhaConta;minhaConta=function(aba,edita){
+  /* S422: a Minha conta numa função só — S370 (já aberta: só sobe ao topo) → desenho (mcTela) → entrada B1 (mcEntra) → trilho único (S420) */
+  minhaConta=function(aba,edita){
+    if(!arguments.length&&st._ab==='conta'&&$('layer').firstChild&&$('layer').querySelector('[aria-label="Minha conta"],.mct')){ab370Topo();return}
     var m0=document.querySelector('#layer .mct'),pn0=m0&&m0.parentNode,A0=st.mcAba,troca=!!(m0&&m0.__tk&&typeof aba==='string'&&aba!==A0&&edita==null),velho=[],de=-1,y0=0,sc0=0;
     if(troca){var k=0,bs0=tkBts(m0);de=tkSel(m0.__tk);[].slice.call(pn0.children).forEach(function(e){if(k)velho.push(e);if(e===m0)k=1});y0=m0.offsetTop+m0.offsetHeight;var scr0=pn0.closest('.scrim');sc0=pn0.scrollTop}
-    window.__lfTk2=troca?1:0;var r;try{r=_mcTk.apply(this,arguments)}finally{window.__lfTk2=0}
+    window.__lfTk2=troca?1:0;var r;try{var aberto=!!document.querySelector('#layer [aria-label="Minha conta"]');mcTela(aba,edita);mcEntra(aberto);if($('layer').firstChild&&$('layer').querySelector('[aria-label="Minha conta"],.mct'))st._ab='conta'}finally{window.__lfTk2=0}
     var m=document.querySelector('#layer .mct'),pn=m&&m.parentNode;if(!m)return r;
     if(troca&&m!==m0){var nb=tkBts(m),ob=tkBts(m0);if(nb.length===ob.length){
         var scN=pn.closest('.scrim');if(scN)scN.classList.add('mcLx');
