@@ -50,10 +50,8 @@
     /* S370 (aprovado 15/11 15:11): os cartões usam a chave de login RENOVADA (idTok); a guardada vence em 1 hora */
     if(b.acao==='meus')return idTok().then(function(t){o.headers.Authorization='Bearer '+t;return go()},function(){return {ok:false,motivo:'sessao'}});
     return go()}
-  function cupGuarda(c){st._cupErr='';st.cup=c?{cod:c.cod,pct:c.pct,tipo:c.tipo,fim:c.fim||0,min:c.min||0,restam:c.restam}:null;lsS('lf_cup',st.cup)}
+  function cupGuarda(c){st.cup=c?{cod:c.cod,pct:c.pct,tipo:c.tipo,fim:c.fim||0,min:c.min||0,restam:c.restam}:null;lsS('lf_cup',st.cup)}
   function cupTira(){cupGuarda(null)}
-  var CUPI='<svg class="cupi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5V7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v1.5a2.5 2.5 0 0 0 0 5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3.5a2.5 2.5 0 0 0 0-5z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>';
-  var CUP_TIPO={bv:'Boas-vindas',px:'Próxima compra',am:'Indique uma amiga',vip:'Cliente fiel',fiel:'Cliente fiel',ev:'Cupom do evento'};
   function cupData(t){return t?new Date(t).toLocaleDateString(LFI.lang==='es'?'es-PY':'pt-BR'):''}
   function cupMsg(m,c){var cod=c&&c.cod?c.cod:'';return {nao:LFI.tr('Código não encontrado. Confira as letras.'),usado:LFI.tr('Este código já foi usado.'),vencido:LFI.tr('Este código venceu.'),cancelado:LFI.tr('Este código foi cancelado.'),
     ja:LFI.tr('Você já usou')+' '+cod+'. '+LFI.tr('Obrigado! Seu cartão de próxima compra continua valendo.'),esgotado:LFI.tr('Os cupons')+' '+cod+' '+LFI.tr('acabaram.'),outro:LFI.tr('Este código é pessoal, de outro telefone.'),
@@ -61,17 +59,8 @@
     min:LFI.tr('Compra mínima de')+' '+fmt((c&&c.min)||0)+'.',cedo:LFI.tr('Este código ainda não começou a valer.'),pendente:LFI.tr('Este cartão começa a valer quando confirmarmos o pagamento.'),espera:LFI.tr('Muitas tentativas. Tente de novo em 1 hora.'),pausa:LFI.tr('Agora não há códigos novos. Tente no mês que vem.')}[m]||LFI.tr('Não deu para conferir o código agora. Tente de novo.')}
   function cupAplica(cod,cb){cod=String(cod||'').trim();if(!cod)return;var c=getConta()||{};
     cupFn({acao:'ver',cod:cod,tel:c.tel||'',email:c.email||(sessG()||{}).email||''}).then(function(j){if(j&&j.ok){cupGuarda(j.cupom);toast(LFI.tr('Código aplicado')+' ✓');}else toast(cupMsg(j&&j.motivo,j&&j.cupom));if(cb)cb(j)},function(){toast(LFI.tr('Não deu para conferir o código agora. Tente de novo.'));if(cb)cb(null)})}
-  /* carrinho: "¿Tenés un código?" + linha do desconto + avisos (vale o maior, peça em oferta, quedan N de 50) */
-  function cupHtml(dd){var ci=cupInfo(),v=descVale();
-    if(!st.cup&&dd)return '';
-    if(st.cup&&v==='cup'&&!ci.min){var cc=cupConta(),nm=esc(st.cup.cod)+' · −'+st.cup.pct+'%';
-      if(dd)return '<div class="cs-r cupl cupd"><span>'+CUPI+LFI.tr('Cupom')+' '+nm+'</span><span class="cupv">−'+LFI.fmtD(ci.dD)+'</span></div>';
-      return '<div class="cupcard">'+CUPI+'<div class="cupct"><b>'+nm+'</b><small>'+LFI.tr('Cupom aplicado em')+' '+cc.a+' '+LFI.tr('de')+' '+cc.n+' '+LFI.tr(cc.n===1?'peça':'peças')+'</small></div><button type="button" class="cuprm" data-cupx>'+LFI.tr('remover')+'</button></div>'}
-    if(!st.cup)return '<details class="cupf"'+(st._cupOpen?' open':'')+'><summary>'+LFI.tr('Tem um código?')+'</summary><div class="cupr"><input class="field" id="cupin" placeholder="LF-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="'+LFI.tr('Código de desconto')+'"><button type="button" class="btn" data-cupok>'+LFI.tr('Aplicar')+'</button></div>'+(st._cupErr?'<small class="cupn cupe" role="alert">'+esc(st._cupErr)+'</small>':'')+'<small class="cupn">'+LFI.tr('Um código por compra. Não vale em peça em OFERTA.')+'</small></details>';
-    var nome=LFI.tr(CUP_TIPO[st.cup.tipo]||'Código')+' −'+st.cup.pct+'%',ex=st.cup.tipo==='ev'&&st.cup.restam!=null?'<small class="cupn">'+LFI.tr('Restam')+' '+st.cup.restam+'</small>':'';
-    if(ci.min)return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></div><small class="cupn">'+LFI.tr('Compra mínima de')+' '+LFI.fmtD(LFI.pv(st.cup.min))+'. '+LFI.tr('O código continua guardado.')+'</small>';
-    if(v!=='cup')return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></div><small class="cupn">'+LFI.tr('Nesta compra o código não dá desconto (as peças já têm o melhor preço). Ele continua guardado.')+'</small>';
-    return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><span class="cupv">−'+LFI.fmtD(ci.dD)+' <button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></span></div>'+ex}
+  /* carrinho: linha do cartão desta compra — desenhada pelo bloco dos Cartões (S409, mais abaixo) */
+  function cupHtml(dd){return ''}
   /* peça: "Tu código vale aquí ✓ − Gs. 13.000" / "Ya tiene su mejor precio" */
   function cupPecaHtml(p){if(!st.cup)return '';var x=cupPeca(p);if(x.of)return '<div class="cupp of"><b>'+LFI.tr('Já tem o melhor preço')+'</b> · '+LFI.tr('o código fica para outra compra')+'</div>';
     if(!(x.d>0))return '<div class="cupp of">'+LFI.tr('O código')+' '+esc(st.cup.cod)+' '+LFI.tr('não vale nesta peça')+'</div>';
@@ -109,9 +98,8 @@
   document.addEventListener('keydown',function(e){var a=document.activeElement;if((e.key==='Enter'||e.key===' ')&&a&&a.getAttribute&&a.getAttribute('role')==='button'&&a.hasAttribute('data-cupperg')&&!document.getElementById('cpov')){e.preventDefault();cupPergunta(a.getAttribute('data-cupperg'))}});
   /* boas-vindas depois de se inscrever nas novidades */
   
-  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-cupok],[data-cupx],[data-cupusar],[data-cupcopy],[data-bvx]');if(!t)return;
-    if(t.hasAttribute('data-cupok')){var i=document.getElementById('cupin');t.disabled=true;st._cupOpen=true;cupAplica(i&&i.value,function(j){t.disabled=false;st._cupErr=j&&j.ok?'':j?cupMsg(j.motivo,j.cupom):LFI.tr('Não deu para conferir o código agora. Tente de novo.');bag(true);var i2=document.getElementById('cupin');if(i2&&!(j&&j.ok)){i2.value=i&&i.value||'';i2.focus()}})}
-    else if(t.hasAttribute('data-cupx')){cupTira();bag(true)}
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-cupx],[data-cupusar],[data-cupcopy],[data-bvx]');if(!t)return;
+    if(t.hasAttribute('data-cupx')){cupTira();bag(true)}
     else if(t.hasAttribute('data-cupusar')){var bo=document.getElementById('bvov');if(bo)bo.remove();cupAplica(t.getAttribute('data-cupusar'),function(j){if(j&&j.ok){closeLayer();setTimeout(function(){bag()},50)}})}
     else if(t.hasAttribute('data-cupcopy')){var cd=t.getAttribute('data-cupcopy');try{navigator.clipboard.writeText(cd+' · https://lafouch.com/t/'+cd).then(function(){toast(LFI.tr('Código copiado'))})}catch(_){}}
     else if(t.hasAttribute('data-bvx')){var bb=document.getElementById('bvov');if(bb)bb.remove()}});
