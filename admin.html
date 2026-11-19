@@ -921,7 +921,7 @@ var _st0=start;start=function(){_st0.apply(this,arguments);try{segCarrega()}catc
       lin('rev',I('<path d="M12 2l3 6.6 7 .8-5.2 4.8 1.5 7L12 17.7 5.7 21.2l1.5-7L2 9.4l7-.8z"/>'),'Opiniões para revisar',S.rev.length?S.rev.length+' esperando você':'nada para revisar',S.rev.length)+
       (pe?lin('c_pe',I('<path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/>'),'Preços e estoque','vêm do app (Inventário)',0):'');
     /* Ajustes: o primeiro cartão (site no ar) fica; o resto vira linhas */
-    var cf=$('v_cfg')||($('c_fr')&&$('c_fr').parentNode);if(cf){var cs=[].filter.call(cf.querySelectorAll(':scope>section.card'),function(c){return !c.classList.contains('p207in')&&!/está no ar|esta no ar/i.test(c.textContent.slice(0,80))});
+    var cf=$('v_cfg')||($('c_fr')&&$('c_fr').parentNode);if(cf){var cs=[].filter.call(cf.querySelectorAll(':scope>section.card'),function(c){return !c.classList.contains('p207in')&&c.id!=='c_cfg'/* 19/11: o interruptor fica sempre no topo, ligado ou desligado (antes o filtro era pelo texto e ele sumia com o site fora do ar) */});
       var bx=cf.querySelector('.p207l.cfg');if(!bx){bx=document.createElement('div');bx.className='p207l cfg';var pr=cs[0]&&!cs[0].hidden?cs[0]:null;cf.insertBefore(bx,pr||cf.firstChild.nextSibling)}
       bx.innerHTML=cs.map(function(c,i){if(!c.id)c.id='c_cf'+i;c.hidden=true;c.classList.add('p207x');var t=(c.querySelector('.ct')||{}).textContent||'',s=(c.querySelector('.mu,p')||{}).textContent||'';t=t.charAt(0)+t.slice(1).toLowerCase();return lin(c.id,'',t,s,0)}).join('')}}
   document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-lin],[data-p207]');if(!t)return;
