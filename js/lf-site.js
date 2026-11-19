@@ -3175,8 +3175,6 @@
       el.setAttribute('data-lfw',String(W));if(mudou){el.style.paddingRight='4.01px';requestAnimationFrame(function(){el.style.paddingRight=''})}}
     var t=0;function logo(){if(t)return;t=requestAnimationFrame(function(){t=0;document.querySelectorAll('#layer .mct').forEach(cabe)})}
     new MutationObserver(logo).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style']});addEventListener('resize',logo)})();
-  /* S429 (aprovado 19/11): o WhatsApp flutuante sai pela borda enquanto a pessoa rola e volta 0,6 s depois que ela para */
-  (function(){var t=0,h=document.documentElement;addEventListener('scroll',function(){h.classList.add('lfwah');clearTimeout(t);t=setTimeout(function(){h.classList.remove('lfwah')},600)},{passive:true,capture:true})})();
   /* S429 (121, aprovado): "Últimas N" alinhado com o texto do cartão e sem passar do coração; área de toque de 44 px por fora do desenho,
      que para no meio do caminho até o vizinho (não cobre letra de outra coisa) */
   (function(){
@@ -3479,7 +3477,7 @@
         w.style.removeProperty('pointer-events')}else hit=era;
       if(era)H.classList.add('wamin');if(rol)H.classList.add('warol');void w.offsetWidth;
       w.style.transition=tr;if(sv)sv.style.transition=ts;void w.offsetWidth;H.classList.toggle('wamin',hit)}
-    var rt=0;document.addEventListener('scroll',function(){var H=document.documentElement;if(naPeca()){H.classList.remove('warol');return}H.classList.add('warol');clearTimeout(rt);rt=setTimeout(function(){cobre();H.classList.remove('warol')},700)/* S239: mede ANTES de soltar o 'rolando' — assim a lingueta abre na bola com a mesma animação suave de quando recolhe (antes a medição cortava a animação) */},true);
+    var rt=0;document.addEventListener('scroll',function(){var H=document.documentElement;H.classList.add('warol');clearTimeout(rt);rt=setTimeout(function(){cobre();H.classList.remove('warol')},600)/* S430: rolando, o WhatsApp sai pela borda (também na peça) e volta 0,6 s depois que a pessoa para (aprovado 19/11) *//* S239: mede ANTES de soltar o 'rolando' — assim a lingueta abre na bola com a mesma animação suave de quando recolhe (antes a medição cortava a animação) */},true);
     setTimeout(cobre,1500);addEventListener('resize',function(){setTimeout(cobre,200)});document.addEventListener('click',function(){setTimeout(cobre,900)},true);
     window.__lfAjusta=ajusta})();
   function syncProds(docs){

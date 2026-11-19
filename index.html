@@ -73,12 +73,12 @@ html body .hero h1,html body .hero p{text-align:left!important;max-width:none!im
 <style id="s57">
 /* 09/11 S57 (aprovado): sem colisões com letra grande — regras que valem para o site todo */
 @media (max-width:860px){
- .wa{transition:opacity .25s,transform .25s}
- html.warol .wa{opacity:0!important;transform:scale(.6)!important;pointer-events:none!important}
+ 
+ 
  /* 10/11 S112 (aprovado): na peça volta o WhatsApp antigo — redondo, flutuando com o pulso, logo acima da barra de compra, sempre inteiro */
- html.onprod .wa,html:has(#layer .buyrow) .wa{display:flex!important;bottom:calc(var(--lfbb,96px) + 14px)!important;transform:none!important;opacity:1!important;pointer-events:auto!important}
- html.onprod .wa svg,html:has(#layer .buyrow) .wa svg{transform:none!important}
- html:has(#cad) .wa,body:has(.cartp) .wa{display:none!important}
+ 
+ 
+ 
  #vscr{padding-bottom:96px!important}
  #vitrine.pop .mobsearch{flex-wrap:wrap;}
  .mobsearch .vnav .vback{margin-right:auto;order:0}
@@ -321,20 +321,11 @@ html[data-ev=natal] body .in a.mp,html[data-ev=halloween] body .in a.mp,html[dat
 /* 14/11 S230 (aprovado, esboço S222): a Início cabe na tela em qualquer letra; WhatsApp nunca pela metade nem sumido — bola quando há lugar, lingueta inteira na margem quando cobriria algo (e enquanto rola, no toque); com mouse a lingueta abre na bola ao passar por cima. */
 /* a largura da Início é em vw e não acompanha a letra grande: nunca passa do espaço que existe */
 html.v5 body #home,html body #home{max-width:-moz-available!important;max-width:-webkit-fill-available!important;max-width:stretch!important}
-html body a.wa{transition:width .32s cubic-bezier(.2,.8,.2,1),height .32s cubic-bezier(.2,.8,.2,1),right .32s cubic-bezier(.2,.8,.2,1),border-radius .32s cubic-bezier(.2,.8,.2,1),box-shadow .32s cubic-bezier(.2,.8,.2,1),opacity .2s cubic-bezier(.2,.8,.2,1)}
-html body a.wa svg{transition:width .32s cubic-bezier(.2,.8,.2,1),height .32s cubic-bezier(.2,.8,.2,1),transform .32s cubic-bezier(.2,.8,.2,1)}
-@media (hover:none),(pointer:coarse){
- html:not(.onprod):not(:has(#layer .buyrow)).wamin body a.wa,html:not(.onprod):not(:has(#layer .buyrow)).warol body a.wa{transform:none!important;scale:1!important;opacity:1!important;pointer-events:auto!important;right:0!important;width:calc(24px / var(--z,1))!important;height:calc(56px / var(--z,1))!important;border-radius:calc(14px / var(--z,1)) 0 0 calc(14px / var(--z,1))!important;animation:none!important;box-shadow:-2px 4px 12px rgba(0,0,0,.14)!important}
- html:not(.onprod):not(:has(#layer .buyrow)).wamin body a.wa svg,html:not(.onprod):not(:has(#layer .buyrow)).warol body a.wa svg{transform:none!important;width:calc(17px / var(--z,1))!important;height:calc(17px / var(--z,1))!important}
-}
-@media (hover:none) and (min-width:600px),(pointer:coarse) and (min-width:600px){
- html:not(.onprod):not(:has(#layer .buyrow)).wamin body a.wa,html:not(.onprod):not(:has(#layer .buyrow)).warol body a.wa{transform:none!important;scale:1!important;opacity:1!important;pointer-events:auto!important;right:0!important;width:calc(30px / var(--z,1))!important;height:calc(64px / var(--z,1))!important;border-radius:calc(14px / var(--z,1)) 0 0 calc(14px / var(--z,1))!important;animation:none!important;box-shadow:-2px 4px 12px rgba(0,0,0,.14)!important}
- html:not(.onprod):not(:has(#layer .buyrow)).wamin body a.wa svg,html:not(.onprod):not(:has(#layer .buyrow)).warol body a.wa svg{transform:none!important;width:calc(21px / var(--z,1))!important;height:calc(21px / var(--z,1))!important}
-}
-@media (hover:hover) and (pointer:fine){
- html:not(.onprod):not(:has(#layer .buyrow)).wamin body a.wa:not(:hover):not(:focus-visible){transform:none!important;scale:1!important;opacity:1!important;pointer-events:auto!important;right:0!important;width:calc(30px / var(--z,1))!important;height:calc(64px / var(--z,1))!important;border-radius:calc(14px / var(--z,1)) 0 0 calc(14px / var(--z,1))!important;animation:none!important;box-shadow:-2px 4px 12px rgba(0,0,0,.14)!important}
- html:not(.onprod):not(:has(#layer .buyrow)).wamin body a.wa:not(:hover):not(:focus-visible) svg{transform:none!important;width:calc(21px / var(--z,1))!important;height:calc(21px / var(--z,1))!important}
-}
+
+
+
+
+
 </style>
 
 <style id="s235">
@@ -342,7 +333,7 @@ html body a.wa svg{transition:width .32s cubic-bezier(.2,.8,.2,1),height .32s cu
    A Mochi (#gw) fica de fora: tem padrão próprio aprovado. */
 *:not(#gw):not(#gw *),*:not(#gw):not(#gw *)::before,*:not(#gw):not(#gw *)::after{transition-timing-function:cubic-bezier(.2,.8,.2,1)!important}
 button:active:not(.wa):not(#gw *):not([data-a]):not(.on),a.btn:active,#grid .card:active,#home .hc:active{scale:.975;transition:scale .08s}
-a.wa{animation-iteration-count:2!important}/* S239: o pontinho de 'Últimas' voltou a pulsar suave sem parar (pedido do dono) */
+/* S239: o pontinho de 'Últimas' voltou a pulsar suave sem parar (pedido do dono) */
 @media (prefers-reduced-motion:reduce){button:active,a.btn:active,#grid .card:active,#home .hc:active{scale:none}}
 </style>
 
@@ -539,7 +530,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .top{transition:box-shadow .3s,background .3s}.top.sc{box-shadow:0 8px 30px var(--shadow)}
 .nav a{position:relative;white-space:nowrap}.nav a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--ac);transform:scaleX(0);transition:transform .3s}.nav a:hover::after,.nav a.on::after{transform:scaleX(1)}
 .ib{transition:transform .3s}@media (hover:hover){.ib:hover{transform:rotate(12deg) scale(1.06)}}
-.wa{animation:wap 3.2s ease-in-out infinite}
+
 @keyframes wap{0%,100%{box-shadow:0 0 0 0 rgba(37,170,90,.45)}60%{box-shadow:0 0 0 18px rgba(37,170,90,0)}}
 .chip,.chips button{transition:transform .25s}@media (hover:hover){.chip:hover,.chips button:hover{transform:translateY(-2px)}}
 
@@ -785,7 +776,7 @@ footer b{color:var(--tx)}
 .motto::after{content:"";display:block;width:90px;height:3px;background:var(--ac);margin-top:8px;transform-origin:left;animation:draw 1.2s ease both}
 
 /* flutuante */
-.wa{position:fixed;border-radius:999px;background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px var(--shadow);animation:ring 3s ease-out infinite;text-decoration:none}
+
 
 /* gaveta e janelas */
 .scrim{justify-content:flex-end;animation:fade .2s ease}
@@ -928,10 +919,10 @@ main .stage[hidden]{display:none!important}main .stage .sli{top:34px;}
  main .stage .tag{left:16px;right:16px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;letter-spacing:0;font-weight:400}
  main .stage .td{display:none}main .stage .tm,main .stage .tp{display:inline}
  main .stage .tm{font:600 14px Fraunces,Georgia,serif;color:#222}main .stage .tp{font:700 14px Inter,system-ui,sans-serif;color:#a2447c}
- .wa{width:calc(48px / var(--z,1));height:calc(48px / var(--z,1));right:max(14px,env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px))}.wa svg{width:calc(26px / var(--z,1));height:calc(26px / var(--z,1))}
+ 
 }
 html.bootp .hero,html.bootp .cta,html.ppop .hero{visibility:hidden}
-html.bootprod main,html.bootprod footer,html.bootprod .mobsearch,html.bootprod #cbl,html.bootprod .wa{visibility:hidden!important}
+html.bootprod main,html.bootprod footer,html.bootprod .mobsearch,html.bootprod #cbl{visibility:hidden!important}
 @media all{.cta .ar{width:22px!important;height:22px!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;backdrop-filter:none!important;box-shadow:none!important;stroke-width:1.6!important}.cta .btn.p .ar{color:#fff}.cta .ar path{d:path('M9 5l7 7-7 7')}}
 
 #mapw{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px}
@@ -963,7 +954,7 @@ html.nr .card,html.nr .card *,html.nr .pf,html.nr .logo,html.nr .top,html.nr .he
  main>.wrap>.sec,main .trust,main .hero p,main .gar,main footer{display:none}
  .hero{min-height:calc(100svh - 170px);align-content:center;}
  .sec.pop{display:block!important;position:fixed;inset:var(--ht,76px) 0 0 0;z-index:15;overflow:auto;opacity:1!important;transform:none!important;animation:none;padding:8px max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
- .ppop .wa{display:none}
+ 
  
  
  
@@ -1178,7 +1169,7 @@ html body #pkok.py{padding-top:calc(var(--pzp,150px) + 26px)!important}
 /*PC-ESCALA*/
 @media (min-width:1100px){
 .top,.bar{min-height:clamp(76px,min(5.6vw,107.52px),150px)}
-.wa{width:clamp(62px,min(3vw,57.6px),72px)!important;height:clamp(62px,min(3vw,57.6px),72px)!important;right:min(1.6vw,30.72px)!important;bottom:min(1.6vw,30.72px)!important}.wa svg{width:56%!important;height:56%!important}
+
 #grid{grid-template-columns:repeat(4,1fr)!important;gap:min(1.2vw,23.04px)!important}
 #atacado.pop{display:flex!important;align-items:center;justify-content:center}
 #atacado .whole{margin:auto!important;width:100%;display:grid!important;grid-template-columns:1fr 1fr;align-items:center;}
@@ -1258,7 +1249,7 @@ html.vlist .lh .i{grid-column:2;display:grid;grid-template-columns:min(12vw,230.
 /*TABLET*/
 @media (min-width:600px) and (max-width:1099px){
 #grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:min(1.6vw,30.72px)!important}.mobsearch .ib svg{width:55%!important;height:55%!important}
-.wa{width:64px!important;height:64px!important}}
+}
 @media (min-width:900px) and (max-width:1099px){#grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 @media (min-width:600px) and (max-width:1099px) and (orientation:portrait),(min-width:600px) and (max-width:899px){
 main .wrap .hero{display:flex!important;flex-direction:column;align-items:center;text-align:center;gap:min(2.6vw,49.92px)!important;padding-block:min(2vw,38.4px) min(14vw,268.8px)!important}
@@ -1550,8 +1541,8 @@ html .scrim.pg.still>.panel,html .scrim.pg.still>.modal.pgm{animation:none!impor
 .rem input:checked+i::after{content:"";width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .rem input:focus-visible+i{outline:2px solid var(--ac);outline-offset:2px}
 .remrow .cfx{margin-left:auto}
-.wa{z-index:35!important}
-html.onprod .wa,html.ppop.onprod .wa{display:flex!important}
+
+
 
 /*CARRINHO-NOVO*/
 html .scrim.pg:not(.acc) .panel.cartp{width:min(1100px,100%)}
@@ -2399,7 +2390,7 @@ html.bootprod body>*{visibility:hidden!important}
 html.onprod #cmpbar{left:0!important;right:0!important;bottom:var(--lfbh,76px)!important;border-radius:0!important;background:var(--bg)!important;color:var(--tx)!important;box-shadow:none!important;border-top:1px solid var(--ln);padding:6px 12px 6px 16px!important;font-size:14px!important;justify-content:space-between;animation:none;z-index:31}
 html.onprod #cmpbar button{min-height:34px!important;font-size:14px}
 html.onprod #cmpbar .cl{color:var(--tx)!important;opacity:.6}
-html.onprod.lfcmp .wa{bottom:calc(var(--lfbh,76px) + 58px)!important}}
+}
 
 /* 09/11 S28d (aprovado, celular): página do formato do rosto no padrão do site */
 .rzm{display:none}
@@ -2778,10 +2769,10 @@ html[data-ev]:not([data-ev=bf]) .hc,html[data-ev]:not([data-ev=bf]) .hcat a,html
 function arm(){var f=document.fonts&&document.fonts.ready||Promise.resolve();Promise.race([f,new Promise(function(r){setTimeout(r,1200)})]).then(function(){requestAnimationFrame(function(){requestAnimationFrame(g)})})}
 if(i)setTimeout(arm,3300);else arm();setTimeout(g,i?5000:1800)})()</script>
 <script>/*LINKS-LEGAIS*/document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="/termos.html"],a[href^="/privacidade.html"]');if(!a)return;var l=(window.LFI&&LFI.lang)||'';if(l!=='es')l='pt';a.setAttribute('href',a.getAttribute('href').split('#')[0]+'#'+l)},true)</script>
-<style id="s176wa">/* 11/11 S176-2 (aprovado): na página da peça o WhatsApp fica logo acima da barra Comprar, menor e encostado à direita (não cobre preço nem chips) */html.onprod body a.wa{bottom:calc(var(--buyh,77px) + 10px + env(safe-area-inset-bottom,0px))!important;right:8px!important}html.onprod:not(.warol) body a.wa{scale:.78;transform-origin:100% 100%}</style><style id="s173">.dvolta{background:var(--sf,#f6f2f4);border-radius:14px;padding:12px}.dvolta .vem{font:inherit;font-size:16px;padding:11px 14px;border:1.5px solid rgba(0,0,0,.15);border-radius:999px;background:#fff;color:#222}.dvolta .vhp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}.dvolta .vbt{font:inherit;font-weight:700;padding:11px;border:0;border-radius:999px;background:#a44a7e;color:#fff;cursor:pointer}.dvolta .vbt:disabled{opacity:.6}.dvolta .vmu{color:var(--mu);font-size:12px}.dvolta .vok{font-weight:600;color:#2e7d4f}
+<style id="s173">.dvolta{background:var(--sf,#f6f2f4);border-radius:14px;padding:12px}.dvolta .vem{font:inherit;font-size:16px;padding:11px 14px;border:1.5px solid rgba(0,0,0,.15);border-radius:999px;background:#fff;color:#222}.dvolta .vhp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}.dvolta .vbt{font:inherit;font-weight:700;padding:11px;border:0;border-radius:999px;background:#a44a7e;color:#fff;cursor:pointer}.dvolta .vbt:disabled{opacity:.6}.dvolta .vmu{color:var(--mu);font-size:12px}.dvolta .vok{font-weight:600;color:#2e7d4f}
 .fvolta{position:fixed;left:12px;right:12px;top:calc(70px + env(safe-area-inset-top,0px));z-index:9000;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;padding:12px 12px 12px 14px;border-radius:14px;background:#eaf6ee;color:#1f3d2a;box-shadow:0 6px 24px rgba(0,0,0,.18);font-size:14px;line-height:1.35}.fvolta span{flex:1}.fvolta .fvv{font:inherit;font-weight:700;border:0;background:none;color:#1f3d2a;text-decoration:underline;cursor:pointer}.fvolta .fvx{font-size:20px;line-height:1;border:0;background:none;color:#1f3d2a;cursor:pointer;padding:0 4px}
 #sores .soent{font-size:13px;color:var(--mu);margin:0 0 6px}</style>
-<style id="s181">html.lojamodo.onprod .wa,html.lojamodo.ppop.onprod .wa,html.lojamodo:has(#layer .buyrow) .wa{display:none!important}html.lojamodo:has(#layer .lojpn) #lojab{display:none}.lojpn .btn.w.alt{background:transparent;color:var(--ac,#8d3a69);border:1.5px solid currentColor;box-shadow:none}html.lojamodo #mnb,html.lojamodo #bagbtn,html.lojamodo #contabtn,html.lojamodo #badge,html.lojamodo .top .mn,html.lojamodo .top [aria-label*="onta"],html.lojamodo .top .cart,html.lojamodo .top [data-bag],html.lojamodo .fav,html.lojamodo a.wa,html.lojamodo footer,html.lojamodo .dfav,html.lojamodo .pgActs,html.lojamodo .dmi{display:none!important}/* S331 modo loja: topo só logo + busca; Meu pedido em barra embaixo (só com peça); sem o que não serve para quem já está na loja */#lojab{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;pointer-events:none}#lojab[data-n="0"]{display:none}#lojap{pointer-events:auto;width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;border:0;border-radius:999px;background:#7a2a59;color:#fff;padding:14px 18px;font:600 clamp(12.5px,3.7vw,15px) var(--body);white-space:nowrap;box-shadow:0 10px 30px rgba(122,42,89,.28);cursor:pointer}html.lojamodo #home>.htr,html.lojamodo #home>#hloj,html.lojamodo #home>.hata,html.lojamodo #home>section.hnews,html.lojamodo #home>.lfft,html.lojamodo #home .hgu.hcom>[data-gpan="como"]{display:none!important}html.lojamodo main{padding-bottom:84px}@media(min-width:900px){#lojab{top:14px;bottom:auto;left:auto;right:24px;width:auto}#lojap{width:auto;padding:11px 18px;gap:22px;box-shadow:none}html.lojamodo main{padding-bottom:0}html.lojamodo #home .hgu.hcom{grid-template-columns:repeat(2,1fr)!important}}.lojl{display:grid;grid-template-columns:56px 1fr auto 28px;gap:10px;align-items:center;border-bottom:1px solid var(--ln);padding:8px 0}.lojl small{display:block;color:var(--mu)}.lojim svg,.lojim img{width:56px;height:40px;object-fit:contain}.lojpn .btn.w{width:100%;margin-top:10px}</style>
+<style id="s181">html.lojamodo:has(#layer .lojpn) #lojab{display:none}.lojpn .btn.w.alt{background:transparent;color:var(--ac,#8d3a69);border:1.5px solid currentColor;box-shadow:none}html.lojamodo #mnb,html.lojamodo #bagbtn,html.lojamodo #contabtn,html.lojamodo #badge,html.lojamodo .top .mn,html.lojamodo .top [aria-label*="onta"],html.lojamodo .top .cart,html.lojamodo .top [data-bag],html.lojamodo .fav,html.lojamodo a.wa,html.lojamodo footer,html.lojamodo .dfav,html.lojamodo .pgActs,html.lojamodo .dmi{display:none!important}/* S331 modo loja: topo só logo + busca; Meu pedido em barra embaixo (só com peça); sem o que não serve para quem já está na loja */#lojab{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;pointer-events:none}#lojab[data-n="0"]{display:none}#lojap{pointer-events:auto;width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;border:0;border-radius:999px;background:#7a2a59;color:#fff;padding:14px 18px;font:600 clamp(12.5px,3.7vw,15px) var(--body);white-space:nowrap;box-shadow:0 10px 30px rgba(122,42,89,.28);cursor:pointer}html.lojamodo #home>.htr,html.lojamodo #home>#hloj,html.lojamodo #home>.hata,html.lojamodo #home>section.hnews,html.lojamodo #home>.lfft,html.lojamodo #home .hgu.hcom>[data-gpan="como"]{display:none!important}html.lojamodo main{padding-bottom:84px}@media(min-width:900px){#lojab{top:14px;bottom:auto;left:auto;right:24px;width:auto}#lojap{width:auto;padding:11px 18px;gap:22px;box-shadow:none}html.lojamodo main{padding-bottom:0}html.lojamodo #home .hgu.hcom{grid-template-columns:repeat(2,1fr)!important}}.lojl{display:grid;grid-template-columns:56px 1fr auto 28px;gap:10px;align-items:center;border-bottom:1px solid var(--ln);padding:8px 0}.lojl small{display:block;color:var(--mu)}.lojim svg,.lojim img{width:56px;height:40px;object-fit:contain}.lojpn .btn.w{width:100%;margin-top:10px}</style>
 <style id="s191">.atp .btn.w{width:100%;box-sizing:border-box;display:block;text-align:center}.atp .atk{display:table;background:#f8e6ef;color:#7a2a59;border-radius:999px;padding:4px 10px;font:700 11px var(--body);letter-spacing:.08em;margin-bottom:8px}.atp .ath{font:600 26px var(--disp,Georgia);margin:2px 0 4px}.atp .ats{color:var(--mu);font-size:14px;margin:0 0 12px}.atp .atn{color:var(--mu);font-size:13px;text-align:center;margin-top:12px}.atp .atcod{letter-spacing:.5em;text-align:center;font-size:22px}.atf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.atf button{border:1.5px solid var(--ln2);background:var(--pn);border-radius:999px;padding:6px 14px;font:600 13px var(--body);color:var(--tx)}.atf button.on{background:#7a2a59;border-color:#7a2a59;color:#fff}.atg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-bottom:130px}.atc{text-align:left;background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:3px;color:var(--tx);font:inherit}.atc small{color:var(--mu);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.atc b{color:#1f8a4c;font-size:15px}.atc b i,.atpr i{font-style:normal;color:var(--mu);font-weight:500;font-size:12px}.atc u{text-decoration:none;background:#e4f6ea;color:#1f8a4c;border-radius:6px;padding:1px 6px}.atph{position:relative;display:block;aspect-ratio:4/3;background:#fff;border-radius:12px;overflow:hidden}.atph img,.atph svg{width:100%;height:100%;object-fit:contain}.atbig{aspect-ratio:16/11;margin:10px 0}.atwm{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:8px;font:600 11px var(--body);font-style:normal;color:rgba(122,42,89,.28);transform:rotate(-18deg);white-space:nowrap;pointer-events:none}.atq{position:absolute;top:6px;right:6px;background:#7a2a59;color:#fff!important;border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12px!important}.atpr{font:700 22px var(--body);color:#1f8a4c;margin-bottom:12px}.atr{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--ln)}.atr:first-of-type{border-top:0}.atr small{display:block;color:var(--mu);font-size:12px}.atme{font-style:normal;background:#e4f6ea;color:#1f8a4c;border-radius:6px;padding:1px 6px;font-size:11px}.atbar{position:sticky;bottom:0;margin:14px -18px -18px;padding:12px 18px calc(12px + env(safe-area-inset-bottom));background:var(--pn);border-top:1px solid var(--ln);box-shadow:0 -8px 24px rgba(0,0,0,.06)}.atbar>div{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}.atbar em{font-style:normal;color:#7a2a59;font-weight:600}.atb{text-align:center;padding:40px 8px}.atlk{font-size:44px}.atb h2{font:600 24px var(--disp,Georgia);margin:8px 0}.atb p{color:var(--mu);margin:0 0 18px}</style>
 <style id="s185">.sepp .sepT{font:600 26px var(--disp,Georgia);margin:4px 0 2px}.sepp .sepS{color:var(--mu);margin:0 0 12px;font-size:14px}.sepp .sepG{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}</style>
 <style id="s186">/* S186 v3: selo único, cartão de oferta sólido, oferta no tema na cor do tema, versão clara */.card .sel1{position:absolute;left:12px;top:12px;z-index:4;height:22px;display:inline-flex;align-items:center;padding:0 8px;border-radius:999px;font:800 9px/1 var(--body);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;max-width:calc(100% - 64px);overflow:hidden;text-overflow:ellipsis}.card .sel1.of{background:#c62828;color:#fff}.card .sel1.tm{background:#1f5a3a;color:#fff}.card .sel1.rk{background:#fff;color:#7a2a59;border:1.5px solid #7a2a59}.card .sel1.nv{background:#f8e6ef;color:#7a2a59}.card.of{background:#7a2a59!important}.card.of .eco{display:inline-block;margin-top:6px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;font:600 12px var(--body)}#grid.ofl .card.of{background:var(--pn,#fff)!important;color:var(--tx);box-shadow:none;border-color:var(--ln)}#grid.ofl .card.of .ref,#grid.ofl .card.of .nm,#grid.ofl .card.of .av{color:var(--tx)}#grid.ofl .card.of .pr{color:#1f8a4c}#grid.ofl .card.of .pr s{color:var(--mu)}#grid.ofl .card.of .eco{background:#e4f6ea;color:#1f8a4c}#grid.ofl .card.of .add{background:var(--ac);color:#fff}.hb.rk{background:#fff!important;color:#7a2a59!important;border:1.5px solid #7a2a59}.hb.tm{background:#1f5a3a!important;color:#fff!important}.hb.nv{background:#f8e6ef!important;color:#7a2a59!important}.hb.of{background:#c62828!important;color:#fff!important}.hc{position:relative}</style>
@@ -2798,14 +2789,35 @@ if(i)setTimeout(arm,3300);else arm();setTimeout(g,i?5000:1800)})()</script>
 @media (max-width:559px){html body #home .hg,html body #vscr #grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}}
 @media (min-width:560px) and (max-width:899px){html body #home .hg,html body #vscr #grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}html body #home .hg>*:nth-child(n+7){display:none!important}}
 @media (hover:hover) and (pointer:fine) and (min-width:900px){#vscr>*{max-width:min(1320px,92vw)!important;margin-inline:auto!important;transition:max-width .32s cubic-bezier(.2,.8,.2,1)}html body #vscr #grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;width:100%!important}#lfgen button,#lfgen .lfgf,.vback{transition:min-height .32s cubic-bezier(.2,.8,.2,1)!important}}
+/*FAMILIA-WHATSAPP (S430, regra num lugar só): estados = bola · lingueta (html.wamin: parado em cima de algo) · fora (html.warol: rolando; volta 0,6 s depois) · na peça (html.onprod / barra de compra)*/
+a.wa{position:fixed;z-index:35;display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--wa);color:#fff;text-decoration:none;box-shadow:0 10px 26px var(--shadow);animation:ring 3s ease-out 2;width:calc(48px / var(--z,1));height:calc(48px / var(--z,1));right:max(14px,env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));transition:width .32s cubic-bezier(.2,.8,.2,1),height .32s cubic-bezier(.2,.8,.2,1),right .32s cubic-bezier(.2,.8,.2,1),border-radius .32s cubic-bezier(.2,.8,.2,1),box-shadow .32s cubic-bezier(.2,.8,.2,1),opacity .28s cubic-bezier(.2,.8,.2,1),translate .28s cubic-bezier(.2,.8,.2,1)}
+a.wa svg{width:calc(26px / var(--z,1));height:calc(26px / var(--z,1));transition:width .32s cubic-bezier(.2,.8,.2,1),height .32s cubic-bezier(.2,.8,.2,1),transform .32s cubic-bezier(.2,.8,.2,1)}
+@media (min-width:600px) and (max-width:1099px){a.wa{width:64px;height:64px}}
+@media (min-width:1100px){a.wa{width:clamp(62px,min(3vw,57.6px),72px);height:clamp(62px,min(3vw,57.6px),72px);right:min(1.6vw,30.72px);bottom:min(1.6vw,30.72px)}a.wa svg{width:56%;height:56%}}
+/* lingueta (só fora da peça) */
+html.wamin:not(.onprod):not(:has(#layer .buyrow)) a.wa:not(:hover):not(:focus-visible){right:0;width:calc(24px / var(--z,1));height:calc(56px / var(--z,1));border-radius:calc(14px / var(--z,1)) 0 0 calc(14px / var(--z,1));animation:none;box-shadow:-2px 4px 12px rgba(0,0,0,.14)}
+html.wamin:not(.onprod):not(:has(#layer .buyrow)) a.wa:not(:hover):not(:focus-visible) svg{width:calc(17px / var(--z,1));height:calc(17px / var(--z,1))}
+@media (min-width:600px),(hover:hover) and (pointer:fine){html.wamin:not(.onprod):not(:has(#layer .buyrow)) a.wa:not(:hover):not(:focus-visible){width:calc(30px / var(--z,1));height:calc(64px / var(--z,1))}html.wamin:not(.onprod):not(:has(#layer .buyrow)) a.wa:not(:hover):not(:focus-visible) svg{width:calc(21px / var(--z,1));height:calc(21px / var(--z,1))}}
+/* na peça: logo acima da barra de compra quando ela está à vista, menor e encostado à direita */
+html.onprod a.wa,html:has(#layer .buyrow) a.wa{bottom:calc(var(--lfbb,0px) + 14px + env(safe-area-inset-bottom,0px))}/* --lfbb = quanto da barra de compra está à vista (o programa mede); 0 = barra fora da tela */
+html.onprod a.wa{right:8px;scale:.78;transform-origin:100% 100%}
+@media (max-width:860px){html.onprod.lfcmp a.wa{bottom:calc(var(--lfbh,76px) + 58px)}}
+/* rolando: sai pela borda (0,2 s) e volta 0,6 s depois (0,28 s) */
+html.warol a.wa{opacity:0;translate:calc(100% + 8px) 0;pointer-events:none;transition:opacity .2s cubic-bezier(.4,0,.6,1),translate .2s cubic-bezier(.4,0,.6,1)}
+@media (prefers-reduced-motion:reduce){html.warol a.wa{translate:none}}
+/* onde não aparece */
+html.bootprod a.wa{visibility:hidden}
+html.ppop:not(.onprod) a.wa,html.lojamodo.onprod a.wa,html.lojamodo:has(#layer .buyrow) a.wa{display:none}
+@media (max-width:860px){html:has(#cad) a.wa,body:has(.cartp) a.wa{display:none}html.ppop:has(#layer .buyrow) a.wa{display:flex}}
+/*/FAMILIA-WHATSAPP*/
 /*S429-APROVADOS*/
 /* faixa da temática × menu (aprovado 18/11): com o menu aberto a faixa vai para baixo dele */
 html body:has(#drw.on) #evbar{z-index:30!important}
 /* WhatsApp ao rolar (aprovado 19/11) */
-html body a.wa{transition:opacity .2s cubic-bezier(.4,0,.6,1),translate .2s cubic-bezier(.4,0,.6,1)!important}
-html.lfwah.lfwah.lfwah.lfwah.lfwah.lfwah body a.wa.wa.wa{opacity:0!important;translate:calc(100% + 8px) 0!important;pointer-events:none!important}
-html:not(.lfwah) body a.wa{transition-duration:.28s!important;}
-@media (prefers-reduced-motion:reduce){html body a.wa{translate:none!important}}
+
+
+
+
 /* 121: coração da peça sem o círculo branco (igual ao catálogo), toque continua 46 px */
 .pgm .big .dfav,.modal .big .dfav{background:none!important;box-shadow:none!important;color:#7d2a5a}
 .modal .big .dfav svg{width:24px;height:24px;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff)}
