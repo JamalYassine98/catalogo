@@ -21,10 +21,8 @@
   function find(ref){return P.filter(function(p){return p.ref===ref})[0]}
   function bruto(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*find(k).n},0)}
   function brutoD(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*LFI.pv(find(k).n)},0)}
-  /* Leve 2: retirado em 17/11/2026 (ordem do dono) — nenhum desconto da 2ª peça; a função fica só porque as contas do carrinho a consultam */
-  function l2Info(){return {n:0,d:0,dD:0,por:{}}}
   /* Cupons (S174, aprovado 11/11/2026): 1 código por compra; não vale em peça em OFERTA ("ya tiene su mejor precio");
-     em cada peça vale no máximo o % que o app liberou (cmx: nunca abaixo do piso); com "Leve 2" vale o maior desconto. */
+     em cada peça vale no máximo o % que o app liberou (cmx: nunca abaixo do piso). */
   st.cup=lsG('lf_cup',null);
   /* S192 (12/11): transportadoras do Delivery (só Paraguai). Preço e disponibilidade vêm do app (config/site.fretes = {id:{p:G$,off:true}});
      sem preço = frete pago na entrega. A escolha (Delivery + transportadora + endereço) fica salva para a próxima compra. */
@@ -44,10 +42,10 @@
   function cupConta(){var n=0,a=0;Object.keys(st.cart).forEach(function(k){var q=st.cart[k];n+=q;if(cupPeca(find(k)).d>0)a+=q});return {n:n,a:a}}
   function cupInfo(){var r={d:0,dD:0,por:{},min:false};if(!st.cup)return r;var b=bruto();if(st.cup.min&&b<st.cup.min){r.min=true;return r}
     Object.keys(st.cart).forEach(function(k){var p=find(k),x=cupPeca(p);if(x.d>0){r.d+=x.d*st.cart[k];r.dD+=Math.max(0,(LFI.pv(p.n)-LFI.pv(p.n-x.d)))*st.cart[k];r.por[k]=x.d*st.cart[k]}});return r}
-  /* qual desconto vale no carrinho: 'l2', 'cup' ou '' */
-  function descVale(){var a=l2Info().d,c=cupInfo().d;return c>0&&c>=a?'cup':a>0?'l2':''}
-  function descD(){var v=descVale();return v==='cup'?cupInfo().d:v==='l2'?l2Info().d:0}
-  function descDD(){var v=descVale();return v==='cup'?cupInfo().dD:v==='l2'?l2Info().dD:0}
+  /* qual desconto vale no carrinho: 'cup' ou '' */
+  function descVale(){return cupInfo().d>0?'cup':''}
+  function descD(){return descVale()==='cup'?cupInfo().d:0}
+  function descDD(){return descVale()==='cup'?cupInfo().dD:0}
   function cupFn(b){var o={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)},go=function(){return fetch('https://southamerica-east1-'+FB.p+'.cloudfunctions.net/cupom',o).then(function(r){return r.json()})};
     /* S370 (aprovado 15/11 15:11): os cartões usam a chave de login RENOVADA (idTok); a guardada vence em 1 hora */
     if(b.acao==='meus')return idTok().then(function(t){o.headers.Authorization='Bearer '+t;return go()},function(){return {ok:false,motivo:'sessao'}});
@@ -69,10 +67,10 @@
     if(st.cup&&v==='cup'&&!ci.min){var cc=cupConta(),nm=esc(st.cup.cod)+' · −'+st.cup.pct+'%';
       if(dd)return '<div class="cs-r cupl cupd"><span>'+CUPI+LFI.tr('Cupom')+' '+nm+'</span><span class="cupv">−'+LFI.fmtD(ci.dD)+'</span></div>';
       return '<div class="cupcard">'+CUPI+'<div class="cupct"><b>'+nm+'</b><small>'+LFI.tr('Cupom aplicado em')+' '+cc.a+' '+LFI.tr('de')+' '+cc.n+' '+LFI.tr(cc.n===1?'peça':'peças')+'</small></div><button type="button" class="cuprm" data-cupx>'+LFI.tr('remover')+'</button></div>'}
-    if(!st.cup)return '<details class="cupf"'+(st._cupOpen?' open':'')+'><summary>'+LFI.tr('Tem um código?')+'</summary><div class="cupr"><input class="field" id="cupin" placeholder="LF-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="'+LFI.tr('Código de desconto')+'"><button type="button" class="btn" data-cupok>'+LFI.tr('Aplicar')+'</button></div>'+(st._cupErr?'<small class="cupn cupe" role="alert">'+esc(st._cupErr)+'</small>':'')+'<small class="cupn">'+LFI.tr('Um código por compra. Não soma com OFERTA nem com "Leve 2": vale o maior desconto.')+'</small></details>';
+    if(!st.cup)return '<details class="cupf"'+(st._cupOpen?' open':'')+'><summary>'+LFI.tr('Tem um código?')+'</summary><div class="cupr"><input class="field" id="cupin" placeholder="LF-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="'+LFI.tr('Código de desconto')+'"><button type="button" class="btn" data-cupok>'+LFI.tr('Aplicar')+'</button></div>'+(st._cupErr?'<small class="cupn cupe" role="alert">'+esc(st._cupErr)+'</small>':'')+'<small class="cupn">'+LFI.tr('Um código por compra. Não vale em peça em OFERTA.')+'</small></details>';
     var nome=LFI.tr(CUP_TIPO[st.cup.tipo]||'Código')+' −'+st.cup.pct+'%',ex=st.cup.tipo==='ev'&&st.cup.restam!=null?'<small class="cupn">'+LFI.tr('Restam')+' '+st.cup.restam+'</small>':'';
     if(ci.min)return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></div><small class="cupn">'+LFI.tr('Compra mínima de')+' '+LFI.fmtD(LFI.pv(st.cup.min))+'. '+LFI.tr('O código continua guardado.')+'</small>';
-    if(v!=='cup')return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></div><small class="cupn">'+(ci.d>0?LFI.tr('O "Leve 2" dá mais desconto nesta compra: vale o maior. O código continua guardado.'):LFI.tr('Nesta compra o código não dá desconto (as peças já têm o melhor preço). Ele continua guardado.'))+'</small>';
+    if(v!=='cup')return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></div><small class="cupn">'+LFI.tr('Nesta compra o código não dá desconto (as peças já têm o melhor preço). Ele continua guardado.')+'</small>';
     return '<div class="cs-r cupl"><span>'+esc(st.cup.cod)+' · '+nome+'</span><span class="cupv">−'+LFI.fmtD(ci.dD)+' <button type="button" class="cupx" data-cupx aria-label="'+LFI.tr('Tirar o código')+'">×</button></span></div>'+ex}
   /* peça: "Tu código vale aquí ✓ − Gs. 13.000" / "Ya tiene su mejor precio" */
   function cupPecaHtml(p){if(!st.cup)return '';var x=cupPeca(p);if(x.of)return '<div class="cupp of"><b>'+LFI.tr('Já tem o melhor preço')+'</b> · '+LFI.tr('o código fica para outra compra')+'</div>';
@@ -1123,7 +1121,7 @@
     var es=window.LFI&&LFI.lang==='es',cnt=nq+(es?(nq===1?' artículo':' artículos'):(nq===1?' item':' itens'));
     var ste=ks.length>0&&lg?(st.step==='ent'||st.step==='pag'?st.step:''):'',dd=!!ste,cnow=dd?contaNorm(getConta()):null,entD=st.ent==='delivery';
     var sum='<div class="cs"><h3 class="cs-h">'+LFI.tr(dd?'Seu pedido':'Resumo')+'</h3>'+
-      '<div class="cs-r cs-h"><span>'+LFI.tr('Subtotal')+' · '+cnt+'</span><span>'+LFI.fmtD(brutoD())+'</span></div>'+cupHtml(dd)+(function(){var l=l2Info();if(descVale()==='cup')return '';return l.d>0?'<div class="cs-r cs-l2"><span>'+LFI.tr('Leve 2 · 30% na 2ª peça')+'</span><span>−'+LFI.fmtD(l.dD)+'</span></div>':l.n===1?'<div class="cs-l2n">'+LFI.tr('Leve 2: leve mais um óculos de leitura ou de sol e a 2ª peça sai com 30% de desconto.')+'</div>':''})()+'<div class="cs-r cs-h"><span>'+LFI.tr('Entrega')+'</span><span>'+(dd&&entD?(st.tr&&trOk(st.tr)?esc(trNome(st.tr))+' · '+(freteG()?LFI.fmtD(LFI.pv(freteG())):LFI.tr('frete na entrega')):LFI.tr('Delivery · frete na entrega')):LFI.tr('Retirada na loja · grátis'))+'</span></div>'+
+      '<div class="cs-r cs-h"><span>'+LFI.tr('Subtotal')+' · '+cnt+'</span><span>'+LFI.fmtD(brutoD())+'</span></div>'+cupHtml(dd)+'<div class="cs-r cs-h"><span>'+LFI.tr('Entrega')+'</span><span>'+(dd&&entD?(st.tr&&trOk(st.tr)?esc(trNome(st.tr))+' · '+(freteG()?LFI.fmtD(LFI.pv(freteG())):LFI.tr('frete na entrega')):LFI.tr('Delivery · frete na entrega')):LFI.tr('Retirada na loja · grátis'))+'</span></div>'+
       '<div class="cs-t"><span>'+(dd&&entD&&freteG()?LFI.tr('Total com frete'):'Total')+'</span><b>'+LFI.fmtD(totalD()+(dd&&entD?LFI.pv(freteG()):0))+'</b></div>'+
       (ste==='pag'?'<button class="btn w cs-b" data-send'+(st.pag?'':' aria-disabled="true" style="opacity:.55"')+'>Confirmar e pagar</button><span class="cs-n cs-h">As peças ficam reservadas enquanto você paga.</span>'
         :ste==='ent'?'<button class="btn w cs-b" data-cta="irpag">Forma de pagamento</button>'
@@ -1242,7 +1240,7 @@
       /* 11/11 (aprovado): o país vem do idioma/moeda; sem cidade e sem favoritos na mensagem (esses vão só para o painel) */
       return 'ATACADO · '+st.atCod+'\n'+(es?'País: Paraguay':'País: Brasil')+(q?'\n'+(es?'Cantidad: ':'Quantidade: ')+q:'')+(pr.length?'\n'+(es?'Busca: ':'Procura: ')+pr.map(function(x){return LFI.tr(x)}).join(', '):'')+'\n'+(es?'¡Hola! Quiero un presupuesto mayorista.':'Olá! Quero um orçamento de atacado.')}
     if(modo==='avise'){var p=find(ref);return 'Olá! Me avise quando chegar: '+p.nome+' ('+p.ref+').\nVer o modelo: https://lafouch.com/p/'+encodeURIComponent(p.ref)+'.html'}
-    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.ref+' · '+p.nome+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+(descVale()==='l2'?'\n'+LFI.tr('Leve 2 · 30% na 2ª peça')+': −'+LFI.fmtD(l2Info().dD):descVale()==='cup'?'\n'+LFI.tr('Código')+' '+st.cup.cod+': −'+LFI.fmtD(cupInfo().dD):'')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
+    var t='Olá! Quero reservar na La Fouch:\n'+Object.keys(st.cart).map(function(k){var p=find(k);return '• '+st.cart[k]+'× '+p.ref+' · '+p.nome+(p.cores&&p.cores.length>1?' · Cor: '+corNome(p,st.cor[k]||0):'')+(p.gr&&p.gr.length?' · Grau: '+p.gr[st.gr[k]||0]:'')+' · '+fmtL(p,st.cart[k])}).join('\n')+(descVale()==='cup'?'\n'+LFI.tr('Código')+' '+st.cup.cod+': −'+LFI.fmtD(cupInfo().dD):'')+'\nTotal: '+LFI.fmtD(totalD())+(LFI.cur==='BRL'?' (≈ '+LFI.fmtG(total())+')':'')+'\nVou provar e retirar na loja.';
     if(st.rosto){var ff=FACES.filter(function(x){return x.id===st.rosto})[0];if(ff)t+='\nFormato do meu rosto: '+ff.nome}if(st.nome)t+='\nNome: '+st.nome;if(st.zap)t+='\nWhatsApp: '+st.zap;return t}
   /* pedido do site: grava na nuvem (o app da loja recebe sozinho) e mostra a tela de pedido recebido */
   var PK_SVG='<svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="#3ddc8c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M4.5 12.8l4.8 4.9L19.5 7"/></svg>';
@@ -2060,13 +2058,13 @@
     if(!retry&&(descVale()==='cup'||(window.__lfPres&&__lfPres.ativo()))&&st._cupOk!==id){var bt1=document.querySelector('[data-send]');if(bt1)bt1.disabled=true;
       cupFn({acao:'usar',cod:st.cup.cod,pid:id,tel:c.tel||'',email:c.email||'',total:Math.round(bruto()+(window.__lfPres&&__lfPres.ativo()?__lfPres.n():0)),desc:Math.round(window.__lfPres&&__lfPres.ativo()?__lfPres.n():cupInfo().d)}).then(function(j){if(bt1)bt1.disabled=false;
         if(j&&j.ok){st._cupOk=id;enviarPedido(retry);return}cupTira();toast(cupMsg(j&&j.motivo,j&&j.cupom));bag(true)},function(){if(bt1)bt1.disabled=false;toast(LFI.tr('Não deu para conferir o código agora. Tente de novo.'))});return}
-    var L2=l2Info(),CI=cupInfo(),DV=descVale(),doc=st.pkdoc&&retry?st.pkdoc:(function(){var uq=uqGera(),fr=ent==='delivery'?freteG():0,base=Math.round(total())+fr,vb0=TESTE?1:valorBRL()+(fr?Math.max(5,Math.round(fr/(window.LF_RATE?window.LF_RATE():1400)/5)*5):0);
+    var CI=cupInfo(),DV=descVale(),doc=st.pkdoc&&retry?st.pkdoc:(function(){var uq=uqGera(),fr=ent==='delivery'?freteG():0,base=Math.round(total())+fr,vb0=TESTE?1:valorBRL()+(fr?Math.max(5,Math.round(fr/(window.LF_RATE?window.LF_RATE():1400)/5)*5):0);
       return Object.assign({ts:Date.now(),nome:c.nome,tel:c.tel,pais:c.pais||'',cod:cod,lang:(window.LFI&&LFI.lang)||'pt',moeda:(window.LFI&&LFI.cur)||'',total:base,rosto:ff?ff.nome:'',
       nac:c.nac||'',doc:c.doc||'',nasc:'',email:c.email||'',/* S192: transportadora e frete vão no obsC (as regras atuais do Firestore já aceitam) */obsC:[c.nac==='py'&&c.ruc?'RUC '+c.ruc:'',ent==='delivery'&&st.tr?'Transportadora: '+trNome(st.tr)+(fr?' · frete Gs. '+fr.toLocaleString('es-PY'):' · frete na entrega'):''].filter(Boolean).join(' · ').slice(0,190),cidade:E?E.cidade:'',end:'',ent:ent,
       endE:ent==='delivery'&&E?E.end+', '+E.cidade+(E.dep?' · '+E.dep:''):'',refE:ent==='delivery'&&E?E.ref||'':'',depE:ent==='delivery'&&E?E.dep||'':'',
       
       /* S197: o final único sempre DESCONTA (o cliente nunca paga a mais) */pag:pag,uq:uq,brl:pag==='pix'?Math.round((vb0-uq/100)*100)/100:vb0,pagar:pag==='alias'?base-uq:0,teste:!!TESTE,
-      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n-(DV==='l2'?(L2.por[k]||0):0)/st.cart[k]-(DV==='cup'?(CI.por[k]||0):0)/st.cart[k]),l2:DV==='l2'?L2.por[k]||0:0,cd:DV==='cup'?CI.por[k]||0:0,pv:pvLin(p.n-(DV==='l2'?(L2.por[k]||0):0)/st.cart[k]-(DV==='cup'?(CI.por[k]||0):0)/st.cart[k],st.cart[k])}}).concat(window.__lfPres?__lfPres.item():[])},window.__lfPres&&__lfPres.ativo()?{cup:st.cup.cod,cupd:__lfPres.n()}:DV==='cup'&&st.cup?{cup:st.cup.cod,cupd:CI.d}:{})})();
+      itens:ks.map(function(k){var p=find(k);return {ref:p.ref,nome:p.nome,q:st.cart[k],cor:(p.cores&&p.cores.length>1)?corNome(p,st.cor[k]||0):'',grau:(p.gr&&p.gr.length)?p.gr[st.gr[k]||0]:'',preco:Math.round(p.n-(DV==='cup'?(CI.por[k]||0):0)/st.cart[k]),l2:0/* o app ainda lê o campo */,cd:DV==='cup'?CI.por[k]||0:0,pv:pvLin(p.n-(DV==='cup'?(CI.por[k]||0):0)/st.cart[k],st.cart[k])}}).concat(window.__lfPres?__lfPres.item():[])},window.__lfPres&&__lfPres.ativo()?{cup:st.cup.cod,cupd:__lfPres.n()}:DV==='cup'&&st.cup?{cup:st.cup.cod,cupd:CI.d}:{})})();
     st.pkdoc=doc;
     if(!retry)lsS('lf_ent',ent==='delivery'?{ent:'delivery',tr:st.tr||'',i:st.endIdx|0}:{ent:'loja'});
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
@@ -4904,8 +4902,6 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
     function excCard(){var L=meusCards();if(!L.length)return null;if(st.excCod){var x=L.filter(function(c){return c.cod===st.excCod})[0];if(x)return x}
       var ev=L.filter(function(c){return c.tipo==='ev'})[0];if(ev)return ev;return L.slice().sort(function(a,b){return (a.fim||9e15)-(b.fim||9e15)})[0]}
     function descDe(c,p){return cVale(c,p)?Math.floor(p.n*c.pct/100/1000)*1000:0}
-    /* sai o "Leve 2" (ordem do dono, 17/11): nenhum desconto da 2ª peça */
-    
     /* "Cupom disponível" (81f/83): só para quem tem um cartão que vale nesta peça */
     aceitaCup=function(p){return !!cardPara(p)};
 
