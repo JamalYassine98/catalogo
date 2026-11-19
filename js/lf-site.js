@@ -752,13 +752,15 @@
     if(!skip&&n>0){try{history.go(-n)}catch(_){}}
     if(rf)setTimeout(function(){prodMark(rf)},60)}
   function prodMark(rf){if(!rf||rf==='#cart')return;var b=document.querySelector('#grid [data-open="'+rf+'"]'),c=b&&b.closest('.card');if(!c)return;var r=c.getBoundingClientRect(),h=innerHeight||600;if(r.height&&(r.bottom<0||r.top>h)){try{c.scrollIntoView({block:'center'})}catch(_){}}c.classList.add('lastv');setTimeout(function(){c.classList.remove('lastv')},2600)}
-  function pgBar(p){return '<div class="pgbar"><button type="button" class="pgback navb" data-pgback><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>'+esc(navTxt(p))+'</span></button><span class="pgcr"><button type="button" data-crumb="todos">'+LFI.tr('Catálogo')+'</button><i>›</i><button type="button" data-crumb="'+esc(p.tipo)+'">'+esc((TIPOS.filter(function(t){return t[0]===p.tipo})[0]||[0,''])[1])+'</button><i>›</i><span>'+p.ref+'</span></span></div>'}
+  function pgBar(p){return '<div class="pgbar"><button type="button" class="pgback navb" data-pgback><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>'+esc(navTxt(p))+'</span></button></div>'}
+  /* S429 (peça opção B, aprovado 18/11): no topo só "‹ Armações"; o caminho completo vai pequeno para o fim da página da peça */
+  function pgCam(p){return '<nav class="lfcam" aria-label="'+LFI.tr('Você está em')+'"><button type="button" data-crumb="todos">'+LFI.tr('Catálogo')+'</button><i>›</i><button type="button" data-crumb="'+esc(p.tipo)+'">'+esc((TIPOS.filter(function(t){return t[0]===p.tipo})[0]||[0,''])[1])+'</button><i>›</i><span>'+p.ref+'</span></nav>'}
   /* v453: botão de favoritos também na página da peça (o coração voa para ele, igual ao catálogo) */
   /* 08/11 (aprovado): comparar e compartilhar no topo, ao lado do coração de cima (mesmo botão redondo) */
   function pgActs(p){return '<button type="button" class="ib fbtn pgact'+(st.cmp.indexOf(p.ref)>=0?' on':'')+'" data-cmp="'+p.ref+'" aria-label="'+LFI.tr('Comparar')+'">'+CMPI+'</button><button type="button" class="ib fbtn pgact" data-share="'+p.ref+'" aria-label="'+LFI.tr('Compartilhar')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.7l6.8-4M8.6 13.3l6.8 4"/></svg></button>'}
   
-  function pgBarCart(){return '';var _x='<div class="pgbar"><button type="button" class="pgback" data-pgback="cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Voltar ao catálogo</span></button><span class="pgcr">Seu carrinho</span></div>'}
-  function pgBarAcc(t){return '';var _x='<div class="pgbar"><button type="button" class="pgback" data-pgback="cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Voltar ao catálogo</span></button><span class="pgcr">'+t+'</span></div>'}
+  function pgBarCart(){return ''}
+  function pgBarAcc(t){return ''}
   function pgCart(re,pop,kind,ttl){
     kind=kind||'#cart';var url=kind==='#cart'?'/carrinho':'/conta',stt=kind==='#cart'?{lfc:1}:{lfa:1};
     lfBootFim();
@@ -1109,7 +1111,7 @@
     (p.med&&p.med.length>2?'<section class="dsec"><span class="dsl">Medidas</span><div class="meds"><div class="med"><b>'+p.med[0]+'<i>mm</i></b><span>Lente</span></div><div class="med"><b>'+p.med[1]+'<i>mm</i></b><span>Ponte</span></div><div class="med"><b>'+p.med[2]+'<i>mm</i></b><span>Haste</span></div></div></section>':'')+
     (sw?'<section class="dsec'+(dots?' dcor':'')+'"><div class="dl"><span>Cor</span> · <b id="cn">'+esc(corNome(p,st.cor[p.ref]||0))+'</b></div><div class="sw" aria-label="Cores">'+p.cores.map(function(c,i){var xo=p.qs&&p.qs[i]===0;return dots?'<button type="button" class="dt'+(i?'':' on')+(xo?' x':'')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="'+esc(corNome(p,i))+(xo?' (esgotada)':'')+'"><span style="background:'+c+'"></span></button>':'<button type="button" class="'+(i?'':'on')+'" data-sw="'+i+'" data-ref="'+p.ref+'" aria-label="Cor '+(i+1)+'">'+glasses(c,p.raio,6)+'</button>'}).join('')+'</div>'+(dots?thumbsD:'')+'</section>':(one?'<section class="dsec dcor dcor1"><div class="dl"><span>Cor</span> · <b>'+esc(corNome(p,0))+'</b></div>'+thumbsD.replace(/<div class="cthl">.*?<\/div>/,'')+'</section>':''))+
     buyH+
-    '</div>'+relHtml(p)+'</div>','pg');pgInit(p,pop);try{ggMonta(p)}catch(_){}}
+    '</div>'+relHtml(p)+pgCam(p)+'</div>','pg');pgInit(p,pop);try{ggMonta(p)}catch(_){}}
   /* celular: a reserva abre igual ao menu (painel desliza, fundo escurece, itens entram em sequência), vindo da direita */
   
   function bag(re,pop){
@@ -1196,7 +1198,21 @@
   /* B3 (11/11, S156): catálogo sem bolinhas — linha de gênero só em texto + "Filtros ›" na mesma linha (abre a caixa de filtros de sempre) */
   function genRow(){var ms=document.querySelector('#vscr .mobsearch');if(!ms)return;var o=$('lfgen');
     if(!o){o=document.createElement('div');o.id='lfgen';o.className='lfgen';o.setAttribute('role','group');o.setAttribute('aria-label',LFI.tr('Gênero'));ms.insertAdjacentElement('afterend',o)}
-    o.innerHTML=[['','Todos'],['f','Feminino'],['m','Masculino'],['u','Unissex']].map(function(g){return '<button type="button" data-gen="'+g[0]+'" aria-pressed="'+(st.gen===g[0])+'" class="'+(st.gen===g[0]?'on':'')+'">'+LFI.tr(g[1])+'</button>'}).join('')+'<a href="#" class="lfgf" data-lffil>'+LFI.tr('Filtros')+' <i>›</i></a>'}
+    o.innerHTML=[['','Todos'],['f','Feminino'],['m','Masculino'],['u','Unissex']].map(function(g){return '<button type="button" data-gen="'+g[0]+'" aria-pressed="'+(st.gen===g[0])+'" class="'+(st.gen===g[0]?'on':'')+'">'+LFI.tr(g[1])+'</button>'}).join('');
+    /* S429 (catálogo, aprovado 18/11): "Filtros ›" fica na linha do título, na margem da direita (não na fileira de gênero) */
+    var sec=$('vscr');if(sec&&!sec.querySelector(':scope>.lfgf')){sec.classList.add('lf8ti');sec.insertAdjacentHTML('beforeend','<a href="#" class="lfgf" data-lffil>'+LFI.tr('Filtros')+' <i>›</i></a>')}
+    try{catFit()}catch(_){}}
+  /* S429 (catálogo): "Filtros ›" na linha de base do título; a fileira de gênero e as etiquetas "Últimas" com a maior letra que cabe */
+  function lfBase(e){var p=document.createElement('span');p.style.cssText='display:inline-block;width:0;height:0;vertical-align:baseline';e.appendChild(p);var y=p.getBoundingClientRect().top;p.remove();return y}
+  function lfCabe(bs,box,min){var W=box.clientWidth;if(box.getAttribute('data-lfw')===String(W)&&box.scrollWidth<=W+.5)return;bs.forEach(function(b){b.style.fontSize=''});
+    if(box.scrollWidth>W+.5){var lo=min,hi=parseFloat(getComputedStyle(bs[0]).fontSize)||14;for(var k=0;k<8;k++){var md=(lo+hi)/2;bs.forEach(function(b){b.style.fontSize=md+'px'});if(box.scrollWidth<=W+.5)lo=md;else hi=md}
+      bs.forEach(function(b){b.style.fontSize=Math.floor(lo*4)/4+'px'})}box.setAttribute('data-lfw',String(W))}
+  function catFit(){var g=$('lfgen'),v=$('vtitT'),sec=$('vscr');if(!g||!v||!sec)return;var f=sec.querySelector(':scope>.lfgf');
+    if(f){var z=parseFloat(getComputedStyle(document.body).zoom)||1,sr=sec.getBoundingClientRect(),gr=g.getBoundingClientRect(),nr=Math.round((sr.right-gr.right)/z*10)/10+'px';if(f.style.right!==nr)f.style.right=nr;if(!f.style.top)f.style.top='0px';
+      var d=(lfBase(v)-lfBase(f))/z;if(Math.abs(d)>.2)f.style.top=Math.round((parseFloat(f.style.top)+d)*10)/10+'px'}
+    var bs=[].slice.call(g.querySelectorAll('button'));if(bs.length)lfCabe(bs,g,9);
+    document.querySelectorAll('.ulin').forEach(function(e){lfCabe([e],e,8)})}
+  (function(){var t0=0;function logo(){if(t0)return;t0=requestAnimationFrame(function(){t0=0;try{catFit()}catch(_){}})}addEventListener('resize',logo);addEventListener('lf:topo',logo);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(logo)})();
   var _dg3=drawGrid;drawGrid=function(){var r=_dg3.apply(this,arguments);try{genRow()}catch(_){}return r};
   document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-lffil]');if(!t)return;e.preventDefault();e.stopPropagation();var f=$('fbtn');if(f)f.click()},true);
 
@@ -2368,16 +2384,19 @@
   (function(){
     var nv=document.querySelector('#drw nav');if(!nv)return;nv.className='dnv';
     var A=function(h,mf,t,c){return '<a href="'+h+'"'+(mf?' data-mf="'+mf+'"':'')+(c?' class="'+c+'"':'')+'>'+t+'</a>'};
-    nv.innerHTML='<a href="#" class="dacc" data-cta="minha"><span class="dav" id="dav">'+'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span><b id="dacn">Entrar ou criar conta</b><small id="dacs">Minha conta · Meus pedidos ›</small></span></a>'+
+    nv.innerHTML='<a href="#" class="dacc" data-cta="minha"><span class="dav" id="dav">'+'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span><b id="dacn">Entrar ou criar conta</b><small id="dacs">Minha conta · Meus pedidos ›</small></span></a>'+
       '<small class="dgl">Comprar</small>'+A('#vitrine','tipo:solar','Solar')+A('#vitrine','tipo:grau','Leitura')+A('#vitrine','tipo:armacao','Armações')+A('#vitrine','tipo:of','Ofertas','dof')+
       '<div class="dch">'+A('#vitrine','gen:f','Feminino')+A('#vitrine','gen:m','Masculino')+A('#vitrine','gen:u','Unissex')+'</div>'+
       /* 09/11 S44 A (aprovado): grupo Ferramentas */'<small class="dgl">'+LFI.tr('Ferramentas')+'</small>'+A('#rosto','','Descubra o seu formato')+'<a href="#" data-gzopen>'+LFI.tr('Descubra o seu grau')+'</a>'+
        '<small class="dgl">Para lojistas</small>'+A('#atacado','','Atacado')+
       '<small class="dgl">Ajuda</small>'+'<a href="#como" data-ajp="duvidas">'+LFI.tr('Dúvidas frequentes')+'</a><a href="#como" data-ajp="dicas">'+LFI.tr('Dicas e cuidados')+'</a>';
     var dl=document.querySelector('#drw .dleg');if(dl)dl.style.display='';
-    function conta(){var c=null;try{c=logado()?getConta():null}catch(_){}var n=c&&c.nome?String(c.nome).split(' ')[0]:'';
-      $('dacn').textContent=n?LFI.tr('Olá')+', '+n:LFI.tr('Entrar ou criar conta');$('dav').innerHTML=n?esc(n.charAt(0).toUpperCase()):'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>'}
-    $('mnb').addEventListener('click',conta);
+    /* S429 (menu A, aprovado 18/11): nome = primeiro + último, sem "Olá"; ícone fino de pessoa num círculo de fio (rosa com conta) */
+    function conta(){var c=null;try{c=logado()?getConta():null}catch(_){}var w=c&&c.nome?String(c.nome).trim().split(/\s+/):[],n=w.length>1?w[0]+' '+w[w.length-1]:(w[0]||'');
+      $('dacn').textContent=n||LFI.tr('Entrar ou criar conta');$('dav').innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>';$('dav').closest('.dacc').classList.toggle('lflog',!!n);requestAnimationFrame(dacsFit)}
+    /* S429 (menu v3): "Minha conta · Meus pedidos ›" se couber numa linha; se não couber, só "Meus pedidos ›" */
+    function dacsFit(){var e=$('dacs');if(!e)return;e.removeAttribute('data-lfc');e.textContent=LFI.tr('Minha conta · Meus pedidos ›');if(!e.clientWidth||e.scrollWidth<=e.clientWidth+1)return;e.textContent=LFI.tr('Meus pedidos ›');e.setAttribute('data-lfc','1')}
+    $('mnb').addEventListener('click',conta);addEventListener('resize',function(){requestAnimationFrame(dacsFit)});
     $('drw').addEventListener('click',function(e){var t=e.target.closest('.dacc,[data-guia],[data-hguia]');if(!t)return;e.preventDefault();drwSet(false)},true);
   })();
 
@@ -2467,7 +2486,10 @@
 
 
   /* v452: altura do cabeçalho (a página da peça e a conta abrem logo abaixo dele) */
-  (function(){var f=function(){var t=document.querySelector('.top');if(t)document.documentElement.style.setProperty('--hth',Math.round(t.getBoundingClientRect().height)+'px')};f();addEventListener('resize',f);setTimeout(f,800);setTimeout(f,2500)})();
+  /* S429 (base aprovada 18/11): altura do topo no tamanho da PÁGINA (dividida pela escala do body), para Minha conta/peça ficarem coladas no topo com a letra maior */
+  window.lfHt=function(){var t=document.querySelector('.top');if(!t)return 0;var z=parseFloat(getComputedStyle(document.body).zoom)||1;return Math.round(t.getBoundingClientRect().height/z*100)/100};
+  (function(){var f=function(){var v=lfHt();if(!v)return;var r=document.documentElement.style;r.setProperty('--hth',v+'px');if(r.getPropertyValue('--ht'))r.setProperty('--ht',v+'px')};
+    f();addEventListener('resize',function(){setTimeout(f,0)});addEventListener('lf:topo',f);setTimeout(f,800);setTimeout(f,2500)})();
   /* v452: aquecimento da Black Friday — contagem para o começo (o site fica normal até a hora) */
   function bfAq(){var e=CFG.evento;if(!e||e.tema!=='bf'||!(+e.aq>0)||!(+e.ini>0))return null;var t=Date.now();return t>=+e.aq&&t<+e.ini?e:null}
   function bfPartes(ms){var s=Math.max(0,Math.floor(ms/1000));return [Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60]}
@@ -2484,16 +2506,14 @@
   /* v452: Idioma e Texto do menu (linhas de ajuste + folha de opções) */
   (function(){
     var nv=document.querySelector('#drw nav');if(!nv||$('dset'))return;
-    var GL='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
-      AA='<svg width="20" height="18" viewBox="0 0 28 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20l6-15 6 15M4.5 14h7M16 20l4-10 4 10M17.5 16.5h5"/></svg>';
-    var LG={auto:'Automático',es:'Español',pt:'Português'},ZS=['Normal','Grande','Maior'];
+    var GL='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
+    var LG={auto:'Automático',es:'Español',pt:'Português'};
     function lgAt(){try{var v=localStorage.getItem('lf_lang');return v==='es'||v==='pt'?v:'auto'}catch(_){return 'auto'}}
     var d=document.createElement('div');d.className='dset';d.id='dset';nv.insertAdjacentElement('afterend',d);
-    function pinta(){d.innerHTML='<button type="button" data-dset="lg">'+GL+'<span>'+LFI.tr('Idioma')+'</span><b>'+LFI.tr(LG[lgAt()])+'</b><i>›</i></button><button type="button" data-dset="zs">'+AA+'<span>'+LFI.tr('Tamanho do texto')+'</span><b>'+LFI.tr(ZS[zi]||'Normal')+'</b><i>›</i></button>'}
+    function pinta(){d.innerHTML='<button type="button" data-dset="lg">'+GL+'<span>'+LFI.tr('Idioma')+'</span><b>'+LFI.tr(LG[lgAt()])+'</b><i>›</i></button>'}
     pinta();$('mnb').addEventListener('click',pinta);
     var sh=document.createElement('div');sh.id='dsh';document.body.appendChild(sh);
     function abre(k){var h;if(k==='lg'){var a=lgAt();h='<h4>'+LFI.tr('Idioma')+'</h4>'+['auto','es','pt'].map(function(v){return '<button type="button" class="op" data-lg="'+v+'">'+(v==='auto'?LFI.tr('Automático'):LG[v])+(v===a?'<b>✓</b>':'')+'</button>'}).join('')}
-      else h='<h4>'+LFI.tr('Tamanho do texto')+'</h4>'+ZS.map(function(t,i){return '<button type="button" class="op" data-zs="'+i+'" data-dsx>'+LFI.tr(t)+(i===zi?'<b>✓</b>':'')+'</button>'}).join('');
       sh.innerHTML='<div class="dsc2" data-dsx></div><div class="dsp" role="dialog" aria-modal="true"><div class="gr"></div>'+h+'</div>';sh.classList.add('on')}
     function fecha(){sh.classList.remove('on');sh.innerHTML='';pinta()}
     d.addEventListener('click',function(e){var b=e.target.closest('[data-dset]');if(b)abre(b.getAttribute('data-dset'))});
@@ -2571,7 +2591,7 @@
     else{st.tipo='todos';st.gen='';st.sort='nov';st.col='';st.rosto='';try{$('sort').value='nov'}catch(_){}drawChips();drawGen()}
     drawGrid()},true);
   $('fbtn').addEventListener('click',fltPinta);
-  /* v453: arrastar para baixo nas folhas (Idioma, Tamanho do texto, Favoritos): a folha acompanha o dedo; passou de 1/3 ou gesto rápido = fecha; senão volta com um leve quique.
+  /* v453: arrastar para baixo nas folhas (Idioma, Favoritos): a folha acompanha o dedo; passou de 1/3 ou gesto rápido = fecha; senão volta com um leve quique.
      Na lista de favoritos só arrasta quando a lista está no topo (rolar a lista não fecha). Fecha "tocando" no fundo, que é como cada folha já fecha. */
   (function(){var D=null,SUP=0;
     function fim(d,fecha){var p=d.p,bg=d.bg;
@@ -2633,7 +2653,7 @@
     else if(a==='reset')authReset();
     else if(a==='olho'){var pi=t.parentNode.querySelector('input');if(pi){var sh=pi.type==='password';pi.type=sh?'text':'password';t.classList.toggle('on',sh);t.setAttribute('aria-pressed',sh?'true':'false');t.setAttribute('aria-label',sh?'Ocultar senha':'Mostrar senha')}}
     else if(a==='salvar')contaSalvar(t.getAttribute('data-volta')==='1');
-    else if(a==='minha'){if(!contaJaAberta(t))minhaConta()}
+    else if(a==='minha'){/* S429 (menu v3): "Meus pedidos ›" encurtado abre direto a aba Pedidos */if(e.target.closest&&e.target.closest('#dacs[data-lfc]'))minhaConta('peds');else if(!contaJaAberta(t))minhaConta()}
     else if(a==='google')gEntrar();
     else if(a==='gsync')gSync();
     else if(a==='gunlink')gUnlink(t.getAttribute('data-pw')==='1');else if(a==='gunlink2')gUnlink2(t.getAttribute('data-nopw')==='1');else if(a==='exc')excAbre();else if(a==='exc2')excFaz();
@@ -2740,10 +2760,10 @@
   function openPanel(id,quiet){
     closePanels();var el=document.getElementById(id);if(!el)return;
     if(id==='vitrine'){var ms=document.querySelector('.mobsearch');var vs=$('vscr');if(!vs){vs=document.createElement('div');vs.id='vscr';el.insertBefore(vs,$('grid'));vs.appendChild($('grid'))}if(ms&&ms.parentNode!==vs)vs.insertBefore(ms,vs.firstChild);var rs=$('resultado');if(rs&&matchMedia('(min-width:700px)').matches&&rs.parentNode!==vs)vs.insertBefore(rs,$('grid'));var lh=document.querySelector('.lh');if(lh&&lh.parentNode!==vs)vs.insertBefore(lh,$('grid'));var ft=document.querySelector('footer');if(ft&&ft.parentNode!==vs)vs.appendChild(ft);if(!$('cbl')){var cb=document.createElement('div');cb.id='cbl';cb.hidden=true;ms.parentNode.insertBefore(cb,ms.nextSibling);placeCbl();cotLine()}var ft=$('fty'),fs=$('fso');if(ft&&$('tipos').parentNode!==ft)ft.appendChild($('tipos'));if(fs&&$('sort').parentNode!==fs)fs.appendChild($('sort'));if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
-    var ht=document.querySelector('.top');if(ht)document.documentElement.style.setProperty('--ht',ht.offsetHeight+'px');
+    var ht=lfHt();if(ht)document.documentElement.style.setProperty('--ht',ht+'px');
     document.documentElement.classList.remove('bootp');el.classList.add('in');el.classList.add('pop');el.scrollTop=0;document.documentElement.classList.add('ppop');if(!quiet&&el.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)el.animate([{translate:'0 26px',filter:'opacity(0)'},{translate:'0 0',filter:'opacity(1)'}],{duration:440,easing:'cubic-bezier(.2,.8,.2,1)'});
-    try{urlSync()}catch(_){}}
-  function prefSync(){/* S422: o menu antigo com trilhos saiu; Idioma e Tamanho do texto ficam nas listas com ✓ (#dsh) */}
+    if(id==='vitrine')requestAnimationFrame(function(){try{catFit()}catch(_){}});try{urlSync()}catch(_){}}
+  function prefSync(){/* S422: o menu antigo com trilhos saiu; Idioma fica na lista com ✓ (#dsh) */}
   function fshSet(on){var d=$('fsh');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
   $('fbtn').addEventListener('click',function(){fshSet(true)});
   function vset(l){document.documentElement.classList.toggle('vlist',l);var b=$('vtog');if(b){var t=LFI.tr(l?'Ver como catálogo':'Ver como lista');b.setAttribute('aria-label',t);b.title=t}try{localStorage.setItem('lf_vista',l?'l':'g')}catch(_){}}
@@ -2760,7 +2780,7 @@
     if(on){var hh=document.querySelector('#drw .dhd');if(hh)hh.style.paddingTop='';dhdAlign()}if(on)document.documentElement.classList.add('lock');else if(!$('layer').innerHTML.trim())document.documentElement.classList.remove('lock');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
   $('mnb').addEventListener('click',function(){drwSet(true)});
   document.addEventListener('click',function(e){
-    var t=e.target.closest&&e.target.closest('[data-dclose],[data-fclose],[data-pback],[data-th],[data-zs],[data-pg],#drw nav a');if(!t)return;
+    var t=e.target.closest&&e.target.closest('[data-dclose],[data-fclose],[data-pback],[data-th],[data-pg],#drw nav a');if(!t)return;
     if(t.hasAttribute('data-fclose'))fshSet(false);
     else if(t.hasAttribute('data-dclose'))drwSet(false);
     else if(t.hasAttribute('data-pback')){closePanels();try{history.replaceState(null,'',location.pathname+location.search)}catch(_){}}
@@ -2771,7 +2791,6 @@
         var bt=t.getBoundingClientRect(),cx=bt.left+bt.width/2,cy=bt.top+bt.height/2,R=Math.hypot(Math.max(cx,innerWidth-cx),Math.max(cy,innerHeight-cy)),vt=document.startViewTransition(ap);
         vt.ready.then(function(){rr.animate({clipPath:['circle(0px at '+cx+'px '+cy+'px)','circle('+R+'px at '+cx+'px '+cy+'px)']},{duration:700,easing:'ease-in-out',pseudoElement:'::view-transition-new(root)'})}).catch(function(){})
       }else{rr.classList.add('tt');ap();setTimeout(function(){rr.classList.remove('tt')},700)}}
-    else if(t.hasAttribute('data-zs')){zset(+t.getAttribute('data-zs'),false);prefSync()}
     else if(t.hasAttribute('data-pg')){st.pg=(st.pg||0)+parseInt(t.getAttribute('data-pg'),10);drawGrid()}
     else{var mf=t.getAttribute&&t.getAttribute('data-mf');if(mf){var kv=mf.split(':');if(kv[0]==='gen'){st.gen=kv[1];st.tipo='todos'}else{st.tipo=kv[1];st.gen=''}drawGen();drawChips();drawGrid()}drwSet(false)}});
   (function(){var x0=null,y0=0,g=$('grid');if(!g)return;
@@ -3150,15 +3169,57 @@
     frame()}
   document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='fafile'||t.id==='fafile2')){var f=t.files&&t.files[0];t.value='';faRun(f)}});
 
-  /* texto maior (acessibilidade) */
-  var PCZ=matchMedia('(min-width:1100px)').matches,ZL=[LFZ(0),LFZ(1),LFZ(2)],ZN=['Texto normal','Texto grande','Texto muito grande'],zi=0;
-  try{var zs=localStorage.getItem('lf_zoom');if(zs!=null)zi=Math.max(0,Math.min(2,+zs||0))}catch(_){}
-  function zset(i,say){zi=i;document.documentElement.setAttribute('data-zi',i);document.documentElement.classList.toggle('zl',ZL[i]>1&&!(PCZ&&!i));document.body.style.zoom=ZL[i]==1?'':ZL[i];document.body.style.setProperty('--z',ZL[i]);document.body.style.setProperty('--kz',LFK());try{localStorage.setItem('lf_zoom',i)}catch(_){}if(say)toast(ZN[i]);setTimeout(function(){try{hguPil()}catch(_){}},60)}
-  zset(zi,false);
-  /* a escala acompanha a largura da tela: ao redimensionar a janela ou girar o aparelho, recalcula */
-  (function(){var tm=0;function re(){var n=[LFZ(0),LFZ(1),LFZ(2)];if(Math.abs(n[zi]-ZL[zi])>.02||(matchMedia('(min-width:1100px)').matches!==PCZ)){PCZ=matchMedia('(min-width:1100px)').matches;ZL=n;zset(zi,false)}}
+  /* S429: uma letra só — segue a letra do celular (LFT, até 1,2×) e a largura (LFK); ao girar/redimensionar recalcula */
+  (function(){var tm=0,Z=LFZ();function re(){var n=LFZ();if(Math.abs(n-Z)<.005)return;Z=n;var r=document.documentElement;r.classList.toggle('lfg',LFT()>1);r.classList.toggle('zl',n>1&&!matchMedia('(min-width:1100px)').matches);document.body.style.zoom=n==1?'':n;document.body.style.setProperty('--z',n);document.body.style.setProperty('--kz',LFK());setTimeout(function(){try{hguPil()}catch(_){}},60)}
     addEventListener('resize',function(){clearTimeout(tm);tm=setTimeout(re,300)});addEventListener('orientationchange',function(){clearTimeout(tm);tm=setTimeout(re,400)})})();
-  $('aa').addEventListener('click',function(){zset((zi+1)%3,true)});
+  /* S429 (aprovado 18/11, regra do dono "a letra cresce até onde cabe sem quebrar o design"):
+     o topo cresce com a letra só até caber — se o último ícone ia passar da margem, só o topo encolhe (a mesma margem dos dois lados) */
+  window.topoFit=function(){var t=document.querySelector('.top'),bar=t&&t.querySelector('.bar');if(!bar)return;t.style.zoom='';var W=document.documentElement.clientWidth;
+    function ext(){var L=1e9,R=-1e9;[].forEach.call(bar.children,function(e){var q=e.getBoundingClientRect();if(!q.width||getComputedStyle(e).display==='none')return;if(q.left<L)L=q.left;if(q.right>R)R=q.right});return [L,R]}
+    var mg=Math.max(0,ext()[0]);for(var k=0;k<4;k++){var r=ext()[1],lim=W-mg;if(r<=lim+1)break;t.style.zoom=Math.floor((parseFloat(t.style.zoom)||1)*(lim/r)*1000)/1000}
+    try{dispatchEvent(new Event('lf:topo'))}catch(_){}};
+  (function(){var t0=0;function logo(){if(t0)return;t0=requestAnimationFrame(function(){t0=0;topoFit()})}
+    addEventListener('resize',logo);new MutationObserver(logo).observe(document.body,{attributes:true,attributeFilter:['style']});logo();setTimeout(logo,900);setTimeout(logo,2600);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(logo)})();
+  /* S429 (aprovado 18/11): abas da Minha conta com a maior letra que cabe na moldura (nunca saem do quadro) */
+  (function(){function cabe(el){var bs=[].slice.call(el.querySelectorAll('button')),ori=[].filter.call(el.children,function(b){return b.tagName==='BUTTON'});if(!ori.length)return;
+      var f=el.getAttribute('data-lff'),W=el.clientWidth;if(f&&el.getAttribute('data-lfw')===String(W)&&el.scrollWidth<=W+.5)return;
+      bs.forEach(function(b){b.style.fontSize=''});var mudou=!!f;el.removeAttribute('data-lff');
+      if(el.scrollWidth>W+.5){var lo=9,hi=parseFloat(getComputedStyle(ori[0]).fontSize)||14;
+        for(var k=0;k<8;k++){var md=(lo+hi)/2;ori.forEach(function(b){b.style.fontSize=md+'px'});if(el.scrollWidth<=W+.5)lo=md;else hi=md}
+        var fz=Math.floor(lo*4)/4+'px';bs.forEach(function(b){b.style.fontSize=fz});el.setAttribute('data-lff',fz);mudou=true}
+      el.setAttribute('data-lfw',String(W));if(mudou){el.style.paddingRight='4.01px';requestAnimationFrame(function(){el.style.paddingRight=''})}}
+    var t=0;function logo(){if(t)return;t=requestAnimationFrame(function(){t=0;document.querySelectorAll('#layer .mct').forEach(cabe)})}
+    new MutationObserver(logo).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style']});addEventListener('resize',logo)})();
+  /* S429 (aprovado 19/11): o WhatsApp flutuante sai pela borda enquanto a pessoa rola e volta 0,6 s depois que ela para */
+  (function(){var t=0,h=document.documentElement;addEventListener('scroll',function(){h.classList.add('lfwah');clearTimeout(t);t=setTimeout(function(){h.classList.remove('lfwah')},600)},{passive:true,capture:true})})();
+  /* S429 (121, aprovado): "Últimas N" alinhado com o texto do cartão e sem passar do coração; área de toque de 44 px por fora do desenho,
+     que para no meio do caminho até o vizinho (não cobre letra de outra coisa) */
+  (function(){
+    function toque(){return matchMedia('(pointer:coarse)').matches||innerWidth<1100}
+    function vis(e){var r=e.getBoundingClientRect();if(!r.width||!r.height)return false;for(var x=e;x&&x!==document.body;x=x.parentElement){var c=getComputedStyle(x);if(c.display==='none'||c.visibility==='hidden')return false}return true}
+    function offY(e,base){var y=0;for(var x=e;x&&x!==base;x=x.offsetParent)y+=x.offsetTop;return y}
+    function poe(c,s,ph,fixo){var pr=ph.getBoundingClientRect(),tx=c.querySelector('.hn,.nm,.ref'),esq=pr.left+12;
+      if(tx){var w=document.createTreeWalker(tx,NodeFilter.SHOW_TEXT,{acceptNode:function(n){return n.textContent.trim()?1:3}}),n=w.nextNode();if(n){var rg=document.createRange();rg.setStart(n,0);rg.setEnd(n,1);esq=rg.getBoundingClientRect().left}else esq=tx.getBoundingClientRect().left}
+      var base=s.offsetParent||c,br=base.getBoundingClientRect(),zb=br.width/base.offsetWidth||1,fav=c.querySelector('.fav'),lim=fav?fav.getBoundingClientRect().left-6:pr.right-12;
+      s.style.left=((esq-br.left)/zb)+'px';if(!fixo)s.style.top=(offY(ph,base)+16)+'px'/* pela posição de layout: não pega o cartão no meio da animação de entrada */;
+      s.style.maxWidth=Math.max(40,(lim-esq)/zb)+'px';var d=esq-s.getBoundingClientRect().left;if(Math.abs(d)>.5)s.style.left=(parseFloat(s.style.left)+d/zb)+'px'}
+    function selos(){document.querySelectorAll('#home .hc').forEach(function(c){var s=c.querySelector('.hlin'),im=c.querySelector('.hci, img');if(s&&im)poe(c,s,im.closest('.hci')||im,false)});
+      document.querySelectorAll('#grid .card').forEach(function(c){var s=c.querySelector('.ph .ulin'),ph=c.querySelector('.ph');if(s&&ph)poe(c,s,ph,true)})}
+    function areas(){document.querySelectorAll('.lx44').forEach(function(e){e.classList.remove('lx44','lxpos','lxb')});if(!toque())return;
+      var sel='a[href],button,[role=button],summary,input:not([type=hidden]),select,label[for]',T=[].filter.call(document.querySelectorAll(sel),vis).filter(function(e){return !e.closest('.lx-ignora')}),R=T.map(function(e){return e.getBoundingClientRect()});
+      var TX=[].filter.call(document.querySelectorAll('body *'),function(x){return !x.closest(sel)&&[].some.call(x.childNodes,function(n){return n.nodeType===3&&n.textContent.trim()})&&vis(x)}).map(function(x){return x.getBoundingClientRect()});
+      var VZ=R.map(function(r,j){return [r,j]}).concat(TX.map(function(r){return [r,-1]}));
+      T.forEach(function(e,i){var r=R[i],z=r.width/(e.offsetWidth||r.width)||1;if(r.width>=44&&r.height>=44)return;
+        function livre(ps){var c=getComputedStyle(e,ps).content;return c==='none'||c==='normal'}var usaB=false;if(!livre('::after')){if(livre('::before'))usaB=true;else return}
+        var t=Math.max(0,(45-r.height)/2),b=t,l=Math.max(0,(45-r.width)/2),rr=l;
+        VZ.forEach(function(v){var o=v[0],j=v[1];if(j===i||(j>=0&&(T[j].contains(e)||e.contains(T[j]))))return;if(j<0&&o.left>=r.left-.5&&o.right<=r.right+.5&&o.top>=r.top-.5&&o.bottom<=r.bottom+.5)return;
+          var sv=o.top<r.bottom+b&&o.bottom>r.top-t,sh=o.left<r.right+rr&&o.right>r.left-l;
+          if(sv&&o.left>=r.right-1)rr=Math.min(rr,Math.max(0,(o.left-r.right)/2));if(sv&&o.right<=r.left+1)l=Math.min(l,Math.max(0,(r.left-o.right)/2));
+          if(sh&&o.top>=r.bottom-1)b=Math.min(b,Math.max(0,(o.top-r.bottom)/2));if(sh&&o.bottom<=r.top+1)t=Math.min(t,Math.max(0,(r.top-o.bottom)/2))});
+        if(getComputedStyle(e).position!=='static')e.classList.add('lxpos');e.classList.add('lx44');if(usaB)e.classList.add('lxb');
+        e.style.setProperty('--t',t/z+'px');e.style.setProperty('--b',b/z+'px');e.style.setProperty('--l',l/z+'px');e.style.setProperty('--r',rr/z+'px')})}
+    var tm=0;function go(){clearTimeout(tm);tm=setTimeout(function(){try{selos()}catch(_){}try{areas()}catch(_){}try{catFit()}catch(_){}},120)}
+    new MutationObserver(go).observe(document.body,{childList:true,subtree:true});addEventListener('resize',go);addEventListener('load',go);go()})();
   var NUM_LOJA='595983642241';
   /*REDES-RODAPE*/ var SOCIAL={ig:'',fb:''}; /* cole aqui os links dos perfis, ex.: ig:'https://instagram.com/lafouch' */
   (function(){var h=[['ig','Instagram',SOCIAL.ig],['fb','Facebook',SOCIAL.fb]],IC={"ig": "<svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3.5\" y=\"3.5\" width=\"17\" height=\"17\" rx=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><circle cx=\"17.2\" cy=\"6.8\" r=\"1\" fill=\"currentColor\" stroke=\"none\"/></svg>", "fb": "<svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z\"/></svg>", "wa": "<svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3z\"/><path d=\"M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1-.4-2-1.4-2.4-2.4l.8-1-1-2z\"/></svg>"},out='';
@@ -3515,7 +3576,7 @@
   setTimeout(function(){document.documentElement.classList.add('nr')},3500);
 
   /* idioma e moeda */
-  ['theme','lgb','aa','bagbtn'].forEach(function(i){var e=$(i);if(e&&e.dataset.l)e.dataset.l=LFI.tr(e.dataset.l)});
+  ['theme','lgb','bagbtn'].forEach(function(i){var e=$(i);if(e&&e.dataset.l)e.dataset.l=LFI.tr(e.dataset.l)});
   (function(){var b=$('lgb');if(!b)return;b.firstChild.textContent=LFI.lang==='es'?'ES':'PT';
     function cur(k,d){try{return localStorage.getItem(k)||'auto'}catch(_){return 'auto'}}
     b.addEventListener('click',function(){var L=cur('lf_lang'),C=cur('lf_cur');
@@ -4445,7 +4506,7 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
   var TKZ=(function(){function bz(x1,y1,x2,y2){function a(t,p1,p2){var u=1-t;return 3*u*u*t*p1+3*u*t*t*p2+t*t*t}return function(x){if(x<=0)return 0;if(x>=1)return 1;var lo=0,hi=1,t=x;for(var i=0;i<26;i++){t=(lo+hi)/2;if(a(t,x1,x2)<x)lo=t;else hi=t}return a(t,y1,y2)}}return bz(.16,1,.3,1)})();
   var TKRM=matchMedia('(prefers-reduced-motion: reduce)');
   (function(){var s=document.createElement('style');s.id='lftk';s.textContent='.lfTk{position:relative;touch-action:pan-y;-webkit-user-select:none;user-select:none}.lfTk>button{position:relative;z-index:1}.lfTk>button.on{background:transparent!important}'+
-    '.lfTk>.lfP{position:absolute;left:0;top:0;width:0;height:0;z-index:0;pointer-events:none}.lfTk>.lfP>b{position:absolute;left:0;top:0;display:block;background:var(--tkc,#a24a80);will-change:transform}.lfTk>.lfP>b.m{width:1px;transform-origin:0 0}'+
+    '.lfTk>.lfP{position:absolute;left:0;top:0;width:0;height:0;z-index:0;pointer-events:none}.lfTk>.lfP>b{position:absolute;left:0;top:0;display:block;background:var(--tkc,#a24a80);will-change:transform}.lfTk>.lfP>b.m{width:64px;transform-origin:0 0}'+
     '.lfTk>.lfPt{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:hidden}.lfTk>.lfPt>button{position:absolute!important;margin:0!important;background:transparent!important;color:#fff!important;box-shadow:none!important;border-color:transparent!important;flex:none!important;min-width:0!important;box-sizing:border-box;pointer-events:none}';
     document.head.appendChild(s)})();
   function tkBts(el){return [].filter.call(el.children,function(b){return b.tagName==='BUTTON'})}
@@ -4455,7 +4516,7 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
   function tkSel(T){var bs=tkBts(T.el);for(var i=0;i<bs.length;i++)if(bs[i].classList.contains('on'))return i;return -1}
   function tkPoe(T,x,y,w,h){T.c={x:x,y:y,w:w,h:h};var r=h/2,p=T.p.children,mw=Math.max(0,w-2*r);
     p[0].style.cssText='width:'+r+'px;height:'+h+'px;border-radius:'+r+'px 0 0 '+r+'px;transform:translate('+x+'px,'+y+'px)';
-    p[1].style.cssText='height:'+h+'px;transform:translate('+(x+r-.5)+'px,'+y+'px) scaleX('+(mw+1)+')';
+    p[1].style.cssText='height:'+h+'px;transform:translate('+(x+r-1)+'px,'+y+'px) scaleX('+((mw+2)/64)+')'/* S429: meio com 64 px de base (sem borrão na borda) e 1 px a mais em cada ponta = sem emenda */;
     p[2].style.cssText='width:'+r+'px;height:'+h+'px;border-radius:0 '+r+'px '+r+'px 0;transform:translate('+(x+w-r)+'px,'+y+'px)';
     var cp='inset('+y+'px '+Math.max(0,T.W-x-w)+'px '+Math.max(0,T.H-y-h)+'px '+x+'px round '+r+'px)';T.t.style.clipPath=cp;T.t.style.webkitClipPath=cp;T.p.style.opacity=w>0?'1':'0'}
   function tkVai(T,i,anima){cancelAnimationFrame(T.raf);T.anim=0;var m=T.m[i];if(!m){T.p.style.opacity='0';T.t.style.clipPath='inset(50%)';return}
@@ -4721,7 +4782,7 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
     var bx=document.createElement('div');bx.id='lfgrv';bx.style.cssText='position:fixed;left:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:2147483601;display:flex;gap:6px';
     bx.innerHTML='<button type="button" data-g="b" style="font:700 13px system-ui;padding:10px 14px;border-radius:10px;border:0;background:#111;color:#fff">Baixar gravação</button><button type="button" data-g="z" style="font:700 13px system-ui;padding:10px 12px;border-radius:10px;border:0;background:#444;color:#fff">Zerar</button>';
     bx.addEventListener('click',function(e){var b=e.target.closest('[data-g]');if(!b)return;e.stopPropagation();if(b.getAttribute('data-g')==='z'){GR=[];grN=0;GR0=Date.now();b.textContent='Zerado';setTimeout(function(){b.textContent='Zerar'},1200);return}
-      var j={site:window.LF_BUILD,inicio:new Date(GR0).toISOString(),fim:new Date().toISOString(),aparelho:{ua:navigator.userAgent,nucleos:navigator.hardwareConcurrency,mem:navigator.deviceMemory,tela:[screen.width,screen.height,devicePixelRatio],janela:[innerWidth,innerHeight],letra:localStorage.getItem('lf_zoom')||'0',rede:(navigator.connection||{}).effectiveType||''},perdidos:grN,diagnostico:(function(){try{return {txt:dgTxt(),dg:DG,ativo:CFG.ativo!==false,pecas:P.length}}catch(_){return null}})(),eventos:GR};
+      var j={site:window.LF_BUILD,inicio:new Date(GR0).toISOString(),fim:new Date().toISOString(),aparelho:{ua:navigator.userAgent,nucleos:navigator.hardwareConcurrency,mem:navigator.deviceMemory,tela:[screen.width,screen.height,devicePixelRatio],janela:[innerWidth,innerHeight],letra:String(LFT()),rede:(navigator.connection||{}).effectiveType||''},perdidos:grN,diagnostico:(function(){try{return {txt:dgTxt(),dg:DG,ativo:CFG.ativo!==false,pecas:P.length}}catch(_){return null}})(),eventos:GR};
       var bl=new Blob([JSON.stringify(j)],{type:'application/json'}),u=URL.createObjectURL(bl),a=document.createElement('a'),d=new Date();a.href=u;a.download='gravacao-lafouch-'+d.getHours()+'h'+('0'+d.getMinutes()).slice(-2)+'.json';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(u)},4000);b.textContent='Baixado ✓';setTimeout(function(){b.textContent='Baixar gravação'},2000)});
     var ini2=function(){document.body.appendChild(bx);mdPoe()};if(document.body)ini2();else document.addEventListener('DOMContentLoaded',ini2)})();
 
@@ -5069,12 +5130,12 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
         if(PC()&&l&&d){var w=document.createElement('div');w.className='pgtop';m.insertBefore(w,l);w.appendChild(l);w.appendChild(d)}
         else if(!PC()){var w2=m.querySelector(':scope>.pgtop');if(w2){while(w2.firstChild)m.insertBefore(w2.firstChild,w2);w2.remove()}}
         if(!m.querySelector(':scope>.lfft'))m.insertAdjacentHTML('beforeend',rodape5())}
-      /* S208 (13/11): o Últimas fica abaixo da foto (.ulin) — não vai mais para dentro da foto */
+      /* cupom antes do total no carrinho */
       document.querySelectorAll('#layer .cs details.cupf').forEach(function(c){var t=c.parentElement.querySelector(':scope>.cs-t');if(t&&c.nextElementSibling!==t)c.parentElement.insertBefore(c,t)});
       document.querySelectorAll('.hd .hnc').forEach(function(x){x.remove()});if(typeof liga==='function')liga()}
     var tm=0;new MutationObserver(function(){if(tm)return;tm=requestAnimationFrame(function(){tm=0;arruma()})}).observe(document.body,{childList:true,subtree:true});
     addEventListener('resize',function(){arruma()});
-    /* Idioma / Tamanho do texto: no computador abre ao lado do menu (não gaveta de celular) */
+    /* Idioma: no computador abre ao lado do menu (não gaveta de celular) */
     var liga=function(){var dsh=$('dsh');if(dsh&&!dsh._s207){dsh._s207=1;new MutationObserver(function(){var p=dsh.querySelector('.dsp');if(!p||!dsh.classList.contains('on')||innerWidth<1100||p.classList.contains('dspc'))return;
       var r=document.querySelector('#drw [data-dset]');if(!r)return;var b=r.getBoundingClientRect();p.classList.add('dspc');p.style.left=Math.round(b.right+14)+'px';p.style.top=Math.max(12,Math.round(b.top-110))+'px'}).observe(dsh,{attributes:true,childList:true})}
     /* busca: a janela cresce saindo da lupa */
