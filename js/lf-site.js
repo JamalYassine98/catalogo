@@ -3170,7 +3170,7 @@
   document.addEventListener('change',function(e){var t=e.target;if(t&&(t.id==='fafile'||t.id==='fafile2')){var f=t.files&&t.files[0];t.value='';faRun(f)}});
 
   /* S429: uma letra só — segue a letra do celular (LFT, até 1,2×) e a largura (LFK); ao girar/redimensionar recalcula */
-  (function(){var tm=0,Z=LFZ();function re(){var n=LFZ();if(Math.abs(n-Z)<.005)return;Z=n;var r=document.documentElement;r.classList.toggle('lfg',LFT()>1);r.classList.toggle('zl',n>1&&!matchMedia('(min-width:1100px)').matches);document.body.style.zoom=n==1?'':n;document.body.style.setProperty('--z',n);document.body.style.setProperty('--kz',LFK());setTimeout(function(){try{hguPil()}catch(_){}},60)}
+  (function(){var tm=0,Z=LFZ();function re(){var n=LFZ();if(Math.abs(n-Z)<.005)return;Z=n;var r=document.documentElement;r.classList.toggle('lfg',LFT()>1);r.classList.toggle('zl',n>1&&!matchMedia('(min-width:1100px)').matches);document.body.style.zoom=n==1?'':n;document.body.style.setProperty('--z',n);document.body.style.setProperty('--kz',LFK());setTimeout(function(){try{hguPil()}catch(_){}},60);try{dispatchEvent(new Event('resize'))}catch(_){}/* o resto do site (topo, menu, WhatsApp, abas) mede de novo já com a escala nova */}
     addEventListener('resize',function(){clearTimeout(tm);tm=setTimeout(re,300)});addEventListener('orientationchange',function(){clearTimeout(tm);tm=setTimeout(re,400)})})();
   /* S429 (aprovado 18/11, regra do dono "a letra cresce até onde cabe sem quebrar o design"):
      o topo cresce com a letra só até caber — se o último ícone ia passar da margem, só o topo encolhe (a mesma margem dos dois lados) */
@@ -3182,10 +3182,12 @@
     addEventListener('resize',logo);new MutationObserver(logo).observe(document.body,{attributes:true,attributeFilter:['style']});logo();setTimeout(logo,900);setTimeout(logo,2600);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(logo)})();
   /* S429 (aprovado 18/11): abas da Minha conta com a maior letra que cabe na moldura (nunca saem do quadro) */
   (function(){function cabe(el){var bs=[].slice.call(el.querySelectorAll('button')),ori=[].filter.call(el.children,function(b){return b.tagName==='BUTTON'});if(!ori.length)return;
-      var f=el.getAttribute('data-lff'),W=el.clientWidth;if(f&&el.getAttribute('data-lfw')===String(W)&&el.scrollWidth<=W+.5)return;
+      var cs=getComputedStyle(el),W=el.clientWidth-(parseFloat(cs.paddingRight)||0),f=el.getAttribute('data-lff');
+      function sobra(){var R=0;ori.forEach(function(b){R=Math.max(R,b.offsetLeft+b.offsetWidth)});return R<=W+.5&&ori.every(function(b){return b.scrollWidth<=b.clientWidth+.5})}
+      if(f&&el.getAttribute('data-lfw')===String(W)&&sobra())return;
       bs.forEach(function(b){b.style.fontSize=''});var mudou=!!f;el.removeAttribute('data-lff');
-      if(el.scrollWidth>W+.5){var lo=9,hi=parseFloat(getComputedStyle(ori[0]).fontSize)||14;
-        for(var k=0;k<8;k++){var md=(lo+hi)/2;ori.forEach(function(b){b.style.fontSize=md+'px'});if(el.scrollWidth<=W+.5)lo=md;else hi=md}
+      if(!sobra()){var lo=9,hi=parseFloat(getComputedStyle(ori[0]).fontSize)||14;
+        for(var k=0;k<8;k++){var md=(lo+hi)/2;ori.forEach(function(b){b.style.fontSize=md+'px'});if(sobra())lo=md;else hi=md}
         var fz=Math.floor(lo*4)/4+'px';bs.forEach(function(b){b.style.fontSize=fz});el.setAttribute('data-lff',fz);mudou=true}
       el.setAttribute('data-lfw',String(W));if(mudou){el.style.paddingRight='4.01px';requestAnimationFrame(function(){el.style.paddingRight=''})}}
     var t=0;function logo(){if(t)return;t=requestAnimationFrame(function(){t=0;document.querySelectorAll('#layer .mct').forEach(cabe)})}
