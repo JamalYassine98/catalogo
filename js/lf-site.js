@@ -580,7 +580,7 @@
     var b=$('bagbtn');if(!b||!src||!src.getBoundingClientRect)return 0;
     var sr=src.getBoundingClientRect(),br=b.getBoundingClientRect();if(!sr.width||!br.width)return 0;
     var z=zf(),ac=(getComputedStyle(document.documentElement).getPropertyValue('--ac')||'#b4528a').trim(),x0=sr.left+sr.width/2,y0=sr.top+sr.height/2,dx=(br.left+br.width/2-x0)/z,dy=(br.top+br.height/2-y0)/z,
-      f=document.createElement('i');f.className='favfly';f.style.cssText='position:fixed;z-index:90;left:'+(x0/z-11)+'px;top:'+(y0/z-11)+'px;width:22px;height:22px;color:'+ac+';pointer-events:none';
+      f=document.createElement('i');f.className='favfly';f.style.cssText='position:fixed;z-index:var(--c-aviso);left:'+(x0/z-11)+'px;top:'+(y0/z-11)+'px;width:22px;height:22px;color:'+ac+';pointer-events:none';
     f.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="'+FAV_HP+'"/></svg>';document.body.appendChild(f);
     f.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+(dx*.45)+'px,'+(dy*.45-46)+'px) scale(1.15)',opacity:1,offset:.45},{transform:'translate('+dx+'px,'+dy+'px) scale(.35)',opacity:.2}],{duration:620,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'}).onfinish=function(){f.remove()};
     b.animate([{transform:'scale(1)'},{transform:'scale(1.14)'},{transform:'scale(1)'}],{duration:320,delay:560,easing:'cubic-bezier(.2,.8,.2,1)'});
@@ -611,7 +611,7 @@
     if(fc){fc.textContent=nOld;if(fc.animate)fc.animate([{transform:'scale(1)'},{transform:'scale(.45)',opacity:.4,offset:.45},{transform:'scale(1)',opacity:1}],{duration:460,easing:'ease-in-out'});
       setTimeout(function(){fc.textContent=nNew},200)}
     if(ft.animate)ft.animate([{transform:'none'},{transform:'scale(.9)',offset:.3},{transform:'scale(1.04)',offset:.65},{transform:'none'}],{duration:420,easing:'ease-out'});
-    var mi=document.createElement('i');mi.className='favgh';mi.textContent='−1';mi.style.cssText='position:fixed;z-index:90;left:'+(cx/z-20)+'px;top:'+(r.top/z+4)+'px;width:40px;text-align:center;font:800 15px Inter,sans-serif;color:var(--mu,#777);pointer-events:none;opacity:0;font-style:normal';document.body.appendChild(mi);
+    var mi=document.createElement('i');mi.className='favgh';mi.textContent='−1';mi.style.cssText='position:fixed;z-index:var(--c-aviso);left:'+(cx/z-20)+'px;top:'+(r.top/z+4)+'px;width:40px;text-align:center;font:800 15px Inter,sans-serif;color:var(--mu,#777);pointer-events:none;opacity:0;font-style:normal';document.body.appendChild(mi);
     if(mi.animate)mi.animate([{opacity:0,transform:'translateY(-6px) scale(.8)'},{opacity:1,transform:'translateY(6px) scale(1.1)',offset:.3},{opacity:1,transform:'translateY(18px) scale(1)',offset:.7},{opacity:0,transform:'translateY(28px)'}],{duration:800,easing:'ease-out'}).onfinish=function(){mi.remove()};
     else setTimeout(function(){mi.remove()},800)}
   function toggleFav(ref,src){
@@ -899,7 +899,7 @@
       if(VEU)return;
       if(!aberto()){if((scrollY||0)>0)try{scrollTo({top:0,behavior:RM.matches?'auto':'smooth'})}catch(_){topo()}return}
       var n=(history.state&&history.state.__i)||0,v=VEU=document.createElement('div');
-      v.style.cssText='position:fixed;inset:0;z-index:2147483000;background:var(--bg);opacity:0;pointer-events:auto';document.body.appendChild(v);
+      v.style.cssText='position:fixed;inset:0;z-index:calc(var(--c-sistema) + 9);background:var(--bg);opacity:0;pointer-events:auto';document.body.appendChild(v);
       var troca=function(){window.__lfLogo=1;fechaTudo();
         if(n>0){window.__lfLogo=2;try{history.go(-n)}catch(_){window.__lfLogo=0}}else window.__lfLogo=0;
         setTimeout(function(){if(window.__lfLogo)window.__lfLogo=0},1500);
@@ -926,7 +926,7 @@
       var H=document.documentElement,ly=$('layer');if(!((ly&&ly.innerHTML.trim())||H.classList.contains('ppop')||$('gw')))return;
       e.preventDefault();e.stopImmediatePropagation();if(VEU)return;
       var n=(history.state&&history.state.__i)||0,v=VEU=document.createElement('div');
-      v.style.cssText='position:fixed;inset:0;z-index:2147483000;background:var(--bg);opacity:0;pointer-events:auto';document.body.appendChild(v);
+      v.style.cssText='position:fixed;inset:0;z-index:calc(var(--c-sistema) + 9);background:var(--bg);opacity:0;pointer-events:auto';document.body.appendChild(v);
       var sai=function(){var fim=function(){v.remove();VEU=null};if(RM.matches||!v.animate){fim();return}var an=v.animate([{opacity:1},{opacity:0}],{duration:220,easing:'ease-in-out',fill:'forwards'});an.onfinish=fim};
       var segue=function(){topo();window.__lfMenuGo=1;try{a.click()}catch(_){}window.__lfMenuGo=0;setTimeout(function(){requestAnimationFrame(sai)},140)};
       var vai=function(){window.__lfLogo=1;try{if(window.__lfGzFecha)window.__lfGzFecha()}catch(_){}fechaTudo();
@@ -2469,10 +2469,14 @@
 
 
   /* v452: altura do cabeçalho (a página da peça e a conta abrem logo abaixo dele) */
-  /* S429 (base aprovada 18/11): altura do topo no tamanho da PÁGINA (dividida pela escala do body), para Minha conta/peça ficarem coladas no topo com a letra maior */
-  window.lfHt=function(){var t=document.querySelector('.top');if(!t)return 0;var z=parseFloat(getComputedStyle(document.body).zoom)||1;return Math.round(t.getBoundingClientRect().height/z*100)/100};
-  (function(){var f=function(){var v=lfHt();if(!v)return;var r=document.documentElement.style;r.setProperty('--hth',v+'px');if(r.getPropertyValue('--ht'))r.setProperty('--ht',v+'px')};
-    f();addEventListener('resize',function(){setTimeout(f,0)});addEventListener('lf:topo',f);setTimeout(f,800);setTimeout(f,2500)})();
+  /* S430 MEDIDA ÚNICA DO TOPO: --hth = onde o topo termina NA TELA, agora (unidade da página). Toda tela que abre por cima começa nela.
+     O topo fica embaixo da faixa quando a página está no alto e sobe quando ela rola; por isso a medida acompanha rolagem, tamanho, letra e telas abertas. */
+  window.lfHt=function(){var t=document.querySelector('.top');if(!t)return 0;var z=parseFloat(getComputedStyle(document.body).zoom)||1;return Math.max(0,Math.round(t.getBoundingClientRect().bottom/z*100)/100)};
+  (function(){var q=0,f=function(){q=0;var v=lfHt();if(!v)return;var r=document.documentElement.style,px=v+'px';if(r.getPropertyValue('--hth')!==px){r.setProperty('--hth',px);r.setProperty('--ht',px)}},logo=function(){if(!q)q=requestAnimationFrame(f)};
+    f();addEventListener('resize',logo);addEventListener('scroll',logo,{passive:true});addEventListener('lf:topo',logo);
+    new MutationObserver(logo).observe(document.documentElement,{attributes:true,attributeFilter:['class','style']});
+    var ly=document.getElementById('layer');if(ly)new MutationObserver(logo).observe(ly,{childList:true});
+    if(window.ResizeObserver){var t=document.querySelector('.top');if(t)new ResizeObserver(logo).observe(t)}setTimeout(logo,800)})();
   /* v452: aquecimento da Black Friday — contagem para o começo (o site fica normal até a hora) */
   function bfAq(){var e=CFG.evento;if(!e||e.tema!=='bf'||!(+e.aq>0)||!(+e.ini>0))return null;var t=Date.now();return t>=+e.aq&&t<+e.ini?e:null}
   function bfPartes(ms){var s=Math.max(0,Math.floor(ms/1000));return [Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60]}
@@ -2743,7 +2747,7 @@
   function openPanel(id,quiet){
     closePanels();var el=document.getElementById(id);if(!el)return;
     if(id==='vitrine'){var ms=document.querySelector('.mobsearch');var vs=$('vscr');if(!vs){vs=document.createElement('div');vs.id='vscr';el.insertBefore(vs,$('grid'));vs.appendChild($('grid'))}if(ms&&ms.parentNode!==vs)vs.insertBefore(ms,vs.firstChild);var rs=$('resultado');if(rs&&matchMedia('(min-width:700px)').matches&&rs.parentNode!==vs)vs.insertBefore(rs,$('grid'));var lh=document.querySelector('.lh');if(lh&&lh.parentNode!==vs)vs.insertBefore(lh,$('grid'));var ft=document.querySelector('footer');if(ft&&ft.parentNode!==vs)vs.appendChild(ft);if(!$('cbl')){var cb=document.createElement('div');cb.id='cbl';cb.hidden=true;ms.parentNode.insertBefore(cb,ms.nextSibling);placeCbl();cotLine()}var ft=$('fty'),fs=$('fso');if(ft&&$('tipos').parentNode!==ft)ft.appendChild($('tipos'));if(fs&&$('sort').parentNode!==fs)fs.appendChild($('sort'));if(!$('pager')){var pg=document.createElement('div');pg.id='pager';el.appendChild(pg)}drawGrid()}
-    var ht=lfHt();if(ht)document.documentElement.style.setProperty('--ht',ht+'px');
+
     document.documentElement.classList.remove('bootp');el.classList.add('in');el.classList.add('pop');el.scrollTop=0;document.documentElement.classList.add('ppop');if(!quiet&&el.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)el.animate([{translate:'0 26px',filter:'opacity(0)'},{translate:'0 0',filter:'opacity(1)'}],{duration:440,easing:'cubic-bezier(.2,.8,.2,1)'});
     if(id==='vitrine')requestAnimationFrame(function(){try{catFit()}catch(_){}});try{urlSync()}catch(_){}}
   function prefSync(){/* S422: o menu antigo com trilhos saiu; Idioma fica na lista com ✓ (#dsh) */}
@@ -3570,7 +3574,7 @@
         '<div class="note">Automático (pelo seu celular): '+(LFI.autoLang==='es'?'Español':'Português')+'. A moeda acompanha o idioma: Português em reais, Español em guaranis. Os valores em reais são aproximados. O valor da loja é em guaranis.</div></div></div>','center')});
     document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-lg],[data-cu]');if(!t)return;e.stopPropagation();
       try{if(t.hasAttribute('data-lg')){localStorage.setItem('lf_lang',t.getAttribute('data-lg'));localStorage.setItem('lf_cur','auto')}else localStorage.setItem('lf_cur',t.getAttribute('data-cu'));sessionStorage.setItem('lf_skip','1');sessionStorage.setItem('lf_drw','1')}catch(_){}
-      var bg=getComputedStyle(document.body).backgroundColor,ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;z-index:99999;background:'+bg+';opacity:0;transition:opacity .28s ease;pointer-events:all';document.body.appendChild(ov);try{sessionStorage.setItem('lf_fade',bg)}catch(_){}requestAnimationFrame(function(){ov.style.opacity='1'});setTimeout(function(){location.reload()},300)},true)})();
+      var bg=getComputedStyle(document.body).backgroundColor,ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;z-index:calc(var(--c-sistema) + 9);background:'+bg+';opacity:0;transition:opacity .28s ease;pointer-events:all';document.body.appendChild(ov);try{sessionStorage.setItem('lf_fade',bg)}catch(_){}requestAnimationFrame(function(){ov.style.opacity='1'});setTimeout(function(){location.reload()},300)},true)})();
   try{var _cd=PREV?null:JSON.parse(localStorage.getItem('lf_pdocs')||'null');if(_cd&&_cd.length)syncProds(_cd)}catch(_){}
   if((PREV||!P.length)&&!/[?&]nosync/.test(location.search)){var _pl=document.createElement('div');_pl.id='prevld';_pl.setAttribute('role','status');_pl.innerHTML='<i></i><span>'+LFI.tr(PREV?'Carregando a vitrine atual…':'Carregando as peças…')+'</span>';document.body.appendChild(_pl)}
   drawGen();drawChips();drawFaces();drawBag();setHero();
@@ -4714,7 +4718,7 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
   /* S376 (aprovado 16/11 08:24): medidor para diagnóstico no aparelho do dono — só aparece com ?medir=1 no endereço. Mostra quadros por segundo (agora e o pior segundo), o quadro mais demorado,
      quantas vezes o processador travou mais de 50 ms e os mesmos números só enquanto a tela rola. Não guarda nem envia nada. */
   (function(){if(!/[?&]medir=1/.test(location.search))return;
-    var d=document.createElement('div');d.id='lfmed';d.setAttribute('aria-hidden','true');d.style.cssText='position:fixed;left:8px;top:8px;z-index:2147483600;max-width:calc(100% - 16px);background:rgba(17,13,20,.92);color:#fff;font:600 10.5px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere;padding:8px 10px;border-radius:10px;pointer-events:none;white-space:pre-line';
+    var d=document.createElement('div');d.id='lfmed';d.setAttribute('aria-hidden','true');d.style.cssText='position:fixed;left:8px;top:8px;z-index:calc(var(--c-sistema) + 10);max-width:calc(100% - 16px);background:rgba(17,13,20,.92);color:#fff;font:600 10.5px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere;padding:8px 10px;border-radius:10px;pointer-events:none;white-space:pre-line';
     /* S427 (pedido do dono 18/11 14:12): botão para recolher o Medidor — fica só a etiqueta "Medidor ▸"; tocar abre de novo; a gravação continua; lembra (lf_medfech) */
     var mdT=document.createElement('span'),mdB=document.createElement('button'),mdF=false;try{mdF=localStorage.getItem('lf_medfech')==='1'}catch(_){}
     mdB.type='button';mdB.style.cssText='pointer-events:auto;position:absolute;top:0;right:0;width:40px;height:36px;border:0;background:none;color:#fff;font:700 15px system-ui;cursor:pointer';
@@ -4762,7 +4766,7 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
     /* S425 (pedido do dono 13:19): o DIAGNÓSTICO do catálogo também entra na gravação — a cada mudança (e a cada 5 s, se mudou): texto da linha, números (peças na nuvem/no site, leituras, erros), site ligado/desligado, temática, peças na tela e de onde vieram */
     var gdU='';function grDg(){try{var o={txt:typeof dgTxt==='function'?dgTxt():'',dg:JSON.parse(JSON.stringify(DG||{})),ativo:CFG?CFG.ativo!==false:null,nuvemConf:!!(CFG&&CFG._f),evento:CFG&&CFG.evento?CFG.evento.tema||'':'',pecas:(P||[]).length,cache:(function(){try{return !!localStorage.getItem('lf_pdocs')}catch(_){return null}})(),online:navigator.onLine},k=JSON.stringify(o);if(k!==gdU){gdU=k;o.k='diagnóstico';grP(o)}}catch(_){}}
     setInterval(grDg,5000);setTimeout(grDg,1500);
-    var bx=document.createElement('div');bx.id='lfgrv';bx.style.cssText='position:fixed;left:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:2147483601;display:flex;gap:6px';
+    var bx=document.createElement('div');bx.id='lfgrv';bx.style.cssText='position:fixed;left:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:calc(var(--c-sistema) + 11);display:flex;gap:6px';
     bx.innerHTML='<button type="button" data-g="b" style="font:700 13px system-ui;padding:10px 14px;border-radius:10px;border:0;background:#111;color:#fff">Baixar gravação</button><button type="button" data-g="z" style="font:700 13px system-ui;padding:10px 12px;border-radius:10px;border:0;background:#444;color:#fff">Zerar</button>';
     bx.addEventListener('click',function(e){var b=e.target.closest('[data-g]');if(!b)return;e.stopPropagation();if(b.getAttribute('data-g')==='z'){GR=[];grN=0;GR0=Date.now();b.textContent='Zerado';setTimeout(function(){b.textContent='Zerar'},1200);return}
       var j={site:window.LF_BUILD,inicio:new Date(GR0).toISOString(),fim:new Date().toISOString(),aparelho:{ua:navigator.userAgent,nucleos:navigator.hardwareConcurrency,mem:navigator.deviceMemory,tela:[screen.width,screen.height,devicePixelRatio],janela:[innerWidth,innerHeight],letra:String(LFT()),rede:(navigator.connection||{}).effectiveType||''},perdidos:grN,diagnostico:(function(){try{return {txt:dgTxt(),dg:DG,ativo:CFG.ativo!==false,pecas:P.length}}catch(_){return null}})(),eventos:GR};
