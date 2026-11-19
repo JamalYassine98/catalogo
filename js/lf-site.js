@@ -1600,9 +1600,7 @@
     var f=$('fa2'),h=$('fa2h');if(f){f.classList.add('bad');if(!h){h=document.createElement('div');h.id='fa2h';h.className='cfh er';f.after(h)}h.textContent=m;h.hidden=false}}
   document.addEventListener('focusout',function(e){var t=e.target;if(!t||t.id!=='fa2')return;var v=t.value.trim();if(v.length<6)return;endConf(v).then(function(r){if($('fa2')!==t||t.value.trim()!==v)return;var h=$('fa2h');if(r.fora)endAviso(r.cc);else{t.classList.remove('bad');if(h)h.hidden=true}})});
   function endsSalvos(c){var o=[],add=function(x){x=String(x||'').trim();if(x.length>=6&&o.indexOf(x)<0)o.push(x)};add(c&&c.end);lsG('lf_ends',[]).forEach(add);return o.slice(0,4)}
-  function endBloco(c){var sv=endsSalvos(c),man=st.endMode==='manual'||!sv.length,i=Math.min(st.endIdx|0,Math.max(sv.length-1,0));
-    if(!man)return '<label class="cfl">Endereço de entrega</label>'+sv.map(function(a,k){return '<button type="button" class="cfo'+(k===i?' on':'')+'" data-cta="endsel" data-i="'+k+'" aria-pressed="'+(k===i)+'">'+cki('pin')+'<b>'+esc(a)+'</b><small>Endereço salvo</small></button>'}).join('')+'<button type="button" class="cfx" data-cta="endman">+ Adicionar endereço manualmente</button>';
-    return '<label class="cfl" for="fa2">Endereço de entrega</label><input class="field" id="fa2" autocomplete="street-address" placeholder="Rua, número, bairro, cidade" value="'+esc(st.endE||'')+'">'+(sv.length?'<button type="button" class="cfx" data-cta="endsav">Usar um endereço salvo</button>':'')}
+
   var EMAIL_ENVIA=false; /* ligar (true) quando o envio de e-mail do pedido estiver funcionando */
   function gdGet(){if(!st.gd)st.gd=lsG('lf_guest',null)||{};return st.gd}
   function gdSave(){if(!$('gn'))return;var g=function(i){var e=$(i);return e?e.value:''};st.gd={nome:g('gn'),pais:g('gpp'),tz:g('gz'),email:g('ge'),doc:g('gd')};lsS('lf_guest',st.gd)}
@@ -1617,8 +1615,7 @@
     var dn='';if(doc){dn=docNorm(pais,doc);if(!dn){gErro2(nacInfo(pais).d+' inválido. Confira os números.','gd');return null}}
     return {nome:nome,nac:pais,doc:dn,nasc:'',pais:pais,tel:tel,telTxt:d.tz,email:em,cidade:'',end:''}}
   document.addEventListener('input',function(e){if(e.target&&/^g[nzed]$/.test(e.target.id))gdSave()});
-  function gTel(pais){var t=telItems();if(!t.some(function(x){return x.v===pais}))t.push({v:pais,s:'+'+(FN&&FN[pais]?FN[pais].c:''),l:paisNome(pais),q:paisNome(pais)});
-    if(!FN)fnLoad().then(function(){if($('gpp')){cddTel('gpp');var z=$('gz');if(z){z.placeholder=fnEx($('gpp').value);if(z.value)fnVivo(z,'gpp','gzh')}}},function(){});return t}
+
   
   /* PIX: código "copia e cola" e QR */
   function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return ('000'+c.toString(16).toUpperCase()).slice(-4)}
