@@ -15,7 +15,9 @@
   var HEART='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-8-4.9-8-11A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 8 2.7c0 6.1-8 11-8 11z"/></svg>',CMPI='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg>';
   var $=function(id){return document.getElementById(id)};
   var fmt=function(n){return LFI.fmt(n)},fmtL=function(p,q){return LFI.fmtD(LFI.pv(p.n)*q)};
-  function vis(p){return p.foto?'<img class="pf" src="'+p.foto+'" alt="'+esc(p.nome)+'" draggable="false">':''}
+  /* o lugar da foto existe sempre; quando a foto chega da nuvem, poeFoto preenche todos os lugares daquela peça (a tela aberta não fica esperando) */
+  function vis(p){return '<img class="pf" data-pf="'+p.ref+'"'+(p.foto?' src="'+p.foto+'"':'')+' alt="'+esc(p.nome)+'" draggable="false">'}
+  function poeFoto(p,d){p.foto=d;document.querySelectorAll('[data-pf="'+p.ref+'"]').forEach(function(e){if(e.tagName==='IMG'){if(!e.getAttribute('src'))e.src=d}else if(!e.style.backgroundImage)e.style.backgroundImage='url("'+d+'")'})}
   function colorFoto(p,i,cb){if(!i){cb(p.foto);return}p.fc=p.fc||[];if(p.fc[i]){cb(p.fc[i]);return}fbg('fotos/'+p.ref+'~'+i).then(function(d){var o=fbd(d);if(o.d){p.fc[i]=o.d;cb(o.d)}}).catch(function(){})}
   function find(ref){return P.filter(function(p){return p.ref===ref})[0]}
   function bruto(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]*find(k).n},0)}
@@ -1080,7 +1082,7 @@
     var q1=function(){return fmt(p.n)},offer=isOf(p),pct=offer?Math.round((1-p.n/p.de)*100):0;
     var buyH='<div class="buy" data-q="1">'+(esg?'':'<div class="tot"><span>Total</span><b data-ptot>'+q1()+'</b></div>')+'<div class="buyrow">'+(esg?'':'<div class="mq" role="group" aria-label="Quantidade"><button type="button" data-pq="-1" aria-label="Diminuir">−</button><b data-pqn>1</b><button type="button" data-pq="1" aria-label="Aumentar">+</button></div>')+'<button type="button" class="bb p" data-addm="'+p.ref+'"><i class="shn"></i><span>'+(esg?'Avise-me':document.documentElement.classList.contains('lojamodo')?LFI.tr('Quero este'):'Comprar')+(esg?'':'<small class="bt" data-ptot> · '+q1()+'</small>')+'</span><em>'+CARTI+'</em></button></div></div>',thumbs=dots?'<div class="dl cthl">'+LFI.tr('Cor')+' · <b class="cthn">'+esc(corNome(p,st.cor[p.ref]||0))+'</b></div><div class="cth cthm" role="group" aria-label="Cores">'+p.cores.map(function(c,i){return '<button type="button" class="'+(i?'':'on')+'" data-cth="'+i+'" aria-label="'+esc(corNome(p,i))+'"><span class="cim"></span><i style="background:'+c+'"></i></button>'}).join('')+'</div>':'';
     var one=!sw;
-    if(one){var th1='<button type="button" class="on" aria-label="'+esc(corNome(p,0))+'"><span class="cim"'+(p.foto?' style="background-image:url(&quot;'+p.foto+'&quot;)"':'')+'></span><i style="background:'+p.cores[0]+'"></i></button>';thumbs='<div class="cthl"><span>Cor</span> · <b>'+esc(corNome(p,0))+'</b></div><div class="cth cthm one" role="group" aria-label="Cores">'+th1+'</div>'}
+    if(one){var th1='<button type="button" class="on" aria-label="'+esc(corNome(p,0))+'"><span class="cim" data-pf="'+p.ref+'"'+(p.foto?' style="background-image:url(&quot;'+p.foto+'&quot;)"':'')+'></span><i style="background:'+p.cores[0]+'"></i></button>';thumbs='<div class="cthl"><span>Cor</span> · <b>'+esc(corNome(p,0))+'</b></div><div class="cth cthm one" role="group" aria-label="Cores">'+th1+'</div>'}
     var thumbsD=thumbs.replace('cth cthm','cth cthd');
     var pubL={m:'Masculino',f:'Feminino',u:'Unissex'}[p.gen];
     prodNext=true;
@@ -3443,8 +3445,8 @@
     if(CFG.dmodo==='auto'||!Object.keys(heroRefs).length){P.slice().sort(function(a,b){return (b.est||0)-(a.est||0)}).slice(0,4).forEach(function(q){heroRefs[q.ref]=1})}
     fcPronto(function(){var fo=0;P.forEach(function(p){
       if(!(p.fv>0))return;var c=FCM&&FCM[p.ref];
-      if(c&&c.v===p.fv&&c.d){p.foto=c.d;fo=1;return}
-      var busca=function(){fbg('fotos/'+p.ref).then(function(d){var o=fbd(d);if(!o.d)return;p.foto=o.d;fcSet(p.ref,{v:p.fv,d:o.d});if(heroRefs[p.ref]){setHero()}clearTimeout(syncProds.t);syncProds.t=setTimeout(function(){redraw();setHero()},heroRefs[p.ref]?60:250)}).catch(function(){})};
+      if(c&&c.v===p.fv&&c.d){poeFoto(p,c.d);fo=1;return}
+      var busca=function(){fbg('fotos/'+p.ref).then(function(d){var o=fbd(d);if(!o.d)return;poeFoto(p,o.d);fcSet(p.ref,{v:p.fv,d:o.d});if(heroRefs[p.ref]){setHero()}clearTimeout(syncProds.t);syncProds.t=setTimeout(function(){redraw();setHero()},heroRefs[p.ref]?60:250)}).catch(function(){})};
       /* as fotos do destaque vêm primeiro; o resto do catálogo só depois, para não disputar a rede */
       if(heroRefs[p.ref])busca();else setTimeout(busca,900)});
     if(fo)redraw()})}
