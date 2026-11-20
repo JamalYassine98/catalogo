@@ -2719,9 +2719,6 @@
   function prefSync(){/* S422: o menu antigo com trilhos saiu; Idioma fica na lista com ✓ (#dsh) */}
   function fshSet(on){var d=$('fsh');d.classList.toggle('on',on);d.setAttribute('aria-hidden',on?'false':'true')}
   $('fbtn').addEventListener('click',function(){fshSet(true)});
-  function vset(l){document.documentElement.classList.toggle('vlist',l);var b=$('vtog');if(b){var t=LFI.tr(l?'Ver como catálogo':'Ver como lista');b.setAttribute('aria-label',t);b.title=t}try{localStorage.setItem('lf_vista',l?'l':'g')}catch(_){}}
-  try{if(localStorage.getItem('lf_vista')==='l')vset(true)}catch(_){}
-  $('vtog').addEventListener('click',function(){vset(!document.documentElement.classList.contains('vlist'))});
   function dhdAlign(){try{var m=$('mnb').getBoundingClientRect(),h=document.querySelector('#drw .dhd'),x=h&&h.querySelector('.ib'),z=parseFloat(getComputedStyle(document.body).zoom)||1;if(!x||!m.height||m.top<0||m.bottom>160)return;h.style.position='';h.style.top='';h.style.paddingTop='';h.style.flex='none';var r=x.getBoundingClientRect(),dy=(m.top+m.height/2)-(r.top+r.height/2),pt=parseFloat(getComputedStyle(h).paddingTop)||0;if(Math.abs(dy/z)>40)return;h.style.paddingTop=(pt+dy/z)+'px'}catch(_){}}
   function catSet(o,pin){var c=document.querySelector('#drw .cat');if(!c)return;c.classList.toggle('open',o);c.classList.toggle('pin',!!(o&&pin));var b=c.querySelector('.arr');if(b)b.setAttribute('aria-expanded',o?'true':'false')}
   (function(){var c=document.querySelector('#drw .cat'),tm=0;if(!c)return;
@@ -5100,9 +5097,8 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
 /* 11/11 S176-2: altura da barra Comprar (posiciona o WhatsApp logo acima dela) */
 (function(){/* S426: a altura vem do ResizeObserver (sem obrigar o navegador a arrumar a tela fora de hora) */var ro=window.ResizeObserver?new ResizeObserver(function(es){var h=es[0]&&es[0].target.offsetHeight;if(h)document.documentElement.style.setProperty('--buyh',h+'px')}):null,ub=null;
   function u(){var b=document.querySelector('.buy');if(!b)return;if(ro){if(b!==ub){if(ub)ro.unobserve(ub);ub=b;ro.observe(b)}return}if(b.offsetHeight)document.documentElement.style.setProperty('--buyh',b.offsetHeight+'px')}try{new MutationObserver(function(){setTimeout(u,60)}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});addEventListener('resize',u)}catch(_){}})();
-/* S170 (aprovado e implementado 11/11/2026): animação leve do tema no destaque, faixa do tema no catálogo (os selos de tema nas peças saíram em 20/11: o tema já está na faixa, no destaque e nas cores), sem etiqueta NUEVO */
+/* S170 (aprovado e implementado 11/11/2026): animação leve do tema no destaque, (20/11: saíram os selos de tema nas peças e a faixa repetida no catálogo — o tema fica na faixa do topo, no destaque e nas cores) */
 (function(){
-  function T(s){try{return window.LFI&&LFI.lang==='es'?LFI.tr(s):s}catch(_){return s}}
   var MO='<svg viewBox="0 0 34 16"><path d="M17 5c1-2 2-2 3 0 3-3 8-4 14-1-3 0-5 2-5 5-2-2-5-2-7 1-1-1-3-1-5 0-2-3-5-3-7-1 0-3-2-5-5-5 6-3 11-2 14 1 1-2 2-2 3 0z"/></svg>';
   function r(a,b){return a+Math.random()*(b-a)}
   function fx(){
@@ -5120,14 +5116,6 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
     c.innerHTML=h;hd.insertBefore(c,hd.firstChild);
     setTimeout(function(){c.classList.add('fim')},window.__evfxFim||10000);
   }
-  var FX={natal:'🎄 Presentes de Natal · retirada no mesmo dia',anonovo:'✨ Ano novo, novo olhar',maes:'🌷 Presentes para a mamãe · retirada no mesmo dia',pais:'Presentes para o papai · retirada no mesmo dia',bf:'⚡ Black Friday · ofertas em toda a loja',halloween:'🎃 Semana de Halloween'};
-  function cat(){
-    var ev=(document.documentElement.getAttribute('data-ev')||'').replace(/-[nd]$/,''),g=document.getElementById('grid');if(!g)return;if(!FX[ev]){[].forEach.call(document.querySelectorAll('.evlf'),function(x){x.remove()});return}
-    if(!g.parentNode.querySelector('.evlf')){var f=document.createElement('div');f.className='evlf';f.textContent=T(FX[ev]);g.parentNode.insertBefore(f,g)}
-  }
-  function novo(){document.querySelectorAll('#grid .card .tg,#home .hc .tg').forEach(function(t){if(/^(NUEVO|NOVO)$/i.test(t.textContent.trim()))t.style.display='none'})}
-  function vai(){fx();cat();novo()}
-  if(document.readyState==='complete')setTimeout(vai,800);else addEventListener('load',function(){setTimeout(vai,800)});
-  new MutationObserver(function(){setTimeout(vai,300)}).observe(document.documentElement,{attributes:true,attributeFilter:['data-ev']});
-  setInterval(function(){if(!document.hidden){cat();novo()}},1000);
+  if(document.readyState==='complete')setTimeout(fx,800);else addEventListener('load',function(){setTimeout(fx,800)});
+  new MutationObserver(function(){setTimeout(fx,300)}).observe(document.documentElement,{attributes:true,attributeFilter:['data-ev']});
 })();
