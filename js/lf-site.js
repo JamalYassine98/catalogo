@@ -2131,7 +2131,7 @@
     var e=evAtivo(),r=document.documentElement,t=e?e.tema:'';
     if(t==='anonovo')t=evNoite()?'anonovo-n':'anonovo-d';
     if(t)r.setAttribute('data-ev',t);else r.removeAttribute('data-ev');
-    var b=$('evbar');if(!b){b=document.createElement('div');b.id='evbar';var tp=document.querySelector('.top');tp.parentNode.insertBefore(b,tp)}
+    var b=$('evbar');if(!b){b=document.createElement('div');b.id='evbar';var tp=document.querySelector('.top');tp.insertBefore(b,tp.firstChild)/* S430: a faixa é a 1ª linha do próprio topo — andam juntos, nunca um cobre o outro */}
     var tx=e?(e.bar||EVD[e.tema].bar):'';if(e&&e.tema==='anonovo'&&!e.bar){var y=new Date().getFullYear()+(new Date().getMonth()===0?0:1);tx='✨ Ano Novo · comece '+y+' com um novo olhar'}
     if(b._t!==tx){b._t=tx;b.textContent=tx}
     return e}
