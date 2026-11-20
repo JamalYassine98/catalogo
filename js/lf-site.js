@@ -2167,7 +2167,7 @@
 
   /* ---- cards ---- */
   function selo5(p,sec){if(p.aviso==='Esgotado')return '<span class="hb esg">'+LFI.tr('Esgotado')+'</span>';var h=selo1(p,'hb');if((sec==='nov'&&/ nv"/.test(h))||(sec==='mv'&&/ rk"/.test(h)))return '';return h}
-  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+'</span>'+(/Últim/.test(p.aviso||'')?'<span class="ulin hlin" data-cabe="letra"><i></i>'+esc(p.aviso)+'</span>':'')+(p.ds!=null?'<span class="hn lfcod"><small class="hds">'+esc(p.ds)+'</small>'+esc(p.ref)+'</span>':'<span class="hn">'+esc(p.nome)+'</span>')+'<span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
+  function card5(p,idl,sec){return '<button type="button" class="hc" data-open="'+p.ref+'" aria-label="'+LFI.tr('Ver')+' '+esc(p.nome)+'">'+(idl?'<span class="hidl">'+LFI.tr('Ideal para você')+'</span>':selo5(p,sec))+'<span class="hci">'+img5(p)+(/Últim/.test(p.aviso||'')?'<span class="ulin" data-cabe="letra"><i></i>'+esc(p.aviso)+'</span>':'')+'</span>'+(p.ds!=null?'<span class="hn lfcod"><small class="hds">'+esc(p.ds)+'</small>'+esc(p.ref)+'</span>':'<span class="hn">'+esc(p.nome)+'</span>')+'<span class="hsw">'+(p.cores||[]).slice(0,5).map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span><span class="hp">'+prc5(p)+'</span></button>'}
   function abas5(){var C=cat5(),ok=function(p){return p.aviso!=='Esgotado'};
     /* 08/11 (aprovado): cada peça aparece em UMA seção só, na de maior hierarquia — Ofertas > Mais vendidos > Novidades.
        Em Ofertas a mais vendida vem primeiro, depois o maior desconto. */
@@ -3157,19 +3157,11 @@
     window.lfCabeTudo=function(){acha(document.body)};
     new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)acha(n)});if(m.type==='characterData'||m.type==='childList'){var e=m.target.nodeType===1?m.target:m.target.parentElement;var g=e&&e.closest&&e.closest('[data-cabe]');if(g)pede(g)}})}).observe(document.body,{childList:true,subtree:true,characterData:true});
     addEventListener('resize',function(){requestAnimationFrame(lfCabeTudo)});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(lfCabeTudo);acha(document.body)})();
-  /* S429 (121, aprovado): "Últimas N" alinhado com o texto do cartão e sem passar do coração; área de toque de 44 px por fora do desenho,
+  /* S429 (121, aprovado): área de toque de 44 px por fora do desenho,
      que para no meio do caminho até o vizinho (não cobre letra de outra coisa) */
   (function(){
     function toque(){return matchMedia('(pointer:coarse)').matches||innerWidth<1100}
     function vis(e){var r=e.getBoundingClientRect();if(!r.width||!r.height)return false;for(var x=e;x&&x!==document.body;x=x.parentElement){var c=getComputedStyle(x);if(c.display==='none'||c.visibility==='hidden')return false}return true}
-    function offY(e,base){var y=0;for(var x=e;x&&x!==base;x=x.offsetParent)y+=x.offsetTop;return y}
-    function poe(c,s,ph,fixo){var pr=ph.getBoundingClientRect(),tx=c.querySelector('.hn,.nm,.ref'),esq=pr.left+12;
-      if(tx){var w=document.createTreeWalker(tx,NodeFilter.SHOW_TEXT,{acceptNode:function(n){return n.textContent.trim()?1:3}}),n=w.nextNode();if(n){var rg=document.createRange();rg.setStart(n,0);rg.setEnd(n,1);esq=rg.getBoundingClientRect().left}else esq=tx.getBoundingClientRect().left}
-      var base=s.offsetParent||c,br=base.getBoundingClientRect(),zb=br.width/base.offsetWidth||1,fav=c.querySelector('.fav'),lim=fav?fav.getBoundingClientRect().left-6:pr.right-12;
-      s.style.left=((esq-br.left)/zb)+'px';if(!fixo)s.style.top=(offY(ph,base)+16)+'px'/* pela posição de layout: não pega o cartão no meio da animação de entrada */;
-      s.style.maxWidth=Math.max(40,(lim-esq)/zb)+'px';var d=esq-s.getBoundingClientRect().left;if(Math.abs(d)>.5)s.style.left=(parseFloat(s.style.left)+d/zb)+'px'}
-    function selos(){document.querySelectorAll('#home .hc').forEach(function(c){var s=c.querySelector('.hlin'),im=c.querySelector('.hci, img');if(s&&im)poe(c,s,im.closest('.hci')||im,false)});
-      document.querySelectorAll('#grid .card').forEach(function(c){var s=c.querySelector('.ph .ulin'),ph=c.querySelector('.ph');if(s&&ph)poe(c,s,ph,true)})}
     function areas(){document.querySelectorAll('.lx44').forEach(function(e){e.classList.remove('lx44','lxpos','lxb')});if(!toque())return;
       var sel='a[href],button,[role=button],summary,input:not([type=hidden]),select,label[for]',T=[].filter.call(document.querySelectorAll(sel),vis).filter(function(e){return !e.closest('.lx-ignora')}),R=T.map(function(e){return e.getBoundingClientRect()});
       var TX=[].filter.call(document.querySelectorAll('body *'),function(x){return !x.closest(sel)&&[].some.call(x.childNodes,function(n){return n.nodeType===3&&n.textContent.trim()})&&vis(x)}).map(function(x){return x.getBoundingClientRect()});
@@ -3183,7 +3175,7 @@
           if(sh&&o.top>=r.bottom-1)b=Math.min(b,Math.max(0,(o.top-r.bottom)/2));if(sh&&o.bottom<=r.top+1)t=Math.min(t,Math.max(0,(r.top-o.bottom)/2))});
         if(getComputedStyle(e).position!=='static')e.classList.add('lxpos');e.classList.add('lx44');if(usaB)e.classList.add('lxb');
         e.style.setProperty('--t',t/z+'px');e.style.setProperty('--b',b/z+'px');e.style.setProperty('--l',l/z+'px');e.style.setProperty('--r',rr/z+'px')})}
-    var tm=0;function go(){clearTimeout(tm);tm=setTimeout(function(){try{selos()}catch(_){}try{areas()}catch(_){}},120)}
+    var tm=0;function go(){clearTimeout(tm);tm=setTimeout(function(){try{areas()}catch(_){}},120)}
     new MutationObserver(go).observe(document.body,{childList:true,subtree:true});addEventListener('resize',go);addEventListener('load',go);go()})();
   var NUM_LOJA='595983642241';
   /*REDES-RODAPE*/ var SOCIAL={ig:'',fb:''}; /* cole aqui os links dos perfis, ex.: ig:'https://instagram.com/lafouch' */
