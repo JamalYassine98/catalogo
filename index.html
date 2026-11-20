@@ -2601,13 +2601,11 @@ html[data-ev=maes] .lfft .lng button,html[data-ev=pais] .lfft .lng button,html[d
 @keyframes evpis{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
 @keyframes evvoa{0%{transform:translate3d(-60px,var(--y0),0) scale(var(--s))}50%{transform:translate3d(calc(var(--w)/2),var(--y1),0) scale(var(--s))}100%{transform:translate3d(calc(var(--w) + 60px),var(--y0),0) scale(var(--s))}}
 @keyframes evasa{50%{transform:scaleY(.35)}}
-@keyframes evbri{0%{transform:translateX(-120%) skewX(-18deg)}60%,100%{transform:translateX(420%) skewX(-18deg)}}
 .evfx .fl{width:var(--t);height:var(--t);border-radius:50%;background:#fff;opacity:.85;box-shadow:0 0 4px #fff8;animation:evcai var(--d) linear var(--a) infinite}
 .evfx .pt{width:var(--t);height:calc(var(--t)*.62);border-radius:60% 0 60% 0;background:linear-gradient(135deg,#ffd1df,#f39ab8);opacity:.9;animation:evcai var(--d) linear var(--a) infinite}
 .evfx .br{width:var(--t);height:var(--t);opacity:0;animation:evpis var(--d) ease-in-out var(--a) infinite;background:var(--c);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
 .evfx .mo{left:0;top:0;width:34px;height:16px;animation:evvoa var(--d) ease-in-out var(--a) 1 both}
 .evfx .mo svg{width:100%;height:100%;fill:#1a0d20;animation:evasa .28s ease-in-out infinite;transform-origin:50% 60%}
-.evfx .sh{top:0;bottom:0;width:22%;background:linear-gradient(90deg,transparent,#ffffff2e,transparent);animation:evbri 3.2s ease-in-out .6s 3}
 @media (prefers-reduced-motion:reduce){.evfx{display:none}}
 /* contornos leves na cor do tema (cards de Novidades e Categoria); BF fica com os cards pretos */
 html[data-ev=natal]{--evb:#1f5c3a}html[data-ev^=anonovo]{--evb:#a8854a}html[data-ev=maes]{--evb:#b8436f}html[data-ev=pais]{--evb:#1e2f4d}html[data-ev=halloween]{--evb:#5a2f72}
