@@ -48,9 +48,8 @@
   function descD(){return descVale()==='cup'?cupInfo().d:0}
   function descDD(){return descVale()==='cup'?cupInfo().dD:0}
   function cupFn(b){var o={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)},go=function(){return acFetch(fnUrl('cupom'),o).then(function(r){return r.json()})};
-    /* S370 (aprovado 15/11 15:11): os cartões usam a chave de login RENOVADA (idTok); a guardada vence em 1 hora */
-    if(b.acao==='meus')return idTok().then(function(t){o.headers.Authorization='Bearer '+t;return go()},function(){return {ok:false,motivo:'sessao'}});
-    return go()}
+    /* S370 + S6 (20/11): quem está logada manda o login RENOVADO (idTok) em toda chamada — a nuvem reconhece a cliente (VIP) pela conta, nunca pelo telefone digitado; 'meus' exige o login */
+    return idTok().then(function(t){o.headers.Authorization='Bearer '+t},function(){if(b.acao==='meus')throw 0}).then(go,function(){return {ok:false,motivo:'sessao'}})}
   function cupGuarda(c){st.cup=c?{cod:c.cod,pct:c.pct,tipo:c.tipo,fim:c.fim||0,min:c.min||0,restam:c.restam}:null;lsS('lf_cup',st.cup)}
   function cupTira(){cupGuarda(null)}
   function cupData(t){return t?new Date(t).toLocaleDateString(LFI.lang==='es'?'es-PY':'pt-BR'):''}
@@ -1207,7 +1206,8 @@
   /* reserva de 30 min (14/11; o prazo real vem do servidor): o servidor decide a hora e quantas peças sobram; se a função estiver desligada ou fora do ar, o pedido segue como antes */
   function resCall(acao,pedido,itens,refs,extra){
     var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000),b={acao:acao,pedido:pedido};if(itens)b.itens=itens;if(refs)b.refs=refs;if(extra)for(var xk in extra)b[xk]=extra[xk];
-    return acFetch(fnUrl('reserva'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b),signal:ct?ct.signal:undefined}).then(function(r){clearTimeout(tm);if(r.status>=500||r.status===404)return null;return r.json().catch(function(){return null})},function(){clearTimeout(tm);return null})}
+    var o={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b),signal:ct?ct.signal:undefined};
+    return idTok().then(function(t){o.headers.Authorization='Bearer '+t},function(){}).then(function(){return acFetch(fnUrl('reserva'),o)}).then(function(r){clearTimeout(tm);if(r.status>=500||r.status===404)return null;return r.json().catch(function(){return null})},function(){clearTimeout(tm);return null})}
   function resItens(its){return (its||[]).map(function(i){return {ref:i.ref,cor:i.cor||'',q:i.q}})}
   function resLeft(e){if(!e||!e.rx)return 0;return Math.max(0,e.rx-(Date.now()+(e.rd||0)))}
   /* S394: preço da linha como aparece na tela (moeda do cliente), para o e-mail do pedido */
@@ -1215,9 +1215,8 @@
   function pkEnviar(doc,id){
     /* 13/11: corta os textos no limite das regras do Firestore (endereço longo não pode derrubar o pedido) */
     var LIM={nome:79,tel:29,email:199,doc:29,obsC:199,endE:299,refE:199,depE:79,cidade:79};Object.keys(LIM).forEach(function(k){if(typeof doc[k]==='string'&&doc[k].length>LIM[k])doc[k]=doc[k].slice(0,LIM[k])});
-    var f={};for(var k in doc)f[k]=fsv(doc[k]);
     var ct=window.AbortController?new AbortController():null,tm=setTimeout(function(){ct&&ct.abort()},8000);
-    return acFetch('https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/pedidos?documentId='+encodeURIComponent(id)+'&key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f}),signal:ct?ct.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw new Error('http '+r.status);return true},function(e){clearTimeout(tm);throw e})}
+    return acFetch(fnUrl('pedido'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:id,doc:doc}),signal:ct?ct.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw new Error('http '+r.status);return true},function(e){clearTimeout(tm);throw e})}
   /* B1 (11/11): se a rede falhar ou demorar, tenta de novo sozinho uma vez; guarda o motivo para mostrar o código discreto */
   function pkEnviar2(doc,id){return pkEnviar(doc,id).catch(function(e){var m=String(e&&e.message||e||''),http=/^http (\d+)/.exec(m);if(http&&+http[1]<500){throw e}
       return new Promise(function(r){setTimeout(r,1200)}).then(function(){return pkEnviar(doc,id)})})}
@@ -1950,7 +1949,7 @@
     if(!retry)lsS('lf_ent',ent==='delivery'?{ent:'delivery',tr:st.tr||'',i:st.endIdx|0}:{ent:'loja'});
     pkTela('<div class="pkl"></div><div class="pkc"><div class="pks"></div></div><h2 style="animation-delay:0s">Enviando seu pedido…</h2>').className='pkw0';
     var rxo=null;
-    (CFG.reserva===true?resCall('reservar',id,resItens(doc.itens),null,{pag:pag,tel:c.tel||''}):Promise.resolve(null)).then(function(rr){
+    (CFG.reserva===true?resCall('reservar',id,resItens(doc.itens),null,{pag:pag}):Promise.resolve(null)).then(function(rr){
       if(rr&&rr.ok===false&&rr.motivo==='esgotado'){var err=new Error('esgotado');err.falta=rr.falta||[];throw err}
       if(rr&&rr.ok&&!rr.off&&rr.exp)rxo={rx:rr.exp,rd:(rr.agora||Date.now())-Date.now(),vip:!!rr.vip};
       return pkEnviar(doc,id)}).then(function(){
@@ -4751,7 +4750,7 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
     function presAtivo(){return !!(st.pres&&st.cup&&st.cup.tipo==='pe'&&find(st.pres.ref))}
     function presN(){var p=st.pres&&find(st.pres.ref);return p?p.n:0}
     function pagas(){return Object.keys(st.cart).filter(function(k){var p=find(k);return p&&!isOf(p)&&p.aviso!=='Esgotado'})}
-    function presLista(){var c=getConta()||{};return cupFn({acao:'presentes',pagas:pagas(),tel:c.tel||''}).then(function(j){var R={};((j&&j.refs)||[]).forEach(function(r){R[r]=1});st._presRefs=R;st._presOk=!!(j&&j.ok);st._presLim=j&&j.lim||0;return j},function(){st._presRefs={};return null})}
+    function presLista(){return cupFn({acao:'presentes',pagas:pagas()}).then(function(j){var R={};((j&&j.refs)||[]).forEach(function(r){R[r]=1});st._presRefs=R;st._presOk=!!(j&&j.ok);st._presLim=j&&j.lim||0;return j},function(){st._presRefs={};return null})}
     function presTira(motivo){if(!st.pres)return;var r=st.pres.ref;st.pres=null;lsS('lf_pres',null);st._presSaiu=motivo?{ref:r,m:motivo}:null}
     /* confere o presente quando o carrinho muda (o servidor confere de novo no pedido) */
     function presConfere(){if(!st.pres)return Promise.resolve();if(!st.cup||st.cup.tipo!=='pe'){presTira();return Promise.resolve()}
