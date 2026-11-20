@@ -249,10 +249,9 @@ html.bootgz body>*:not(#gw):not(#ptr5):not(script):not(style){visibility:hidden!
 .hc .hn{padding:12px var(--texto) 0!important;line-height:1.15!important}.hc .hds{display:block!important;line-height:1.15!important;margin:0 0 4px!important}
 .hc .hsw{padding:8px 12px 0!important;line-height:0}.hc .hp{padding:8px 12px 10px!important;line-height:1.15!important}
 .hc .hci{position:relative}
-/* ícone de Mi cuenta igual aos outros (preto; ao passar o mouse, o mesmo efeito) */
-.bar #contabtn,.bar #contabtn.on,.bar #contabtn svg,.bar #contabtn.on svg{color:var(--tx)!important}
+
 @media (hover:hover){.bar #sbtn:hover{transform:translateY(-1px)!important;background:color-mix(in srgb,var(--tx) 6%,transparent)!important;box-shadow:0 6px 16px -6px var(--shadow),0 1px 0 color-mix(in srgb,#fff 55%,transparent) inset}
-.bar #sbtn svg{transition:color .25s,filter .25s,transform .25s}.bar #sbtn:hover svg,.bar #contabtn:hover svg,.bar #contabtn.on:hover svg{color:var(--ac)!important;filter:drop-shadow(0 2px 3px color-mix(in srgb,var(--ac) 55%,transparent)) drop-shadow(0 0 7px color-mix(in srgb,var(--ac) 35%,transparent));transform:translateY(-1px)}}
+.bar #sbtn svg{transition:color .25s,filter .25s,transform .25s}.bar #sbtn:hover svg{color:var(--ac)!important;filter:drop-shadow(0 2px 3px color-mix(in srgb,var(--ac) 55%,transparent)) drop-shadow(0 0 7px color-mix(in srgb,var(--ac) 35%,transparent));transform:translateY(-1px)}}
 /* a foto não "segue" o mouse (brilho que acompanhava o ponteiro) */
 .card::after,.face::after,.stage::after{display:none!important}
 /* dica Comparar/Compartir inteira */
@@ -306,8 +305,7 @@ html[data-ev=pais] #home .hd .hbt .p1,html[data-ev=pais] #home .hd .hbt .p2,html
 html[data-ev=maes] #home .hd .hbt .p1,html[data-ev=maes] #home .hd .hbt .p2,html[data-ev=maes] #home .hd .hbt .p2 i{color:#ffd1df!important;border-color:#ffd1df!important}
 html[data-ev=bf] #home .hd .hbt .p1,html[data-ev=bf] #home .hd .hbt .p2,html[data-ev=bf] #home .hd .hbt .p2 i{color:#ffffff!important;border-color:#ffffff!important}
 html[data-ev=anonovo-d] #home .hd .hbt .p1,html[data-ev=anonovo-d] #home .hd .hbt .p2,html[data-ev=anonovo-d] #home .hd .hbt .p2 i,html[data-ev=anonovo-d] #home .hd .hlb{color:#735b31!important;border-color:#735b31!important}
-/* 4 · ícone Mi cuenta igual aos outros no cabeçalho escuro */
-html[data-ev=bf] .top .bar #contabtn,html[data-ev=bf] .top .bar #contabtn svg,html[data-ev=anonovo-n] .top .bar #contabtn,html[data-ev=anonovo-n] .top .bar #contabtn svg{color:#fff!important}
+
 /* 5 · enfeites: no máximo 7 e somem antes do texto e dos botões do Destaque */
 #hdst .evfx i:nth-child(n+8){display:none!important}
 #hdst .evfx{-webkit-mask-image:linear-gradient(#000 0,#000 46%,transparent 58%);mask-image:linear-gradient(#000 0,#000 46%,transparent 58%)}
