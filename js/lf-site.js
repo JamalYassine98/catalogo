@@ -1442,15 +1442,15 @@
   function acFetch(url,o){o=o||{};return Promise.race([acTok(),new Promise(function(r){setTimeout(function(){r(null)},4000)})]).then(function(t){if(t)o.headers=Object.assign({},o.headers,{'X-Firebase-AppCheck':t});return fetch(url,o)})}
   function fsBase(){return 'https://firestore.googleapis.com/v1/projects/'+FB.p+'/databases/(default)/documents/'}
   function authPost(ep,body){return acFetch('https://identitytoolkit.googleapis.com/v1/accounts:'+ep+'?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(String((j.error&&j.error.message)||'ERRO').split(' ')[0]);return j})})}
-  var AUTH_MSG={EMAIL_EXISTS:'Este e-mail já tem conta. Use Iniciar sessão.',USER_TAKEN:'Esse usuário já existe. Escolha outro.',INVALID_LOGIN_CREDENTIALS:'Usuário/e-mail ou senha incorretos.',INVALID_PASSWORD:'Usuário/e-mail ou senha incorretos.',EMAIL_NOT_FOUND:'Não encontramos esse e-mail.',USER_NOT_FOUND:'Não encontramos esse usuário ou e-mail.',WEAK_PASSWORD:'Senha fraca. Use 6 ou mais caracteres.',INVALID_EMAIL:'E-mail inválido.',TOO_MANY_ATTEMPTS_TRY_LATER:'Muitas tentativas. Espere um pouco e tente de novo.',FEDERATED_USER_ID_ALREADY_USED:'Esse Google já está ligado a outra conta.',CREDENTIAL_ALREADY_IN_USE:'Esse Google já está ligado a outra conta.',OPERATION_NOT_ALLOWED:'O login ainda não está ativo na loja. Fale com a loja pelo WhatsApp.'};
+  var AUTH_MSG={EMAIL_EXISTS:'Este e-mail já tem conta. Use Iniciar sessão.',INVALID_LOGIN_CREDENTIALS:'Usuário/e-mail ou senha incorretos.',INVALID_PASSWORD:'Usuário/e-mail ou senha incorretos.',EMAIL_NOT_FOUND:'Não encontramos esse e-mail.',WEAK_PASSWORD:'Senha fraca. Use 6 ou mais caracteres.',INVALID_EMAIL:'E-mail inválido.',TOO_MANY_ATTEMPTS_TRY_LATER:'Muitas tentativas. Espere um pouco e tente de novo.',FEDERATED_USER_ID_ALREADY_USED:'Esse Google já está ligado a outra conta.',CREDENTIAL_ALREADY_IN_USE:'Esse Google já está ligado a outra conta.',OPERATION_NOT_ALLOWED:'O login ainda não está ativo na loja. Fale com a loja pelo WhatsApp.'};
   function authErr(e,id){cfErro(AUTH_MSG[String(e&&e.message||'')]||'Não deu para conectar. Confira a internet e tente de novo.',id);authBusy(false)}
   function authBusy(on){var b=document.querySelector('#layer [data-busy]');if(!b)return;if(on){b.setAttribute('data-t',b.textContent);b.textContent='Aguarde…';b.disabled=true}else{b.textContent=b.getAttribute('data-t')||b.textContent;b.disabled=false}}
   function sessSave(j,user,x){var o={uid:j.localId,email:j.email,idToken:j.idToken,refresh:j.refreshToken,exp:Date.now()+(+j.expiresIn||3600)*1000-60000,user:user||''};if(x)for(var k in x)o[k]=x[k];lsS('lf_auth',o);return o}
   function idTok(){var s=sessG();if(!s)return Promise.reject(new Error('SEM_SESSAO'));if(Date.now()<s.exp)return Promise.resolve(s.idToken);
     return fetch('https://securetoken.googleapis.com/v1/token?key='+FB.k,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(s.refresh)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error('SESSAO');s.idToken=j.id_token;s.refresh=j.refresh_token||s.refresh;s.exp=Date.now()+(+j.expires_in||3600)*1000-60000;lsS('lf_auth',s);return s.idToken})})}
   function fsA(method,path,fields){return idTok().then(function(t){var f={};for(var k in fields)f[k]=fsv(fields[k]);return acFetch(fsBase()+path,{method:method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},body:fields?JSON.stringify({fields:f}):undefined}).then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json()})})}
-  /* usuário ou e-mail → e-mail */
-  function achaEmail(id){return id.indexOf('@')>0?Promise.resolve({email:id,user:''}):fbg('usuarios/'+encodeURIComponent(id)).then(function(d){var e=fbd(d).email;if(!e)throw new Error('USER_NOT_FOUND');return {email:e,user:id}},function(){throw new Error('USER_NOT_FOUND')})}
+  /* nome de usuário antigo + senha: a função da nuvem acha a conta e faz o login por dentro (o site não lê a lista de usuários) */
+  function contaEntrar(user,senha){return fetch(fnUrl('conta'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'entrar',user:user,senha:senha})}).then(function(r){return r.json()}).then(function(j){if(!j||!j.ok)throw new Error(j&&j.motivo==='espera'?'TOO_MANY_ATTEMPTS_TRY_LATER':j&&j.motivo==='login'?'INVALID_LOGIN_CREDENTIALS':'ERRO');return j})}
   var AUTH_VOLTA=false;
   function pwField(id,lb){return '<label class="cfl" for="'+id+'">'+lb+'</label><div class="pwr"><input class="field" id="'+id+'" type="password" autocomplete="'+(id==='aup'?'current-password':'new-password')+'"><button type="button" class="pwo" tabindex="-1" data-cta="olho" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle class="pp" cx="12" cy="12" r="3"/><path class="sl" d="M4 4l16 16"/></svg></button></div>'}
   function authHead(t){return '<div style="display:flex;align-items:center;justify-content:space-between"><h2 style="font-size:28px">'+t+'</h2><button class="x" data-close aria-label="Fechar" style="align-self:auto">×</button></div>'}
@@ -1461,39 +1461,16 @@
       '<div class="remrow"><label class="rem"><input type="checkbox" id="aur"'+(remOn()?' checked':'')+'><i></i><span>Lembrar de mim</span></label><button type="button" class="cfx" data-cta="esqueci">Esqueci minha senha</button></div>'+
       '<button class="btn w" data-cta="login" data-busy>Iniciar sessão</button>'+gBtn('Continuar com Google')+
       '<button type="button" class="cfx" data-cta="cadastrar" style="text-align:center;width:100%">Ainda não tenho conta · <u>Criar conta</u></button></aside>')}
-  function cadastrarTela(){gPre();
-    layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Criar conta">'+authHead('Criar conta')+
-      '<div class="passos"><i class="on"></i><i></i></div><div class="note" style="margin:0">Passo 1 de 2 · acesso</div>'+
-      '<label class="cfl" for="auu">Usuário</label><input class="field" id="auu" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="ex.: maria.souza">'+
-      '<label class="cfl" for="aue">E-mail</label><input class="field" id="aue" type="email" autocomplete="email" autocapitalize="none">'+
-      pwField('aup','Senha (mínimo 6 caracteres)')+pwField('aup2','Repetir a senha')+
-      '<div class="fze" id="cferr" role="alert" hidden></div>'+
-      '<button class="btn w" data-cta="criar" data-busy>Continuar</button>'+'<p class="tm">Ao criar sua conta, você aceita os <a href="/termos.html" target="_blank" rel="noopener">Termos e Condições</a> <span>e a</span> <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>'+gBtn('Criar conta com Google')+
-      '<button type="button" class="cfx" data-cta="entrar" style="text-align:center;width:100%">Já tenho conta · <u>Iniciar sessão</u></button></aside>')}
   function esqueciTela(){
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Recuperar senha">'+authHead('Recuperar senha')+
-      '<div class="note" style="margin:0">Digite seu usuário ou e-mail. Enviamos um link para criar uma nova senha.</div>'+
-      '<label class="cfl" for="aul">Usuário ou e-mail</label><input class="field" id="aul" autocomplete="username" autocapitalize="none" spellcheck="false">'+
+      '<div class="note" style="margin:0">Digite seu e-mail. Enviamos um link para criar uma nova senha.</div>'+
+      '<label class="cfl" for="aul">E-mail</label><input class="field" id="aul" type="email" autocomplete="email" autocapitalize="none" spellcheck="false">'+
       '<div class="fze" id="cferr" role="alert" hidden></div><div class="note" id="aures" style="display:none;color:#7fe0a8"></div>'+
       '<button class="btn w" data-cta="reset" data-busy>Enviar link</button>'+
       '<button type="button" class="cfx" data-cta="entrar" style="text-align:center;width:100%">Voltar</button></aside>')}
-  function authEntrar(){
-    var id=($('aul')||{value:''}).value.trim().toLowerCase(),pw=($('aup')||{value:''}).value;
-    if(!id)return cfErro('Digite seu usuário ou e-mail.','aul');if(!pw)return cfErro('Digite sua senha.','aup');cfErro('');try{var rm=$('aur')?$('aur').checked:true;if(rm){localStorage.removeItem('lf_norem');localStorage.setItem('lf_lastu',id)}else{localStorage.setItem('lf_norem','1');localStorage.removeItem('lf_lastu')}}catch(_){}authBusy(true);
-    achaEmail(id).then(function(r){return authPost('signInWithPassword',{email:r.email,password:pw,returnSecureToken:true}).then(function(j){return sessSave(j,r.user)})})
-      .then(function(s){return fsA('GET','clientes/'+s.uid).then(function(d){var o=fbd(d);lsS('lf_conta',o);return o},function(){return null})})
-      .then(function(c){contaBtn();if(c){toast('Olá, '+String(c.nome).split(' ')[0]+'!');if(AUTH_VOLTA)bag();else closeLayer()}else contaForm(AUTH_VOLTA)},function(e){authErr(e,'aul')})}
-  function authCriar(){
-    var g=function(i){return ($(i)||{value:''}).value.trim()},u=g('auu').toLowerCase(),em=g('aue').toLowerCase(),pw=($('aup')||{value:''}).value,p2=($('aup2')||{value:''}).value;
-    if(!/^[a-z0-9._]{3,20}$/.test(u))return cfErro('Usuário: 3 a 20 letras minúsculas, números, ponto ou _.','auu');
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em))return cfErro('E-mail inválido.','aue');
-    if(pw.length<6)return cfErro('A senha precisa ter 6 ou mais caracteres.','aup');if(pw!==p2)return cfErro('As senhas não são iguais.','aup2');cfErro('');authBusy(true);
-    fbg('usuarios/'+encodeURIComponent(u)).then(function(){throw new Error('USER_TAKEN')},function(){return authPost('signUp',{email:em,password:pw,returnSecureToken:true})})
-      .then(function(j){var s=sessSave(j,u);return fsA('POST','usuarios?documentId='+encodeURIComponent(u),{uid:s.uid,email:s.email})})
-      .then(function(){lsS('lf_conta',null);contaBtn();contaForm(AUTH_VOLTA)},function(e){authErr(e,'auu')})}
   function authReset(){
-    var id=($('aul')||{value:''}).value.trim().toLowerCase();if(!id)return cfErro('Digite seu usuário ou e-mail.','aul');cfErro('');authBusy(true);
-    achaEmail(id).then(function(r){return authPost('sendOobCode',{requestType:'PASSWORD_RESET',email:r.email}).then(function(){return r.email})})
+    var id=($('aul')||{value:''}).value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(id))return cfErro('Digite o e-mail da sua conta.','aul');cfErro('');authBusy(true);
+    authPost('sendOobCode',{requestType:'PASSWORD_RESET',email:id}).then(function(){return id})
       .then(function(em){authBusy(false);var n=$('aures');if(n){var a=em.split('@');n.textContent='✓ Link enviado para '+a[0].charAt(0)+'***@'+a[1]+'. Confira também o spam.';n.style.display='block'}},function(e){authErr(e,'aul')})}
   function authSair(){try{localStorage.removeItem('lf_auth');localStorage.removeItem('lf_conta');localStorage.removeItem('lf_ped')}catch(_){}contaBtn()}
   /* Google: SDK do Firebase só para abrir a janela; a sessão segue pelo mesmo caminho (REST) */
@@ -1674,9 +1651,12 @@
     var pc=pedGet(id)||{};
     pkTela(pzBar()+PK_LOGO+'<div class="pyk"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.500 4.500L19 7.500"/></svg></div><h2 style="animation-delay:0s">Comprovante enviado</h2>'+(pc.cod?'<p class="pyn"><span>Pedido</span> '+esc(pc.cod)+'</p>':'')+'<div class="pkt" style="animation-delay:.1s"><span>'+(pc.venc?'Vamos conferir o seu pagamento e avisar aqui e em Minha conta. Pode sair desta tela.':'Vamos conferir o seu pagamento e avisar aqui e em Minha conta. Pode sair desta tela: sua peça continua reservada.')+'</span></div><div class="pkb py" style="animation-delay:.3s"><button type="button" class="pyL" data-pkfim>Voltar ao catálogo</button></div>').className='pkw0 py';pzTopo();
     pkPoll(id,function(o){if(o.pago)pkOk(id,o);else if(o.recusado){pedSet(id,{est:'recusado'});pkTela(PK_LOGO+'<h2 style="animation-delay:0s">Comprovante não aceito</h2><div class="pkt" style="animation-delay:.1s"><span>A loja não encontrou esse pagamento. Confira o valor e envie o comprovante de novo.</span></div><div class="pkb" style="animation-delay:.3s"><button type="button" data-cta="ped" data-id="'+esc(id)+'">Enviar outro comprovante</button></div>');pkStop()}})}
-  function pkOk(id,o){
-    pkStop();var e=pedGet(id)||{};pedSet(id,{est:'pago',tok:o.tok||''});
-    var tok=o.tok||('LF-'+(e.cod||''));
+  /* código de entrega do pedido pago: a cliente pede à nuvem mostrando o telefone do pedido */
+  function pedTok(id){var e=pedGet(id)||{};return resCall('token',id,null,null,{tel:e.tel||(getConta()||{}).tel||''}).then(function(j){return (j&&j.ok&&j.tok)||''})}
+  function pkOk(id){pkStop();pedTok(id).then(function(t){pkPago(id,t)})}
+  function pkPago(id,tok){
+    var e=pedGet(id)||{};pedSet(id,{est:'pago',tok:tok});
+    tok=tok||('LF-'+(e.cod||''));
     pkTela(PK_LOGO+'<div class="pkc"><u></u>'+PK_SVG+'</div><h2 class="ty">Obrigado pela preferência! <span class="hrt">♥</span></h2><div class="pkt"><b style="animation:pkup .5s .7s both">Pagamento confirmado</b><span class="sub2">Suas peças estão reservadas.<br>Ficam separadas para você até a entrega.</span></div>'+
       '<div class="pkcod" style="animation-delay:1.2s">'+esc(tok)+'</div><div class="pkt" style="animation-delay:1.3s"><span>Guarde este código. Ele garante que o pedido é seu.</span></div>'+
       '<div class="pgw" style="margin-top:12px;animation:pkup .5s 1.4s both">'+(e.ent==='delivery'?'A loja avisa pelo WhatsApp quando o pedido sair. O frete é pago à transportadora na entrega.':'Retire na loja quando quiser: segunda a sábado, das 7h30 às 15h.')+'</div>'+
@@ -1774,7 +1754,7 @@
   /* depois de entrar ou criar a conta: no pedido, confere o e-mail e segue para a Entrega */
   function posLogin(){contaBtn();if(!AUTH_VOLTA){closeLayer();return}
     emailOk().then(function(ok){if(ok){st.step='ent';bag()}else codigoTela()})}
-  cadastrarTela=function(){gPre();
+  function cadastrarTela(){gPre();
     layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Criar conta">'+authHead('Criar conta')+
       (AUTH_VOLTA?'<div class="note" style="margin:0">Para fazer o pedido, crie sua conta ou entre. Seu carrinho fica guardado.</div>':'')+
       '<label class="cfl" for="aun">Nome completo</label><input class="field" id="aun" autocomplete="name" placeholder="Como você se chama">'+
@@ -1783,7 +1763,7 @@
       '<div class="fze" id="cferr" role="alert" hidden></div>'+
       '<button class="btn w" data-cta="criar" data-busy>Confirmar</button>'+'<p class="tm">Ao criar sua conta, você aceita os <a href="/termos.html" target="_blank" rel="noopener">Termos e Condições</a> <span>e a</span> <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>'+gBtn('Criar conta com Google')+
       '<button type="button" class="cfx" data-cta="entrar" style="text-align:center;width:100%">Já tenho conta · <u>Iniciar sessão</u></button></aside>')};
-  authCriar=function(){
+  function authCriar(){
     var g=function(i){return ($(i)||{value:''}).value.trim()},nome=g('aun').replace(/\s+/g,' '),em=g('aue').toLowerCase(),pw=($('aup2')||{value:''}).value;
     document.querySelectorAll('#layer .field.bad').forEach(function(e){e.classList.remove('bad')});
     if(nome.length<3||nome.indexOf(' ')<0)return cfErro('Digite seu nome e sobrenome.','aun');
@@ -1827,10 +1807,10 @@
   function emailFeito(){clearInterval(CODT);clearInterval(CODP);var s=sessG();if(s){s.ev=true;s.exp=0;lsS('lf_auth',s)}toast('✓ E-mail confirmado');
     if(AUTH_VOLTA&&Object.keys(st.cart).length){st.step='ent';bag()}else{var c=getConta();layer('<aside class="panel" role="dialog" aria-modal="true" aria-label="Conta criada"><div class="ccok"><div class="cck"><svg viewBox="0 0 24 24" fill="none" stroke="#14803f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M6.5 12.5l4 4 7-8.5"/></svg></div><h2 style="font-size:28px">Conta pronta!</h2><div class="note" style="margin:0"><span>Bem-vindo(a),</span> '+esc(primeiroNome(c&&c.nome))+'.</div><button class="btn w" data-cta="minha" style="margin-top:18px">Ver minha conta</button></div></aside>')}}
   /* entrar: e-mail (ou usuário antigo) + senha */
-  authEntrar=function(){
+  function authEntrar(){
     var id=($('aul')||{value:''}).value.trim().toLowerCase(),pw=($('aup')||{value:''}).value;
     if(!id)return cfErro('Digite seu e-mail.','aul');if(!pw)return cfErro('Digite sua senha.','aup');cfErro('');try{var rm=$('aur')?$('aur').checked:true;if(rm){localStorage.removeItem('lf_norem');localStorage.setItem('lf_lastu',id)}else{localStorage.setItem('lf_norem','1');localStorage.removeItem('lf_lastu')}}catch(_){}authBusy(true);
-    var ses;achaEmail(id).then(function(r){return authPost('signInWithPassword',{email:r.email,password:pw,returnSecureToken:true}).then(function(j){ses=sessSave(j,r.user,{gn:j.displayName||''});return ses})})
+    var ses;(id.indexOf('@')>0?authPost('signInWithPassword',{email:id,password:pw,returnSecureToken:true}):contaEntrar(id,pw)).then(function(j){ses=sessSave(j,id.indexOf('@')>0?'':id,{gn:j.displayName||''});return ses})
       .then(function(s){return fsA('GET','clientes/'+s.uid).then(function(d){return fbd(d)},function(){return null})})
       .then(function(c){c=c&&c.email?contaNorm(c):contaMin(ses);lsS('lf_conta',c);toast('Olá, '+primeiroNome(c.nome)+'!');posLogin()},function(e){authErr(e,'aul')})};
   gEntrar=function(){
@@ -1904,7 +1884,7 @@
   /* situação dos pedidos pendentes: pago, recusado ou cancelado pela loja */
   var PEDAT=0;
   function pedAtualiza(){if(Date.now()-PEDAT<8000)return;PEDAT=Date.now();var L=lsG('lf_ped',[]).filter(function(e){return e.est==='pagar'||e.est==='comp'||e.est==='recusado'||(e.est==='pago'&&!e.entregue&&Date.now()-(+e.ts||0)<120*864e5)});if(!L.length)return;
-    Promise.all(L.map(function(e){return fbg('reservas/'+encodeURIComponent(e.id)).then(function(d){var o=fbd(d)||{},n=null;if(o.cancelado)n={est:'cancelado',fp:!!o.pago||e.est==='pago'};else if(o.pago&&e.est!=='pago')n={est:'pago',tok:o.tok||e.tok||''};if(o.pago&&o.entregue&&!o.cancelado)n=Object.assign(n||{},{entregue:true});if(n){pedSet(e.id,n);return 1}return 0},function(){return 0})})).then(function(r){if(r.some(Boolean)&&st.mcAba==='peds'&&document.querySelector('#layer .mct'))minhaConta('peds')})}
+    Promise.all(L.map(function(e){return fbg('reservas/'+encodeURIComponent(e.id)).then(function(d){var o=fbd(d)||{},n=null;if(o.cancelado)n={est:'cancelado',fp:!!o.pago||e.est==='pago'};else if(o.pago&&e.est!=='pago')n={est:'pago'};if(o.pago&&o.entregue&&!o.cancelado)n=Object.assign(n||{},{entregue:true});if(!n)return 0;if(n.est!=='pago'){pedSet(e.id,n);return 1}return pedTok(e.id).then(function(t){n.tok=t||e.tok||'';pedSet(e.id,n);return 1})},function(){return 0})})).then(function(r){if(r.some(Boolean)&&st.mcAba==='peds'&&document.querySelector('#layer .mct'))minhaConta('peds')})}
   /* B1 (11/11): animações suaves da compra — abrir o carrinho (PC; o celular já desliza), trocar de passo deslizando,
      remover item deslizando, entrar em Minha conta. Tudo desligado com "reduzir movimento". */
   addEventListener('keydown',function(e){if(e.key==='Tab')document.documentElement.classList.add('kbd')});addEventListener('pointerdown',function(){document.documentElement.classList.remove('kbd')});
@@ -2046,7 +2026,7 @@
       if(rr&&rr.ok===false&&rr.motivo==='esgotado'){var err=new Error('esgotado');err.falta=rr.falta||[];throw err}
       if(rr&&rr.ok&&!rr.off&&rr.exp)rxo={rx:rr.exp,rd:(rr.agora||Date.now())-Date.now(),vip:!!rr.vip};
       return pkEnviar(doc,id)}).then(function(){
-      var L=lsG('lf_ped',[]);if(!L.some(function(e){return e.id===id}))L.push({id:id,cod:cod,ts:doc.ts,total:doc.total,brl:doc.brl,pagar:doc.pagar,uq:doc.uq,ent:ent,pag:pag,est:'pagar',teste:!!TESTE,rx:rxo?rxo.rx:0,rd:rxo?rxo.rd:0,vip:!!(rxo&&rxo.vip),itens:doc.itens.map(function(i){return {ref:i.ref,nome:i.nome,q:i.q,cor:i.cor}})});lsS('lf_ped',L.slice(-30));
+      var L=lsG('lf_ped',[]);if(!L.some(function(e){return e.id===id}))L.push({id:id,cod:cod,tel:c.tel||'',ts:doc.ts,total:doc.total,brl:doc.brl,pagar:doc.pagar,uq:doc.uq,ent:ent,pag:pag,est:'pagar',teste:!!TESTE,rx:rxo?rxo.rx:0,rd:rxo?rxo.rd:0,vip:!!(rxo&&rxo.vip),itens:doc.itens.map(function(i){return {ref:i.ref,nome:i.nome,q:i.q,cor:i.cor}})});lsS('lf_ped',L.slice(-30));
       if(doc.cup)cupTira();
       /* S400 (17/11, esboços 59a–59f): o cartão de desconto NÃO aparece mais em tela nenhuma do pagamento; o presente chega por e-mail depois da entrega */cupFn({acao:'proxima',pid:id,tel:c.tel||'',email:c.email||'',nome:c.nome||'',lang:LFI.lang}).then(function(){},function(){});
       st.cart={};st.pkid='';st.pkdoc=null;st.step='cart';st.pag='';try{drawBag()}catch(_){}
