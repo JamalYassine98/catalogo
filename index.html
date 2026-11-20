@@ -448,7 +448,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;text-wrap:balance;letter-spacing:-.01em}
 
 /* topo */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:var(--c-topo);border-bottom:1px solid var(--ln)}
+.top{position:sticky;top:calc(env(safe-area-inset-top,0px) - var(--fxh,0px));z-index:var(--c-topo);border-bottom:1px solid var(--ln)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:calc(var(--c-topo) + 1);background:var(--bg)}
 .bar{display:flex;align-items:center;min-height:76px;padding-block:8px}
 .logo{height:56px;background:var(--logo) left center/contain no-repeat;animation:none!important}
