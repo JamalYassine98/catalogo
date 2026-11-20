@@ -298,7 +298,7 @@ html[data-ev=anonovo-n]{--act:#8d703e}
 html[data-ev=pais]{--act:#906430}
 html[data-ev=maes]{--act:#b8436f}
 html[data-ev=natal]{--act:#b3263a}
-html[data-ev] body #dacs,html[data-ev] body #drw .dcm,html[data-ev] body #drw .dcm span,html[data-ev] body #home .hsh a,html[data-ev] body #home .hgu .gt small,html[data-ev] body #home .hatt small,html[data-ev] body #home .hatt .lfba,html[data-ev] body #hnf .nwb,html[data-ev] body .mobsearch .vnav .vback,html[data-ev] body .mobsearch .vnav .vback span,html[data-ev] body #lfgen .lfgf,html[data-ev] body #lfgen .lfgf i,html[data-ev] body .pgbar .pgback,html[data-ev] body .pgbar .pgback span,html[data-ev] body .navrh .navv,html[data-ev] body .hcat a small,html[data-ev] body .card .uvc{color:var(--act,var(--ac))!important}
+html[data-ev] body #dacs,html[data-ev] body #drw .dcm,html[data-ev] body #drw .dcm span,html[data-ev] body #home .hsh a,html[data-ev] body #home .hgu .gt small,html[data-ev] body #home .hatt small,html[data-ev] body #home .hatt .lfba,html[data-ev] body #hnf .nwb,html[data-ev] body .mobsearch .vnav .vback,html[data-ev] body .mobsearch .vnav .vback span,html[data-ev] body .vtit .lfgf,html[data-ev] body .vtit .lfgf i,html[data-ev] body .pgbar .pgback,html[data-ev] body .pgbar .pgback span,html[data-ev] body .navrh .navv,html[data-ev] body .hcat a small,html[data-ev] body .card .uvc{color:var(--act,var(--ac))!important}
 /* 3 · botões do Destaque: no bloco escuro usam a cor clara da própria temática; no bloco claro, o destaque escurecido */
 html[data-ev=natal] #home .hd .hbt .p1,html[data-ev=natal] #home .hd .hbt .p2,html[data-ev=natal] #home .hd .hbt .p2 i{color:#ffd9a0!important;border-color:#ffd9a0!important}
 html[data-ev=anonovo-n] #home .hd .hbt .p1,html[data-ev=anonovo-n] #home .hd .hbt .p2,html[data-ev=anonovo-n] #home .hd .hbt .p2 i{color:#e3c88f!important;border-color:#e3c88f!important}
@@ -2635,8 +2635,8 @@ html[data-ev]:not([data-ev=bf]) .hc,html[data-ev]:not([data-ev=bf]) .hcat a,html
 #grid .card .ph .tg{display:none!important}
 </style>
 
-<div class="top"><div class="wrap">
-  <div class="bar">
+<div class="top" data-cabe="escala"><div class="wrap">
+  <div class="bar" data-cabe-linha>
     <button class="ib mnb" id="mnb" type="button" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     <a href="#topo" aria-label="La Fouch, tudo em óculos" class="logo" role="img"></a>
     <nav class="nav" aria-label="Seções"><a href="#vitrine">Catálogo</a><a href="#rosto">Seu rosto</a><a href="#atacado">Atacado</a><a href="#como">Ajuda</a></nav>
@@ -2830,8 +2830,8 @@ html.ppop:not(.onprod) a.wa,html.lojamodo.onprod a.wa,html.lojamodo:has(#layer .
 /* 121: área de toque de 44 px por fora do desenho (invisível) */
 .lx44{--t:0px;--r:0px;--b:0px;--l:0px}.lx44:not(.lxpos){position:relative}
 .lx44:not(.lxb)::after,.lx44.lxb::before{content:'';position:absolute;top:calc(-1*var(--t));right:calc(-1*var(--r));bottom:calc(-1*var(--b));left:calc(-1*var(--l))}
-/* catálogo (aprovado 18/11): "Filtros ›" na linha do título, na margem da direita; gênero e etiquetas com a maior letra que cabe */
-#vscr.lf8ti{position:relative}#vscr.lf8ti>.lfgf{position:absolute;white-space:nowrap;color:var(--ac);font:500 14px var(--body),Inter,system-ui,sans-serif;text-decoration:none;line-height:1;z-index:2}#vscr.lf8ti>.lfgf:after{content:"";position:absolute;inset:-14px -8px}#vscr.lf8ti>.lfgf i{font-style:normal}#lfgen{overflow:visible}#lfgen>button{white-space:nowrap}
+/* catálogo (aprovado 18/11): "Filtros ›" dentro do título (mesma linha de base), na margem da direita */
+.mobsearch .vnav{width:100%;align-items:stretch}.mobsearch .vnav .vtit{padding-right:0}.vtit .lfgf{margin-left:auto;flex:none;position:relative;white-space:nowrap;color:var(--ac);font:500 14px var(--body),Inter,system-ui,sans-serif;text-decoration:none}.vtit .lfgf:after{content:"";position:absolute;inset:-14px -8px}.vtit .lfgf i{font-style:normal}#lfgen{overflow:visible}#lfgen>button{white-space:nowrap}
 /*/S429-APROVADOS*/
 </style>
 </body></html>
