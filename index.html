@@ -234,7 +234,7 @@ html.bootgz body>*:not(#gw):not(#ptr5):not(script):not(style){visibility:hidden!
 .amsc h3{font:800 21px var(--body);margin:6px 0;color:#fff}.amsc p{margin:0;font-size:14px;color:rgba(255,255,255,.92);line-height:1.4}
 .amx{position:absolute;top:8px;right:10px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:22px;line-height:1}
 .amver{border:0;background:var(--pn);color:var(--tx);border-radius:999px;padding:10px 18px;font:600 14px var(--body);box-shadow:0 6px 18px rgba(0,0,0,.18)}
-@media (prefers-reduced-motion:reduce){.amtk,.amsp{animation:none}}</style><style id="s208">.ulin i{border-radius:50%;flex:none;animation:ulinp 1.6s ease-in-out infinite}@keyframes ulinp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}:root[data-theme="dark"] .ulin{color:#ff6b6b}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ulin{color:#ff6b6b}}/* S376 (esboço 55 v2, aprovado 16/11 08:25): bolinha alinhada com os textos do cartão, a 4 px da frase e no meio da altura das letras */html.vlist .card .ulin{display:none}@media (prefers-reduced-motion:reduce){.ulin i{animation:none}}</style><style id="s207">/* S207 (13/11/2026, aprovado): correções do dono */
+@media (prefers-reduced-motion:reduce){.amtk,.amsp{animation:none}}</style><style id="s208">:root[data-theme="dark"] .ulin{color:#ff6b6b}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ulin{color:#ff6b6b}}/* S376 (esboço 55 v2, aprovado 16/11 08:25): bolinha alinhada com os textos do cartão, a 4 px da frase e no meio da altura das letras */html.vlist .card .ulin{display:none}</style><style id="s207">/* S207 (13/11/2026, aprovado): correções do dono */
 /* rodapé: 3 colunas no computador, Termos centralizados numa linha inteira embaixo; também no fim da peça */
 @media (min-width:900px){.lfft .in{grid-template-columns:1.6fr 1fr 1fr!important;gap:48px!important}.lfft .in>div{grid-column:auto!important;grid-row:auto!important}}
 .lfft>.fbt{display:flex!important;flex-direction:column;justify-content:center!important;text-align:center!important}
@@ -246,7 +246,7 @@ html.bootgz body>*:not(#gw):not(#ptr5):not(script):not(style){visibility:hidden!
 /* Comprar fica no lugar (embaixo das medidas), sem seguir a tela */
 #layer .buy{position:static!important;left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;box-shadow:none!important;background:none!important;padding:18px 0 4px!important;border:0!important;margin:0!important;width:auto!important}
 /* cartões: mesma margem dos lados e o mesmo espaço entre material/código · cor · preço; "Últimas N" numa pílula no canto da foto */
-.hc .hn{padding:12px 12px 0!important;line-height:1.15!important}.hc .hds{display:block!important;line-height:1.15!important;margin:0 0 4px!important}
+.hc .hn{padding:12px var(--texto) 0!important;line-height:1.15!important}.hc .hds{display:block!important;line-height:1.15!important;margin:0 0 4px!important}
 .hc .hsw{padding:8px 12px 0!important;line-height:0}.hc .hp{padding:8px 12px 10px!important;line-height:1.15!important}
 .hc .hci{position:relative}
 /* ícone de Mi cuenta igual aos outros (preto; ao passar o mouse, o mesmo efeito) */
@@ -744,7 +744,7 @@ html[data-nav]::view-transition-new(root){animation:navIn .6s cubic-bezier(.2,.8
 .card{background:var(--pn);border:1px solid var(--ln);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,box-shadow .25s ease;animation:rise .6s ease both;animation-delay:calc(var(--i,0)*70ms)}
 @media (hover:hover){.card:hover{transform:translateY(-6px);box-shadow:0 18px 34px var(--shadow)}}
 .card .open{border:0;background:transparent;padding:0;text-align:left;width:100%;color:inherit}
-.ph{background:#fff;aspect-ratio:1/1;margin:10px 10px 0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ph{background:#fff;aspect-ratio:1/1;margin:var(--foto) var(--foto) 0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .ph svg{width:100%;height:100%;transition:transform .35s ease}
 @media (hover:hover){.card:hover .ph svg{transform:scale(1.1)}}
 .ph .tg{position:absolute;top:10px;left:10px;background:#111;color:#fff;font-size:10px;letter-spacing:.12em;padding:4px 9px;border-radius:6px;font-weight:700;z-index:2}
@@ -1212,7 +1212,7 @@ main .wrap .hero.nost .cta .btn{min-width:min(22vw,422.4px)}}
 html.vlist #grid{grid-template-columns:1fr!important;gap:10px!important}
 html.vlist .card{display:grid;grid-template-columns:clamp(84px,min(24vw,460.8px),150px) 1fr auto;align-items:center;gap:12px;padding:8px 12px}
 html.vlist .card .open{display:contents}
-html.vlist .card .ph{grid-column:1;grid-row:1;margin:0;aspect-ratio:4/3;width:100%}
+html.vlist .card .ph{grid-column:1;grid-row:1;aspect-ratio:4/3;width:100%}
 html.vlist .card .info{grid-column:2;grid-row:1;padding:0;text-align:left}
 html.vlist .card .add{grid-column:3;grid-row:1;margin:0;min-height:0;padding:10px 16px;width:auto}
 html.vlist .card .fav{top:12px;left:12px;right:auto;width:30px;height:30px}
@@ -1715,17 +1715,18 @@ html:not(.vlist) #grid .card.of .eco{font-size:13px!important}
 html:not(.vlist) #grid .card.of .fav{width:44px!important;height:44px!important}
 html:not(.vlist) #grid .card.of .stk{top:46px!important}}
 /* S240 (aprovado 14/11/2026): favoritar é só o coração (sem círculo nem sombra), com 44 px de toque; "Últimas unidades" é uma etiqueta clara dentro da foto, com pontinho que respira devagar */
-html:not(.vlist) #grid .card .fav,html:not(.vlist) #grid .card.of .fav{background:none!important;box-shadow:none!important;border:0!important;width:44px!important;height:44px!important;top:6px!important;right:6px!important;border-radius:12px!important;color:#7d2a5a}
+html:not(.vlist) #grid .card .fav,html:not(.vlist) #grid .card.of .fav{background:none!important;box-shadow:none!important;border:0!important;width:var(--fav)!important;height:var(--fav)!important;top:var(--fav-d)!important;right:var(--fav-d)!important;border-radius:12px!important;color:#7d2a5a}
 html:not(.vlist) #grid .card .fav svg{width:22px;height:22px;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff)}
 html:not(.vlist) #grid .card .fav.on{color:var(--ac)}
-/* S429 (121, aprovado): "Últimas N" vermelho, sem fundo, no alto da foto, alinhado com o texto do cartão */
-#home .hc:has(.hlin),#grid .card .ph{position:relative}
-#home .hc .hlin,#grid .card .ph .ulin{position:absolute;z-index:3;display:inline-flex;align-items:flex-start;gap:4px;margin:0;padding:0;background:none;box-shadow:none;border-radius:0;font:700 11.5px/1.25 Inter,system-ui,sans-serif;letter-spacing:.02em;text-transform:none;color:#c62828;white-space:normal;overflow:visible;text-overflow:clip}
-#grid .card .ph .ulin{top:16px;bottom:auto;left:12px}
-#home .hc .hlin i,#grid .card .ph .ulin i{width:6px;height:6px;background:currentColor;position:relative;top:-1px;margin-top:calc((1.25em - 6px) / 2)}
-#grid .card .ph .ulin i{animation:lfresp 2.6s ease-in-out infinite}
+/* S429 (121, aprovado; limpeza 5): "Últimas N" vermelho, sem fundo, dentro da foto, a 16 px do alto, alinhado com o texto do cartão e sem chegar no coração.
+   As medidas do cartão ficam num lugar só: --foto (margem da foto), --texto (margem do texto), --fav/--fav-d (coração) e --sel-d (limite à direita do selo) */
+.card{--foto:10px;--texto:12px;--fav:44px;--fav-d:6px;--sel-d:calc(var(--fav-d) + var(--fav) + 6px - var(--foto))}
+html.vlist .card{--foto:0px}
+.hc,.hcat{--foto:0px;--texto:12px;--sel-d:calc(var(--texto) - var(--foto))}
+.ulin{position:absolute;z-index:3;top:16px;left:calc(var(--texto) - var(--foto));right:var(--sel-d);display:flex;align-items:flex-start;gap:4px;margin:0;padding:0;background:none;box-shadow:none;border-radius:0;font:700 11.5px/1.25 Inter,system-ui,sans-serif;letter-spacing:.02em;text-transform:none;color:#c62828;white-space:normal;overflow:visible;text-overflow:clip;pointer-events:none}
+.ulin i{width:6px;height:6px;flex:none;border-radius:50%;background:currentColor;position:relative;top:-1px;margin-top:calc((1.25em - 6px) / 2);animation:lfresp 2.6s ease-in-out infinite}
 @keyframes lfresp{0%,100%{opacity:.35;transform:scale(.85)}50%{opacity:1;transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){#grid .card .ph .ulin i{animation:none}}
+@media (prefers-reduced-motion:reduce){.ulin i{animation:none}}
 /*MENU-NOVO*/
 #drw .dpn{border-right:0}
 .dhd{flex-direction:row-reverse;justify-content:space-between;gap:0;padding:12px 7px 6px 20px}
@@ -1918,7 +1919,7 @@ html.v5 #contabtn .lgt{display:none}html.v5 #sbtn{display:inline-flex}
 .htr{display:flex;justify-content:center;gap:28px;margin:16px 0 0;font-size:13px;color:var(--mu);flex-wrap:wrap}.htr span{display:flex;align-items:center;gap:6px}.htr b{font-weight:600}
 .hcat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .hcat a{display:block;border-radius:18px;overflow:hidden;background:var(--pn);border:1px solid var(--ln);text-decoration:none}
-.hcat .hci{background:#fff;aspect-ratio:16/8;display:grid;place-items:center;overflow:hidden}.hcat .hci img,.hcat .hci svg{width:80%;height:90%;object-fit:contain}
+.hcat .hci{margin:var(--foto) var(--foto) 0;background:#fff;aspect-ratio:16/8;display:grid;place-items:center;overflow:hidden}.hcat .hci img,.hcat .hci svg{width:80%;height:90%;object-fit:contain}
 .hcat span{display:block;padding:10px 16px 14px;font-family:var(--display);font-size:22px}.hcat small{display:block;font-family:var(--body);font-size:12px;font-weight:600}
 .hcol{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:16px}
 .hcol a{position:relative;display:block;border-radius:20px;overflow:hidden;aspect-ratio:3/4;background:#fff;border:1px solid var(--ln);text-decoration:none;color:#2a1f27}
@@ -1932,7 +1933,7 @@ html.v5 #contabtn .lgt{display:none}html.v5 #sbtn{display:inline-flex}
 
 .hg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
 .hc{display:block;width:100%;text-align:left;background:var(--pn);border:1px solid var(--ln);border-radius:16px;overflow:hidden;padding:0;color:inherit}
-.hc .hci{background:#fff;aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}.hc .hci img,.hc .hci svg{width:100%;height:100%;}
+.hc .hci{margin:var(--foto) var(--foto) 0;background:#fff;aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}.hc .hci img,.hc .hci svg{width:100%;height:100%;}
 .hc .hb{position:absolute;left:10px;top:10px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;letter-spacing:.02em;z-index:1}
 .hc .hb.of{background:#c0392b}.hc .hb.esg{background:#6b6b6b}
 .hc .hn{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2025,7 +2026,7 @@ html[data-ev=natal] .lfft{background:#14432a;color:#d6e4da;border:0}html[data-ev
 html[data-ev=halloween] #evbar{background:#2a1530;color:#ffb15c}
 html[data-ev=halloween] #home .hd{background:radial-gradient(circle at 85% 15%,#ffb15c33,transparent 35%),linear-gradient(135deg,#2a1530,#120a16);color:#fff}
 html[data-ev=halloween] #home .hd .hlb,html[data-ev=halloween] #home .hd h1 em{color:#ffb15c}html[data-ev=halloween] #home .hd .hsub{color:#fffc}
-html[data-ev=halloween] .hc .hci,html[data-ev=halloween] .hcat .hci{margin:8px 8px 0;border-radius:12px}
+html[data-ev=halloween] .hc,html[data-ev=halloween] .hcat{--foto:8px}html[data-ev=halloween] .hc .hci,html[data-ev=halloween] .hcat .hci{border-radius:12px}
 /* Black Friday: página clara, cards pretos, topo/destaque/rodapé pretos e vermelho */
 html[data-ev=bf]{--bg:#f3f3f3;--pn:#fff;--tx:#111;--mu:#666;--ln:#e2e2e2;--ln2:#d0d0d0;--ac:#e11d48;color-scheme:light}
 html[data-ev=bf] body{background:#f3f3f3}
@@ -2033,7 +2034,7 @@ html[data-ev=bf] .top{background:#0a0a0a;border-color:#ffffff1a;color:#fff}html[
 html[data-ev=bf] #evbar{background:#000;color:#fff}
 html[data-ev=bf] #home .hd{background:linear-gradient(135deg,#0b0b0b,#1c1c1c);color:#fff}html[data-ev=bf] #home .hd .hlb{color:#ff3b5c}html[data-ev=bf] #home .hd .hsub{color:#fffc}html[data-ev=bf] #home .hd .hpr s{color:#fff9}
 html[data-ev=bf] .hc,html[data-ev=bf] .hcat a{background:#121212;border-color:#121212;box-shadow:0 10px 24px #0000001f}
-html[data-ev=bf] .hc .hci,html[data-ev=bf] .hcat .hci{margin:8px 8px 0;border-radius:12px}
+html[data-ev=bf] .hc,html[data-ev=bf] .hcat{--foto:8px}html[data-ev=bf] .hc .hci,html[data-ev=bf] .hcat .hci{border-radius:12px}
 html[data-ev=bf] .hc .hn,html[data-ev=bf] .hc .hp s{color:#a3a3a3}html[data-ev=bf] .hc .hp,html[data-ev=bf] .hcat span{color:#fff}html[data-ev=bf] .hc .hsw i{border-color:#fff5}
 html[data-ev=bf] .lfft{background:#0a0a0a;color:#bdbdbd;border:0}html[data-ev=bf] .lfft b{color:#fff}html[data-ev=bf] .lfft .flg{filter:brightness(0) invert(1)}html[data-ev=bf] .lfft .fbt{border-color:#ffffff22}html[data-ev=bf] .lfft .lng{background:#1a1a1a;border-color:#333;color:#eee}html[data-ev=bf] .lfft .lng button{color:#eee}
 /* Ano Novo de dia: branco e dourado metálico */
