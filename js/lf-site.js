@@ -414,12 +414,10 @@
      "Últimas N" não entra na conta: fica sempre dentro da foto. Sem "OFERTA" escrito, sem NOVO, sem selo preto de tipo e sem "Mais vendido" repetido. */
   var TSEL={natal:['Presente ideal','Regalo ideal'],maes:['Para a mãe','Para mamá'],pais:['Para o pai','Para papá'],bf:['Black Friday','Black Friday'],anonovo:['Ano Novo','Año Nuevo'],halloween:['Halloween','Halloween']};
   function temaDe(p){try{var e=evAtivo();if(!e||!TSEL[e.tema])return '';var f=DST_TEMA[e.tema];return f&&f(p)?e.tema:''}catch(_){return ''}}
-  function temaNome(t){var x=TSEL[t];return x?x[window.LFI&&LFI.lang==='es'?1:0]:''}
   var CATN={grau:['Leitura','Lectura'],solar:['Sol','Sol'],armacao:['Armações','Armazones']};
   function catRank(p){if(!(p.mv>0))return 0;var L=P.filter(function(q){return q.tipo===p.tipo&&q.mv>0&&q.aviso!=='Esgotado'}).sort(function(a,b){return a.mv-b.mv}),k=L.indexOf(p)+1;return k>0&&k<=3?k:0}
-  function selo1(p,cls){var es=window.LFI&&LFI.lang==='es',c=cls||'sel1';if(p.aviso==='Esgotado')return '';var tm=temaDe(p);
-    if(isOf(p))return '<span class="'+c+' of">−'+pct5(p)+'%'+(tm?' · '+esc(temaNome(tm)):'')+'</span>';
-    if(tm)return '<span class="'+c+' tm t-'+tm+'">'+esc(temaNome(tm))+'</span>';
+  function selo1(p,cls){var es=window.LFI&&LFI.lang==='es',c=cls||'sel1';if(p.aviso==='Esgotado')return '';
+    if(isOf(p))return '<span class="'+c+' of">−'+pct5(p)+'%</span>';
     var k=0;if(k)return '<span class="'+c+' rk">Nº '+k+' '+(es?'en ':'em ')+((CATN[p.tipo]||['',''])[es?1:0])+'</span>';
     /* S402 (17/11/2026, ordem do dono): o selo "Chegou esta semana" saiu também do catálogo e do Início (da página da peça já tinha saído em 12/11) */return ''}
   function lista(){
@@ -4922,7 +4920,7 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
       var vs=g.parentNode.querySelector('.vsec'),VL=ehVip()?P.filter(function(p){return vipSo(p)&&p.aviso!=='Esgotado'}).slice(0,4):[];
       if(VL.length){if(!vs){vs=document.createElement('div');vs.className='vsec';g.parentNode.insertBefore(vs,o)}var vh='<h4><i>✦</i>'+LFI.tr('Só para VIP')+'</h4><p>'+LFI.tr('Chegaram agora; para todos, em 2 dias.')+'</p><div class="hg vg">'+VL.map(function(p){return card5(p,0,'vip')}).join('')+'</div>'+(c.tipo==='pe'?'<div class="gh">'+LFI.tr('Seu presente')+'</div>':'');if(vs._h!==vh){vs._h=vh;vs.innerHTML=vh}}else if(vs)vs.remove();
       [].forEach.call(g.querySelectorAll('.card'),function(k){var bt=k.querySelector('[data-open]'),ref=bt&&bt.getAttribute('data-open'),p=ref&&find(ref);if(!p)return;
-        k.querySelectorAll('.sel1,.edb,.evse').forEach(function(x){x.style.display='none'});var pr=k.querySelector('.pr');
+        k.querySelectorAll('.sel1,.edb').forEach(function(x){x.style.display='none'});var pr=k.querySelector('.pr');
         if(c.tipo==='pe'){if(pr)pr.style.display='none';if(!k.querySelector('.gpt')){var s=document.createElement('span');s.className='gpt';s.textContent='✦ '+LFI.tr('De presente');k.appendChild(s);gptAlinha(k,s)}}
         else if(pr&&!pr.querySelector('s')){var d=descDe(c,p);if(d>0)pr.innerHTML='<s>'+LFI.fmtD(LFI.pv(p.n))+'</s>'+LFI.fmtD(LFI.pv(p.n-d))}})}
     /* selo do presente alinhado com o coração (78a–78g): mesma altura e mesma distância da borda */
@@ -5102,9 +5100,8 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
 /* 11/11 S176-2: altura da barra Comprar (posiciona o WhatsApp logo acima dela) */
 (function(){/* S426: a altura vem do ResizeObserver (sem obrigar o navegador a arrumar a tela fora de hora) */var ro=window.ResizeObserver?new ResizeObserver(function(es){var h=es[0]&&es[0].target.offsetHeight;if(h)document.documentElement.style.setProperty('--buyh',h+'px')}):null,ub=null;
   function u(){var b=document.querySelector('.buy');if(!b)return;if(ro){if(b!==ub){if(ub)ro.unobserve(ub);ub=b;ro.observe(b)}return}if(b.offsetHeight)document.documentElement.style.setProperty('--buyh',b.offsetHeight+'px')}try{new MutationObserver(function(){setTimeout(u,60)}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});addEventListener('resize',u)}catch(_){}})();
-/* S170 (aprovado e implementado 11/11/2026): animação leve do tema no destaque, selo do tema nos 4 primeiros cards (no lugar da etiqueta), faixa do tema no catálogo, sem etiqueta NUEVO */
+/* S170 (aprovado e implementado 11/11/2026): animação leve do tema no destaque, faixa do tema no catálogo (os selos de tema nas peças saíram em 20/11: o tema já está na faixa, no destaque e nas cores), sem etiqueta NUEVO */
 (function(){
-  var SELO={natal:'Presente ideal',anonovo:'Ano novo',maes:'Para a mamãe',pais:'Para o papai',bf:'Black Friday',halloween:'Halloween'};
   function T(s){try{return window.LFI&&LFI.lang==='es'?LFI.tr(s):s}catch(_){return s}}
   var MO='<svg viewBox="0 0 34 16"><path d="M17 5c1-2 2-2 3 0 3-3 8-4 14-1-3 0-5 2-5 5-2-2-5-2-7 1-1-1-3-1-5 0-2-3-5-3-7-1 0-3-2-5-5-5 6-3 11-2 14 1 1-2 2-2 3 0z"/></svg>';
   function r(a,b){return a+Math.random()*(b-a)}
@@ -5123,18 +5120,13 @@ function filSet(lado,ang,L,vis,bd){bd=Math.round((bd||0)/2)*2;/* S426: dobra em 
     c.innerHTML=h;hd.insertBefore(c,hd.firstChild);
     setTimeout(function(){c.classList.add('fim')},window.__evfxFim||10000);
   }
-  function selo(){
-    var ev=(document.documentElement.getAttribute('data-ev')||'').replace(/-[nd]$/,'');if(!SELO[ev])return;
-    document.querySelectorAll('#home .hc .hci').forEach(function(x,k){if(k>3||x.querySelector('.evse'))return;if(getComputedStyle(x).position==='static')x.style.position='relative';var s=document.createElement('span');s.className='evse';s.textContent=T(SELO[ev]);x.appendChild(s)});
-  }
   var FX={natal:'🎄 Presentes de Natal · retirada no mesmo dia',anonovo:'✨ Ano novo, novo olhar',maes:'🌷 Presentes para a mamãe · retirada no mesmo dia',pais:'Presentes para o papai · retirada no mesmo dia',bf:'⚡ Black Friday · ofertas em toda a loja',halloween:'🎃 Semana de Halloween'};
   function cat(){
-    var ev=(document.documentElement.getAttribute('data-ev')||'').replace(/-[nd]$/,''),g=document.getElementById('grid');if(!g)return;if(!FX[ev]){[].forEach.call(document.querySelectorAll('.evlf,#grid .evse'),function(x){x.remove()});return}
+    var ev=(document.documentElement.getAttribute('data-ev')||'').replace(/-[nd]$/,''),g=document.getElementById('grid');if(!g)return;if(!FX[ev]){[].forEach.call(document.querySelectorAll('.evlf'),function(x){x.remove()});return}
     if(!g.parentNode.querySelector('.evlf')){var f=document.createElement('div');f.className='evlf';f.textContent=T(FX[ev]);g.parentNode.insertBefore(f,g)}
-    g.querySelectorAll('.card').forEach(function(cd,k){var x=cd.querySelector('.ph');if(!x)return;var o=x.querySelector('.evse');if(k>3){if(o)o.remove();return}if(o)return;var tg=x.querySelector('.tg');if(tg)tg.style.display='none';var s=document.createElement('span');s.className='evse';s.textContent=T(SELO[ev]);x.appendChild(s)});
   }
   function novo(){document.querySelectorAll('#grid .card .tg,#home .hc .tg').forEach(function(t){if(/^(NUEVO|NOVO)$/i.test(t.textContent.trim()))t.style.display='none'})}
-  function vai(){fx();selo();cat();novo()}
+  function vai(){fx();cat();novo()}
   if(document.readyState==='complete')setTimeout(vai,800);else addEventListener('load',function(){setTimeout(vai,800)});
   new MutationObserver(function(){setTimeout(vai,300)}).observe(document.documentElement,{attributes:true,attributeFilter:['data-ev']});
   setInterval(function(){if(!document.hidden){cat();novo()}},1000);
