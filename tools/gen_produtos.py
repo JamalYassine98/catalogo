@@ -237,13 +237,45 @@ def paginas(prods, foto_ok):
         if n.rsplit('.', 1)[0] not in vivas: os.remove(os.path.join(md, n))
     return feitos
 
+# ===== 21/11/2026 (internet fraca, parte 1): COMEÇO RÁPIDO =====
+# Medido em 4G fraco: depois de o programa do site chegar, a 1ª tela ainda esperava 2 leituras da nuvem e uma leitura por foto (6 s).
+# O robô deixa no próprio site o que a 1ª tela precisa: dados/inicio.json (as peças e a configuração, IGUAIS aos que a nuvem entrega)
+# e a foto de cada peça como arquivo (dados/f/REF_<versão da foto>.jpg). O site usa isto para abrir e continua conferindo a nuvem
+# ao vivo (estoque, mudanças); foto com versão diferente da do arquivo é lida da nuvem, como antes. Nada aqui é a fonte da verdade.
+EXT = {'image/jpeg': 'jpg', 'image/jpg': 'jpg', 'image/webp': 'webp', 'image/png': 'png'}
+def inicio(docs, FD, cfg):
+    D = os.path.join(RAIZ, 'dados'); F = os.path.join(D, 'f'); os.makedirs(F, exist_ok=True)
+    arq = {}; ficam = set()
+    for d in docs:
+        f = campos(d); ref = f.get('ref') or d['name'].split('/')[-1]; fv = str(f.get('fv') or ''); fd = FD.get(ref)
+        if f.get('oculto') or not fd or not fv.isdigit() or int(fv) <= 0 or not ref.replace('-', '').replace('_', '').isalnum(): continue
+        if fd.startswith('/'):  # a foto já é um arquivo do site
+            if os.path.exists(os.path.join(RAIZ, fd.lstrip('/'))): arq[ref] = [int(fv), fd]
+            continue
+        try:
+            cab, dado = fd.split(',', 1); mime = cab[5:].split(';')[0]
+            if ';base64' not in cab or mime not in EXT: continue
+            nome = '%s_%s.%s' % (ref, fv, EXT[mime]); dest = os.path.join(F, nome)
+            if not os.path.exists(dest): open(dest, 'wb').write(base64.b64decode(dado + '=' * (-len(dado) % 4)))
+            arq[ref] = [int(fv), '/dados/f/' + nome]; ficam.add(nome)
+        except Exception as e:
+            print('foto fora do começo rápido:', ref, e)
+    for n in os.listdir(F):
+        if n not in ficam: os.remove(os.path.join(F, n))
+    # a chave "ativo" (site ligado/desligado) NÃO vai: quem decide isso é só a nuvem, ao vivo
+    if cfg and 'fields' in cfg: cfg = {'fields': {k: v for k, v in cfg['fields'].items() if k != 'ativo'}}
+    novo = json.dumps({'docs': docs, 'cfg': cfg or None, 'fotos': arq}, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+    dest = os.path.join(D, 'inicio.json')
+    if not os.path.exists(dest) or open(dest, encoding='utf-8').read() != novo: open(dest, 'w', encoding='utf-8').write(novo)
+    return len(arq)
+
 def main():
     if len(sys.argv) > 2 and sys.argv[1] == '--teste':
         dados = json.load(open(sys.argv[2])); docs = dados['produtos']; fotos = dados['fotos']
     else:
         docs = get('produtos?pageSize=300').get('documents', []); fotos = None
     os.makedirs(SAIDA, exist_ok=True)
-    vivos = set(); prods = []
+    vivos = set(); prods = []; FD = {}
     for d in docs:
         f = campos(d); ref = f.get('ref') or d['name'].split('/')[-1]
         if f.get('oculto') or not ref.replace('-', '').replace('_', '').isalnum(): continue
@@ -254,6 +286,7 @@ def main():
         except Exception:
             fd = None
         if not fd: continue
+        FD[ref] = fd
         vivos.add(ref)
         jpg = os.path.join(SAIDA, ref + '.jpg'); pg = os.path.join(SAIDA, ref + '.html')
         # só refaz a foto se o produto mudou de versão da foto (fv) ou ainda não existe
@@ -291,11 +324,16 @@ def main():
         base = n.rsplit('.', 1)[0]
         if base not in vivos: os.remove(os.path.join(SAIDA, n))
     print('páginas:', len(vivos))
+    try:
+        cfg = dados.get('config') if '--teste' in sys.argv else get('config/site')
+        print('começo rápido:', inicio(docs, FD, cfg), 'fotos em arquivo')
+    except Exception as e:
+        print('começo rápido não gerado:', e)  # é só um acelerador: sem ele o site lê tudo da nuvem, como antes
     feitos = paginas(prods, lambda r: r in vivos)
     print('endereços:', len(feitos))
     if '--teste' not in sys.argv:
         # o workflow só faz "git add -A p": o próprio robô acrescenta os arquivos novos
         import subprocess
-        subprocess.run(['git', 'add', '-A', 'modelo', 'og'] + feitos, cwd=RAIZ, check=False)
+        subprocess.run(['git', 'add', '-A', 'modelo', 'og', 'dados'] + feitos, cwd=RAIZ, check=False)
 
 main()
